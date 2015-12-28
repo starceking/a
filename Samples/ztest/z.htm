@@ -1,0 +1,27 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title></title>
+    <meta charset="utf-8" />
+    <script type="text/javascript">
+        function ck(para) {
+            var el = document.createElement("a");
+            document.body.appendChild(el);
+            el.href = "PageOffice://|http://192.168.1.136/po/OpenWord/OpenWord.aspx?" + para + "|width=800px;height=800px;||";
+            el.click();
+            document.body.removeChild(el);
+        }
+    </script>
+</head>
+<body>
+    <button onclick="ck('url=template')">只读打开</button>
+    <button onclick="ck('template=table&url=newword&mode=ins')">新建文档</button>
+    <button onclick="ck('url=template&mode=edit')">编辑已有文档</button>
+    <button onclick="ck('url=template&mode=revision')">编辑文档带批注</button>
+    <button onclick="ck('url=template2')">填充书签</button>
+    <button onclick="ck('url=table')">操作表格</button>
+    <button onclick="ck('url=datatag')">数据标签</button>
+    <button onclick="ck('url=pic')">插入图片</button>
+</body>
+</html>
