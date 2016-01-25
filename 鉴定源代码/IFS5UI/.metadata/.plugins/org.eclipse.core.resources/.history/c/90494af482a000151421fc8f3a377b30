@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Module xmlns:fx="http://ns.adobe.com/mxml/2009"
+		  xmlns:s="library://ns.adobe.com/flex/spark"
+		  xmlns:mx="library://ns.adobe.com/flex/mx"
+		  xmlns:ns1="*"
+		  width="953" height="598" creationComplete="moduleCreationCompleteHandler(null)"
+		  fontSize="14">
+	<fx:Declarations>
+		<!-- 将非可视元素（例如服务、值对象）放在此处 -->		
+	</fx:Declarations>
+	<fx:Script>
+		<![CDATA[
+			import com.adobe.cairngorm.control.CairngormEventDispatcher;
+			
+			import control.*;
+			import locator.MenuLocator;	
+			import locator.IdFlowLocator;
+			import locator.JusTypeLocator;
+			import locator.PsbLocator;
+			import locator.SysUserLocator;
+			import locator.MRelativeLocator;
+			import locator.MissingPersonLocator;
+			import vo.MissingPersonVo;
+			import vo.MRelativeVo;
+			import mx.events.FlexEvent;
+			
+			import util.Helper;
+			
+			import vo.IdFlowVo;
+			
+			protected function dg_doubleClickHandler(event:MouseEvent):void
+			{
+				IdFlowLocator.getInstance().wholeCase=false;
+				if(dg.selectedItem==null)return;
+				IdFlowLocator.getInstance().curObj=dg.selectedItem as IdFlowVo;
+				if(IdFlowLocator.getInstance().curObj.DOC_YEAR.length==0)
+				{
+					IdFlowLocator.getInstance().curObj.DOC_YEAR=JusTypeLocator.getInstance().jusTypeVo.YEAR;
+				}
+				if(IdFlowLocator.getInstance().curObj.CONNO.search("C")==0)
+				{
+					Helper.pushMenu("文书制作","view/idcase/info/testersd/TesterSdIdCaseModule.swf");
+				}
+				else if(IdFlowLocator.getInstance().curObj.CONNO.search("D")==0)
+				{
+					Helper.pushMenu("文书制作","view/idcase/info/testersd/TesterSdDnaModule.swf");
+				}
+				else if(IdFlowLocator.getInstance().curObj.CONNO.search("R")==0)
+				{
+					MRelativeLocator.getInstance().wsObj=new MRelativeVo(IdFlowLocator.getInstance().curObj.ID,"","","","","","","","","","","","","",
+						"","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","");
+					CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.MRELATIVEWS_GetOneMpr));
+					Helper.pushMenu("文书制作","view/idcase/info/testersd/TesterSdMprModule.swf");
+				}
+				else if(IdFlowLocator.getInstance().curObj.CONNO.search("L")==0)
+				{
+					MissingPersonLocator.getInstance().wsObj=new MissingPersonVo(IdFlowLocator.getInstance().curObj.ID,"","","","","","","","","",
+						"","","","","","","","","","");
+					CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.MISSINGPERSONWS_GetOneMp));
+					Helper.pushMenu("文书制作","view/idcase/info/testersd/TesterSdMpModule.swf");
+				}
+				PsbLocator.getInstance().clearData();
+			}
+			
+			protected function moduleCreationCompleteHandler(event:Event):void
+			{
+				IdFlowLocator.getInstance().wsObj=new IdFlowVo("C",PsbLocator.getInstance().idPsb.ID,"","","","","",
+					"","","","","","","","","","","",caseNo.text,"","","","","","","","","",SysUserLocator.getInstance().loginUser.ID,
+					"","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","",
+					"","","","","","",cName.text,"","","","","","","","","","","","","","","","");
+				CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.IDTASKWS_GetDocMakeTask));
+				
+				MenuLocator.getInstance().changeMenu(menuGp);
+			}
+			
+		]]>
+	</fx:Script>
+	<s:Panel   width="953" height="598">
+		<s:HGroup id="menuGp" x="10" y="-27"/>	
+		<s:Label x="566" y="20" text="案件序号："/>
+		<s:TextInput id="caseNo" x="646" y="10" width="211"/>
+		<s:Button id="sBtn" x="865" y="13" label="查询" click="pager.pageIndex=1;moduleCreationCompleteHandler(null)"
+				  enabled="{PsbLocator.getInstance().npending}"/>
+		<s:DataGrid id="dg" x="10" y="42" width="933" height="483"
+					dataProvider="{IdFlowLocator.getInstance().listObj}"
+					doubleClick="dg_doubleClickHandler(event)" doubleClickEnabled="true">
+			<s:columns>
+				<s:ArrayList>
+					<s:GridColumn dataField="CASE_NO" headerText="案件编号"></s:GridColumn>
+					<s:GridColumn dataField="CASE_NAME" headerText="案件名称"></s:GridColumn>
+				</s:ArrayList>
+			</s:columns>
+		</s:DataGrid>
+		<s:Label x="10" y="20" text="案件名称："/>
+		<s:TextInput id="cName" x="88" y="10" width="470"/>
+		<ns1:ListPager x="542" y="533" id="pager" pageSize="16"
+					   creationComplete="pager.addEventListener(ListPager.PAGE_INDEX_CHANGE_EVENT,moduleCreationCompleteHandler);IdFlowLocator.getInstance().listPager=pager;">
+		</ns1:ListPager>				
+	</s:Panel>
+</s:Module>

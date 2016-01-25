@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:HGroup xmlns:fx="http://ns.adobe.com/mxml/2009" 
+		  xmlns:s="library://ns.adobe.com/flex/spark" 
+		  xmlns:mx="library://ns.adobe.com/flex/mx" >
+	<fx:Script>
+		<![CDATA[			
+			import locator.JusTypeLocator;
+			
+			import mx.collections.ArrayList;
+			
+			import spark.components.CheckBox;
+			
+			private var selectedItem:String="";
+			public function get selectedItems():String
+			{
+				var items:String="";
+				for(var i:int=0;i<this.numElements;i++)
+				{
+					var rb:CheckBox=this.getElementAt(i) as CheckBox;
+					if(rb.selected)
+					{
+						items+=rb.label+"，";
+					}
+				}
+				return items;
+			}
+			public function set selectedItems(items:String):void
+			{
+				selectedItem=items;
+			}
+			
+			public var officeName:String="";
+			public function set jusType(jusType:String):void
+			{
+				var jusItem:String=JusTypeLocator.getInstance().getJusTypeItems(officeName,jusType);
+				
+				this.removeAllElements();
+				var list:ArrayList=new ArrayList(jusItem.split('，'));
+				for(var i:int=0;i<list.length;i++)
+				{
+					var lbl:String=list.getItemAt(i).toString();
+					if(lbl.length==0)continue;
+					var rb:CheckBox=new CheckBox();
+					rb.label=lbl;
+					rb.selected=(selectedItem.search(rb.label+"，")>=0);
+					this.addElement(rb);
+				}
+			}
+		]]>
+	</fx:Script>
+</s:HGroup>

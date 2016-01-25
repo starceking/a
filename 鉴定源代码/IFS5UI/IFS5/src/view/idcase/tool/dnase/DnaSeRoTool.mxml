@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009"
+		 xmlns:s="library://ns.adobe.com/flex/spark"
+		 xmlns:mx="library://ns.adobe.com/flex/mx"
+		 xmlns:tool="view.tool.*"
+		 xmlns:ns1="*"
+		 width="813" height="547" creationComplete="creationCompleteHandler(event)" fontSize="14">
+	<fx:Declarations>
+		<!-- 将非可视元素（例如服务、值对象）放在此处 -->
+	</fx:Declarations>
+	<fx:Script>
+		<![CDATA[
+			import com.adobe.cairngorm.control.CairngormEventDispatcher;
+			
+			import control.*;
+			
+			import locator.DnaSeLocator;
+			import locator.IdFlowLocator;
+			
+			import mx.events.FlexEvent;
+			
+			import vo.DnaSeVo;
+			
+			private var locObj:DnaSeLocator=DnaSeLocator.getInstance();
+			
+			protected function creationCompleteHandler(evt:Event):void
+			{
+				var conno:String=IdFlowLocator.getInstance().curObj.CONNO;
+				if(conno.length==19)
+				{
+					locObj.wsObj=new DnaSeVo("","",conno,"","","","","","","");
+					CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.DNASEWS_GetAll));
+				}
+			}
+		]]>
+	</fx:Script>
+	<s:DataGrid id="dg" x="10" y="50" width="793" height="455" dataProvider="{locObj.listObj}">
+		<s:columns>
+			<s:ArrayList>
+				<s:GridColumn width="160" dataField="SLN" headerText="编号"></s:GridColumn>
+				<s:GridColumn dataField="NAME" headerText="名称"></s:GridColumn>
+				<s:GridColumn dataField="SAMPLE_TYPE" headerText="样本类型"></s:GridColumn>
+				<s:GridColumn dataField="AMOUNT" headerText="数量"></s:GridColumn>
+				<s:GridColumn dataField="CARRIER" headerText="承载物"></s:GridColumn>
+				<s:GridColumn dataField="SAMPLE_PACKAGING" headerText="包装"></s:GridColumn>
+			</s:ArrayList>
+		</s:columns>
+	</s:DataGrid>
+	<ns1:ListPager id="pager" x="402" y="513"
+				   creationComplete="pager.addEventListener(ListPager.PAGE_INDEX_CHANGE_EVENT,creationCompleteHandler);locObj.listPager=pager;"
+				   pageSize="15">
+	</ns1:ListPager>
+	<s:Label x="10" y="10" color="#0A37FA" fontSize="20" fontWeight="bold" text="现场物证样本信息"/>	
+</s:Group>

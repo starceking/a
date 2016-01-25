@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:TitleWindow xmlns:fx="http://ns.adobe.com/mxml/2009" 
+			   xmlns:s="library://ns.adobe.com/flex/spark" 
+			   xmlns:mx="library://ns.adobe.com/flex/mx"
+			   width="400" height="600" fontSize="14" title="请选择案发区域"
+			   creationComplete="module1_creationCompleteHandler(event)"
+			   close="PopUpManager.removePopUp(this);" >
+	<fx:Declarations>
+		<!-- 将非可视元素（例如服务、值对象）放在此处 -->
+	</fx:Declarations>
+	<fx:Script>
+		<![CDATA[
+			import com.adobe.cairngorm.control.CairngormEventDispatcher;
+			
+			import control.*;
+			
+			import locator.IdFlowLocator;
+			import locator.RegionCodeLocator;
+			
+			import mx.events.CloseEvent;
+			import mx.events.FlexEvent;
+			import mx.managers.PopUpManager;
+			
+			import spark.events.IndexChangeEvent;
+			
+			import util.Helper;
+			
+			import vo.RegionCodeVo;
+			
+			protected function module1_creationCompleteHandler(event:FlexEvent):void
+			{
+				RegionCodeLocator.getInstance().regionList11.removeAll();
+				RegionCodeLocator.getInstance().regionList12.removeAll();
+				RegionCodeLocator.getInstance().regionList13.removeAll();
+				
+				RegionCodeLocator.getInstance().wsObj=new RegionCodeVo("","","","省");
+				CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.REGIONCODEWS_GetAll));
+				//默认绑定“辽宁省”
+				RegionCodeLocator.getInstance().wsObj=new RegionCodeVo("","21","","市");
+				CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.REGIONCODEWS_GetAll));
+				
+				RegionCodeLocator.getInstance().regionList=RegionCodeLocator.getInstance().regionList12;
+			}
+			
+			protected function region_p_changeHandler(event:IndexChangeEvent):void
+			{
+				RegionCodeLocator.getInstance().regionList12.removeAll();
+				RegionCodeLocator.getInstance().regionList13.removeAll();
+				
+				var p_code:String=region_p.selectedItem.Code;
+				var p:String=p_code.substring(0,2);
+				var type:String="市";
+				var name:String=region_p.selectedItem.RegionName;
+				if(name.search("北京")>=0||name.search("天津")>=0||name.search("上海")>=0||name.search("重庆")>=0)type="直辖市";
+				
+				RegionCodeLocator.getInstance().wsObj=new RegionCodeVo("",p,"",type);
+				CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.REGIONCODEWS_GetAll));
+				
+				RegionCodeLocator.getInstance().regionList=RegionCodeLocator.getInstance().regionList12;
+			}
+			
+			protected function region_c_changeHandler(event:IndexChangeEvent):void
+			{
+				RegionCodeLocator.getInstance().regionList13.removeAll();
+				
+				var c_code:String=region_c.selectedItem.Code;
+				var c:String=c_code.substring(0,4);
+				
+				RegionCodeLocator.getInstance().wsObj=new RegionCodeVo("",c,"","区县");
+				CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.REGIONCODEWS_GetAll));
+				
+				RegionCodeLocator.getInstance().regionList=RegionCodeLocator.getInstance().regionList13;
+			}
+			
+			protected function ok_clickHandler(event:MouseEvent):void
+			{
+				if(dg.selectedItem!=null)
+				{
+					if(dg.selectedItem.RegionType=="区县")
+					{
+						IdFlowLocator.getInstance().caseAFDD.text=dg.selectedItem.RegionName;
+						IdFlowLocator.getInstance().caseAFDDcode.text=dg.selectedItem.Code;
+						PopUpManager.removePopUp(this);
+					}
+					else
+					{
+						Helper.showAlert("请选择市");
+					}
+				}
+				else
+				{
+					Helper.showAlert("请选择地区");
+				}
+			}
+			
+			protected function dg_doubleClickHandler(event:MouseEvent):void
+			{
+				if(dg.selectedItem.RegionType=="区县")
+				{
+					IdFlowLocator.getInstance().caseAFDD.text=dg.selectedItem.RegionName;
+					IdFlowLocator.getInstance().caseAFDDcode.text=dg.selectedItem.Code;
+					PopUpManager.removePopUp(this);
+				}
+				else
+				{
+					dg_clickHandler(null);
+				}
+			}
+			
+			protected function dg_clickHandler(event:MouseEvent):void
+			{
+				if(dg.selectedItem.RegionType!="区县")
+				{
+					RegionCodeLocator.getInstance().regionList13.removeAll();
+					
+					var c_code:String=dg.selectedItem.Code;
+					var c:String=c_code.substring(0,4);
+					
+					RegionCodeLocator.getInstance().wsObj=new RegionCodeVo("",c,"","区县");
+					CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.REGIONCODEWS_GetAll));
+					
+					RegionCodeLocator.getInstance().regionList=RegionCodeLocator.getInstance().regionList13;
+					region_c.selectedIndex=dg.selectedIndex;
+				}
+			}
+			
+		]]>
+	</fx:Script>
+	<s:VGroup left="10" right="10" top="10" bottom="10" gap="14">
+		<s:HGroup verticalAlign="middle">
+			<s:Label text="省份："/>
+			<s:DropDownList id="region_p" width="322" change="region_p_changeHandler(event)" requireSelection="true" selectedIndex="0"
+							dataProvider="{RegionCodeLocator.getInstance().regionList11}" labelField="RegionName"/>
+		</s:HGroup>
+		<s:HGroup verticalAlign="middle">
+			<s:Spacer width="8" height="10"/>
+			<s:Label text="市："/>
+			<s:DropDownList id="region_c" width="322" change="region_c_changeHandler(event)"
+							dataProvider="{RegionCodeLocator.getInstance().regionList12}"
+							labelField="RegionName"/>
+		</s:HGroup>
+		<s:DataGrid id="dg" width="100%" height="100%" doubleClick="dg_doubleClickHandler(event)" doubleClickEnabled="true" 
+					click="dg_clickHandler(event)"
+					dataProvider="{RegionCodeLocator.getInstance().regionList}">
+			<s:columns>
+				<s:ArrayList>
+					<s:GridColumn width="80" dataField="Code" headerText="区划代码"></s:GridColumn>
+					<s:GridColumn dataField="RegionName" headerText="区划名称"></s:GridColumn>
+				</s:ArrayList>
+			</s:columns>
+		</s:DataGrid>
+		<s:HGroup width="100%" horizontalAlign="right" verticalAlign="middle">
+			<s:Label color="#FF0000" text="双击选择，或者选中点击确定按钮"/>
+			<s:Button label="确定" click="ok_clickHandler(event)" />
+		</s:HGroup>
+	</s:VGroup>
+</s:TitleWindow>

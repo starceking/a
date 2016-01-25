@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009"
+		 xmlns:s="library://ns.adobe.com/flex/spark"
+		 xmlns:mx="library://ns.adobe.com/flex/mx"
+		 xmlns:tool="view.tool.*"
+		 width="813" height="529" fontSize="14">
+	<fx:Declarations>
+		<!-- 将非可视元素（例如服务、值对象）放在此处 -->
+	</fx:Declarations>
+	<fx:Script>
+		<![CDATA[
+			import com.adobe.cairngorm.control.CairngormEventDispatcher;
+			
+			import control.*;
+			
+			import locator.MenuLocator;
+			import locator.SuppliesLocator;
+			
+			import mx.events.FlexEvent;
+			
+			import util.Helper;
+			
+			import vo.MenuVo;
+			import vo.SuppliesVo;
+			
+		]]>
+	</fx:Script>
+	<s:Label x="10" y="10" color="#0A37FA" fontSize="20" fontWeight="bold" text="基本信息"/>
+	<s:Label x="10" y="54" text="产品名称："/>
+	<s:Label x="96" y="54" text="{SuppliesLocator.getInstance().currObj.CPMC}"/>
+	<s:Label x="10" y="80" text="编       号："/>
+	<s:Label x="95" y="80" text="{SuppliesLocator.getInstance().currObj.BM}"/>
+	<s:Label x="10" y="107" text="规       格："/>
+	<s:Label x="95" y="107" text="{SuppliesLocator.getInstance().currObj.GG}"/>
+	<s:Label x="10" y="133" text="厂       家："/>
+	<s:Label x="95" y="133" text="{SuppliesLocator.getInstance().currObj.SCCJ}"/>
+	<s:Label x="10" y="159" text="用       途："/>
+	<s:Label x="95" y="159" text="{SuppliesLocator.getInstance().currObj.YT}"/>
+	<s:Label x="10" y="188" text="保存条件："/>
+	<s:Label x="95" y="191" text="{SuppliesLocator.getInstance().currObj.BCTJ}"/>
+	<s:Label x="10" y="341" text="备      注："/>
+	<s:Label x="95" y="341" text="{SuppliesLocator.getInstance().currObj.BZ}"/>
+	<s:Label x="10" y="215" text="库  存 量：" />
+	<s:Label x="8" y="246" text="存放地点：" />
+	<s:Label x="7" y="276" text="有  效  期：" />
+	<s:Label id="kcl" x="95" y="214" text="{SuppliesLocator.getInstance().currObj.KCL}"/>
+	<s:Label id="cfdd" x="94" y="242" text="{SuppliesLocator.getInstance().currObj.CFDD}"/>
+	<s:Label id="yxq" x="94" y="274" width="148" text="{SuppliesLocator.getInstance().currObj.YXQ}"/>
+	<s:Label x="7" y="307" text="保  管  人：" />
+	<s:Label id="bgr" x="95" y="305" text="{SuppliesLocator.getInstance().currObj.BGR}"/>
+</s:Group>

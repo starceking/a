@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:HGroup xmlns:fx="http://ns.adobe.com/mxml/2009" 
+		  xmlns:s="library://ns.adobe.com/flex/spark" 
+		  xmlns:mx="library://ns.adobe.com/flex/mx">
+	<fx:Script>
+		<![CDATA[			
+			import locator.JusTypeLocator;
+			
+			import mx.collections.ArrayList;
+			import mx.utils.UIDUtil;
+			
+			import spark.components.RadioButton;
+			
+			public static var event_name:String="JusTypeRgp_Event";			
+			
+			private var selectedItem:String="";
+			
+			public function set office(oName:String):void
+			{
+				var list:ArrayList=JusTypeLocator.getInstance().getAllJusType(oName);
+				
+				this.removeAllElements();
+				var guid:String=UIDUtil.createUID();
+				for(var i:int=0;i<list.length;i++)
+				{
+					var rb:RadioButton=new RadioButton();
+					rb.groupName=guid;
+					rb.label=list.getItemAt(i).label;
+					rb.selected=(selectedItem==rb.label);
+					rb.addEventListener(Event.CHANGE,changeEvt);
+					this.addElement(rb);
+				}
+			}
+			
+			public function set jusType(selectedItem:String):void
+			{
+				this.selectedItem=selectedItem;
+			}
+			
+			public function get jusType():String
+			{
+				return selectedItem;
+			}
+			
+			private function changeEvt(evt:Event):void
+			{
+				this.selectedItem=(evt.target as RadioButton).label;
+				dispatchEvent(new Event(event_name));
+			}
+		]]>
+	</fx:Script>
+</s:HGroup>

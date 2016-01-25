@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Module xmlns:fx="http://ns.adobe.com/mxml/2009"
+		  xmlns:s="library://ns.adobe.com/flex/spark"
+		  xmlns:mx="library://ns.adobe.com/flex/mx"
+		  xmlns:tool="view.tool.*"
+		  width="953" height="598" creationComplete="module1_creationCompleteHandler(event)" 
+		  fontSize="14">
+	<fx:Declarations>
+		<!-- 将非可视元素（例如服务、值对象）放在此处 -->		
+	</fx:Declarations>
+	<fx:Script>
+		<![CDATA[
+			import locator.MenuLocator;		
+			import mx.events.FlexEvent;			
+			import util.Helper;		
+			import util.Server;
+			import vo.MenuVo;		
+			import locator.SysUserLocator;
+			
+			protected function module1_creationCompleteHandler(event:FlexEvent):void
+			{
+				MenuLocator.getInstance().changeMenu(menuGp);
+				if(SysUserLocator.getInstance().loginUser.CURRENT_ROLE=="Techer")
+				{
+					HG01.removeElement(word);
+					HG01.removeElement(dict);
+					HG01.removeElement(DNAtest);
+				}
+				else if((SysUserLocator.getInstance().loginUser.CURRENT_ROLE=="Office")||
+					(SysUserLocator.getInstance().loginUser.CURRENT_ROLE=="DNA"))
+				{
+					HG01.removeElement(psb);
+					HG01.removeElement(jusType);
+					HG01.removeElement(notice);
+				}
+				else
+				{
+					HG01.removeElement(psb);
+					HG01.removeElement(jusType);
+					HG01.removeElement(notice);
+					HG01.removeElement(word);
+					HG01.removeElement(dict);
+					HG01.removeElement(DNAtest);
+				}
+			}
+			
+		]]>
+	</fx:Script>
+	<s:Panel width="953" height="598">
+		<s:HGroup id="menuGp" x="10" y="-27"/>		
+		<s:HGroup id="HG01" left="10" right="10" top="10" height="130">
+			<tool:MenuTool url="assets/images/main/个人设置.png" label="个人设置" clickUrl="view/sysset/PersonnelSetModule.swf" />
+			<tool:MenuTool url="assets/images/main/表格下载.png" label="公用文件下载" clickUrl="view/sysset/TableDownModule.swf" />
+			
+			<tool:MenuTool id="psb" url="assets/images/main/专业设置.png" label="单位设置" clickUrl="view/sysset/PsbManaModule.swf"/>
+			<tool:MenuTool id="jusType" url="assets/images/main/专业设置.png" label="专业类别" clickUrl="view/sysset/JusTypeSetModule.swf"/>
+			<tool:MenuTool id="notice" url="assets/images/main/前科STR.png" label="通知通告" clickUrl="view/sysset/NotificationMaModule.swf"/>
+			
+			<tool:MenuTool id="word" url="assets/images/main/专业设置.png" label="文书模板" clickUrl="view/sysset/WordSetModule.swf"/>
+			<tool:MenuTool id="dict" url="assets/images/main/专业设置.png" label="字典配置" clickUrl="view/sysset/DictSetModule.swf"/>
+			<tool:MenuTool id="DNAtest" url="assets/images/main/专业设置.png" label="样本检验" clickUrl="view/sysset/DNAtestSetModule.swf"/>
+		</s:HGroup>
+		<tool:MenuTool x="10" y="140" url="assets/images/main/返回.png" label="返        回"
+					   visible="{MenuLocator.getInstance().menuList.length>1}"/>
+	</s:Panel>
+</s:Module>

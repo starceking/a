@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
+		 xmlns:s="library://ns.adobe.com/flex/spark" 
+		 xmlns:mx="library://ns.adobe.com/flex/mx" 
+		 xmlns:tool="view.tool.*"
+		 xmlns:ns1="*"
+		 width="813" height="547" fontSize="14"
+		 creationComplete="creationCompleteHandler(event)">
+	<fx:Declarations>
+		<!-- 将非可视元素（例如服务、值对象）放在此处 -->
+	</fx:Declarations>
+	<fx:Script>
+		<![CDATA[
+			import com.adobe.cairngorm.control.CairngormEventDispatcher;
+			
+			import control.*;
+			
+			import locator.AmplifyLocator;
+			import locator.IdFlowLocator;
+			
+			import util.Helper;
+			
+			import mx.events.FlexEvent;
+			
+			private var Amploc:AmplifyLocator=AmplifyLocator.getInstance();
+			
+			protected function creationCompleteHandler(evt:Event):void
+			{
+				if(IdFlowLocator.getInstance().wholeCase)
+				{
+					Amploc.CaseID=IdFlowLocator.getInstance().curObj.SRCID;
+					Amploc.ConNo="";
+				}
+				else
+				{
+					Amploc.CaseID="";
+					Amploc.ConNo=IdFlowLocator.getInstance().curObj.CONNO;
+				}
+				CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.AMPLIFYWS_QueryCaseAmplify));
+			}
+		]]>
+	</fx:Script>
+	<s:VGroup left="10" right="10" top="10" bottom="10" gap="10">
+		<s:HGroup width="100%" verticalAlign="middle">
+			<s:Label color="#0A37FA" fontSize="20" fontWeight="bold" text="扩增信息"/>
+			<s:Spacer width="100%" height="10"/>
+			<s:Label color="#0000FF" fontSize="16" text="请在&quot;电泳信息&quot;中生成文书"/>
+		</s:HGroup>
+		<s:DataGrid id="dg" width="100%" height="100%" dataProvider="{Amploc.AmplifyCaseListObj}">
+			<s:columns>
+				<s:ArrayList>
+					<s:GridColumn width="160" dataField="SLN" headerText="检材编号"></s:GridColumn>
+					<s:GridColumn dataField="NAME" headerText="检材名称"></s:GridColumn>
+					<s:GridColumn width="90" dataField="SAMPLE_TYPE" headerText="检材类型"></s:GridColumn>
+					<s:GridColumn width="100" dataField="KZDYPH" headerText="扩增名称"></s:GridColumn>
+					<s:GridColumn width="70" dataField="WZ" headerText="扩增位置"></s:GridColumn>
+					<s:GridColumn width="70" dataField="YL" headerText="模板用量"></s:GridColumn>
+				</s:ArrayList>
+			</s:columns>
+		</s:DataGrid>
+		<s:HGroup width="100%" horizontalAlign="right">
+			<ns1:ListPager id="pager"
+						   creationComplete="pager.addEventListener(ListPager.PAGE_INDEX_CHANGE_EVENT,creationCompleteHandler);Amploc.AmplifyCaseListPager=pager;"
+						   pageSize="16">
+			</ns1:ListPager>
+		</s:HGroup>
+	</s:VGroup>
+	
+</s:Group>

@@ -1,0 +1,325 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:TitleWindow xmlns:fx="http://ns.adobe.com/mxml/2009"
+			   xmlns:s="library://ns.adobe.com/flex/spark"
+			   xmlns:mx="library://ns.adobe.com/flex/mx"
+			   xmlns:ns1="*" close="PopUpManager.removePopUp(this);"
+			   width="100%" height="100%" fontSize="14">
+	<fx:Script>
+		<![CDATA[
+			import com.adobe.cairngorm.control.CairngormEventDispatcher;
+			
+			import control.*;
+			
+			import locator.IdCaseLocator;
+			import locator.IdFlowLocator;
+			import locator.MRelativeLocator;
+			import locator.MissingPersonLocator;
+			import locator.PsbLocator;
+			import locator.SysUserLocator;
+			
+			import mx.events.CloseEvent;
+			import mx.managers.PopUpManager;
+			import mx.utils.ObjectUtil;
+			
+			import util.Helper;
+			
+			import view.idcase.info.casedoc.idcase.RoModuleWindow_IdCase;
+			import view.idcase.info.casedoc.idcase.DocModuleWindow_IdCase;
+			import view.idcase.info.casedoc.dna.RoModuleWindow_DNA;
+			import view.idcase.info.casedoc.dna.DocModuleWindow_DNA;
+			import view.idcase.info.casedoc.mpr.RoModuleWindow_MPR;
+			import view.idcase.info.casedoc.mpr.DocModuleWindow_MPR;
+			import view.idcase.info.casedoc.mp.RoModuleWindow_MP;
+			import view.idcase.info.casedoc.mp.DocModuleWindow_MP;
+			import view.idcase.info.testersd.GetReportModuleWindow;
+			
+			import vo.IdFlowVo;
+			import vo.MRelativeVo;
+			import vo.MissingPersonVo; 
+			
+			
+			protected function dgDoubleClickHandler(event:MouseEvent):void
+			{
+				IdFlowLocator.getInstance().wholeCase=false;
+				if(dg.selectedItem==null)return;
+				var curObj:IdFlowVo=dg.selectedItem as IdFlowVo;
+				IdFlowLocator.getInstance().curObj=curObj;
+				var con:String=dg.selectedItem.CONNO;
+				
+				if(SysUserLocator.getInstance().loginUser.CURRENT_ROLE=="Leader")
+				{
+					if(con.search("C")==0)showCaseCommon_Ro();			
+					else if(con.search("D")==0)showCaseDNA_Ro();
+					else if(con.search("R")==0)
+					{
+						MRelativeLocator.getInstance().wsObj=new MRelativeVo(IdFlowLocator.getInstance().curObj.ID,"","","","","","","","","","","","","",
+							"","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","");
+						CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.MRELATIVEWS_GetOneMpr));
+						showCaseMPR_Ro();
+					}
+					else if(con.search("L")==0)
+					{
+						MissingPersonLocator.getInstance().wsObj=new MissingPersonVo(IdFlowLocator.getInstance().curObj.ID,"","","","","","","","","",
+							"","","","","","","","","","");
+						CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.MISSINGPERSONWS_GetOneMp));
+						showCaseMP_Ro();	
+					}
+				}
+				else if(SysUserLocator.getInstance().loginUser.CURRENT_ROLE=="Techer"||
+					SysUserLocator.getInstance().loginUser.CURRENT_ROLE=="DNA"||
+					SysUserLocator.getInstance().loginUser.CURRENT_ROLE=="Office")
+				{
+					if(SysUserLocator.getInstance().loginUser.CURRENT_ROLE=="Techer"||
+						(IdFlowLocator.getInstance().curObj.LEADERF==""||IdFlowLocator.getInstance().curObj.LEADERF==null))
+					{
+						if(con.search("C")==0)showCaseCommon_Doc();	
+						else if(con.search("D")==0)
+						{
+							IdCaseLocator.getInstance().getBsMain(null);
+							showCaseDNA_Doc();
+						}
+						else if(con.search("R")==0)
+						{
+							MRelativeLocator.getInstance().wsObj=new MRelativeVo(IdFlowLocator.getInstance().curObj.ID,"","","","","","","","","","","","","",
+								"","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","");
+							CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.MRELATIVEWS_GetOneMpr));
+							showCaseMPR_Doc();	
+						}
+						else if(con.search("L")==0)
+						{
+							MissingPersonLocator.getInstance().wsObj=new MissingPersonVo(IdFlowLocator.getInstance().curObj.ID,"","","","","","","","","",
+								"","","","","","","","","","");
+							CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.MISSINGPERSONWS_GetOneMp));
+							showCaseMP_Doc();
+						}
+					}
+					else
+					{
+						if(con.search("C")==0)showCaseCommon_Ro();			
+						else if(con.search("D")==0)showCaseDNA_Ro();	
+						else if(con.search("R")==0)
+						{
+							MRelativeLocator.getInstance().wsObj=new MRelativeVo(IdFlowLocator.getInstance().curObj.ID,"","","","","","","","","","","","","",
+								"","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","");
+							CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.MRELATIVEWS_GetOneMpr));
+							showCaseMPR_Ro();	
+						}
+						else if(con.search("L")==0)
+						{
+							MissingPersonLocator.getInstance().wsObj=new MissingPersonVo(IdFlowLocator.getInstance().curObj.ID,"","","","","","","","","",
+								"","","","","","","","","","");
+							CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.MISSINGPERSONWS_GetOneMp));
+							showCaseMP_Ro();	
+						}
+					}
+				}
+				else if(SysUserLocator.getInstance().loginUser.CURRENT_ROLE=="Insider")
+				{
+					if(con.search("R")==0)
+					{
+						MRelativeLocator.getInstance().wsObj=new MRelativeVo(IdFlowLocator.getInstance().curObj.ID,"","","","","","","","","","","","","",
+							"","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","");
+						CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.MRELATIVEWS_GetOneMpr));
+					}
+					else if(con.search("L")==0)
+					{
+						MissingPersonLocator.getInstance().wsObj=new MissingPersonVo(IdFlowLocator.getInstance().curObj.ID,"","","","","","","","","",
+							"","","","","","","","","","");
+						CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.MISSINGPERSONWS_GetOneMp));
+					}
+					getReport();	
+				}
+			}
+			protected function queryClickHandler(evt:Event):void
+			{
+				CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.IDFLOWWS_QueryAllCase));
+			}
+			
+			public function showCaseCommon_Ro():void
+			{	
+				// 弹出窗口 普通案件 只读
+				var childWin:RoModuleWindow_IdCase=new RoModuleWindow_IdCase();
+				childWin.owner=this;
+				childWin.width=953;
+				childWin.height=598;
+				PopUpManager.addPopUp(childWin, this, true);
+				PopUpManager.centerPopUp(childWin);
+			}
+			public function showCaseDNA_Ro():void
+			{	
+				// 弹出窗口 DNA案件 只读
+				var childWin:RoModuleWindow_DNA=new RoModuleWindow_DNA();
+				childWin.owner=this;
+				childWin.width=953;
+				childWin.height=598;
+				PopUpManager.addPopUp(childWin, this, true);
+				PopUpManager.centerPopUp(childWin);
+			}
+			public function showCaseMPR_Ro():void
+			{	
+				// 弹出窗口 失踪人员亲属案件 只读
+				var childWin:RoModuleWindow_MPR=new RoModuleWindow_MPR();
+				childWin.owner=this;
+				childWin.width=953;
+				childWin.height=598;
+				PopUpManager.addPopUp(childWin, this, true);
+				PopUpManager.centerPopUp(childWin);
+			}
+			public function showCaseMP_Ro():void
+			{	
+				// 弹出窗口 失踪人员案件 只读
+				var childWin:RoModuleWindow_MP=new RoModuleWindow_MP();
+				childWin.owner=this;
+				childWin.width=953;
+				childWin.height=598;
+				PopUpManager.addPopUp(childWin, this, true);
+				PopUpManager.centerPopUp(childWin);
+			}
+			public function showCaseCommon_Doc():void
+			{	
+				// 弹出窗口 普通案件 可更改
+				var childWin:DocModuleWindow_IdCase=new DocModuleWindow_IdCase();
+				childWin.owner=this;
+				childWin.width=953;
+				childWin.height=598;
+				PopUpManager.addPopUp(childWin, this, true);
+				PopUpManager.centerPopUp(childWin);
+			}
+			public function showCaseDNA_Doc():void
+			{	
+				// 弹出窗口 DNA案件 可更改
+				var childWin:DocModuleWindow_DNA=new DocModuleWindow_DNA();
+				childWin.owner=this;
+				childWin.width=953;
+				childWin.height=598;
+				PopUpManager.addPopUp(childWin, this, true);
+				PopUpManager.centerPopUp(childWin);
+			}
+			public function showCaseMPR_Doc():void
+			{	
+				// 弹出窗口 失踪人员亲属案件 可更改
+				var childWin:DocModuleWindow_MPR=new DocModuleWindow_MPR();
+				childWin.owner=this;
+				childWin.width=953;
+				childWin.height=598;
+				PopUpManager.addPopUp(childWin, this, true);
+				PopUpManager.centerPopUp(childWin);
+			}
+			public function showCaseMP_Doc():void
+			{	
+				// 弹出窗口 失踪人员案件 可更改
+				var childWin:DocModuleWindow_MP=new DocModuleWindow_MP();
+				childWin.owner=this;
+				childWin.width=953;
+				childWin.height=598;
+				PopUpManager.addPopUp(childWin, this, true);
+				PopUpManager.centerPopUp(childWin);
+			}
+			public function getReport():void
+			{	
+				// 弹出窗口 报告领取信息 可更改
+				var childWin:GetReportModuleWindow=new GetReportModuleWindow();
+				childWin.owner=this;
+				childWin.width=953;
+				childWin.height=598;
+				PopUpManager.addPopUp(childWin, this, true);
+				PopUpManager.centerPopUp(childWin);
+			}
+			
+			public function yjFunc(item:Object, column:DataGridColumn):String   
+			{   
+				if(item.TESTERF.toString().length>0)return item.TESTER_NAME.toString();
+				if(item.TESTER_NAME.toString().length>0)
+					return item.TESTER_NAME.toString()+"("+item.ID_STATUS+")";
+				return "";
+			} 
+			public function rjFunc(item:Object, column:DataGridColumn):String   
+			{   
+				if(item.TESTER2F.toString().length>0)return item.TESTER2_NAME.toString();
+				if(item.TESTER2_NAME.toString().length>0)
+					return item.TESTER2_NAME.toString()+"(未核)";
+				return "";
+			}  
+			public function fhFunc(item:Object, column:DataGridColumn):String   
+			{   
+				if(item.CHECKERF.toString().length>0)return item.CHECKER_NAME.toString();
+				if(item.CHECKER_NAME.toString().length>0)
+					return item.CHECKER_NAME.toString()+"(未核)";
+				return "";
+			} 
+			public function qzFunc(item:Object, column:DataGridColumn):String   
+			{   
+				if(item.SIGNERF.toString().length>0)return item.SIGNER_NAME.toString();
+				if(item.SIGNER_NAME.toString().length>0)
+					return item.SIGNER_NAME.toString()+"(未审)";
+				return "";
+			}  
+			public function jgFunc(item:Object, column:DataGridColumn):String   
+			{   
+				if(item.TECHERF.toString().length>0)return item.TECHER_NAME.toString();
+				if(item.TECHER_NAME.toString().length>0)
+					return item.TECHER_NAME.toString()+"(未审)";
+				return "";
+			} 
+			public function spFunc(item:Object, column:DataGridColumn):String   
+			{   
+				if(item.LEADERF.toString().length>0)return item.LEADER_NAME.toString();
+				if(item.LEADER_NAME.toString().length>0)
+					return item.LEADER_NAME.toString()+"(未批)";
+				return "";
+			}
+			
+			private function jyts_sortCompareFunc(itemA:Object, itemB:Object):int 
+			{ 				
+				return ObjectUtil.numericCompare(itemA.TEST_DAYS, itemB.TEST_DAYS); 
+			} 
+			private function fwts_sortCompareFunc(itemA:Object, itemB:Object):int 
+			{ 				
+				return ObjectUtil.numericCompare(itemA.SD_DAYS, itemB.SD_DAYS); 
+			} 
+			
+			private function printTz():void
+			{
+				CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.IDFLOWWS_PrintTz));
+			}
+			private function printFWJL():void
+			{
+				IdFlowLocator.getInstance().filename=Helper.getGUID();
+				CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.IDFLOWWS_PrintFWJL));
+			}
+			
+		]]>
+	</fx:Script>
+	<mx:DataGrid id="dg" width="100%" height="100%" bottom="40"
+				 dataProvider="{IdFlowLocator.getInstance().listObj}"
+				 doubleClick="dgDoubleClickHandler(event)" doubleClickEnabled="true" fontSize="14"
+				 sortableColumns="true">
+		<mx:columns>
+			<mx:DataGridColumn dataField="CASE_NO" headerText="受理登记号"></mx:DataGridColumn>
+			<mx:DataGridColumn dataField="CASE_NAME" headerText="案件名称"></mx:DataGridColumn>
+			<mx:DataGridColumn dataField="ID_JUSTYPE" headerText="鉴定类别"></mx:DataGridColumn>
+			<mx:DataGridColumn dataField="ID_STATUS" headerText="鉴定状态"></mx:DataGridColumn>	
+			<mx:DataGridColumn dataField="CON_PSBNAME" headerText="委托单位名称"></mx:DataGridColumn>
+			<mx:DataGridColumn dataField="CONER1NAME2" headerText="一送姓名"></mx:DataGridColumn>
+			<mx:DataGridColumn dataField="CONCLUSION" headerText="结论意见"></mx:DataGridColumn>
+			<mx:DataGridColumn dataField="TEST_DAYS" headerText="检验天数"
+							   sortCompareFunction="jyts_sortCompareFunc"></mx:DataGridColumn>
+			<!--	<mx:DataGridColumn dataField="SD_DAYS" headerText="发文天数"
+							   sortCompareFunction="fwts_sortCompareFunc"></mx:DataGridColumn>-->
+			<mx:DataGridColumn dataField="TESTER_NAME" headerText="一检" labelFunction="yjFunc"></mx:DataGridColumn>
+			<mx:DataGridColumn dataField="TESTER2_NAME" headerText="二检"  labelFunction="rjFunc"></mx:DataGridColumn>
+			<mx:DataGridColumn dataField="CHECKER_NAME" headerText="复核"  labelFunction="fhFunc"></mx:DataGridColumn>
+			<mx:DataGridColumn dataField="SIGNER_NAME" headerText="授权签字"  labelFunction="qzFunc"></mx:DataGridColumn>
+			<mx:DataGridColumn dataField="TECHER_NAME" headerText="技管"  labelFunction="jgFunc"></mx:DataGridColumn>
+			<mx:DataGridColumn dataField="LEADER_NAME" headerText="审批"  labelFunction="spFunc"></mx:DataGridColumn>
+			<mx:DataGridColumn dataField="GP1NAME" headerText="领件人"></mx:DataGridColumn>
+		</mx:columns>
+	</mx:DataGrid>
+	<ns1:ListPager right="10" bottom="10" id="pager" pageSize="26"
+				   creationComplete="pager.addEventListener(ListPager.PAGE_INDEX_CHANGE_EVENT,queryClickHandler);IdFlowLocator.getInstance().listPager=pager;queryClickHandler(null);">
+	</ns1:ListPager>
+	<s:Label x="10" y="-20" text="数据检索中" visible="{!PsbLocator.getInstance().npending}"/>
+	<s:Button x="88" y="-26" label="导出台账" click="printTz()" enabled="{PsbLocator.getInstance().npending}"/>
+	<s:Button x="178" y="-26" label="导出DNA台账" click="printFWJL()" enabled="{PsbLocator.getInstance().npending}"/>
+	
+</s:TitleWindow>

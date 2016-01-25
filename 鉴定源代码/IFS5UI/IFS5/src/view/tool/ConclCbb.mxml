@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:ComboBox xmlns:fx="http://ns.adobe.com/mxml/2009"
+			xmlns:s="library://ns.adobe.com/flex/spark"
+			xmlns:mx="library://ns.adobe.com/flex/mx"
+			creationComplete="combobox1_creationCompleteHandler(event)">
+	<fx:Script>
+		<![CDATA[			
+			import locator.IdFlowLocator;
+			import locator.JusTypeLocator;
+			
+			import mx.collections.ArrayList;
+			import mx.events.FlexEvent;
+			
+			import vo.IdFlowVo;
+			//External call			
+			public function getSelectedItem():String
+			{			
+				return this.selectedIndex>=0?this.selectedItem.label:this.textInput.text;
+			}			
+			
+			protected function combobox1_creationCompleteHandler(event:FlexEvent):void
+			{				
+				var curObj:IdFlowVo=IdFlowLocator.getInstance().curObj;
+				if(curObj.ID_OFFICE=="DNA")return;
+				
+				var concl:String=JusTypeLocator.getInstance().getJusType(curObj.ID_OFFICE,curObj.ID_JUSTYPE).CONCLUSION;
+				var arr:Array=concl.split("，");
+				var list:ArrayList=new ArrayList();
+				for(var i:int=0;i<arr.length;i++)
+				{
+					list.addItem({label:arr[i]});
+				}
+				
+				this.dataProvider=list;
+			}
+			
+		]]>
+	</fx:Script>
+</s:ComboBox>

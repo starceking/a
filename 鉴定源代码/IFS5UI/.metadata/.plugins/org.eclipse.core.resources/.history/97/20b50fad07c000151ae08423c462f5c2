@@ -1,0 +1,319 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009"
+		 xmlns:s="library://ns.adobe.com/flex/spark"
+		 xmlns:mx="library://ns.adobe.com/flex/mx"
+		 xmlns:ns1="*"
+		 xmlns:tool="view.tool.*"
+		 width="813" height="547" fontSize="14"
+		 creationComplete="button1_clickHandler(null);">
+	<fx:Declarations>
+		<!-- 将非可视元素（例如服务、值对象）放在此处 -->
+	</fx:Declarations>
+	<fx:Script>
+		<![CDATA[
+			import com.adobe.cairngorm.control.CairngormEventDispatcher;
+			
+			import control.*;
+			import mx.utils.ObjectUtil; 
+			import locator.CodiesLocator;
+			import locator.IdFlowLocator;
+			import locator.PsbLocator;
+			import mx.core.FlexGlobals;
+			import mx.events.FlexEvent;
+			
+			import util.Server;
+			
+			import vo.StrVo;
+			
+			private var locObj:CodiesLocator=CodiesLocator.getInstance();
+			
+			protected function button1_clickHandler(evt:Event):void
+			{
+				if(IdFlowLocator.getInstance().wholeCase)
+				{
+					locObj.wsObj=new StrVo("",IdFlowLocator.getInstance().curObj.SRCID,"","",sln.text,pname.text,sc.selectedData,"","","","","","","","","","","","","","","","","","","","","","","","","",
+						"","","","","","","","","","","","","","","","","","","","","","","","","");
+					CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.CODIESWS_GetAllStr));
+				}
+				else
+				{					
+					var conno:String=IdFlowLocator.getInstance().curObj.CONNO;
+					locObj.wsObj=new StrVo("","",conno,"",sln.text,pname.text,sc.selectedData,"","","","","","","","","","","","","","","","","","","","","","","","","",
+						"","","","","","","","","","","","","","","","","","","","","","","","","");
+					CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.CODIESWS_GetAllStr));
+				}
+			}
+			
+			protected function button2_clickHandler(event:MouseEvent):void
+			{
+				if(dg.selectedItem==null)return;
+				locObj.wsObj=new StrVo(dg.selectedItem.ID,"","","",dg.selectedItem.SLN,dg.selectedItem.NAME,dg.selectedItem.SC, AMEL.text, D8S1179.text, D21S11.text, D18S51.text, vWA.text,
+					D3S1358.text, FGA.text, TH01.text, D5S818.text, D13S317.text, D7S820.text, CSF1PO.text, D16S539.text, TPOX.text, D2S1338.text,
+					D19S433.text, Penta_D.text, Penta_E.text, D6S1043.text, F13A01.text, FESFPS.text, D1S80.text, D12S391.text, D1S1656.text,
+					D2S441.text, D22S1045.text,SE33.text,D10S1248.text,Y_indel.text,B_DYS456.text, B_DYS389I.text,
+					B_DYS390.text, B_DYS389II.text, G_DYS458.text, G_DYS19.text, G_DYS385.text, Y_DYS393.text, Y_DYS391.text, Y_DYS439.text, Y_DYS635.text, Y_DYS392.text,
+					R_Y_GATA_H4.text, R_DYS437.text, R_DYS438.text, R_DYS448.text,dg.selectedItem.BZ_NUM,
+					dg.selectedItem.IMP_FLAG=="已导入"?"1":"0",
+					dg.selectedItem.STR_FLAG=="有"?"1":"0",
+					dg.selectedItem.YSTR_FLAG=="有"?"1":"0","");
+				
+				CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.CODIESWS_UpdateStr));
+				
+			}
+			
+			protected function clear_clickHandler(event:MouseEvent):void
+			{
+				if(dg.selectedItem==null)return;
+				locObj.wsObj=new StrVo(dg.selectedItem.ID,"","","",dg.selectedItem.SLN,dg.selectedItem.NAME,dg.selectedItem.SC, "", "", "", "", "","",
+					"", "", "", "", "", "", "", "", "", "",
+					"", "", "", "", "", "", "", "", "", "",
+					"", "", "", "", "", "", "", "", "", "",
+					"", "","", "","","","","","",dg.selectedItem.BZ_NUM,
+					dg.selectedItem.IMP_FLAG=="已导入"?"1":"0",
+					dg.selectedItem.STR_FLAG=="有"?"1":"0",
+					dg.selectedItem.YSTR_FLAG=="有"?"1":"0","");
+				
+				CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.CODIESWS_UpdateStr));
+			}
+			
+			protected function button3_clickHandler(event:MouseEvent):void
+			{
+				locObj.wsObj=new StrVo("","",IdFlowLocator.getInstance().curObj.CONNO,"","","",sc.selectedData, AMEL.text, D8S1179.text, D21S11.text, D18S51.text, vWA.text,
+					D3S1358.text, FGA.text, TH01.text, D5S818.text, D13S317.text, D7S820.text, CSF1PO.text, D16S539.text, TPOX.text, D2S1338.text,
+					D19S433.text, Penta_D.text, Penta_E.text, D6S1043.text, F13A01.text, FESFPS.text, D1S80.text, D12S391.text, D1S1656.text,
+					D2S441.text, D22S1045.text,SE33.text,D10S1248.text,Y_indel.text,B_DYS456.text, B_DYS389I.text,
+					B_DYS390.text, B_DYS389II.text, G_DYS458.text, G_DYS19.text, G_DYS385.text, Y_DYS393.text, Y_DYS391.text, Y_DYS439.text, Y_DYS635.text, Y_DYS392.text,
+					R_Y_GATA_H4.text, R_DYS437.text, R_DYS438.text, R_DYS448.text,"","","","","");
+				locObj.KIT=sjh.selectedData;
+				CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.CODIESWS_PrintStrTable));
+			}
+			
+			protected function button4_clickHandler(event:MouseEvent):void
+			{
+				CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.CODIESWS_SameCaseBzAna));
+			}
+			
+			private function jyts_sortCompareFunc(itemA:Object, itemB:Object):int 
+			{ 				
+				return ObjectUtil.numericCompare(itemA.BZ_NUM, itemB.BZ_NUM); 
+			} 
+			
+			protected function button5_clickHandler(event:MouseEvent):void
+			{
+				FlexGlobals.topLevelApplication.showStrModule();
+			}
+			
+			
+			
+		]]>
+	</fx:Script>			
+	<s:VGroup left="10" right="10" top="10" bottom="10">
+		<s:HGroup width="100%" verticalAlign="middle">
+			<s:Label color="#0A37FA" fontSize="20" fontWeight="bold" text="STR信息"/>
+			<s:Spacer width="100%" height="10"/>
+			<s:Button label="同案比对分析" click="button4_clickHandler(event)"
+					  enabled="{PsbLocator.getInstance().npending}"/>
+			<s:Button label="打开大窗口" click="button5_clickHandler(event)"/>
+		</s:HGroup>
+		<s:HGroup width="100%" verticalAlign="middle">
+			<s:Label text="编号："/>
+			<s:TextInput id="sln" width="100"/>
+			<s:Label text="名称："/>
+			<s:TextInput id="pname" width="100"/>
+			<s:Label text="类型："/>
+			<tool:DictDdl id="sc" width="100" allEnable="true" dictName="库类型"/>
+			<s:Button label="查询" click="button1_clickHandler(event)"
+					  enabled="{PsbLocator.getInstance().npending}"/>
+			<s:Label text="试剂盒："/>
+			<tool:DictDdl id="sjh" width="113" dictName="试剂盒" requireSelection="true"/>
+			<s:Button label="打印" click="button3_clickHandler(event)"
+					  enabled="{PsbLocator.getInstance().npending}"/>
+		</s:HGroup>
+		<s:DataGrid id="dg" width="100%" height="181" dataProvider="{locObj.allStrList}"
+					sortableColumns="true">
+			<s:columns>
+				<s:ArrayCollection>
+					<s:GridColumn dataField="SLN" headerText="编号" width="160"></s:GridColumn>
+					<s:GridColumn dataField="NAME" headerText="名称" width="100"></s:GridColumn>
+					<s:GridColumn dataField="SC" headerText="样本类型" width="100"></s:GridColumn>
+					<s:GridColumn dataField="BZ_NUM" headerText="比中序号" width="100"
+								  sortCompareFunction="jyts_sortCompareFunc"></s:GridColumn>
+					<s:GridColumn dataField="IMP_FLAG" headerText="导入状态" width="100"></s:GridColumn>
+					<s:GridColumn dataField="STR_FLAG" headerText="常规STR" width="100"></s:GridColumn>
+					<s:GridColumn dataField="YSTR_FLAG" headerText="YSTR" width="100"></s:GridColumn>
+					<s:GridColumn dataField="D8S1179" headerText="D8S1179" width="100"></s:GridColumn>
+					<s:GridColumn dataField="D21S11" headerText="D21S11" width="100"></s:GridColumn>
+					<s:GridColumn dataField="D7S820" headerText="D7S820" width="100"></s:GridColumn>
+					<s:GridColumn dataField="CSF1PO" headerText="CSF1PO" width="100"></s:GridColumn>
+					<s:GridColumn dataField="D3S1358" headerText="D3S1358" width="100"></s:GridColumn>
+					<s:GridColumn dataField="TH01" headerText="TH01" width="100"></s:GridColumn>
+					<s:GridColumn dataField="D13S317" headerText="D13S317" width="100"></s:GridColumn>
+					<s:GridColumn dataField="D16S539" headerText="D16S539" width="100"></s:GridColumn>
+					<s:GridColumn dataField="D2S1338" headerText="D2S1338" width="100"></s:GridColumn>
+					<s:GridColumn dataField="D19S433" headerText="D19S433" width="100"></s:GridColumn>
+					<s:GridColumn dataField="vWA" headerText="vWA" width="100"></s:GridColumn>
+					<s:GridColumn dataField="TPOX" headerText="TPOX" width="100"></s:GridColumn>
+					<s:GridColumn dataField="D18S51" headerText="D18S51" width="100"></s:GridColumn>
+					<s:GridColumn dataField="AMEL" headerText="AMEL" width="100"></s:GridColumn>
+					<s:GridColumn dataField="D5S818" headerText="D5S818" width="100"></s:GridColumn>
+					<s:GridColumn dataField="FGA" headerText="FGA" width="100"></s:GridColumn>
+					<s:GridColumn dataField="Penta_D" headerText="Penta_D" width="100"></s:GridColumn>
+					<s:GridColumn dataField="Penta_E" headerText="Penta_E" width="100"></s:GridColumn>
+					<s:GridColumn dataField="D6S1043" headerText="D6S1043" width="100"></s:GridColumn>
+					<s:GridColumn dataField="F13A01" headerText="F13A01" width="100"></s:GridColumn>
+					<s:GridColumn dataField="FESFPS" headerText="FESFPS" width="100"></s:GridColumn>
+					<s:GridColumn dataField="D1S80" headerText="D1S80" width="100"></s:GridColumn>
+					<s:GridColumn dataField="D12S391" headerText="D12S391" width="100"></s:GridColumn>
+					<s:GridColumn dataField="D1S1656" headerText="D1S1656" width="100"></s:GridColumn>	
+					<s:GridColumn dataField="D2S441" headerText="D2S441" width="100"></s:GridColumn>	
+					<s:GridColumn dataField="D22S1045" headerText="D22S1045" width="100"></s:GridColumn>	
+					<s:GridColumn dataField="SE33" headerText="SE33" width="100"></s:GridColumn>	
+					<s:GridColumn dataField="D10S1248" headerText="D10S1248" width="100"></s:GridColumn>	
+					<s:GridColumn dataField="Y_indel" headerText="Y_indel" width="100"></s:GridColumn>	
+					<s:GridColumn dataField="B_DYS456" headerText="B_DYS456" width="100"></s:GridColumn>
+					<s:GridColumn dataField="B_DYS389I" headerText="B_DYS389I" width="100"></s:GridColumn>
+					<s:GridColumn dataField="B_DYS390" headerText="B_DYS390" width="100"></s:GridColumn>
+					<s:GridColumn dataField="B_DYS389II" headerText="B_DYS389II" width="100"></s:GridColumn>
+					<s:GridColumn dataField="G_DYS458" headerText="G_DYS458" width="100"></s:GridColumn>
+					<s:GridColumn dataField="G_DYS19" headerText="G_DYS19" width="100"></s:GridColumn>
+					<s:GridColumn dataField="G_DYS385" headerText="G_DYS385" width="100"></s:GridColumn>
+					<s:GridColumn dataField="Y_DYS393" headerText="Y_DYS393" width="100"></s:GridColumn>
+					<s:GridColumn dataField="Y_DYS391" headerText="Y_DYS391" width="100"></s:GridColumn>
+					<s:GridColumn dataField="Y_DYS439" headerText="Y_DYS439" width="100"></s:GridColumn>
+					<s:GridColumn dataField="Y_DYS635" headerText="Y_DYS635" width="100"></s:GridColumn>
+					<s:GridColumn dataField="Y_DYS392" headerText="Y_DYS392" width="100"></s:GridColumn>
+					<s:GridColumn dataField="R_Y_GATA_H4" headerText="R_Y_GATA_H4" width="150"></s:GridColumn>
+					<s:GridColumn dataField="R_DYS437" headerText="R_DYS437" width="100"></s:GridColumn>
+					<s:GridColumn dataField="R_DYS438" headerText="R_DYS438" width="100"></s:GridColumn>
+					<s:GridColumn dataField="R_DYS448" headerText="R_DYS448" width="100"></s:GridColumn>
+				</s:ArrayCollection>
+			</s:columns>
+		</s:DataGrid>
+		<s:HGroup width="100%" verticalAlign="middle">
+			<s:Label width="384" fontWeight="bold"
+					 text="{'当前样本：'+dg.selectedItem.SLN+'   '+dg.selectedItem.NAME}"/>
+			<ns1:ListPager id="pager"
+						   creationComplete="pager.addEventListener(ListPager.PAGE_INDEX_CHANGE_EVENT,button1_clickHandler);locObj.allListPager=pager;"
+						   pageSize="5">
+			</ns1:ListPager>
+		</s:HGroup>
+		<s:Scroller width="100%" height="235">
+			<s:VGroup width="100%" height="100%">
+				<s:HGroup width="100%" verticalAlign="middle">
+					<s:Label width="70" fontWeight="bold" text="D8S1179"/>
+					<s:TextInput id="D8S1179" width="75" text="{dg.selectedItem.D8S1179}"/>
+					<s:Label width="70" fontWeight="bold" text="D21S11"/>
+					<s:TextInput id="D21S11" width="75" text="{dg.selectedItem.D21S11}"/>
+					<s:Label width="70" fontWeight="bold" text="D7S820"/>
+					<s:TextInput id="D7S820" width="75" text="{dg.selectedItem.D7S820}"/>
+					<s:Label width="70" fontWeight="bold" text="CSF1PO"/>
+					<s:TextInput id="CSF1PO" width="75" text="{dg.selectedItem.CSF1PO}"/>
+					<s:Label width="70" fontWeight="bold" text="D3S1358"/>
+					<s:TextInput id="D3S1358" width="75" text="{dg.selectedItem.D3S1358}"/>
+				</s:HGroup>
+				<s:HGroup width="100%" verticalAlign="middle">
+					<s:Label width="70" fontWeight="bold" text="TH01"/>
+					<s:TextInput id="TH01" width="75" text="{dg.selectedItem.TH01}"/>
+					<s:Label width="70" fontWeight="bold" text="D13S317"/>
+					<s:TextInput id="D13S317" width="75" text="{dg.selectedItem.D13S317}"/>
+					<s:Label width="70" fontWeight="bold" text="D16S539"/>
+					<s:TextInput id="D16S539" width="75" text="{dg.selectedItem.D16S539}"/>
+					<s:Label width="70" fontWeight="bold" text="D2S1338"/>
+					<s:TextInput id="D2S1338" width="75" text="{dg.selectedItem.D2S1338}"/>
+					<s:Label width="70" fontWeight="bold" text="D19S433"/>
+					<s:TextInput id="D19S433" width="75" text="{dg.selectedItem.D19S433}"/>
+				</s:HGroup>
+				<s:HGroup width="100%" verticalAlign="middle">
+					<s:Label width="70" fontWeight="bold" text="vWA"/>
+					<s:TextInput id="vWA" width="75" text="{dg.selectedItem.vWA}"/>
+					<s:Label width="70" fontWeight="bold" text="TPOX"/>
+					<s:TextInput id="TPOX" width="75" text="{dg.selectedItem.TPOX}"/>
+					<s:Label width="70" fontWeight="bold" text="D18S51"/>
+					<s:TextInput id="D18S51" width="75" text="{dg.selectedItem.D18S51}"/>
+					<s:Label width="70" fontWeight="bold" text="AMEL"/>
+					<s:TextInput id="AMEL" width="75" text="{dg.selectedItem.AMEL}"/>
+					<s:Label width="70" fontWeight="bold" text="D5S818"/>
+					<s:TextInput id="D5S818" width="75" text="{dg.selectedItem.D5S818}"/>
+				</s:HGroup>
+				<s:HGroup width="100%" verticalAlign="middle">
+					<s:Label width="70" fontWeight="bold" text="FGA"/>
+					<s:TextInput id="FGA" width="75" text="{dg.selectedItem.FGA}"/>
+					<s:Label width="70" fontWeight="bold" text="Penta_D"/>
+					<s:TextInput id="Penta_D" width="75" text="{dg.selectedItem.Penta_D}"/>
+					<s:Label width="70" fontWeight="bold" text="Penta_E"/>
+					<s:TextInput id="Penta_E" width="75" text="{dg.selectedItem.Penta_E}"/>
+					<s:Label width="70" fontWeight="bold" text="D6S1043"/>
+					<s:TextInput id="D6S1043" width="75" text="{dg.selectedItem.D6S1043}"/>
+					<s:Label width="70" fontWeight="bold" text="F13A01"/>
+					<s:TextInput id="F13A01" width="75" text="{dg.selectedItem.F13A01}"/>
+				</s:HGroup>
+				<s:HGroup width="100%" verticalAlign="middle">
+					<s:Label width="70" fontWeight="bold" text="FESFPS"/>
+					<s:TextInput id="FESFPS" width="75" text="{dg.selectedItem.FESFPS}"/>
+					<s:Label width="70" fontWeight="bold" text="D1S80"/>
+					<s:TextInput id="D1S80" width="75" text="{dg.selectedItem.D1S80}"/>
+					<s:Label width="70" fontWeight="bold" text="D12S391"/>
+					<s:TextInput id="D12S391" width="75" text="{dg.selectedItem.D12S391}"/>
+					<s:Label width="70" fontWeight="bold" text="D1S1656"/>
+					<s:TextInput id="D1S1656" width="75" text="{dg.selectedItem.D1S1656}"/>
+					<s:Label width="70" fontWeight="bold" text="D2S441"/>
+					<s:TextInput id="D2S441" width="75" text="{dg.selectedItem.D2S441}"/>
+				</s:HGroup>
+				<s:HGroup width="100%" verticalAlign="middle">
+					<s:Label width="70" fontWeight="bold" text="D22S1045"/>
+					<s:TextInput id="D22S1045" width="75" text="{dg.selectedItem.D22S1045}"/>
+					<s:Label width="70" fontWeight="bold" text="SE33"/>
+					<s:TextInput id="SE33" width="75" text="{dg.selectedItem.SE33}"/>
+					<s:Label width="70" fontWeight="bold" text="D10S1248"/>
+					<s:TextInput id="D10S1248" width="75" text="{dg.selectedItem.D10S1248}"/>
+					<s:Label width="70" text="Y_indel"/>
+					<s:TextInput id="Y_indel" width="75" text="{dg.selectedItem.Y_indel}"/>
+					<s:Label width="70" text="BDYS456"/>
+					<s:TextInput id="B_DYS456" width="75" text="{dg.selectedItem.B_DYS456}"/>
+				</s:HGroup>
+				<s:HGroup width="100%" verticalAlign="middle">
+					<s:Label width="70" text="BDYS389I"/>
+					<s:TextInput id="B_DYS389I" width="75" text="{dg.selectedItem.B_DYS389I}"/>
+					<s:Label width="70" text="BDYS390"/>
+					<s:TextInput id="B_DYS390" width="75" text="{dg.selectedItem.B_DYS390}"/>
+					<s:Label width="70" text="BDYS389II"/>
+					<s:TextInput id="B_DYS389II" width="75" text="{dg.selectedItem.B_DYS389II}"/>
+					<s:Label width="70" text="GDYS458"/>
+					<s:TextInput id="G_DYS458" width="75" text="{dg.selectedItem.G_DYS458}"/>
+					<s:Label width="70" text="G_DYS19"/>
+					<s:TextInput id="G_DYS19" width="75" text="{dg.selectedItem.G_DYS19}"/>
+				</s:HGroup>
+				<s:HGroup width="100%" verticalAlign="middle">
+					<s:Label width="70" text="GDYS385"/>
+					<s:TextInput id="G_DYS385" width="75" text="{dg.selectedItem.G_DYS385}"/>
+					<s:Label width="70" text="YDYS393"/>
+					<s:TextInput id="Y_DYS393" width="75" text="{dg.selectedItem.Y_DYS393}"/>
+					<s:Label width="70" text="YDYS391"/>
+					<s:TextInput id="Y_DYS391" width="75" text="{dg.selectedItem.Y_DYS391}"/>
+					<s:Label width="70" text="YDYS439"/>
+					<s:TextInput id="Y_DYS439" width="75" text="{dg.selectedItem.Y_DYS439}"/>
+					<s:Label width="70" text="YDYS635"/>
+					<s:TextInput id="Y_DYS635" width="75" text="{dg.selectedItem.Y_DYS635}"/>
+				</s:HGroup>
+				<s:HGroup width="100%" verticalAlign="middle">
+					<s:Label width="70" text="YDYS392"/>
+					<s:TextInput id="Y_DYS392" width="75" text="{dg.selectedItem.Y_DYS392}"/>
+					<s:Label width="70" text="GATA_H4"/>
+					<s:TextInput id="R_Y_GATA_H4" width="75" text="{dg.selectedItem.R_Y_GATA_H4}"/>
+					<s:Label width="70" text="RDYS437"/>
+					<s:TextInput id="R_DYS437" width="75" text="{dg.selectedItem.R_DYS437}"/>
+					<s:Label width="70" text="RDYS438"/>
+					<s:TextInput id="R_DYS438" width="75" text="{dg.selectedItem.R_DYS438}"/>
+					<s:Label width="70" text="RDYS448"/>
+					<s:TextInput id="R_DYS448" width="75" text="{dg.selectedItem.R_DYS448}"/>
+				</s:HGroup>
+			</s:VGroup>
+		</s:Scroller>
+		<s:HGroup width="100%" horizontalAlign="right">
+			<s:Button label="修改" click="button2_clickHandler(event)" enabled="{PsbLocator.getInstance().npending}"/>
+			<s:Button label="清空" click="clear_clickHandler(event)" enabled="{PsbLocator.getInstance().npending}"/>
+			<s:Spacer width="10" height="10"/>
+		</s:HGroup>
+	</s:VGroup>
+	
+</s:Group>

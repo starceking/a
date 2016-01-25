@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
+		 xmlns:s="library://ns.adobe.com/flex/spark" 
+		 xmlns:mx="library://ns.adobe.com/flex/mx" 
+		 fontSize="14" width="813" height="529"
+		 xmlns:tool="view.tool.*"
+		 creationComplete="select_sfUpdate_clickHandler(event)"
+		 >
+	<fx:Declarations>
+		<!-- 将非可视元素（例如服务、值对象）放在此处 -->
+	</fx:Declarations>
+	<fx:Script>
+		<![CDATA[
+			import com.adobe.cairngorm.control.CairngormEventDispatcher;
+			
+			import control.*;
+			
+			import locator.MenuLocator;
+			import locator.SuppliesLocator;
+			import locator.SuppliesVerificationLocator
+				
+				import mx.events.FlexEvent;
+			
+			import util.Helper;
+			
+			import vo.MenuVo;
+			import vo.SuppliesVo;
+			import vo.SuppliesVerificationVo;
+			
+			
+			protected function select_sfUpdate_clickHandler(event:FlexEvent):void
+			{
+				// TODO Auto-generated method stub
+				SuppliesVerificationLocator.getInstance().wsObj =new SuppliesVerificationVo("",SuppliesLocator.getInstance().currObj.ID,"","","","",chjg.text);
+				CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.SUPPLIESVERIFICATION_GetOne)); 
+				
+			}
+			protected function BtnAdd_clickHandler(event:MouseEvent):void
+			{
+				// TODO Auto-generated method stub
+				SuppliesVerificationLocator.getInstance().wsObj = new SuppliesVerificationVo(Helper.getGUID(),SuppliesLocator.getInstance().currObj.ID,TextHcr.text,TextJdr.text,TextHcrq.text,TextHcjg.text,chjg.text);
+				CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.SUPPLIESVERIFICATION_Insert));
+				Helper.showAlert("新增成功！");
+			}
+			
+			protected function BtnDelete_clickHandler(event:MouseEvent):void
+			{
+				// TODO Auto-generated method stub
+				SuppliesVerificationLocator.getInstance().wsObj =gd.selectedItem as SuppliesVerificationVo;
+				CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.SUPPLIESVERIFICATION_Delete));
+				Helper.showAlert("删除成功！");
+				
+			}
+			
+			protected function BrnUpdate_clickHandler(event:MouseEvent):void
+			{
+				// TODO Auto-generated method stub
+				SuppliesVerificationLocator.getInstance().wsObj = new SuppliesVerificationVo(gd.selectedItem.ID,SuppliesLocator.getInstance().currObj.ID,TextHcr.text,TextJdr.text,TextHcrq.text,TextHcjg.text,chjg.text);
+				CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.SUPPLIESVERIFICATION_Update));
+				Helper.showAlert("修改成功！");
+			}
+			
+			protected function button1_clickHandler(event:MouseEvent):void
+			{
+				// TODO Auto-generated method stub
+				SuppliesVerificationLocator.getInstance().wsObj = new SuppliesVerificationVo(gd.selectedItem.ID,SuppliesLocator.getInstance().currObj.ID,"","","","","");
+				SuppliesVerificationLocator.getInstance().filename=Helper.getGUID();
+				SuppliesVerificationLocator.getInstance().wordname="标准物质期间核查记录.doc";
+				CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.SUPPLIESVERIFICATION_MackAllHCHC));
+			}
+			
+		]]>
+	</fx:Script>
+	<s:Label x="10" y="10" color="#0A37FA" fontSize="20" fontWeight="bold" text="期间查核"/>
+	<s:DataGrid id="gd" x="10" y="38" width="559" height="481" dataProvider="{SuppliesVerificationLocator.getInstance().listObj}">
+		<s:columns>
+			<s:ArrayList>
+				<s:GridColumn dataField="HCR" headerText="核查人"></s:GridColumn>
+				<s:GridColumn dataField="JDR" headerText="监督人"></s:GridColumn>
+				<s:GridColumn dataField="HCRQ" headerText="核查日期"></s:GridColumn>
+			</s:ArrayList>
+		</s:columns>
+	</s:DataGrid>
+	<s:Label x="575" y="67" text="核  查  人："/>
+	<s:TextInput id="TextHcr" x="655" y="57" text="{gd.selectedItem.HCR}"/>
+	<s:Label x="575" y="99" text="监  督  人："/>
+	<s:TextInput id="TextJdr" x="653" y="90"  text="{gd.selectedItem.JDR}"/>
+	<s:Label x="575" y="130" text="核查日期："/>
+	<tool:DateZh id="TextHcrq" x="655" y="122" width="148" text="{gd.selectedItem.HCRQ}"/>
+	<s:Label x="576" y="162" text="查核结果："/>
+	<s:TextInput id="TextHcjg" x="653" y="155"  text="{gd.selectedItem.HCJG}"/>
+	<s:Button id="BtnAdd" x="577" y="498" label="增加" click="BtnAdd_clickHandler(event)"/>
+	<s:Button id="BtnDelete" x="733" y="498" label="删除" click="BtnDelete_clickHandler(event)" enabled="{gd.selectedItem!=null}"/>
+	<s:Button id="BrnUpdate" x="655" y="498" label="修改" click="BrnUpdate_clickHandler(event)" enabled="{gd.selectedItem!=null}"/>
+	<mx:LinkButton x="685" y="11" label="打印核查一览表" click="button1_clickHandler(event)" enabled="{gd.selectedItem!=null}" textDecoration="underline" color="blue"/>
+	<s:Label x="577" y="194" text="查核过程："/>
+	<s:TextArea id="chjg" x="653" y="187" width="148" height="82" text="{gd.selectedItem.CHGC}"/>
+</s:Group>

@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Module xmlns:fx="http://ns.adobe.com/mxml/2009"
+		  xmlns:s="library://ns.adobe.com/flex/spark"
+		  xmlns:mx="library://ns.adobe.com/flex/mx"
+		  xmlns:local="*"
+		  xmlns:tool="view.tool.*"
+		  width="953" height="598" fontSize="14"
+		  creationComplete="MenuLocator.getInstance().changeMenu(menuGp);">
+	<fx:Declarations>
+		<!-- 将非可视元素（例如服务、值对象）放在此处 -->
+	</fx:Declarations>
+	<fx:Script>
+		<![CDATA[
+			import com.adobe.cairngorm.control.CairngormEventDispatcher;
+			
+			import control.*;
+			import locator.MenuLocator;	
+			import locator.ExCaseLocator;
+			import locator.PsbLocator;
+			import locator.SysUserLocator;
+			
+			import util.Helper;
+			import util.Server;
+			//Inner call
+			protected function searchClickHandler(evt:Event):void
+			{
+				ExCaseLocator.getInstance().slxh=XTITLE.text;
+				CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.EXCASEWS_GetYjrSp));
+			}
+			private function NotificationEventHandler():void
+			{
+				if(dg.selectedItem!=null)
+				{
+					ExCaseLocator.getInstance().sql="update 鉴定流程 set 领导='"+leader.selectedData+
+						"' where 委托编号='"+dg.selectedItem.conno+"'";
+					CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.EXCASEWS_ExeSql));
+				}
+			}
+		]]>
+	</fx:Script>
+	<s:Panel width="953" height="598">
+		<s:HGroup id="menuGp" x="10" y="-27"/>	
+		<s:Label x="10" y="16" text="受理序号："/>
+		<s:TextInput id="XTITLE" x="92" y="6" width="184" restrict="0123456789"/>
+		<s:Button id="xxBtn" x="284" y="9" label="查询" enabled="{PsbLocator.getInstance().npending}"
+				  click="searchClickHandler(event)"/>
+		<s:DataGrid id="dg" x="10" y="38" width="690" height="519"
+					dataProvider="{ExCaseLocator.getInstance().sprModList}">
+			<s:columns>
+				<s:ArrayList>
+					<s:GridColumn dataField="docname" headerText="文书名称"></s:GridColumn>
+					<s:GridColumn dataField="accyear" headerText="受理年份"></s:GridColumn>
+					<s:GridColumn dataField="accno" headerText="受理序号"></s:GridColumn>
+					<s:GridColumn dataField="sprname" headerText="审批领导"></s:GridColumn>
+				</s:ArrayList>
+			</s:columns>
+		</s:DataGrid>
+		<s:Label x="708" y="101" text="受  理  号："/>
+		<s:Label x="708" y="130" text="审批领导："/>
+		<s:Button id="saveBtn" visible="{dg.selectedIndex&gt;=0}" x="873" y="156" label="修改" enabled="{PsbLocator.getInstance().npending}"
+				  click="NotificationEventHandler();"/>
+		<s:Label x="786" y="101" text="{dg.selectedItem.accyear+'-'+dg.selectedItem.accno}"/>
+		<tool:UserDdl id="leader" x="786" y="123" width="161" requireSelection="true"
+					  role="Leader" auth="" selectedData="{dg.selectedItem.spr}"/>
+	</s:Panel>	
+</s:Module>

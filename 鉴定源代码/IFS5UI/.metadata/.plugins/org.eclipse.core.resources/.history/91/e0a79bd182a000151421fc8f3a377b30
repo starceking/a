@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Module xmlns:fx="http://ns.adobe.com/mxml/2009"
+		  xmlns:s="library://ns.adobe.com/flex/spark"
+		  xmlns:mx="library://ns.adobe.com/flex/mx"
+		  xmlns:ns1="*"
+		  width="953" height="598" creationComplete="moduleCreationCompleteHandler(event)"
+		  defaultButton="{bcBtn}" fontSize="14">
+	<fx:Declarations>
+		<!-- 将非可视元素（例如服务、值对象）放在此处 -->		
+	</fx:Declarations>
+	<fx:Script>
+		<![CDATA[
+			import com.adobe.cairngorm.control.CairngormEventDispatcher;
+			
+			import control.*;
+			import locator.MenuLocator;	
+			import locator.IdFlowLocator;
+			import locator.JusTypeLocator;
+			import locator.PsbLocator;
+			import locator.SysUserLocator;
+			
+			import mx.events.FlexEvent;
+			
+			import util.Helper;
+			
+			import vo.IdFlowVo;
+			
+			protected function dg_doubleClickHandler(event:MouseEvent):void
+			{
+				IdFlowLocator.getInstance().wholeCase=false;
+				if(dg.selectedItem==null)return;
+				IdFlowLocator.getInstance().curObj=dg.selectedItem as IdFlowVo;
+				Helper.pushMenu("报告领取信息","view/idcase/info/testersd/GetReportModule.swf");
+				PsbLocator.getInstance().clearData();
+			}
+			
+			protected function moduleCreationCompleteHandler(event:Event):void
+			{
+				IdFlowLocator.getInstance().wsObj=new IdFlowVo(barCode.text,PsbLocator.getInstance().idPsb.ID,"","","","","",
+					"","","","","","","","","","","","","","","","","","","","","",SysUserLocator.getInstance().loginUser.ID,
+					"","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","",
+					"","","","","","","",cName.text,"","","","","","","","","","","","","","","","");
+				CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.IDTASKWS_GetReportTask));
+				MenuLocator.getInstance().changeMenu(menuGp);
+			}
+			
+		]]>
+	</fx:Script>
+	<s:Panel width="953" height="598">
+		<s:HGroup id="menuGp" x="10" y="-27"/>	
+		<s:DataGrid id="dg" x="10" y="38" width="933" height="487"
+					dataProvider="{IdFlowLocator.getInstance().listObj}"
+					doubleClick="dg_doubleClickHandler(event)" doubleClickEnabled="true">
+			<s:columns>
+				<s:ArrayList>
+					<s:GridColumn dataField="CASE_NO" headerText="案件编号"></s:GridColumn>
+					<s:GridColumn dataField="CASE_NAME" headerText="案件名称"></s:GridColumn>
+					<s:GridColumn dataField="ID_JUSTYPE" headerText="鉴定类别"></s:GridColumn>
+					<s:GridColumn dataField="ACC_TIME" headerText="受理时间"></s:GridColumn>
+				</s:ArrayList>
+			</s:columns>
+		</s:DataGrid>
+			
+		<s:Label x="10" y="16" text="委托条码："/>
+		<s:TextInput id="barCode" x="88" y="6" width="189"/>
+		<s:Button id="bcBtn" x="865" y="9" label="查询" click="pager.pageIndex=1;moduleCreationCompleteHandler(event)"
+				  enabled="{PsbLocator.getInstance().npending}"/>
+		<ns1:ListPager id="pager" x="542" y="533" pageSize="16"
+					   creationComplete="pager.addEventListener(ListPager.PAGE_INDEX_CHANGE_EVENT,moduleCreationCompleteHandler);IdFlowLocator.getInstance().listPager=pager;">
+		</ns1:ListPager>
+		<s:Label x="289" y="16" text="案件名称："/>
+		<s:TextInput id="cName" x="367" y="6" width="490"/>
+	</s:Panel>
+</s:Module>

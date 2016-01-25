@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Module xmlns:fx="http://ns.adobe.com/mxml/2009"
+		  xmlns:s="library://ns.adobe.com/flex/spark"
+		  xmlns:mx="library://ns.adobe.com/flex/mx"
+		  xmlns:tool="view.tool.*"
+		  width="953" height="598" fontSize="14"
+		  creationComplete="MenuLocator.getInstance().changeMenu(menuGp);">
+	<fx:Script>
+		<![CDATA[
+			import com.adobe.cairngorm.control.CairngormEventDispatcher;
+			import locator.MenuLocator;	
+			import control.*;
+			import locator.IdCaseLocator;
+			import locator.PsbLocator;
+			import mx.utils.ObjectUtil; 
+			
+			protected function button1_clickHandler(event:MouseEvent):void
+			{
+				IdCaseLocator.getInstance().year=year.selectedData;
+				CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.IDCASEWS_GetYearStaData));
+			}	
+			protected function button2_clickHandler(event:MouseEvent):void
+			{
+				IdCaseLocator.getInstance().starTime=StarDate.text;
+				IdCaseLocator.getInstance().endTime=EndDate.text;
+				CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.IDCASEWS_GetAllJds));
+			}
+			
+			private function jds_leiji(itemA:Object, itemB:Object):int 
+			{ 				
+				return ObjectUtil.numericCompare(itemA.jds, itemB.jds); 
+			} 
+			
+			private function jan_sortCompareFunc(itemA:Object, itemB:Object):int 
+			{ 				
+				return ObjectUtil.numericCompare(itemA.jan, itemB.jan); 
+			} 
+			private function feb_sortCompareFunc(itemA:Object, itemB:Object):int 
+			{ 				
+				return ObjectUtil.numericCompare(itemA.feb, itemB.feb); 
+			} 
+			private function mar_sortCompareFunc(itemA:Object, itemB:Object):int 
+			{ 				
+				return ObjectUtil.numericCompare(itemA.mar, itemB.mar); 
+			} 
+			private function apr_sortCompareFunc(itemA:Object, itemB:Object):int 
+			{ 				
+				return ObjectUtil.numericCompare(itemA.apr, itemB.apr); 
+			} 
+			private function may_sortCompareFunc(itemA:Object, itemB:Object):int 
+			{ 				
+				return ObjectUtil.numericCompare(itemA.may, itemB.may); 
+			} 
+			private function jun_sortCompareFunc(itemA:Object, itemB:Object):int 
+			{ 				
+				return ObjectUtil.numericCompare(itemA.jun, itemB.jun); 
+			} 
+			private function jul_sortCompareFunc(itemA:Object, itemB:Object):int 
+			{ 				
+				return ObjectUtil.numericCompare(itemA.jul, itemB.jul); 
+			} 
+			private function aug_sortCompareFunc(itemA:Object, itemB:Object):int 
+			{ 				
+				return ObjectUtil.numericCompare(itemA.aug, itemB.aug); 
+			} 
+			private function sep_sortCompareFunc(itemA:Object, itemB:Object):int 
+			{ 				
+				return ObjectUtil.numericCompare(itemA.sep, itemB.sep); 
+			} 
+			private function oct_sortCompareFunc(itemA:Object, itemB:Object):int 
+			{ 				
+				return ObjectUtil.numericCompare(itemA.oct, itemB.oct); 
+			} 
+			private function nov_sortCompareFunc(itemA:Object, itemB:Object):int 
+			{ 				
+				return ObjectUtil.numericCompare(itemA.nov, itemB.nov); 
+			} 
+			private function dec_sortCompareFunc(itemA:Object, itemB:Object):int 
+			{ 				
+				return ObjectUtil.numericCompare(itemA.dec, itemB.dec); 
+			} 
+		]]>
+	</fx:Script>
+	<s:Panel width="953" height="598">
+		<s:HGroup id="menuGp" x="10" y="-27"/>	
+		<tool:DictDdl id="year" x="88" y="8" width="193" dictName="年份" requireSelection="true"/>
+		<s:Label x="10" y="16" text="年份选择："/>
+		<mx:DataGrid x="10" y="39" width="646" height="518" dataProvider="{IdCaseLocator.getInstance().yearStaList}"
+					 sortableColumns="true">
+			<mx:columns>
+				<mx:DataGridColumn dataField="jdzy" headerText="鉴定专业" visible="false"></mx:DataGridColumn>
+				<mx:DataGridColumn width="80" dataField="jdlb" headerText="鉴定类别"></mx:DataGridColumn>
+				<mx:DataGridColumn dataField="jan" headerText="1月"
+								   sortCompareFunction="jan_sortCompareFunc"></mx:DataGridColumn>
+				<mx:DataGridColumn dataField="feb" headerText="2月"
+								   sortCompareFunction="feb_sortCompareFunc"></mx:DataGridColumn>
+				<mx:DataGridColumn dataField="mar" headerText="3月"
+								   sortCompareFunction="mar_sortCompareFunc"></mx:DataGridColumn>
+				<mx:DataGridColumn dataField="apr" headerText="4月"
+								   sortCompareFunction="apr_sortCompareFunc"></mx:DataGridColumn>
+				<mx:DataGridColumn dataField="may" headerText="5月"
+								   sortCompareFunction="may_sortCompareFunc"></mx:DataGridColumn>
+				<mx:DataGridColumn dataField="jun" headerText="6月"
+								   sortCompareFunction="jun_sortCompareFunc"></mx:DataGridColumn>
+				<mx:DataGridColumn dataField="jul" headerText="7月"
+								   sortCompareFunction="jul_sortCompareFunc"></mx:DataGridColumn>
+				<mx:DataGridColumn dataField="aug" headerText="8月"
+								   sortCompareFunction="aug_sortCompareFunc"></mx:DataGridColumn>
+				<mx:DataGridColumn dataField="sep" headerText="9月"
+								   sortCompareFunction="sep_sortCompareFunc"></mx:DataGridColumn>
+				<mx:DataGridColumn dataField="oct" headerText="10月"
+								   sortCompareFunction="oct_sortCompareFunc"></mx:DataGridColumn>
+				<mx:DataGridColumn dataField="nov" headerText="11月"
+								   sortCompareFunction="nov_sortCompareFunc"></mx:DataGridColumn>
+				<mx:DataGridColumn dataField="dec" headerText="12月"
+								   sortCompareFunction="dec_sortCompareFunc"></mx:DataGridColumn>
+			</mx:columns>
+		</mx:DataGrid>
+		<s:Button x="289" y="10" label="查询" enabled="{PsbLocator.getInstance().npending}" click="button1_clickHandler(event)"/>
+		<tool:DateZh id="StarDate" x="575" y="10" width="130"/>
+		<tool:DateZh id="EndDate" x="728" y="10" width="130"/>
+		<s:Label x="710" y="15" text="到"/>
+		<s:Button x="860" y="12" label="详细查询" enabled="{PsbLocator.getInstance().npending}" click="button2_clickHandler(event)"/>
+		<mx:DataGrid x="664" y="41" width="279" height="516" dataProvider="{IdCaseLocator.getInstance().JdsList}"
+					 sortableColumns="true">
+			<mx:columns>
+				<mx:DataGridColumn width="80" dataField="jdzy" headerText="鉴定专业"></mx:DataGridColumn>
+				<mx:DataGridColumn width="80" dataField="jdlb" headerText="鉴定类别"></mx:DataGridColumn>
+				<mx:DataGridColumn dataField="jds" headerText="鉴定数"
+								   sortCompareFunction="jds_leiji"></mx:DataGridColumn>
+				
+			</mx:columns>
+		</mx:DataGrid>
+	</s:Panel>
+</s:Module>

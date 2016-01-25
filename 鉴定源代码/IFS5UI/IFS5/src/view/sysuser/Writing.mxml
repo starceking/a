@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009"
+		 xmlns:s="library://ns.adobe.com/flex/spark"
+		 xmlns:mx="library://ns.adobe.com/flex/mx"
+		 xmlns:tool="view.tool.*"
+		 width="813" height="547" fontSize="14" creationComplete="creationCompleteHandler(event)">
+	<fx:Script>
+		<![CDATA[
+			import com.adobe.cairngorm.control.CairngormEventDispatcher;
+			
+			import control.*;
+			
+			import locator.WritingLocator;
+			import locator.PsbLocator;
+			import locator.SysUserLocator;
+			
+			import mx.containers.ViewStack;
+			import mx.events.FlexEvent;
+			
+			import util.Helper;
+			
+			import vo.WritingVo;
+			
+			private var locObj:WritingLocator=WritingLocator.getInstance();
+			private var sysuser:SysUserLocator=SysUserLocator.getInstance();
+			public var vs:ViewStack;
+			
+			protected function creationCompleteHandler(event:FlexEvent):void
+			{
+				locObj.wsObj=new WritingVo("",sysuser.curObj.ID,"","","","","");
+				CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.WRITINGWS_GetAll));
+			}
+			
+			private function getOperVo():WritingVo
+			{
+				return new WritingVo(Helper.getGUID(),sysuser.curObj.ID,title.text,publishing.text,
+					date.text,workload.text,remark.text);
+			}
+			protected function insertClickHandler(event:MouseEvent):void
+			{
+				locObj.wsObj=getOperVo();
+				CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.WRITINGWS_Insert));					
+			}
+			protected function updateClickHandler(event:MouseEvent):void
+			{				
+				if(dg.selectedItem!=null)
+				{
+					locObj.wsObj=getOperVo();
+					locObj.wsObj.ID=dg.selectedItem.ID;
+					CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.WRITINGWS_Update));
+				}
+				else
+				{
+					Helper.showAlert("请先选中对应数据行");
+				}
+			}
+			protected function deleteClickHandler(event:MouseEvent):void
+			{
+				if(dg.selectedItem!=null)
+				{
+					locObj.wsObj=getOperVo();
+					locObj.wsObj.ID=dg.selectedItem.ID;
+					CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.WRITINGWS_Delete));
+				}
+				else
+				{
+					Helper.showAlert("请先选中对应数据行");
+				}
+			}
+			
+		]]>
+	</fx:Script>
+	<fx:Declarations>
+		<!-- 将非可视元素（例如服务、值对象）放在此处 -->
+	</fx:Declarations>
+	<s:Label x="10" y="10" color="#0A37FA" fontSize="20" fontWeight="bold" text="著作信息"/>
+	<s:DataGrid id="dg" x="14" y="44" width="772" height="296" dataProvider="{locObj.listObj}">
+		<s:columns>
+			<s:ArrayList>
+				<s:GridColumn dataField="Title" headerText="著作名称"></s:GridColumn>
+				<s:GridColumn dataField="Date" headerText="发布日期"></s:GridColumn>
+				<s:GridColumn dataField="Publishing" headerText="出版单位"></s:GridColumn>
+				<s:GridColumn dataField="Workload" headerText="参与..."></s:GridColumn>
+				<s:GridColumn dataField="Remark" headerText="备注"></s:GridColumn>
+			</s:ArrayList>
+		</s:columns>
+	</s:DataGrid>
+	<s:Label x="20" y="419" text="备       注："/>
+	<s:Label x="425" y="366" text="刊物/出版单位："/>
+	<s:TextInput id="workload" x="533" y="387" width="253" text="{dg.selectedItem.Workload}"/>
+	<s:Label x="427" y="395" text="参与撰写比例："/>
+	<s:TextInput id="publishing" x="533" y="357" width="253" text="{dg.selectedItem.Publishing}"/>
+	<s:TextInput id="title" x="105" y="357" width="280" text="{dg.selectedItem.Titile}"/>
+	<s:Label x="20" y="366" text="论文著作："/>
+	<s:Label x="20" y="393" text="发行日期："/>
+	<s:Button x="556" y="505" label="新增" click="insertClickHandler(event)"/>
+	<s:Button x="716" y="505" label="删除" click="deleteClickHandler(event)"  visible="{dg.selectedItem!=null}"/>
+	<s:Button x="638" y="505" label="保存" click="updateClickHandler(event)"  visible="{dg.selectedItem!=null}"/>
+	<tool:DateZh id="date" x="105" y="387" width="280" text="{dg.selectedItem.Date}"/>
+	<s:TextArea id="remark" x="105" y="419" width="671" height="72" text="{dg.selectedItem.Remark}"/>
+</s:Group>

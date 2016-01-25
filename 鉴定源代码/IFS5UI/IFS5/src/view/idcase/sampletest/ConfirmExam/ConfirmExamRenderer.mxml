@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:ItemRenderer xmlns:fx="http://ns.adobe.com/mxml/2009"
+				xmlns:s="library://ns.adobe.com/flex/spark"
+				xmlns:mx="library://ns.adobe.com/flex/mx"
+				xmlns:tool="view.tool.*"
+				fontSize="14" height="26">
+	<fx:Declarations>
+		<!-- 将非可视元素（例如服务、值对象）放在此处 -->
+	</fx:Declarations>
+	<fx:Script>
+		<![CDATA[
+			import util.Helper;
+			private function ddlchange(evt:Event):void
+			{
+				if((evt.target as DictCbb).width==200)
+				{
+					data.TEST_METHOD=syff.getSelectedItem();
+				}
+				else
+				{
+					var res:String=syjg.getSelectedItem();
+					data.RESULT=res;
+				}
+			}
+		]]>
+	</fx:Script>
+	<s:HGroup verticalAlign="middle" verticalCenter="0">
+		<s:Label width="200" text="{data.SLN}" textAlign="center" verticalAlign="middle"
+				 verticalCenter="0"/>
+		<s:Label width="230" text="{data.NAME}" textAlign="center" verticalAlign="middle"
+				 verticalCenter="0"/>
+		<s:Label width="80" text="{data.SAMPLE_TYPE}" textAlign="center" verticalAlign="middle"
+				 verticalCenter="0"/>
+		<tool:DictCbb id="syff" width="300"
+					  creationComplete="syff.addEventListener(DictCbb.event_name,ddlchange)"
+					  dictName="确证试验方法" selectedItem="{data.TEST_METHOD}" textAlign="center"
+					  verticalCenter="0"/>
+		<tool:DictCbb id="syjg"
+					  creationComplete="syjg.addEventListener(DictCbb.event_name,ddlchange)"
+					  dictName="试验结果" selectedItem="{data.RESULT}" textAlign="center"
+					  verticalCenter="0"/>
+	</s:HGroup>
+</s:ItemRenderer>

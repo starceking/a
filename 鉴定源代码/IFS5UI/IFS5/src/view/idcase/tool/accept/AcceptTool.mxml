@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009"
+		 xmlns:s="library://ns.adobe.com/flex/spark"
+		 xmlns:mx="library://ns.adobe.com/flex/mx"
+		 xmlns:accept="view.idcase.tool.accept.*"
+		 width="813" height="560" fontSize="14">
+	<fx:Declarations>
+		<!-- 将非可视元素（例如服务、值对象）放在此处 -->
+	</fx:Declarations>
+	<fx:Script>
+		<![CDATA[
+			import com.adobe.cairngorm.control.CairngormEventDispatcher;
+			
+			import control.*;
+			import mx.containers.ViewStack;
+			import locator.PsbLocator;
+			public var vs:ViewStack;
+			
+			protected function button1_clickHandler(event:MouseEvent):void
+			{
+				if(ait.save())
+				{
+					CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.IDFLOWWS_UpdateAccept));
+					if(vs!=null)vs.selectedIndex++;
+				}
+			}
+			
+		]]>
+	</fx:Script>
+	<s:Button y="266" click="button1_clickHandler(event)"
+			  enabled="{PsbLocator.getInstance().npending}" horizontalCenter="0"
+			  skinClass="assets.skins.Button_bc"/>
+	<accept:AcceptInfoTool id="ait" x="10" y="10">
+	</accept:AcceptInfoTool>
+</s:Group>

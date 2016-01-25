@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Module xmlns:fx="http://ns.adobe.com/mxml/2009"
+		  xmlns:s="library://ns.adobe.com/flex/spark"
+		  xmlns:mx="library://ns.adobe.com/flex/mx"
+		  xmlns:tool="view.tool.*"
+		  width="953" height="598" creationComplete="module1_creationCompleteHandler(event)" 
+		  fontSize="14">
+	<fx:Declarations>
+		<!-- 将非可视元素（例如服务、值对象）放在此处 -->
+	</fx:Declarations>
+	<fx:Script>
+		<![CDATA[
+			import com.adobe.cairngorm.control.CairngormEventDispatcher;
+			
+			import control.*;
+			
+			import locator.JusTypeLocator;
+			import locator.MenuLocator;
+			import locator.StatisticsLocator;
+			import locator.SysUserLocator;
+			
+			import mx.collections.ArrayList;
+			import mx.events.FlexEvent;
+			
+			import spark.events.IndexChangeEvent;
+			
+			import util.Helper;
+			[Bindable]
+			private var typelist:ArrayList;
+			[Bindable]
+			private var Conclusionlist:ArrayList=new ArrayList();
+			protected function module1_creationCompleteHandler(event:FlexEvent):void
+			{
+				MenuLocator.getInstance().changeMenu(menuGp);
+				
+				StatisticsLocator.getInstance().CaseConclusionList.removeAll();
+				
+				typelist=JusTypeLocator.getInstance().getAllJusType(SysUserLocator.getInstance().loginUser.OFFICE);
+			}
+			
+			protected function query_clickHandler(event:MouseEvent):void
+			{
+				if(ddl0.selectedItem==null)
+				{
+					Helper.showAlert("请选择鉴定类别！");
+				}
+				else if((Date1.text.length!=0&&Date2.text.length==0)||(Date1.text.length==0&&Date2.text.length!=0))
+				{
+					Helper.showAlert("请选择完整的时间区间！");
+				}
+				else
+				{
+					var list:ArrayList=new ArrayList();
+					
+					if(Conclusion.selectedItem!=null)
+					{
+						list.addItem({label:Conclusion.selectedItem.label});
+						
+						StatisticsLocator.getInstance().Conclusion=Conclusion.selectedItem.label;
+					}
+					else
+					{
+						var concl:String=JusTypeLocator.getInstance().getJusType(
+							SysUserLocator.getInstance().loginUser.OFFICE,ddl0.selectedItem.label).CONCLUSION;
+						var arr:Array=concl.split("，");
+						
+						for(var i:int=0;i<arr.length;i++)
+						{
+							list.addItem({label:arr[i]});
+						}
+						StatisticsLocator.getInstance().Conclusion="";
+					}
+					
+					AL.removeAll();
+					AL.addItem(GC1);
+					for(var i:int=0;i<list.length;i++)
+					{
+						var GC:GridColumn=new GridColumn();
+						GC.dataField="num_"+String(i+1);
+						GC.headerText=list.getItemAt(i).label;
+						GC.minWidth=60;
+						AL.addItem(GC);
+					}
+					AL.addItem(GC8);	
+
+					StatisticsLocator.getInstance().Type=ddl0.selectedItem.label;
+					StatisticsLocator.getInstance().DateTime1=Date1.text;
+					StatisticsLocator.getInstance().DateTime2=Date2.text;
+					CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.STATISTICSWS_CaseConclusion));
+				}
+			}
+			
+			protected function ddl0_changeHandler(event:IndexChangeEvent):void
+			{
+				Conclusionlist.removeAll();
+				var concl:String=JusTypeLocator.getInstance().getJusType(
+					SysUserLocator.getInstance().loginUser.OFFICE,ddl0.selectedItem.label).CONCLUSION;
+				var arr:Array=concl.split("，");
+				for(var i:int=0;i<arr.length;i++)
+				{
+					Conclusionlist.addItem({label:arr[i]});
+				}
+			}
+			
+		]]>
+	</fx:Script>
+	<s:Panel width="953" height="598">
+		<s:HGroup id="menuGp" x="10" y="-27"/>
+		<s:VGroup left="10" right="10" top="10" bottom="10">
+			<s:HGroup width="100%" verticalAlign="middle">
+				<s:Label text="检验类别："/>
+				<s:DropDownList id="ddl0" width="130" dataProvider="{typelist}" change="ddl0_changeHandler(event)"/>
+				<s:Label text="鉴定结论："/>
+				<s:DropDownList id="Conclusion" width="130" dataProvider="{Conclusionlist}"/>
+				<s:Label text="受理时间："/>
+				<tool:DateZh id="Date1" width="110"/>
+				<s:Label text="到"/>
+				<tool:DateZh id="Date2" width="110"/>
+				<s:Button id="query" label="查询" click="query_clickHandler(event)" />
+			</s:HGroup>
+			<s:DataGrid width="100%" height="100%" requestedRowCount="4"
+					    dataProvider="{StatisticsLocator.getInstance().CaseConclusionList}">
+				<s:columns>
+					<s:ArrayList id="AL">
+						<s:GridColumn id="GC1" minWidth="80" dataField="type" headerText="鉴定类别"></s:GridColumn>
+						<s:GridColumn id="GC8" minWidth="80" dataField="AmountNum" headerText="案件总数"></s:GridColumn>
+					</s:ArrayList>
+				</s:columns>
+			</s:DataGrid>
+		</s:VGroup>
+	</s:Panel>
+</s:Module>

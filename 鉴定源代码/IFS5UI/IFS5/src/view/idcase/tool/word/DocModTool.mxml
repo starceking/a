@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009"
+		 xmlns:s="library://ns.adobe.com/flex/spark"
+		 xmlns:mx="library://ns.adobe.com/flex/mx"
+		 xmlns:tool="view.tool.*"
+		 xmlns:local="*"
+		 width="813" height="547" creationComplete="creationCompleteHandler(event)" fontSize="14">
+	<fx:Declarations>
+		<!-- 将非可视元素（例如服务、值对象）放在此处 -->
+	</fx:Declarations>
+	<fx:Script>
+		<![CDATA[
+			import com.adobe.cairngorm.control.CairngormEventDispatcher;
+			
+			import control.*;
+			
+			import locator.DocModLocator;
+			import locator.IdFlowLocator;
+			import locator.PsbLocator;
+			import locator.SysUserLocator;
+			
+			import mx.containers.ViewStack;
+			import mx.events.FlexEvent;
+			
+			import spark.events.GridSelectionEvent;
+			
+			import util.Helper;
+			import util.Server;
+			
+			import vo.DocModVo;
+			private var filter:FileFilter=new FileFilter("rar压缩包(*.rar)","*.rar");
+			private var locObj:DocModLocator=DocModLocator.getInstance();
+			public var vs:ViewStack;
+			
+			protected function creationCompleteHandler(event:FlexEvent):void
+			{
+				var conno:String=IdFlowLocator.getInstance().curObj.CONNO;
+				locObj.wsObj=new DocModVo("",conno,"","","","","","","","");
+				CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.DOCMODWS_GetAll));
+			}
+			
+			private function getOperVo():DocModVo
+			{
+				return new DocModVo(Helper.getGUID(),IdFlowLocator.getInstance().curObj.CONNO,SysUserLocator.getInstance().loginUser.ID,
+					modtime.text,audit.selectedData,audittime.text,position.text,oritext.text,nowtext.text,no.text);
+			}
+			
+			protected function insertClickHandler(event:MouseEvent):void
+			{
+				if(validateInput()) 
+				{
+					locObj.wsObj=getOperVo();
+					CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.DOCMODWS_Insert));					
+				}
+			}
+			
+			protected function updateClickHandler(event:MouseEvent):void
+			{				
+				if(dg.selectedItem!=null)
+				{
+					if(validateInput()) 
+					{
+						locObj.wsObj=getOperVo();
+						locObj.wsObj.ID=dg.selectedItem.ID;
+						CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.DOCMODWS_Update));
+					}
+				}
+				else
+				{
+					Helper.showAlert("请先选中对应数据行");
+				}
+			}
+			
+			protected function deleteClickHandler(event:MouseEvent):void
+			{
+				if(dg.selectedItem!=null)
+				{
+					locObj.wsObj=getOperVo();
+					locObj.wsObj.ID=dg.selectedItem.ID;
+					CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.DOCMODWS_Delete));
+				}
+				else
+				{
+					Helper.showAlert("请先选中对应数据行");
+				}
+			}
+			
+			private function validateInput():Boolean
+			{				
+				if(modtime.text.length==0)
+				{
+					Helper.showAlert("必须指定修改时间");
+					return false;
+				}
+				if(audit.selectedData.length==0)
+				{
+					Helper.showAlert("必须指定审批人");
+					return false;
+				}
+				var result:Boolean=true;
+				result=result && Helper.validateTextInput(position);
+				result=result && Helper.validateTextInput(no);
+				return result;
+			}
+			
+			private function upload():void
+			{
+				if(dg.selectedItem!=null)
+				{
+					suf.setuurl(Server.getDocModUpload(PsbLocator.getInstance().idPsb.ID,
+						IdFlowLocator.getInstance().curObj.CONNO,
+						dg.selectedItem.ID));
+				
+					suf.selectFile();
+				}
+				else Helper.showAlert("请先选择对应的记录");
+			}
+			
+			protected function dg_selectionChangeHandler(event:GridSelectionEvent):void
+			{
+				if(dg.selectedItem!=null)
+				{
+					suf.setdurl(Server.getDocModDownload(PsbLocator.getInstance().idPsb.ID,
+						IdFlowLocator.getInstance().curObj.CONNO,
+						dg.selectedItem.ID));
+					suf.visible=true;
+					uuf.visible=true;
+				}
+				else
+				{
+					suf.visible=false;
+					uuf.visible=false;
+				}
+			}
+			
+		]]>
+	</fx:Script>
+	<s:DataGrid id="dg" x="10" y="50" width="793" height="203" dataProvider="{locObj.listObj}" selectionChange="dg_selectionChangeHandler(event)">
+		<s:columns>
+			<s:ArrayList>
+				<s:GridColumn dataField="NUMBER" headerText="编号"></s:GridColumn>
+				<s:GridColumn dataField="MODER_NAME" headerText="修改人"></s:GridColumn>
+				<s:GridColumn dataField="MODTIME" headerText="修改时间"></s:GridColumn>
+				<s:GridColumn dataField="AUDIT_NAME" headerText="审批人"></s:GridColumn>
+				<s:GridColumn dataField="AUDITTIME" headerText="审批时间"></s:GridColumn>
+				<s:GridColumn dataField="POSITION" headerText="修改位置"></s:GridColumn>
+			</s:ArrayList>
+		</s:columns>
+	</s:DataGrid>
+	<s:Label x="9" y="271" color="#FC0404" text="修  改  人："/>
+	<s:Label id="pname" x="86" y="271" text="{dg.selectedItem.MODER_NAME.length==0?SysUserLocator.getInstance().loginUser.NAME:dg.selectedItem.MODER_NAME}"/>
+	<s:Label x="275" y="271" color="#FC0303" text="修改时间："/>
+	<s:Label x="9" y="301" color="#FC0303" text="审  批  人："/>
+	<s:Label x="9" y="331" color="#FC0404" text="修改位置："/>
+	<s:TextInput id="position" x="87" y="321" width="716" text="{dg.selectedItem.POSITION}"/>
+	<s:Button x="294" y="515" label="增加" click="insertClickHandler(event)"
+			  skinClass="assets.skins.Button_zj"
+			  enabled="{PsbLocator.getInstance().npending}"/>
+	<s:Button x="372" y="515" label="修改"
+			  skinClass="assets.skins.Button_xg"
+			  click="updateClickHandler(event)" enabled="{PsbLocator.getInstance().npending}"/>
+	<s:Button x="450" y="516" label="删除"
+			  skinClass="assets.skins.Button_sc"
+			  click="deleteClickHandler(event)" enabled="{PsbLocator.getInstance().npending}"/>
+	<s:Label x="10" y="10" color="#0A37FA" fontSize="20" fontWeight="bold" text="鉴定文书修改记录"/>
+	<tool:DateZh id="modtime" x="353" y="261" width="180" text="{dg.selectedItem.MODTIME}"/>
+	<tool:DocModAUDdl id="audit" x="87" y="292" width="180" auth="" selectedData="{dg.selectedItem.AUDIT}"/>
+	<s:Label x="275" y="298" color="#FC0404" text="审批时间："/>
+	<s:Label x="9" y="353" color="#FC0303" text="原来内容："/>
+	<s:TextArea id="oritext" x="87" y="353" width="310" height="153" text="{dg.selectedItem.ORITEXT}"/>
+	<s:Label x="415" y="354" color="#FC0303" text="修  改  后："/>
+	<s:TextArea id="nowtext" x="493" y="354" width="310" height="153" text="{dg.selectedItem.NOWTEXT}"/>
+	<local:SingleFileUploader id="suf" x="729" y="517" label="下载文档" filter="{filter}" visible="false"/>
+	<s:Button id="uuf" x="642" y="517" label="上传" click="upload()" visible="false"/>
+	<s:Label x="541" y="271" text="文书编号："/>
+	<s:TextInput id="no" x="619" y="261" width="184" text="{dg.selectedItem.NUMBER}"/>
+	<tool:DateZh id="audittime" x="353" y="289" width="180" text="{dg.selectedItem.AUDITTIME}"/>
+</s:Group>

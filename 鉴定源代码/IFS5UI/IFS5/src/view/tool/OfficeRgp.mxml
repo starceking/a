@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:TileGroup xmlns:fx="http://ns.adobe.com/mxml/2009"
+			 xmlns:s="library://ns.adobe.com/flex/spark"
+			 xmlns:mx="library://ns.adobe.com/flex/mx"
+			 horizontalGap="0">
+	<fx:Script>
+		<![CDATA[			
+			import locator.JusTypeLocator;
+			import locator.SysUserLocator;
+			import mx.collections.ArrayList;
+			import mx.utils.UIDUtil;
+			
+			import spark.components.RadioButton;
+			
+			public static var event_name:String="OfficeRgp_Event";
+			
+			private var ae:Boolean=false;
+			public function set allEnable(ae:Boolean):void
+			{
+				this.ae=ae;
+			}
+			
+			public function set dnaEnable(ofcType:String):void
+			{
+				var list:ArrayList=new ArrayList();
+				
+				if(ofcType=="0")//全部
+				{
+					list=JusTypeLocator.getInstance().getAllOffice();
+					if(JusTypeLocator.getInstance().jusTypeVo.Enabled=="1")list.addItem({label:"DNA"});
+				}
+				else if(ofcType=="1")//非dna
+				{
+					list=JusTypeLocator.getInstance().getAllOffice();
+				}
+				else if(ofcType=="2")//dna
+				{
+					list.addItem({label:"DNA"})	
+				}
+				else if(ofcType=="3")//其他
+				{
+					list=JusTypeLocator.getInstance().getAllOffice();
+					list.addItem({label:"DNA"})	
+					list.addItem({label:"其他"})	
+					list.addItem({label:"DNA试剂"})	
+				}
+				else if(ofcType=="4")//公用文件
+				{
+					list=JusTypeLocator.getInstance().getAllOffice();
+					list.addItem({label:"DNA"})	
+					list.addItemAt({label:"公用"},0);
+				}
+				
+				if(ae)
+				{
+					list.addItemAt({label:"全部"},0);
+				}
+				
+				initOfc(list);
+			}
+			
+			public function set queryOfc(ofc:String):void
+			{
+				var list:ArrayList=new ArrayList();
+				if((SysUserLocator.getInstance().loginUser.CURRENT_ROLE=="Techer")||
+					(SysUserLocator.getInstance().loginUser.CURRENT_ROLE=="Leader")||
+					(SysUserLocator.getInstance().loginUser.CURRENT_ROLE=="Insider"))
+				{
+					list=JusTypeLocator.getInstance().getAllOffice();
+					list.addItem({label:"DNA"})	;
+				}
+				else if(ofc.length>0)list.addItem({label:ofc});
+				else
+				{
+					list=JusTypeLocator.getInstance().getAllOffice();
+					list.addItem({label:"DNA"})	;
+				}
+				initOfc(list);
+			}
+			
+			private var selectedItem:String="";
+			public function set office(oName:String):void
+			{
+				selectedItem=oName;
+				if(this.numElements>0)
+				{
+					for(var i:int=0;i<this.numElements;i++)
+					{
+						var rb:RadioButton=this.getElementAt(i) as RadioButton;
+						if(rb.label==oName)
+						{
+							rb.selected=true;
+						}
+						else
+						{
+							rb.selected=false;
+						}
+					}
+				}
+			}			
+			public function get office():String
+			{
+				return selectedItem;
+			}
+			
+			private function initOfc(list:ArrayList):void
+			{
+				this.removeAllElements();
+				var guid:String=UIDUtil.createUID();
+				for(var i:int=0;i<list.length;i++)
+				{
+					var rb:RadioButton=new RadioButton();
+					rb.groupName=guid;
+					rb.label=list.getItemAt(i).label;
+					rb.selected=(selectedItem==rb.label);
+					rb.addEventListener(Event.CHANGE,changeEvt);
+					this.addElement(rb);
+				}
+			}
+			
+			private function changeEvt(evt:Event):void
+			{
+				selectedItem=(evt.target as RadioButton).label;
+				if(selectedItem=="全部")selectedItem="";
+				dispatchEvent(new Event(event_name));
+			}
+		]]>
+	</fx:Script>
+</s:TileGroup>

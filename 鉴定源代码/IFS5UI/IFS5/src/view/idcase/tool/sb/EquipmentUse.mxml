@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
+		 xmlns:s="library://ns.adobe.com/flex/spark" 
+		 xmlns:mx="library://ns.adobe.com/flex/mx"
+		 xmlns:tool="view.tool.*"
+		 fontSize="14" width="813" height="553"
+		 creationComplete="module1_creationCompleteHandler(event)"
+		 >
+	<fx:Script>
+		<![CDATA[
+			import com.adobe.cairngorm.control.CairngormEventDispatcher;
+			import control.*;
+			
+			import locator.EquipmentLocator;
+			import locator.MenuLocator;
+			import locator.EquipmentUseLocator;
+			import mx.events.FlexEvent;
+			import util.Helper;
+			import vo.EquipmentUseVo;
+			import vo.MenuVo;	
+			
+			protected function module1_creationCompleteHandler(event:FlexEvent):void
+			{
+				// TODO Auto-generated method stub
+				EquipmentUseLocator.getInstance().wsObj=new EquipmentUseVo(Helper.getGUID(),EquipmentLocator.getInstance().currObj.ID,TextSyr.text,TextKssj.text,TextJssj.text,TextZt.text,TextSyyy.text);
+				CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.EQUIPMENTUSE_GetOne));
+			}
+			protected function BtnAdd_clickHandler(event:MouseEvent):void
+			{
+				// TODO Auto-generated method stub
+				EquipmentUseLocator.getInstance().wsObj=new EquipmentUseVo(Helper.getGUID(),EquipmentLocator.getInstance().currObj.ID,TextSyr.text,TextKssj.text,TextJssj.text,TextZt.text,TextSyyy.text);
+				CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.EQUIPMENTUSE_Insert));
+				Helper.showAlert("新增成功！");
+			}
+			
+			protected function BtnDelete_clickHandler(event:MouseEvent):void
+			{
+				// TODO Auto-generated method stub
+				
+				EquipmentUseLocator.getInstance().wsObj =gd.selectedItem as EquipmentUseVo ;
+				CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.EQUIPMENTUSE_Delete));
+				
+				Helper.showAlert("删除成功！");
+				
+			}
+			
+			protected function BtnUpfate_clickHandler(event:MouseEvent):void
+			{
+				// TODO Auto-generated method stub
+				EquipmentUseLocator.getInstance().wsObj=new EquipmentUseVo(gd.selectedItem.ID,EquipmentLocator.getInstance().currObj.ID,TextSyr.text,TextKssj.text,TextJssj.text,TextZt.text,TextSyyy.text);
+				CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.EQUIPMENTUSE_Update));
+				Helper.showAlert("修改成功！");
+			}
+			
+			protected function button1_clickHandler(event:MouseEvent):void
+			{
+				// TODO Auto-generated method stub
+				EquipmentLocator.getInstance().wordName="CSTCSG-500-024仪器设备使用记录.doc";
+				EquipmentLocator.getInstance().num=EquipmentLocator.getInstance().currObj.ID;
+				EquipmentLocator.getInstance().filename=Helper.getGUID();
+				CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.EQUIPMENT_MackAllFB));
+			}
+			
+		]]>
+	</fx:Script>
+	<fx:Declarations>
+		<!-- 将非可视元素（例如服务、值对象）放在此处 -->
+	</fx:Declarations>
+	<s:Label x="10" y="10" color="#0A37FA" fontSize="20" fontWeight="bold" text="使用记录"/>
+	<s:DataGrid id="gd" x="10" y="38" width="793" height="287" dataProvider="{EquipmentUseLocator.getInstance().listObj}">
+		<s:columns>
+			<s:ArrayList>
+				<s:GridColumn dataField="SYR" headerText="使用人"></s:GridColumn>
+				<s:GridColumn dataField="KSSJ" headerText="开始时间"></s:GridColumn>
+				<s:GridColumn dataField="JSSJ" headerText="结束时间"></s:GridColumn>
+				<s:GridColumn dataField="ZT" headerText="状态"></s:GridColumn>
+			</s:ArrayList>
+		</s:columns>
+	</s:DataGrid>
+	<s:Label x="409" y="399" text="使用专业："/>
+	<s:TextInput id="TextZy" x="486" y="391" width="319"
+				 text="{EquipmentLocator.getInstance().currObj.SYZY}" enabled="false"/>
+	<s:Label x="11" y="343" text="设备名称：" />
+	<s:TextInput id="TextSbmc" x="88" y="333" width="310"
+				 text="{EquipmentLocator.getInstance().currObj.SBYQMC}" enabled="false"/>
+	<s:Label x="10" y="373" text="识  别  号："/>
+	<s:TextInput id="TextSbh" x="90" y="364" width="308"
+				 text="{EquipmentLocator.getInstance().currObj.SBSBH}" enabled="false"/>
+	<s:Label x="12" y="456" text="使用原因："/>
+	<s:TextArea id="TextSyyy" x="90" y="454" width="713" height="59" text="{gd.selectedItem.SYYY}"/>
+	<s:Label x="407" y="342" text="使  用  人："/>
+	<s:TextInput id="TextSyr" x="486" y="333" width="318" text="{gd.selectedItem.SYR}"/>
+	<s:Label x="12" y="404" text="开始时间："/>
+	<tool:DateZh  id="TextKssj" x="90" y="395" width="311" text="{gd.selectedItem.KSSJ}"/>
+	<s:Label x="12" y="431" text="结束时间："/>
+	<tool:DateZh  id="TextJssj" x="89" y="425" width="312" text="{gd.selectedItem.JSSJ}"/>
+	<s:Label x="409" y="372" text="状       态："/>
+	<s:TextInput id="TextZt" x="487" y="362" width="317" text="{gd.selectedItem.ZT}"/>
+	<s:Button id="BtnAdd" x="571" y="521" label="新增" click="BtnAdd_clickHandler(event)"/>
+	<s:Button id="BtnDelete" x="733" y="521" label="删除" click="BtnDelete_clickHandler(event)" enabled="{gd.selectedItem!=null}"/>
+	<s:Button id="BtnUpfate" x="655" y="521" label="修改" click="BtnUpfate_clickHandler(event)" enabled="{gd.selectedItem!=null}"/>
+	<mx:LinkButton x="574" y="11" width="229" label="打印仪器设备使用一览记录" click="button1_clickHandler(event)" textDecoration="underline" color="blue"/>
+	
+</s:Group>

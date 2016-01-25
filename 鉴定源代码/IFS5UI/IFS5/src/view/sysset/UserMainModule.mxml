@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Module xmlns:fx="http://ns.adobe.com/mxml/2009" 
+		  xmlns:s="library://ns.adobe.com/flex/spark" 
+		  xmlns:mx="library://ns.adobe.com/flex/mx" 
+		  width="953" height="598" fontSize="14"
+		  xmlns:tool="view.tool.*" creationComplete="module1_creationCompleteHandler(event)">
+	<fx:Declarations>
+		<!-- 将非可视元素（例如服务、值对象）放在此处 -->
+	</fx:Declarations>
+	<fx:Script>
+		<![CDATA[
+			import com.adobe.cairngorm.control.CairngormEventDispatcher;
+			
+			import locator.*;
+			
+			import mx.core.FlexGlobals;
+			import mx.events.FlexEvent;
+			import mx.rpc.events.FaultEvent;
+			import mx.rpc.events.ResultEvent;
+			import mx.rpc.soap.WebService;
+			
+			import util.Helper;
+			import util.Server;
+			
+			private var locObj:IdCaseLocator=IdCaseLocator.getInstance();
+			var law_state:String="";
+			var ws:WebService; 
+			function get Ws():WebService
+			{
+				if(ws==null)
+				{
+					ws=new WebService(); 
+					ws.loadWSDL(Server.getWsUrl("案件信息WS"));
+					ws.GetMain.addEventListener(ResultEvent.RESULT,getMain);
+					ws.GetMain.addEventListener(FaultEvent.FAULT,faultHandler);
+				}
+				return ws;
+			}
+			function getMain(event:ResultEvent):void
+			{				
+				//var result:String=event.result.toString();
+				var result:String=event.result.toString();
+				//Helper.showAlert(result);
+				var arr:Array=result.split(',');
+				dlq.label=arr[0];
+				dsl.label=arr[1];
+				djy.label=arr[2];
+				dshh.label=arr[3];
+				dfh.label=arr[4];
+				dshp.label=arr[5];
+				dfw.label=arr[6];
+				//ygd.label=arr[4];
+				
+			}
+			function faultHandler(evt:FaultEvent):void
+			{
+				Helper.showAlert("与服务器交互失败："+evt.fault.faultString);
+			}
+			protected function module1_creationCompleteHandler(event:FlexEvent):void
+			{
+				MenuLocator.getInstance().changeMenu(menuGp);
+				// TODO Auto-generated method stub			;
+				Ws.GetMain(SysUserLocator.getInstance().loginUser.NAME,SysUserLocator.getInstance().loginUser.OFFICE,SysUserLocator.getInstance().loginUser.PSBID);
+				if(SysUserLocator.getInstance().loginUser.ROLES=="Consign")
+				{
+					wt.visible=true;
+					fy.visible=false;
+					jg.visible=false;
+					ld.visible=false;
+				}
+				else if(SysUserLocator.getInstance().loginUser.ROLES=="Office"||SysUserLocator.getInstance().loginUser.ROLES=="DNA")
+				{
+					fy.visible=true;
+					wt.visible=false;
+					jg.visible=false;
+					ld.visible=false;
+				}
+				else if(SysUserLocator.getInstance().loginUser.ROLES=="Techer")
+				{
+					jg.visible=true;
+					wt.visible=false;
+					fy.visible=false;
+					ld.visible=false;
+				}
+				else if(SysUserLocator.getInstance().loginUser.ROLES=="Office")
+				{
+					ld.visible=true;
+					wt.visible=false;
+					fy.visible=false;
+					jg.visible=false
+				}
+;
+			}
+			
+		]]>
+	</fx:Script>
+	<s:Panel width="953" height="598">
+		<s:HGroup id="menuGp" x="10" y="-27"/>
+		<s:VGroup x="20" y="10" width="846" height="106">
+			<s:HGroup id="wt" x="108" y="26" >
+				<s:Label x="108" y="26" text="待领取案件："/>
+				<mx:LinkButton id="dlq" x="211" y="21" label="0" textDecoration="underline"  click="MenuLocator.getInstance().initMenu('dlq')"/>
+				<s:Label x="270" y="105" text="例."/>
+			</s:HGroup>
+			<s:HGroup id="fy" x="108" y="105" width="811">
+				<s:Label x="108" y="105" text="待受理案件："/>
+				<mx:LinkButton id="dsl" x="211" y="100" label="0" textDecoration="underline"   click="MenuLocator.getInstance().initMenu('dsl')"/>
+				<s:Label x="270" y="105" text="例."/>
+				<s:Label x="397" y="100" text="待检验案件："/>
+				<mx:LinkButton id="djy" x="500" y="95" label="0" textDecoration="underline"  click="MenuLocator.getInstance().initMenu('djy')"/>
+				<s:Label x="559" y="100" text="例."/>
+				<s:Label x="671" y="100" text="待审核案件："/>
+				<mx:LinkButton id="dshh" x="774" y="95" label="0" textDecoration="underline"  click="MenuLocator.getInstance().initMenu('dshp')"/>
+				<s:Label x="833" y="100" text="例."/>
+				<s:Label text="待发文案件："/>
+				<mx:LinkButton id="dfw" x="974" y="95" label="0" textDecoration="underline"  click="MenuLocator.getInstance().initMenu('dfw')"/>
+				<s:Label text="例."/>
+			</s:HGroup>
+			<s:HGroup id="jg" x="108" y="105" width="811">
+				<s:Label x="671" y="100" text="待复核案件："/>
+				<mx:LinkButton id="dfh" x="774" y="95" label="0" textDecoration="underline"  click="MenuLocator.getInstance().initMenu('djy')"/>
+				<s:Label x="833" y="100" text="例."/>
+			</s:HGroup>
+			<s:HGroup id="ld" x="108" y="105" width="811" >
+				<s:Label x="671" y="100" text="待审批案件："/>
+				<mx:LinkButton id="dshp" x="774" y="95" label="0" textDecoration="underline"  click="MenuLocator.getInstance().initMenu('dshp')"/>
+				<s:Label x="833" y="100" text="例."/>
+			</s:HGroup>
+		</s:VGroup>
+		
+	</s:Panel>
+</s:Module>

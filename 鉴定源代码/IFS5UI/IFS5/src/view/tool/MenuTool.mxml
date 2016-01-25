@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:VGroup xmlns:fx="http://ns.adobe.com/mxml/2009"
+		  xmlns:s="library://ns.adobe.com/flex/spark"
+		  xmlns:mx="library://ns.adobe.com/flex/mx"
+		  width="120" height="120" fontSize="14" horizontalAlign="center">
+	<fx:Declarations>
+		<!-- 将非可视元素（例如服务、值对象）放在此处 -->
+		<!--发光效果-->
+		<s:GlowFilter blurX="30.0" blurY="30.0" color="#cedbef" alpha="1.0"/>
+		<s:AnimateFilter id="glowImage" target="{img}" bitmapFilter="{new GlowFilter()}" duration="60000">
+			<s:SimpleMotionPath property="blurX" valueFrom="30.0" valueTo="0.0"/>
+			<s:SimpleMotionPath property="blurY" valueFrom="30.0" valueTo="0.0"/>
+			<s:SimpleMotionPath property="alpha" valueFrom="1.0" valueTo="0.3"/>
+		</s:AnimateFilter>
+	</fx:Declarations>
+	<fx:Script>
+		<![CDATA[
+			import locator.MenuLocator;
+			import util.Helper;
+			
+			import vo.MenuVo;
+			import mx.core.FlexGlobals;
+			
+			public function set url(urlArg:String):void
+			{
+				img.source=urlArg;
+			}
+			[Bindable]
+			public var label:String="";
+			[Bindable]
+			public var clickUrl:String="";
+			
+			protected function image1_doubleClickHandler(event:MouseEvent):void
+			{
+				if(label=="返        回")
+				{
+					MenuLocator.getInstance().pop();
+				}
+				else if(label=="预试验")
+				{
+					FlexGlobals.topLevelApplication.showPreExamModule();
+				}
+				else if(label=="确证试验")
+				{
+					FlexGlobals.topLevelApplication.showConfirmExamModule();
+				}
+				else if(label=="提取")
+				{
+					FlexGlobals.topLevelApplication.showExtractModule();
+				}
+				else if(label=="扩增")
+				{
+					FlexGlobals.topLevelApplication.showAmplifyModule();
+				}
+				else if(label=="电泳")
+				{
+					FlexGlobals.topLevelApplication.showElectrophoresisModule();
+				}
+				else
+				{
+					Helper.pushMenu(label,clickUrl);
+				}
+			}
+			
+		]]>
+	</fx:Script>
+		<s:Image id="img" width="100" height="100" click="image1_doubleClickHandler(event)" mouseOver="glowImage.play();" mouseOut="glowImage.stop();"/>
+		<s:Label text="{label}"/>
+</s:VGroup>

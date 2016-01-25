@@ -1,0 +1,317 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Module xmlns:fx="http://ns.adobe.com/mxml/2009"
+		  xmlns:s="library://ns.adobe.com/flex/spark"
+		  xmlns:mx="library://ns.adobe.com/flex/mx"
+		  xmlns:local="*"
+		  xmlns:tool="view.tool.*"
+		  width="953" height="598" creationComplete="creationCompleteHandler(event)" fontSize="14">
+	<fx:Declarations>
+		<!-- 将非可视元素（例如服务、值对象）放在此处 -->		
+	</fx:Declarations>
+	<fx:Script>
+		<![CDATA[
+			import com.adobe.cairngorm.control.CairngormEventDispatcher;
+			
+			import control.*;
+			
+			import locator.EquipmentLocator;
+			import locator.ExCaseLocator;
+			import locator.IdFlowLocator;
+			import locator.JusTypeLocator;
+			import locator.MRelativeLocator;
+			import locator.MenuLocator;
+			import locator.MissingPersonLocator;
+			import locator.PsbLocator;
+			import locator.SysUserLocator;
+			
+			import mx.controls.Alert;
+			import mx.events.CloseEvent;
+			import mx.events.FlexEvent;
+			import mx.managers.PopUpManager;
+			
+			import util.Helper;
+			import util.Server;
+			
+			import view.idcase.query.task.NewConsignWindow;
+			
+			import vo.EquipmentVo;
+			import vo.ExCaseVo;
+			import vo.IdFlowVo;
+			import vo.MRelativeVo;
+			import vo.MissingPersonVo;
+			import vo.OfficeJusTypeVo;
+			import vo.SysUserVo;
+			
+			private var soObj:SharedObject;
+			
+			protected function officeRgpChanged(evt:Event):void
+			{
+				jusType.office=office.office;
+			}
+			
+			protected function creationCompleteHandler(event:FlexEvent):void
+			{
+				//移除
+				if(PsbLocator.getInstance().idPsb.ID=='1')
+					VG01.removeElement(HG03);
+				//刚打开该界面必须清空ExCase相关内容
+				IdFlowLocator.getInstance().wholeCase=false;
+				ExCaseLocator.getInstance().listObj.removeAll();
+				ExCaseLocator.getInstance().currentCase=null;
+				
+				MenuLocator.getInstance().changeMenu(menuGp);
+			}
+			
+			protected function queryExClickHandler(evt:Event):void
+			{
+				//if((djrqs.text.length!=0&&djrqe.text.length==0)||(djrqs.text.length==0&&djrqe.text.length!=0))
+				//{
+				//	Helper.showAlert("请选择完整的登记日期段。");
+				//	return;
+				//}
+				if(SYSTEMword.selectedData.length==0)
+				{
+					Helper.showAlert("请选择要关联的系统！");
+					return;
+				}
+				//借用案件名称，存放关联系统名称
+				var sys:String=SYSTEMword.selectedData;
+				//借用案件编号，存放DNA系统编号
+				var dnacaseno:String=dnano.text;
+				
+				ExCaseLocator.getInstance().wsObj=new ExCaseVo("","",dfgk.text,xcky.text,sys,"",dnacaseno,"","","","","");
+				//ExCaseLocator.getInstance().djrqs=djrqs.text;
+				//ExCaseLocator.getInstance().djrqe=djrqe.text;
+				CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.EXCASEWS_GetExCaseList));
+				showConsignWindow();
+				ExCaseLocator.getInstance().winMsgLable=sMsg;
+				sMsg.text="您选择了不与任何案件相关联，或者请双击上表进行关联";
+			}
+			public function showConsignWindow():void
+			{	
+				//接口关联信息				
+				var childWin:NewConsignWindow=new NewConsignWindow();
+				childWin.owner=this;
+				childWin.width=800;
+				childWin.height=600;
+				PopUpManager.addPopUp(childWin, this, true);
+				PopUpManager.centerPopUp(childWin);
+			}
+			protected function dg_doubleClickHandler(event:MouseEvent):void
+			{
+				if(dg.selectedItem!=null)
+				{
+					ExCaseLocator.getInstance().currentCase=dg.selectedItem as ExCaseVo;
+					sMsg.text="将要对“"+dg.selectedItem.CASE_NAME+"”进行送检，确定请进行下一步，否则点击“取消”";
+				}
+			}
+			
+			protected function cancelExClickHandler(event:MouseEvent):void
+			{
+				ExCaseLocator.getInstance().currentCase=null;
+				sMsg.text="您选择了不与任何案件相关联，或者请双击上表进行关联";
+			}			
+			
+			protected function button1_clickHandler():void
+			{
+				var dfk:String="";//警综编号
+				var xk:String="";//现勘编号
+				var ajmc:String="";//案件名称
+				var fasj:String="";//案发时间
+				var fadd:String="";//案发地点
+				var jyaq:String="";//简要案情
+				var qhdm:String="";//区划代码
+				if(ExCaseLocator.getInstance().currentCase!=null)
+				{
+					dfk=ExCaseLocator.getInstance().currentCase.DFGKNO;
+					xk=ExCaseLocator.getInstance().currentCase.XCKYNO;
+					ajmc=ExCaseLocator.getInstance().currentCase.CASE_NAME;
+					fasj=ExCaseLocator.getInstance().currentCase.OCCURRENCE_DATE;
+					fadd=ExCaseLocator.getInstance().currentCase.SCENE_PLACE;
+					jyaq=ExCaseLocator.getInstance().currentCase.CASE_SUMMARY;
+					qhdm=ExCaseLocator.getInstance().currentCase.REGIONCODE;
+					
+					qhdm=(qhdm.length>6?qhdm.substring(0,6):qhdm);									
+				}
+				var caseId:String=Helper.getGUID();
+				if(office.office=="DNA")
+				{
+					if(jusType.jusType=="DNA案件")
+					{
+						IdFlowLocator.getInstance().curObj=new IdFlowVo("D",PsbLocator.getInstance().idPsb.ID,caseId,"信息录入",
+							SysUserLocator.getInstance().loginUser.PSBID,SysUserLocator.getInstance().loginUser.ID,"","","","","","",
+							JusTypeLocator.getInstance().jusTypeVo.YEAR,"",Helper.getStrByDate(new Date()),office.office,
+							jusType.jusType,"",JusTypeLocator.getInstance().jusTypeVo.IDREQ,JusTypeLocator.getInstance().jusTypeVo.DocName,
+							"","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","",
+							"","","",SysUserLocator.getInstance().loginUser.PNAME,SysUserLocator.getInstance().loginUser.PNICKNAME,SysUserLocator.getInstance().loginUser.PNUMBER,
+							SysUserLocator.getInstance().loginUser.NAME,
+							"","","","","","","","","","","",caseId,dfk,xk,ajmc,"",
+							"","受理后自动生成",fadd,qhdm,fasj,"",jyaq,caseId,"","","","","","","","","");
+						Helper.pushMenu("案件委托信息","view/idcase/info/consign/ConsignDnaModule.swf");
+					}
+					else if(jusType.jusType=="失踪人员")
+					{
+						IdFlowLocator.getInstance().curObj=new IdFlowVo("L",PsbLocator.getInstance().idPsb.ID,caseId,"信息录入",
+							SysUserLocator.getInstance().loginUser.PSBID,SysUserLocator.getInstance().loginUser.ID,"","","","","","",
+							JusTypeLocator.getInstance().jusTypeVo.YEAR,"",Helper.getStrByDate(new Date()),office.office,
+							jusType.jusType,"",JusTypeLocator.getInstance().jusTypeVo.IDREQ,JusTypeLocator.getInstance().jusTypeVo.DocName,
+							"","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","",
+							"","","",SysUserLocator.getInstance().loginUser.PNAME,SysUserLocator.getInstance().loginUser.PNICKNAME,SysUserLocator.getInstance().loginUser.PNUMBER,
+							SysUserLocator.getInstance().loginUser.NAME,
+							"","","","","","","","","","","",caseId,"","","",
+							"","","受理后自动生成","","","","","",caseId,"","","","","","","","","");
+						MissingPersonLocator.getInstance().curObj=new MissingPersonVo(caseId,"L","","","","","","","","","",
+							"","","","","","","","","");
+						Helper.pushMenu("失踪人员委托","view/idcase/info/consign/ConsignMpModule.swf");
+					}
+					else if(jusType.jusType=="失踪人亲属")
+					{
+						IdFlowLocator.getInstance().curObj=new IdFlowVo("R",PsbLocator.getInstance().idPsb.ID,caseId,"信息录入",
+							SysUserLocator.getInstance().loginUser.PSBID,SysUserLocator.getInstance().loginUser.ID,"","","","","","",
+							JusTypeLocator.getInstance().jusTypeVo.YEAR,"",Helper.getStrByDate(new Date()),office.office,
+							jusType.jusType,"",JusTypeLocator.getInstance().jusTypeVo.IDREQ,JusTypeLocator.getInstance().jusTypeVo.DocName,
+							"","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","",
+							"","","",SysUserLocator.getInstance().loginUser.PNAME,SysUserLocator.getInstance().loginUser.PNICKNAME,SysUserLocator.getInstance().loginUser.PNUMBER,
+							SysUserLocator.getInstance().loginUser.NAME,
+							"","","","","","","","","","","",caseId,"","","",
+							"","","受理后自动生成","","","","","",caseId,"","","","","","","","","");
+						MRelativeLocator.getInstance().curObj=new MRelativeVo(caseId,"R","",
+							Helper.getGUID(),Helper.getGUID(),"","","","","","","",
+							"","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","");
+						Helper.pushMenu("失踪人员亲属委托","view/idcase/info/consign/ConsignMprModule.swf");
+					}
+				}
+				else if(jusType.jusType.length>0)
+				{
+					var jtypex:OfficeJusTypeVo=JusTypeLocator.getInstance().getJusType(office.office,jusType.jusType);
+					IdFlowLocator.getInstance().curObj=new IdFlowVo("C",PsbLocator.getInstance().idPsb.ID,"","信息录入",
+						SysUserLocator.getInstance().loginUser.PSBID,SysUserLocator.getInstance().loginUser.ID,"","","","","","",
+						JusTypeLocator.getInstance().jusTypeVo.YEAR,"",Helper.getStrByDate(new Date()),office.office,
+						jusType.jusType,"",jtypex.IDREQ,jtypex.DocName,"",
+						"","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","",
+						"","","",SysUserLocator.getInstance().loginUser.PNAME,SysUserLocator.getInstance().loginUser.PNICKNAME,SysUserLocator.getInstance().loginUser.PNUMBER,
+						SysUserLocator.getInstance().loginUser.NAME,
+						"","","","","","","","","","","",caseId,dfk,xk,ajmc,"",
+						"","受理后自动生成",fadd,qhdm,fasj,"",jyaq,caseId,"","","","","","","","","");
+					Helper.pushMenu("案件委托信息","view/idcase/info/consign/ConsignIdCaseModule.swf");
+				}
+				else
+				{
+					Helper.showAlert("请选择鉴定专业与类别");
+				}
+				PsbLocator.getInstance().clearData();
+			}
+			
+			protected function button2_clickHandler(event:MouseEvent):void
+			{
+				//温馨提示
+				Alert.show("您是否要将案子送到<市刑科所>进行检验？ 如确认无误,请点击[确定]按钮,页面将自动跳转到<市刑科所系统>,登录系统进行案件委托!","温馨提示",Alert.YES|Alert.CANCEL,this,delhandler_04,null,Alert.CANCEL); 
+			}
+			private function delhandler_04(evt:CloseEvent):void
+			{
+				if(evt.detail==Alert.YES)
+				{
+					//执行内容
+					navigateToURL(new URLRequest(Server.getLinksUrl("1")));
+				}
+			}
+			
+		]]>
+	</fx:Script>
+	<s:Panel width="953" height="598">
+		<s:HGroup id="menuGp" x="10" y="-27"/>	
+		<s:VGroup id="VG01" left="60" right="20" top="20" bottom="20" gap="10">
+			<s:HGroup width="100%">
+				<s:Label fontWeight="bold" text="第一步：确认鉴定单位"/>
+			</s:HGroup>
+			<s:HGroup width="100%" verticalAlign="middle">
+				<s:Spacer width="50" height="10"/>
+				<s:Label color="#F7170C"
+						 text="{'该案件的受理鉴定单位为：  '+PsbLocator.getInstance().idPsb.NAME+'('+PsbLocator.getInstance().idPsb.PHONE+')  请确认后继续操作。'}"/>
+			</s:HGroup>
+			<s:HGroup id="HG03" width="100%" verticalAlign="middle">
+				<s:Spacer width="50" height="10"/>
+				<s:Label color="#2A00FF" text="如果要委托案子到市刑科所，请登录市刑科所系统进行委托！"/>
+				<s:Button label="送检市刑科所入口" click="button2_clickHandler(event)" visible="false"/>
+			</s:HGroup>
+			<s:HGroup width="100%">
+				<s:Label fontWeight="bold" text="第二步：关联警综平台或现场勘验（未录入这2个系统的案件请跳过这一步）"/>
+			</s:HGroup>
+			<s:HGroup width="100%" verticalAlign="middle">
+				<s:Spacer width="47" height="10"/>
+				<s:Label text="选择关联系统："/>
+				<tool:DictDdl id="SYSTEMword" width="236" dictName="关联系统"/>
+				<s:Label text="DNA系统编号："/>
+				<s:TextInput id="dnano" width="240"/>
+			</s:HGroup>
+			<s:HGroup width="100%" verticalAlign="middle">
+				<s:Spacer width="50" height="10"/>
+				<s:Label text="警  综  编  号："/>
+				<s:TextInput id="dfgk" width="240"/>
+				<s:Label text="现场勘验编号："/>
+				<s:TextInput id="xcky" width="240"/>
+				<s:Button label="查询" click="pager.pageIndex=1;queryExClickHandler(event)"
+						  enabled="{PsbLocator.getInstance().npending}"/>
+			</s:HGroup>
+			<!--<s:HGroup width="100%" verticalAlign="middle">
+				<s:Spacer width="50" height="10"/>
+				<s:Label text="登  记  日  期："/>
+				<tool:DateZh id="djrqs" width="240"/>
+				<s:Label width="98" text="          到"/>
+				<tool:DateZh id="djrqe" width="240"/>
+			</s:HGroup>
+			<s:HGroup width="100%" verticalAlign="middle">
+				<s:Spacer width="50" height="10"/>
+				<s:Label text="案  件  名  称："/>
+				<s:TextInput id="caseName" width="590"/>
+			</s:HGroup>-->
+			<s:HGroup width="100%">
+				<s:Spacer width="150" height="10"/>
+				<s:DataGrid id="dg" width="590" height="137"
+							dataProvider="{ExCaseLocator.getInstance().listObj}"
+							doubleClick="dg_doubleClickHandler(event)" doubleClickEnabled="true">
+					<s:columns>
+						<s:ArrayList>
+							<s:GridColumn dataField="CASE_NAME" headerText="案件名称"></s:GridColumn>
+							<s:GridColumn dataField="DFGKNO" headerText="警综编号"></s:GridColumn>
+							<s:GridColumn dataField="XCKYNO" headerText="现勘编号"></s:GridColumn>
+						</s:ArrayList>
+					</s:columns>
+				</s:DataGrid>
+			</s:HGroup>
+			<s:HGroup width="100%" horizontalAlign="right">
+				<local:ListPager id="pager"
+								 creationComplete="pager.addEventListener(ListPager.PAGE_INDEX_CHANGE_EVENT,queryExClickHandler);ExCaseLocator.getInstance().listPager=pager;"
+								 pageSize="18">
+				</local:ListPager>
+				<s:Spacer x="753" width="120" height="10"/>
+			</s:HGroup>
+			<s:HGroup width="100%" verticalAlign="middle">
+				<s:Spacer width="70" height="10"/>
+				<mx:LinkButton label="取消关联" click="cancelExClickHandler(event)" textDecoration="underline"/>
+				<s:Label id="sMsg" color="#F80505" text="您选择了不与任何案件相关联，或者请双击上表进行关联"/>
+			</s:HGroup>
+			<s:HGroup width="100%">
+				<s:Label fontWeight="bold" text="第三步：选择鉴定专业与类别"/>
+			</s:HGroup>
+			<s:HGroup width="100%" verticalAlign="middle">
+				<s:Spacer width="80" height="10"/>
+				<s:Label color="#FE0505" text="鉴定专业："/>
+				<tool:OfficeRgp id="office" width="700"
+								creationComplete="office.addEventListener(OfficeRgp.event_name,officeRgpChanged)"
+								dnaEnable="{JusTypeLocator.getInstance().jusTypeVo.Enabled=='1'?'0':'1'}">
+				</tool:OfficeRgp>
+			</s:HGroup>
+			<s:HGroup width="100%" verticalAlign="middle">
+				<s:Spacer width="80" height="10"/>
+				<s:Label color="#FE0505" text="鉴定类别："/>
+				<tool:JusTypeRgp id="jusType" width="700">
+				</tool:JusTypeRgp>
+			</s:HGroup>
+			<s:HGroup width="100%" horizontalAlign="center">
+				<s:Button id="nextBtn" click="button1_clickHandler()"
+						  skinClass="assets.skins.Button_xyb"/>
+			</s:HGroup>
+		</s:VGroup>
+	</s:Panel>
+</s:Module>

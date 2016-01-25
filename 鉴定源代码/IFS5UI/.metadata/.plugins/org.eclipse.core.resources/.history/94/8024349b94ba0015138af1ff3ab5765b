@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:TitleWindow xmlns:fx="http://ns.adobe.com/mxml/2009"
+			   xmlns:s="library://ns.adobe.com/flex/spark"
+			   xmlns:mx="library://ns.adobe.com/flex/mx"
+			   xmlns:ns1="*"
+			   xmlns:tool="view.tool.*"
+			   defaultButton="{btn}"
+			   width="1200" height="840" close="PopUpManager.removePopUp(this);"
+			   creationComplete="titlewindow1_creationCompleteHandler(event)"  fontSize="14"
+			   title="预实验【请选中对应的样本，并把它们拖到右侧列表中进行预实验】">
+	<fx:Script>
+		<![CDATA[
+			import com.adobe.cairngorm.control.CairngormEventDispatcher;
+			
+			import control.*;
+			
+			import locator.PreExamLocator;
+			import locator.PsbLocator;
+			import locator.SysUserLocator;
+			
+			import mx.collections.ArrayList;
+			import mx.events.FlexEvent;
+			import mx.managers.PopUpManager;
+			
+			import util.Helper;
+			
+			import vo.PreExamVo;
+			import vo.StrVo;
+			
+			private var locObj:PreExamLocator=PreExamLocator.getInstance();
+			private var listObj:ArrayList=new ArrayList();
+			private var preList:ArrayList=new ArrayList();
+			
+			protected function titlewindow1_creationCompleteHandler(event:FlexEvent):void
+			{
+				locObj.PreExamListObj.removeAll();
+				queryClickHandler(null);
+			}
+			
+			protected function queryClickHandler(evt:Event):void
+			{
+				//查询
+				locObj.StrwsObj=new StrVo("","","","",pnum.text,pname.text,sc.selectedData,"","","","","","","","","","","","","",
+					"","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","");
+				locObj.StrwsObj.SC="现场物证";
+				locObj.slsjs=slsjs.text;
+				locObj.slsje=slsje.text;
+				
+				locObj.yjr=SysUserLocator.getInstance().loginUser.ID;
+				locObj.jystatus="";
+				locObj.yblx="";
+				if(CB01.selected==true)locObj.yblx+=CB01.label+"，";
+				if(CB02.selected==true)locObj.yblx+=CB02.label+"，";
+				if(CB03.selected==true)locObj.yblx+=CB03.label+"，";
+				
+				locObj.preexam="0";
+				
+				CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.PREEXAMWS_QueryPreExam));
+			}
+			
+			protected function tabnavigator1_changeHandler():void
+			{
+				//下一步
+				for(var i:int=0;i<listObj.length;i++)
+				{
+					preList.addItem(new PreExamVo(listObj.getItemAt(i).ID,listObj.getItemAt(i).CASE_ID,listObj.getItemAt(i).CONNO,
+						listObj.getItemAt(i).SC,listObj.getItemAt(i).SLN,listObj.getItemAt(i).NAME,
+						listObj.getItemAt(i).SAMPLE_TYPE,syff.getSelectedItem(),SysUserLocator.getInstance().loginUser.ID,"","阳性"));						
+				}
+				tn.removeElement(sdff);
+			}
+			
+			protected function button1_clickHandler(event:MouseEvent):void
+			{	
+				//预试验保存
+				var preNum=preList.length;
+				var arr:Array=new Array();
+				for(var i:int=0;i<preNum;i++)
+				{
+					var voObj:PreExamVo=preList.getItemAt(i) as PreExamVo;
+					
+					arr.push(new Array());
+					arr[i][0]=voObj.CASE_ID;//案件ID
+					arr[i][1]=voObj.CONNO;//委托编号
+					arr[i][2]=voObj.SC;//库类型
+					arr[i][3]=voObj.SLN;//样本编号
+					arr[i][4]=voObj.NAME;//样本名称
+					arr[i][5]=voObj.SAMPLE_TYPE;//样本类型
+					arr[i][6]=voObj.TEST_METHOD;//试验方法
+					arr[i][7]=voObj.TESTER;//试验人
+					arr[i][8]=syrq.text;//日期
+					arr[i][9]=voObj.RESULT;//试验结果		
+				}
+				PreExamLocator.getInstance().PreExamArray=arr;
+				
+				CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.PREEXAMWS_InsertPreExam));
+				
+				PopUpManager.removePopUp(this);
+			}
+
+			
+		]]>
+	</fx:Script>
+	<mx:TabNavigator id="tn" left="10" right="10" top="10" bottom="10">
+		<s:NavigatorContent id="sdff" width="100%" height="100%" label="选择样本">
+			<s:VGroup left="10" right="10" top="10" bottom="10" gap="10">
+				<s:HGroup width="100%" verticalAlign="middle">
+					<s:Label text="检材编号："/>
+					<s:TextInput id="pnum" width="180"/>
+					<s:Label text="检材名称："/>
+					<s:TextInput id="pname" width="180"/>
+					<s:Label text="检材类别："/>
+					<s:HGroup width="100%">
+						<s:CheckBox id="CB01" label="血斑/血液" selected="true"/>
+						<s:CheckBox id="CB02" label="精斑" selected="true"/>
+						<s:CheckBox id="CB03" label="其他" selected="true"/>
+					</s:HGroup>
+				</s:HGroup>
+				<s:HGroup width="100%" verticalAlign="middle">
+					<s:Label text="受理时间："/>
+					<tool:DateZh id="slsjs" width="180"/>
+					<s:Label width="70" text="      到"/>
+					<tool:DateZh id="slsje" width="180"/>
+					<s:Label text="库  类  型："/>
+					<tool:DictDdl id="sc" width="180" allEnable="true" dictName="库类型" enabled="false"/>
+					<s:Button id="btn" label="查询" click="queryClickHandler(event)"
+							  enabled="{PsbLocator.getInstance().npending}"/>
+				</s:HGroup>
+				<s:HGroup width="100%" verticalAlign="middle">
+					<s:Label text="全部样本（请选中对应的样本，并把它们拖到右侧列表中）"/>
+					<s:Spacer width="165" height="10"/>
+					<s:HGroup>
+						<s:Label text="预试验样本"/>
+						<s:Label color="#ff0000" text="共"/>
+						<s:Label color="#ff0000" text="{listObj.length}"/>
+						<s:Label color="#ff0000" text="条"/>
+						<s:Label text="（双击移除）"/>
+					</s:HGroup>
+					<s:Label color="#0000FF" text="默认试验方法："/>
+					<tool:DictCbb id="syff" width="170" dictName="预试验方法"/>
+					<s:Button click="tabnavigator1_changeHandler()" skinClass="assets.skins.Button_xyb"/>
+				</s:HGroup>
+				<s:HGroup width="100%" height="100%">
+					<s:VGroup width="520" height="100%" gap="0" horizontalAlign="right">
+						<s:HGroup width="100%" gap="0">
+							<s:TextInput width="163" text="实验室编号" textAlign="center" editable="false"/>
+							<s:TextInput width="252" text="物证名称" textAlign="center" editable="false"/>
+							<s:TextInput width="105" text="物证类型" textAlign="center" editable="false"/>
+						</s:HGroup>
+						<s:List id="list1" width="100%" height="100%" allowMultipleSelection="true"
+								dataProvider="{locObj.PreExamListObj}"
+								doubleClick="locObj.PreExamListObj.removeItemAt(list1.selectedIndex)"
+								doubleClickEnabled="true" dragEnabled="true"
+								itemRenderer="view.idcase.sampletest.SampleRenderer"></s:List>
+						<s:Spacer width="10" height="6"/>
+						<ns1:ListPager id="pager"
+									   creationComplete="pager.addEventListener(ListPager.PAGE_INDEX_CHANGE_EVENT,queryClickHandler);locObj.PreExamListPager=pager;"
+									   pageSize="36">
+						</ns1:ListPager>
+					</s:VGroup>
+					<s:Spacer width="10" height="10"/>
+					<s:VGroup width="520" height="100%" gap="0">
+						<s:HGroup width="100%" gap="0">
+							<s:TextInput width="133" text="实验室编号" textAlign="center" editable="false"/>
+							<s:TextInput width="282" text="物证名称" textAlign="center" editable="false"/>
+							<s:TextInput width="105" text="物证类型" textAlign="center" editable="false"/>
+						</s:HGroup>
+						<s:List id="list0" width="100%" height="100%" dataProvider="{listObj}"
+								doubleClick="listObj.removeItemAt(list0.selectedIndex)"
+								doubleClickEnabled="true" dropEnabled="true"
+								itemRenderer="view.idcase.sampletest.SampleRenderer"></s:List>
+					</s:VGroup>
+					
+				</s:HGroup>
+			</s:VGroup>
+		</s:NavigatorContent>
+		<s:NavigatorContent width="100%" height="100%" label="填写详细信息">
+			<s:VGroup left="10" right="10" top="10" bottom="10">
+				<s:HGroup width="100%" gap="10" verticalAlign="middle">
+					<s:Label text="试验人："/>
+					<s:Label width="100" text="{SysUserLocator.getInstance().loginUser.NAME}"/>
+					<s:Label text="试验时间："/>
+					<tool:DateZh id="syrq" width="180" text="{Helper.getStrByDate(new Date())}"/>
+					<s:Button click="button1_clickHandler(event)"
+							  enabled="{PsbLocator.getInstance().npending}"
+							  skinClass="assets.skins.Button_bc"/>
+					<s:HGroup>
+						<s:Label color="#FF0000" text="预试验样本"/>
+						<s:Label color="#ff0000" text="共"/>
+						<s:Label color="#ff0000" text="{preList.length}"/>
+						<s:Label color="#ff0000" text="条"/>
+					</s:HGroup>
+					<s:Label color="#0000FA" text="请先填写完下面的信息再“保存”，该保存按钮只允许点击一次"/>
+				</s:HGroup>
+				<s:VGroup width="100%" height="100%" gap="0">
+					<s:HGroup width="100%" gap="0">
+						<s:TextInput width="203" text="实验室编号" textAlign="center" editable="false"/>
+						<s:TextInput width="236" text="物证名称" textAlign="center" editable="false"/>
+						<s:TextInput width="86" text="物证类型" textAlign="center" editable="false"/>
+						<s:TextInput width="306" text="预试验方法" textAlign="center" editable="false"/>
+						<s:TextInput width="176" text="试验结果" textAlign="center" editable="false"/>
+					</s:HGroup>
+					<s:List id="list2" width="100%" height="100%" dataProvider="{preList}"
+							itemRenderer="view.idcase.sampletest.PreExam.PreExamRenderer"></s:List>
+				</s:VGroup>
+				
+			</s:VGroup>
+		</s:NavigatorContent>
+	</mx:TabNavigator>
+</s:TitleWindow>

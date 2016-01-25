@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Module xmlns:fx="http://ns.adobe.com/mxml/2009"
+		  xmlns:s="library://ns.adobe.com/flex/spark"
+		  xmlns:mx="library://ns.adobe.com/flex/mx"
+		  xmlns:ns1="*"
+		  width="953" height="598" creationComplete="moduleCreationCompleteHandler(null)"
+		  fontSize="14">
+	<fx:Declarations>
+		<!-- 将非可视元素（例如服务、值对象）放在此处 -->		
+	</fx:Declarations>
+	<fx:Script>
+		<![CDATA[
+			import com.adobe.cairngorm.control.CairngormEventDispatcher;
+			
+			import control.*;
+			
+			import locator.ExCaseLocator;
+			import locator.IdFlowLocator;
+			import locator.JusTypeLocator;
+			import locator.MRelativeLocator;
+			import locator.MenuLocator;
+			import locator.MissingPersonLocator;
+			import locator.PsbLocator;
+			import locator.SysUserLocator;
+			
+			import mx.events.FlexEvent;
+			
+			import util.Helper;
+			
+			import vo.IdFlowVo;
+			import vo.MRelativeVo;
+			import vo.MissingPersonVo;
+			
+			protected function dg_doubleClickHandler(event:MouseEvent):void
+			{
+				if(dg.selectedItem==null)return;
+				if(ptsh.selected)
+				{
+					IdFlowLocator.getInstance().curObj=dg.selectedItem as IdFlowVo;
+					
+					if(IdFlowLocator.getInstance().curObj.CONNO.search("C")==0)
+					{
+						Helper.pushMenu("案件审核","view/idcase/info/audit/AuditIdCaseModule.swf");
+					}
+					else if(IdFlowLocator.getInstance().curObj.CONNO.search("D")==0)
+					{
+						Helper.pushMenu("案件审核","view/idcase/info/audit/AuditDnaModule.swf");
+					}
+					else if(IdFlowLocator.getInstance().curObj.CONNO.search("R")==0)
+					{
+						MRelativeLocator.getInstance().wsObj=new MRelativeVo(IdFlowLocator.getInstance().curObj.ID,"","","","","","","","","","","","","",
+							"","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","");
+						CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.MRELATIVEWS_GetOneMpr));
+						Helper.pushMenu("案件审核","view/idcase/info/audit/AuditMprModule.swf");
+					}
+					else if(IdFlowLocator.getInstance().curObj.CONNO.search("L")==0)
+					{
+						MissingPersonLocator.getInstance().wsObj=new MissingPersonVo(IdFlowLocator.getInstance().curObj.ID,"","","","","","","","","",
+							"","","","","","","","","","");
+						CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.MISSINGPERSONWS_GetOneMp));
+						Helper.pushMenu("案件审核","view/idcase/info/audit/AuditMpModule.swf");
+					}
+				}
+				else if(kssh.selected)
+				{
+					auditSingle(dg.selectedItem as IdFlowVo);	
+				}
+				PsbLocator.getInstance().clearData();
+			}
+			
+			protected function plshClickHandler(event:MouseEvent):void
+			{
+				if(dg.selectedItems==null)return;
+				var sc:int=dg.selectedItems.length;
+				if(sc==0)return;
+				
+				var now:String=Helper.getStrByDate(new Date());
+				var person:String=SysUserLocator.getInstance().loginUser.NAME;
+				
+				var sql:String="";
+				for(var i:int=0;i<sc;i++)
+				{
+					IdFlowLocator.getInstance().curObj=dg.selectedItems[i] as IdFlowVo;
+					var skd:String=IdFlowLocator.getInstance().getOperTimeCol();
+					var sf:String="";
+					switch(skd)
+					{
+						case "二检完成": sf = "二检人"; break;
+						case "三检完成": sf = "三检人"; break;
+						case "四检完成": sf = "四检人"; break;
+						case "复核完成": sf = "复核人"; break;
+						case "签字完成": sf = "授权签字人"; break;
+						case "技管完成": sf = "科室负责人"; break;
+						case "审批完成": sf = "领导"; break;
+					}
+					if(skd=="审批完成")
+					{
+						sql+=("update 鉴定流程 set "+skd+
+							"=getdate(),鉴定状态='文书制作',鉴定记事='"+now+"  "+sf+person+"审核通过。\r\n\n'+鉴定记事 where 委托编号='"+
+							IdFlowLocator.getInstance().curObj.CONNO+"';");
+					}
+					else
+					{
+						sql+=("update 鉴定流程 set "+skd+
+							"=getdate(),鉴定记事='"+now+"  "+sf+person+"审核通过。\r\n\n'+鉴定记事 where 委托编号='"+
+							IdFlowLocator.getInstance().curObj.CONNO+"';");
+					}
+				}
+				IdFlowLocator.getInstance().listObj.removeAll();
+				ExCaseLocator.getInstance().sql=sql;
+				CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.EXCASEWS_ExeSql));
+				PsbLocator.getInstance().clearData();
+			}
+			
+			private function auditSingle(voObj:IdFlowVo):void
+			{
+				IdFlowLocator.getInstance().curObj=dg.selectedItem as IdFlowVo;	
+				IdFlowLocator.getInstance().wsObj=dg.selectedItem as IdFlowVo;				
+				IdFlowLocator.getInstance().oper=SysUserLocator.getInstance().loginUser.NAME;
+				IdFlowLocator.getInstance().operTimeCol=IdFlowLocator.getInstance().getOperTimeCol();
+				IdFlowLocator.getInstance().operReason="";
+				IdFlowLocator.getInstance().wsObj.ID_STATUS="通过";
+				CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.IDFLOWWS_UpdateAudit));
+			}
+			
+			protected function moduleCreationCompleteHandler(event:Event):void
+			{
+				IdFlowLocator.getInstance().wsObj=new IdFlowVo("C",PsbLocator.getInstance().idPsb.ID,"","","","","","","","","",
+					"","","","","","","","","","","","","","","","","","","","","",SysUserLocator.getInstance().loginUser.ID,"","","","",
+					"","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","",
+					"","","","","","","","","","","","","","","","","","","","","","","","");
+				CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.IDTASKWS_GetAuditTask));
+				
+				MenuLocator.getInstance().changeMenu(menuGp);
+			}
+			public function rjFunc(item:Object, column:GridColumn):String   
+			{   
+				if(item.TESTER2F.toString().length>0)return item.TESTER2_NAME.toString();
+				if(item.TESTER2_NAME.toString().length>0)
+					return item.TESTER2_NAME.toString()+"(未核)";
+				return "";
+			}  
+			public function fhFunc(item:Object, column:GridColumn):String   
+			{   
+				if(item.CHECKERF.toString().length>0)return item.CHECKER_NAME.toString();
+				if(item.CHECKER_NAME.toString().length>0)
+					return item.CHECKER_NAME.toString()+"(未核)";
+				return "";
+			} 
+			public function qzFunc(item:Object, column:GridColumn):String   
+			{   
+				if(item.SIGNERF.toString().length>0)return item.SIGNER_NAME.toString();
+				if(item.SIGNER_NAME.toString().length>0)
+					return item.SIGNER_NAME.toString()+"(未审)";
+				return "";
+			}  
+		]]>
+	</fx:Script>
+	<s:Panel x="0" y="0" width="953" height="598">
+		<s:HGroup id="menuGp" x="10" y="-27"/>
+		<s:DataGrid id="dg" x="10" y="60" width="933" height="465"
+					dataProvider="{IdFlowLocator.getInstance().listObj}"
+					doubleClick="dg_doubleClickHandler(event)" doubleClickEnabled="true"
+					selectionMode="multipleRows">
+			<s:columns>
+				<s:ArrayList>
+					<s:GridColumn dataField="CASE_NO" headerText="受理登记号"></s:GridColumn>
+					<s:GridColumn dataField="CASE_NAME" headerText="案件名称"></s:GridColumn>
+					<s:GridColumn dataField="TESTER2_NAME" headerText="二检"  labelFunction="rjFunc"></s:GridColumn>
+					<s:GridColumn dataField="CHECKER_NAME" headerText="复核"  labelFunction="fhFunc"></s:GridColumn>
+					<s:GridColumn dataField="SIGNER_NAME" headerText="授权签字"  labelFunction="qzFunc"></s:GridColumn>
+					<s:GridColumn dataField="TESTER_NAME" headerText="一检"></s:GridColumn>
+				</s:ArrayList>
+			</s:columns>
+		</s:DataGrid>
+		<ns1:ListPager id="pager" x="542" y="533" pageSize="16"
+					   creationComplete="pager.addEventListener(ListPager.PAGE_INDEX_CHANGE_EVENT,moduleCreationCompleteHandler);IdFlowLocator.getInstance().listPager=pager;">
+		</ns1:ListPager>	
+		<s:RadioButton id="kssh" x="198" y="10" label="快速通过模式" change="mSpec.text='双击对应的案件直接审核/批通过，请注意不要避免误操作。'"
+					   groupName="shms"/>
+		<s:Label x="10" y="16" text="审核模式："/>
+		<s:RadioButton id="ptsh" x="88" y="10" label="普通审核模式" change="mSpec.text='双击进入案件审核/批详细界面'"
+					   groupName="shms" selected="true"/>
+		<s:RadioButton id="plsh" x="308" y="10" label="批量通过模式"
+					   change="mSpec.text='使用Ctrl或Shift选中多行案件，再点击审核通过按钮（不支持短信提示）'" groupName="shms"/>
+		<s:Label x="10" y="38" text="模式说明："/>
+		<s:Label id="mSpec" x="88" y="38" text="双击进入案件详细界面"/>
+		<s:Button visible="{plsh.selected}" x="865" y="31" label="审核通过"
+				  enabled="{PsbLocator.getInstance().npending}"
+				  click="plshClickHandler(event)"/>
+		<s:Label x="423" y="16" color="#FC0303"
+				 text="{IdFlowLocator.getInstance().auditMsg}"/>
+	</s:Panel>
+</s:Module>

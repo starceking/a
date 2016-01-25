@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:HGroup xmlns:fx="http://ns.adobe.com/mxml/2009"
+		  xmlns:s="library://ns.adobe.com/flex/spark"
+		  xmlns:mx="library://ns.adobe.com/flex/mx"
+		  fontSize="14">
+	<fx:Declarations>
+		<!-- 将非可视元素（例如服务、值对象）放在此处 -->
+	</fx:Declarations>
+	<fx:Script>
+		<![CDATA[			
+			private var relation:String="";
+			public function get Relation():String
+			{
+				return relation;
+			}
+			public function set Relation(relation:String):void
+			{
+				this.relation=relation;
+				switch(relation)
+				{
+					case "父母":
+						fm.selected=true;
+						r1="父亲";r2="母亲";
+						break;
+					case "配偶子女":
+						pozn.selected=true;
+						r1="配偶";r2="子女";
+						break;
+					case "祖孙":
+						zs.selected=true;
+						r1="  祖  ";r2="  孙  ";
+						break;
+					case "单亲":
+						dq.selected=true;
+						r1="单亲";r2="(无)";
+						break;
+				}
+			}
+			[Bindable]
+			public var r1:String="亲属";
+			[Bindable]
+			public var r2:String="亲属";
+		]]>
+	</fx:Script>
+	<s:RadioButton id="fm" label="父母" groupName="relation" change="relation='父母';r1='父亲';r2='母亲';"/>
+	<s:RadioButton id="pozn" label="配偶子女" groupName="relation" change="relation='配偶子女';r1='配偶';r2='子女';"/>
+	<s:RadioButton id="zs" label="祖孙" groupName="relation" change="relation='祖孙';r1='  祖  ';r2='  孙  ';"/>
+	<s:RadioButton id="dq" label="单亲" groupName="relation" change="relation='单亲';r1='单亲';r2='(无)';"/>
+</s:HGroup>

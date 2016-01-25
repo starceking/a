@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Module xmlns:fx="http://ns.adobe.com/mxml/2009"
+		  xmlns:s="library://ns.adobe.com/flex/spark"
+		  xmlns:mx="library://ns.adobe.com/flex/mx"
+		  xmlns:tool="view.tool.*"
+		  width="953" height="598" creationComplete="MenuLocator.getInstance().changeMenu(menuGp);"
+		  fontSize="14">
+	<fx:Script>
+		<![CDATA[
+			import mx.events.FlexEvent;
+			import locator.MenuLocator;		
+			import locator.PsbLocator;			
+		]]>
+	</fx:Script>
+	<s:Panel width="953" height="598">
+		<s:HGroup id="menuGp" x="10" y="-27"/>		
+		<tool:MenuTool x="10" y="10" url="assets/images/main/案件委托.png" label="案件委托" clickUrl="view/idcase/query/task/NewConsignModule.swf"/>
+		<tool:MenuTool x="140" y="10" url="assets/images/main/DNA补送.png" label="DNA案补送" clickUrl="view/idcase/query/task/DnaBsQueryModule.swf"/>
+		<tool:MenuTool x="10" y="138" url="assets/images/main/返回.png" label="返        回"
+					   visible="{MenuLocator.getInstance().menuList.length>1}"/>
+	</s:Panel>
+</s:Module>

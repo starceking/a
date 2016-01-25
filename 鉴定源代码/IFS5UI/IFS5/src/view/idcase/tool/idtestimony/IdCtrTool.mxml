@@ -1,0 +1,235 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009"
+		 xmlns:s="library://ns.adobe.com/flex/spark"
+		 xmlns:mx="library://ns.adobe.com/flex/mx"
+		 xmlns:tool="view.tool.*"
+		 width="813" height="547" creationComplete="creationCompleteHandler(event)" fontSize="14">
+	<fx:Declarations>
+		<!-- 将非可视元素（例如服务、值对象）放在此处 -->
+	</fx:Declarations>
+	<fx:Script>
+		<![CDATA[
+			import com.adobe.cairngorm.control.CairngormEventDispatcher;
+			
+			import control.*;
+			import mx.core.FlexGlobals;
+			import locator.DictLocator;
+			import locator.IdCtrLocator;
+			import locator.IdFlowLocator;
+			import locator.IdTestimonyLocator;
+			import locator.JusTypeLocator;
+			import locator.PsbLocator;
+			
+			import mx.containers.ViewStack;
+			import mx.events.FlexEvent;
+			
+			import spark.events.TextOperationEvent;
+			
+			import util.Helper;
+			import util.Server;
+			import vo.IdTestimonyVo;
+			
+			private var isCtr:String="1";
+			private var locObj:IdCtrLocator=IdCtrLocator.getInstance();	
+			public var vs:ViewStack;
+			
+			protected function creationCompleteHandler(event:FlexEvent):void
+			{
+				var conno:String=IdFlowLocator.getInstance().curObj.CONNO;
+				if(conno.length==19)
+				{
+					locObj.wsObj=new IdTestimonyVo("",isCtr,conno,"","","","","","","","",
+						"","","","");
+					CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.IDTESTIMONY_CTRWS_GetAll));
+				}
+			}
+			
+			private function getOperVo():IdTestimonyVo
+			{
+				return new IdTestimonyVo(Helper.getGUID(),isCtr,IdFlowLocator.getInstance().curObj.CONNO,
+					pname.getSelectedItem(),amount.text,weight.text,pack.getSelectedItem(),property.getSelectedItem(),exp.text,exmethod.text,
+					exposi.text,extime.text,remark.text,pnum.text,unit.getSelectedItem());
+			}
+			
+			protected function insertClickHandler(event:MouseEvent):void
+			{
+				genPnum();
+				if(validateInput())
+				{
+					locObj.wsObj=getOperVo();
+					CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.IDTESTIMONY_CTRWS_Insert));
+					ClearData();
+				}
+			}
+			
+			protected function updateClickHandler(event:MouseEvent):void
+			{				
+				if(dg.selectedItem!=null)
+				{
+					if(validateInput())
+					{
+						locObj.wsObj=getOperVo();
+						locObj.wsObj.ID=dg.selectedItem.ID;
+						CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.IDTESTIMONY_CTRWS_Update));
+					}
+					ClearData();
+				}
+				else
+				{
+					Helper.showAlert("请先选中对应数据行");
+				}
+			}
+			
+			protected function deleteClickHandler(event:MouseEvent):void
+			{
+				if(dg.selectedItem!=null)
+				{
+						locObj.wsObj=getOperVo();
+						locObj.wsObj.ID=dg.selectedItem.ID;
+						CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.IDTESTIMONY_CTRWS_Delete));
+						ClearData();
+				}
+				else
+				{
+					Helper.showAlert("请先选中对应数据行");
+				}
+			}
+			
+			private function validateInput():Boolean
+			{
+				if(IdFlowLocator.getInstance().curObj.CONNO.length==1)
+				{
+					Helper.showAlert("请先保存案件信息。");
+					return false;
+				}
+				
+				if(pnum.text.length==0)
+				{
+					genPnum();
+				}
+				
+				if(pname.getSelectedItem().length==0)
+				{
+					Helper.showAlert("请填写检材名称。");
+					return false;
+				}
+				return true;
+			}
+			
+			private function genPnum():void
+			{
+				var caseStatus:String=IdFlowLocator.getInstance().curObj.ID_STATUS;
+				if((caseStatus=="信息录入")||(caseStatus=="新的委托"))
+				{
+					pnum.text="受理后自动生成";
+				}
+				else
+				{
+					var pattern:String=JusTypeLocator.getInstance().getJusType(
+						IdFlowLocator.getInstance().curObj.ID_OFFICE,IdFlowLocator.getInstance().curObj.ID_JUSTYPE).SESLN;
+					pnum.text=Helper.getSlnStr(pattern,IdFlowLocator.getInstance().curObj.ACC_YEAR,
+						IdFlowLocator.getInstance().curObj.ACC_NO,
+						(locObj.listObj.length+
+							IdTestimonyLocator.getInstance().listObj.length +1).toString());
+				}
+			}
+			
+			protected function caseNoChange(event:TextOperationEvent):void				
+			{
+				var status:String=(event.target as TextInput).text;
+				if(status=="受理后自动生成")
+				{
+					event.preventDefault();
+				}
+			}	
+			protected function dg_doubleClickHandler(event:MouseEvent):void
+			{
+				if(dg.selectedItem!=null)
+				{
+					if(dg.selectedItem.SLN!="受理后自动生成")
+						FlexGlobals.topLevelApplication.showTesPicModule(dg.selectedItem.SLN,dg.selectedItem.NAME);
+				}
+			}
+			
+			private function ClearData():void
+			{
+				pnum.text="";
+				pname.textInput.text="";
+				property.textInput.text="";
+				amount.text="";
+				weight.text="";
+				unit.textInput.text="";
+				exp.text="";
+				exposi.text="";
+				pack.textInput.text="";
+				exmethod.text="";
+				extime.text="";
+				remark.text="";
+			}
+		]]>
+	</fx:Script>
+	<s:VGroup left="10" right="10" top="10" bottom="10" gap="10">
+		<s:HGroup width="100%">
+			<s:Label color="#0A37FA" fontSize="20" fontWeight="bold" text="对照样本信息"/>
+			<s:Spacer width="100%" height="10"/>
+			<s:Button label="打印全部条码"
+					  click="Server.getSmallBcUrl(IdFlowLocator.getInstance().curObj.CONNO,'对照样本')"
+					  skinClass="assets.skins.Button_dytm"/>
+		</s:HGroup>
+		<s:DataGrid id="dg" width="100%" height="100%" dataProvider="{locObj.listObj}"
+					doubleClick="dg_doubleClickHandler(event)" doubleClickEnabled="true">
+			<s:columns>
+				<s:ArrayList>
+					<s:GridColumn dataField="SLN" headerText="编号"></s:GridColumn>
+					<s:GridColumn dataField="NAME" headerText="名称"></s:GridColumn>
+					<s:GridColumn dataField="WEIGHT" headerText="重量"></s:GridColumn>
+					<s:GridColumn dataField="AMOUNT" headerText="数量"></s:GridColumn>
+					<s:GridColumn dataField="PACKAGE" headerText="包装"></s:GridColumn>
+				</s:ArrayList>
+			</s:columns>
+		</s:DataGrid>
+		<s:HGroup width="100%" verticalAlign="middle">
+			<s:Label color="#FC0404" text="编       号："/>
+			<s:TextInput id="pnum" width="100%" changing="caseNoChange(event)" enabled="false"
+						 prompt="受理后自动生成" text="{dg.selectedItem.SLN}"/>
+			<s:Label color="#FC0404" text="名        称："/>
+			<tool:TesNameCbb id="pname" width="100%" selectedItem="{dg.selectedItem.NAME}"/>
+			<s:Label text="性        质："/>
+			<tool:DictCbb id="property" width="100%" dictName="检材性质" selectedItem="{dg.selectedItem.PROPERTY}"/>
+		</s:HGroup>
+		<s:HGroup width="100%" verticalAlign="middle">
+			<s:Label text="数       量："/>
+			<s:TextInput id="amount" width="100%" text="{dg.selectedItem.AMOUNT}"/>
+			<s:Label text="重        量："/>
+			<s:TextInput id="weight" width="100%" restrict="0123456789." text="{dg.selectedItem.WEIGHT}"/>
+			<s:Label text="重量单位："/>
+			<tool:DictCbb id="unit" width="100%" dictName="重量单位" selectedItem="{dg.selectedItem.UNIT}"/>
+		</s:HGroup>
+		<s:HGroup width="100%" verticalAlign="middle">
+			<s:Label text="提  取  人："/>
+			<s:TextInput id="exp" width="100%" text="{dg.selectedItem.EX_PERSON}"/>
+			<s:Label text="提取位置："/>
+			<s:TextInput id="exposi" width="100%" text="{dg.selectedItem.EX_POSITION}"/>
+			<s:Label text="包        装："/>
+			<tool:DictCbb id="pack" width="100%" dictName="检材包装" selectedItem="{dg.selectedItem.PACKAGE}"/>
+		</s:HGroup>
+		<s:HGroup width="100%" verticalAlign="middle">
+			<s:Label text="提取方法："/>
+			<s:TextInput id="exmethod" width="100%" text="{dg.selectedItem.EX_METHOD}"/>
+			<s:Label text="提取时间："/>
+			<s:TextInput id="extime" width="100%" text="{dg.selectedItem.EX_DATE}"/>
+			<s:Label text="备        注："/>
+			<s:TextInput id="remark" width="100%" text="{dg.selectedItem.REMARK}"/>
+		</s:HGroup>
+		<s:HGroup width="100%" horizontalAlign="right" verticalAlign="middle">
+			<s:Button label="增加" click="insertClickHandler(event)"
+					  enabled="{PsbLocator.getInstance().npending}" skinClass="assets.skins.Button_zj"/>
+			<s:Button label="修改" click="updateClickHandler(event)"
+					  enabled="{PsbLocator.getInstance().npending}" skinClass="assets.skins.Button_xg"/>
+			<s:Button label="删除" click="deleteClickHandler(event)"
+					  enabled="{PsbLocator.getInstance().npending}" skinClass="assets.skins.Button_sc"/>
+			<s:Label color="#0A37FA" text="请注意：确保信息已“增加”到上方列表"/>
+			<s:Button click="if(vs!=null)vs.selectedIndex++;" skinClass="assets.skins.Button_xyb"/>
+		</s:HGroup>
+	</s:VGroup>
+</s:Group>

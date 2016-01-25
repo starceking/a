@@ -1,0 +1,689 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:TitleWindow xmlns:fx="http://ns.adobe.com/mxml/2009"
+			   xmlns:s="library://ns.adobe.com/flex/spark"
+			   xmlns:mx="library://ns.adobe.com/flex/mx"
+			   xmlns:ns1="*"
+			   xmlns:tool="view.tool.*"
+			   defaultButton="{btn}"
+			   width="1100" height="840" fontSize="14"
+			   close="PopUpManager.removePopUp(this);"
+			   creationComplete="titlewindow1_creationCompleteHandler(event)"
+			   title="提取【请选中对应的样本，并把它们拖到右侧列表中进行提取】">
+	<fx:Script>
+		<![CDATA[
+			import com.adobe.cairngorm.control.CairngormEventDispatcher;
+			
+			import control.*;
+			
+			import locator.DictLocator;
+			import locator.ExtractLocator;
+			import locator.PsbLocator;
+			import locator.SysUserLocator;
+			import locator.WordLocator;
+			
+			import mx.collections.ArrayList;
+			import mx.events.FlexEvent;
+			import mx.managers.PopUpManager;
+			
+			import spark.components.CheckBox;
+			
+			import util.Helper;
+			
+			import vo.ExtractSampleVo;
+			import vo.StrVo;
+			
+			private var locObj:ExtractLocator=ExtractLocator.getInstance();
+			private var tmplistObj:ArrayList=new ArrayList();
+			
+			private var listObj:ArrayList=new ArrayList();
+			private var tqid:String="";
+			private var chid:String="";
+			[Bindable]
+			private var save_flag:Boolean=false;
+			protected function titlewindow1_creationCompleteHandler(event:FlexEvent):void
+			{
+				// 页面加载
+				locObj.ExtractListObj.removeAll();
+				locObj.PureListObj.removeAll();
+				ExtractLocator.getInstance().ExtractInsertFlag=false;
+				tmplistObj.removeAll();
+				
+				tqid=Helper.getGUID();
+				
+				queryClickHandler(null);
+			}
+			protected function queryClickHandler(evt:Event):void
+			{
+				//待提取样本 查询
+				locObj.StrwsObj=new StrVo("","","","",pnum.text,pname.text,sc.selectedData,"","","","","","","","","","","","","",
+					"","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","",type.getSelectedItems());
+				locObj.slsjs=slsjs.text;
+				locObj.slsje=slsje.text;
+				
+				locObj.yjr=SysUserLocator.getInstance().loginUser.ID;	
+				locObj.yblx=type.getSelectedItems();
+				
+				if(wj.selected) locObj.jystatus="未检，预试验完毕，确证试验完毕";		
+				else if(ytq.selected)locObj.jystatus="已提取";
+				else if(ykz.selected)locObj.jystatus="已扩增";
+				else if(jb.selected)locObj.jystatus="检毕";
+				else locObj.jystatus="暂不检验";
+				
+				CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.EXTRACTWS_QueryExtract));
+			}
+			protected function noTest(event:MouseEvent):void
+			{
+				// 暂不检验
+				var noTestNum=tmplistObj.length;
+				var arr:Array=new Array();
+				for(var i:int=0;i<noTestNum;i++)
+				{					
+					arr.push(new Array());
+					arr[i][0]=tmplistObj.getItemAt(i).CASE_ID;//案件ID
+					arr[i][1]=tmplistObj.getItemAt(i).CONNO;//委托编号
+					arr[i][2]=tmplistObj.getItemAt(i).SC;//库类型
+					arr[i][3]=tmplistObj.getItemAt(i).SLN;//样本编号
+					arr[i][4]=tmplistObj.getItemAt(i).NAME;//样本名称
+					arr[i][5]=tmplistObj.getItemAt(i).SAMPLE_TYPE;//样本类型
+				}
+				locObj.noTestArray=arr;
+				
+				CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.EXTRACTWS_NoTest));
+				
+				tmplistObj.removeAll();
+			}
+			protected function tabnavigator1_changeHandler():void
+			{
+				//一般模式
+				tn.removeElement(sdff);				
+				NC02.enabled=true;
+				NC03.enabled=true;
+			}
+			protected function ExtractSave(event:MouseEvent):void
+			{
+				//提取信息 保存				
+				locObj.PureListObj.removeAll();
+				for(var i:int=0;i<tmplistObj.length;i++)
+				{
+					locObj.PureListObj.addItem(new ExtractSampleVo(tmplistObj.getItemAt(i).ID,tmplistObj.getItemAt(i).CASE_ID,
+						tmplistObj.getItemAt(i).CONNO,tmplistObj.getItemAt(i).SC,tmplistObj.getItemAt(i).SLN,
+						tmplistObj.getItemAt(i).NAME,tmplistObj.getItemAt(i).SAMPLE_TYPE,tmplistObj.getItemAt(i).TQ_METHOD,
+						tmplistObj.getItemAt(i).CH_METHOD,"",tqid,
+						"","","","","","","","","","","","","","","","","","","","","","","",tmplistObj.getItemAt(i).TQTJYL,""));						
+				}
+				var arr1:Array=new Array();
+				arr1[0]=tqid;//提取ID
+				arr1[1]=tqph.text;//提取批号
+				arr1[2]=lxj.getSelectedItems();//离心机
+				arr1[3]=yyq.getSelectedItems();//移液器
+				arr1[4]=jry.getSelectedItems();//加热仪
+				arr1[5]=hwhyy.getSelectedItems();//恒温混匀仪
+				arr1[6]=xwhhq.getSelectedItems();//漩涡混合器
+				arr1[7]=sy.getSelectedItems();//水浴
+				arr1[8]=xwj.getSelectedItems();//显微镜
+				arr1[9]=gzz.getSelectedItems();//工作站
+				arr1[10]=SysUserLocator.getInstance().loginUser.ID;//提取人
+				arr1[11]=syrq.text;//日期
+				arr1[12]=PsbLocator.getInstance().idPsb.ID;//鉴定单位
+				arr1[13]="0";//工作站模式
+				arr1[14]="0";//提取确认
+				
+				locObj.ExtractRecordArray=arr1;
+				
+				var extractNum=locObj.PureListObj.length;
+				var arr:Array=new Array();
+				for(var i:int=0;i<extractNum;i++)
+				{
+					var voObj:ExtractSampleVo=locObj.PureListObj.getItemAt(i) as ExtractSampleVo;
+					
+					arr.push(new Array());
+					arr[i][0]=voObj.ID;//ID
+					arr[i][1]=voObj.CASE_ID;//案件ID
+					arr[i][2]=voObj.CONNO;//委托编号
+					arr[i][3]=voObj.SC;//库类型
+					arr[i][4]=voObj.SLN;//样本编号
+					arr[i][5]=voObj.NAME;//样本名称
+					arr[i][6]=voObj.SAMPLE_TYPE;//样本类型
+					arr[i][7]=voObj.TQ_METHOD;//提取方法
+					arr[i][8]=voObj.TQTJYL;//提取用量
+					arr[i][9]=tqid;//提取记录ID
+				}
+				locObj.ExtractArray=arr;
+				
+				if(!locObj.ExtractInsertFlag)
+				{
+					CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.EXTRACTWS_InsertExtract));
+				}
+				else
+				{
+					CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.EXTRACTWS_UpdateExtract));	
+				}				
+				tn.selectedIndex=1;
+			}
+			
+			protected function PureSave(event:MouseEvent):void
+			{
+				//纯化信息 保存
+				if(dg.selectedItem==null)
+				{
+					Helper.showAlert("请选择检材！");
+				}
+				else
+				{
+					var n:int=0;
+					var m:int=0;
+					
+					for(var j:int=0;j<dg.selectedItems.length;j++)
+					{
+						var voObj:ExtractSampleVo=dg.selectedItems[j] as ExtractSampleVo;
+						if(voObj.CH_ID.length>0)n++;
+						else m++;
+					}
+					if(n>0&&m>0)	
+					{
+						Helper.showAlert("请勿将已纯化的检材与为纯化的检材同时进行操作！");
+						return;
+					}
+					if(dg.selectedItem.CH_ID==""||dg2.selectedItem.CH_ID==null)
+					{
+						chid=Helper.getGUID();
+					}
+					else
+					{
+						chid=dg.selectedItem.CH_ID;
+					}
+					
+					var pureNum=dg.selectedItems.length;
+					var arr:Array=new Array();
+					for(var i:int=0;i<pureNum;i++)
+					{
+						var voObj:ExtractSampleVo=dg.selectedItems[i] as ExtractSampleVo;
+						
+						arr.push(new Array());
+						arr[i][0]=voObj.CASE_ID;//案件ID
+						arr[i][1]=voObj.CONNO;//委托编号
+						arr[i][2]=voObj.SC;//库类型
+						arr[i][3]=voObj.SLN;//样本编号
+						arr[i][4]=voObj.NAME;//样本名称
+						arr[i][5]=voObj.SAMPLE_TYPE;//样本类型
+						arr[i][6]=voObj.TQ_ID;//提取记录ID
+					}
+					locObj.PureArray=arr;
+					
+					var arr1:Array=new Array();
+					arr1[0]=chid;//纯化ID
+					arr1[1]=lxj0.getSelectedItems();//纯化离心机
+					arr1[2]=yyq0.getSelectedItems();//纯化移液器
+					arr1[3]=jry0.getSelectedItems();//纯化加热仪
+					arr1[4]=hwhyy0.getSelectedItems();//纯化恒温混匀仪
+					arr1[5]=xwhhq0.getSelectedItems();//纯化漩涡混合器
+					arr1[6]=sy0.getSelectedItems();//纯化水浴
+					arr1[7]=xwj0.getSelectedItems();//纯化显微镜
+					arr1[8]=gzz0.getSelectedItems();//纯化工作站
+					arr1[9]=chff.getSelectedItem();//纯化方法
+					arr1[10]=SysUserLocator.getInstance().loginUser.ID;//纯化人
+					arr1[11]=syrq.text;//日期
+					arr1[12]=PsbLocator.getInstance().idPsb.ID;//鉴定单位
+					
+					locObj.PureRecordArray=arr1;
+					
+					if(dg.selectedItem.CH_ID==""||dg2.selectedItem.CH_ID==null)
+					{
+						CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.EXTRACTWS_InsertPure));
+					}
+					else
+					{
+						CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.EXTRACTWS_UpdatePure));
+					}
+					//延时设置
+					setTimeout(QueryPure, 500);
+				}	
+			}
+			
+			protected function QueryPure():void
+			{
+				// 刷新 纯化记录
+				locObj.TQID=tqid;
+				CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.EXTRACTWS_QueryPure));
+			}
+			protected function setTQ_clickHandler(event:MouseEvent):void
+			{
+				// 设置提取方法
+				if(dg2.selectedItems==null)
+				{
+					Helper.showAlert("请选择检材！");
+				}
+				else
+				{
+					var len:int=tmplistObj.length;
+					for(var i:int=0;i<dg2.selectedItems.length;i++)
+					{	
+						var voObj2:ExtractSampleVo=new ExtractSampleVo("","","","","","","","","","",
+							"","","","","","","","","","","","","","","","","","","","","","","","","","");
+						voObj2.ID=dg2.selectedItems[i].ID;
+						voObj2.CASE_ID=dg2.selectedItems[i].CASE_ID;
+						voObj2.CONNO=dg2.selectedItems[i].CONNO;
+						voObj2.SC=dg2.selectedItems[i].SC;
+						voObj2.SLN=dg2.selectedItems[i].SLN;
+						voObj2.NAME=dg2.selectedItems[i].NAME;
+						voObj2.SAMPLE_TYPE=dg2.selectedItems[i].SAMPLE_TYPE;
+						voObj2.TQ_METHOD=tqffset.getSelectedItem();
+						voObj2.TQTJYL=dg2.selectedItems[i].TQTJYL;
+						
+						for(var j:int=0;j<len;j++)
+						{	
+							var voObj1:ExtractSampleVo=new ExtractSampleVo("","","","","","","","","","",
+								"","","","","","","","","","","","","","","","","","","","","","","","","","");
+							voObj1.ID=tmplistObj.getItemAt(j).ID;
+							if(voObj1.ID==voObj2.ID)
+							{
+								tmplistObj.setItemAt(voObj2,j);
+								continue;
+							}
+						}
+					}
+				}
+			}
+			protected function setYL_clickHandler(event:MouseEvent):void
+			{
+				// 设置提取用量
+				if(dg2.selectedItems==null)
+				{
+					Helper.showAlert("请选择检材！");
+				}
+				else
+				{
+					var len:int=tmplistObj.length;
+					for(var i:int=0;i<dg2.selectedItems.length;i++)
+					{	
+						var voObj2:ExtractSampleVo=new ExtractSampleVo("","","","","","","","","","",
+							"","","","","","","","","","","","","","","","","","","","","","","","","","");
+						voObj2.ID=dg2.selectedItems[i].ID;
+						voObj2.CASE_ID=dg2.selectedItems[i].CASE_ID;
+						voObj2.CONNO=dg2.selectedItems[i].CONNO;
+						voObj2.SC=dg2.selectedItems[i].SC;
+						voObj2.SLN=dg2.selectedItems[i].SLN;
+						voObj2.NAME=dg2.selectedItems[i].NAME;
+						voObj2.SAMPLE_TYPE=dg2.selectedItems[i].SAMPLE_TYPE;
+						voObj2.TQ_METHOD=dg2.selectedItems[i].TQ_METHOD;
+						voObj2.TQTJYL=tqyl.text;
+						
+						for(var j:int=0;j<len;j++)
+						{	
+							var voObj1:ExtractSampleVo=new ExtractSampleVo("","","","","","","","","","",
+								"","","","","","","","","","","","","","","","","","","","","","","","","","");
+							voObj1.ID=tmplistObj.getItemAt(j).ID;
+							if(voObj1.ID==voObj2.ID)
+							{
+								tmplistObj.setItemAt(voObj2,j);
+								continue;
+							}
+						}
+					}
+				}
+			}		
+			protected function tqff_changeHandler():void
+			{
+				//提取方法 更换
+				TiquClear();		
+				
+				var list:ArrayList=DictLocator.getInstance().getItem("提取方法默认设置");
+				
+				for(var i:int=0;i<list.length;i++)
+				{
+					var Item:String=list.getItemAt(i).label;
+					var ff:Array=Item.split("@");
+					
+					if(ff[0]==tqff.selectedData)
+					{
+						var yq:Array=ff[1].split("￥");
+						
+						for(var j:int=0;j<yq.length;j++)
+						{
+							var mc:Array=yq[j].split("|");
+							
+							if(mc[0]=="提取离心机")CheckBoxSet(lxj,"提取离心机",mc);
+							else if(mc[0]=="移液器")CheckBoxSet(yyq,"移液器",mc);
+							else if(mc[0]=="加热仪")CheckBoxSet(jry,"加热仪",mc);
+							else if(mc[0]=="恒温混匀仪")CheckBoxSet(hwhyy,"恒温混匀仪",mc);
+							else if(mc[0]=="提取漩涡混合器")CheckBoxSet(xwhhq,"提取漩涡混合器",mc);
+							else if(mc[0]=="水浴")CheckBoxSet(sy,"水浴",mc);
+							else if(mc[0]=="显微镜")CheckBoxSet(xwj,"显微镜",mc);
+							else if(mc[0]=="提取工作站")CheckBoxSet(gzz,"提取工作站",mc);							
+						}
+					}	
+				}
+			}
+			protected function chff_changeHandler():void
+			{
+				//纯化方法 更换
+				chunhuaClear();		
+				
+				var list:ArrayList=DictLocator.getInstance().getItem("纯化方法默认设置");
+				
+				for(var i:int=0;i<list.length;i++)
+				{
+					var Item:String=list.getItemAt(i).label;
+					var ff:Array=Item.split("@");
+					
+					if(ff[0]==chff.getSelectedItem())
+					{
+						var yq:Array=ff[1].split("￥");
+						
+						for(var j:int=0;j<yq.length;j++)
+						{
+							var mc:Array=yq[j].split("|");
+							
+							if(mc[0]=="提取离心机")CheckBoxSet(lxj0,"提取离心机",mc);
+							else if(mc[0]=="移液器")CheckBoxSet(yyq0,"移液器",mc);
+							else if(mc[0]=="加热仪")CheckBoxSet(jry0,"加热仪",mc);
+							else if(mc[0]=="恒温混匀仪")CheckBoxSet(hwhyy0,"恒温混匀仪",mc);
+							else if(mc[0]=="提取漩涡混合器")CheckBoxSet(xwhhq0,"提取漩涡混合器",mc);
+							else if(mc[0]=="水浴")CheckBoxSet(sy0,"水浴",mc);
+							else if(mc[0]=="显微镜")CheckBoxSet(xwj0,"显微镜",mc);
+							else if(mc[0]=="提取工作站")CheckBoxSet(gzz0,"提取工作站",mc);							
+						}
+					}	
+				}
+				
+			}
+			
+			private function CheckBoxSet(id:DictCgp,Item:String,mc:Array):void
+			{
+				id.removeAllElements();
+				var yqlist:ArrayList=DictLocator.getInstance().getItem(Item);
+				
+				for(var k:int=0;k<yqlist.length;k++)
+				{
+					var cb:CheckBox=new CheckBox();
+					cb.label=yqlist.getItemAt(k).label;
+					if(cb.label=="")continue;
+					if(mc.length>1)cb.selected=(mc[1].search(cb.label+"，")>=0);
+					id.addElement(cb);
+				}
+			}
+			private function CheckBoxClear(id:DictCgp,Item:String):void
+			{
+				id.removeAllElements();
+				var yqlist:ArrayList=DictLocator.getInstance().getItem(Item);
+				
+				for(var k:int=0;k<yqlist.length;k++)
+				{
+					var cb:CheckBox=new CheckBox();
+					cb.label=yqlist.getItemAt(k).label;
+					if(cb.label=="")continue;
+					id.addElement(cb);
+				}
+			}	
+			private function TiquClear():void
+			{
+				//提取设置 清空
+				CheckBoxClear(lxj,"提取离心机");
+				CheckBoxClear(yyq,"移液器");
+				CheckBoxClear(jry,"加热仪");
+				CheckBoxClear(hwhyy,"恒温混匀仪");
+				CheckBoxClear(xwhhq,"提取漩涡混合器");
+				CheckBoxClear(sy,"水浴");
+				CheckBoxClear(xwj,"显微镜");
+				CheckBoxClear(gzz,"提取工作站");	
+			}
+			private function chunhuaClear():void
+			{
+				//纯化设置 清空
+				CheckBoxClear(lxj0,"提取离心机");
+				CheckBoxClear(yyq0,"移液器");
+				CheckBoxClear(jry0,"加热仪");
+				CheckBoxClear(hwhyy0,"恒温混匀仪");
+				CheckBoxClear(xwhhq0,"提取漩涡混合器");
+				CheckBoxClear(sy0,"水浴");
+				CheckBoxClear(xwj0,"显微镜");
+				CheckBoxClear(gzz0,"提取工作站");	
+			}
+			protected function PrintTQRecord_clickHandler(event:MouseEvent):void
+			{
+				// 打印提取记录表
+				WordLocator.getInstance().FileName="DNA提取记录表.doc";
+				WordLocator.getInstance().wordType="doc";
+				WordLocator.getInstance().RecordType="提取记录";
+				WordLocator.getInstance().RecordID=tqid;
+				CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.WORDWS_PrintSampleTestRecord));
+			}
+			
+		]]>
+	</fx:Script>
+	<mx:TabNavigator id="tn" left="10" right="10" top="10" bottom="10">
+		<s:NavigatorContent id="sdff" width="100%" height="100%" label="选择样本">
+			<s:VGroup left="10" right="10" top="10" bottom="10" gap="10">
+				<s:HGroup width="100%">
+					<s:Label color="#0000FF" fontSize="16" text="查询条件"/>
+				</s:HGroup>
+				<s:HGroup width="100%" verticalAlign="middle">
+					<s:Label color="#000000" text="检材编号："/>
+					<s:TextInput id="pnum" width="180"/>
+					<s:Label color="#000000" text="检材名称："/>
+					<s:TextInput id="pname" width="180"/>
+					<s:Label text="检验状态："/>
+					<s:RadioButton id="wj" label="未检" groupName="tqztwjjb" selected="true"/>
+					<s:RadioButton id="zbjy" label="暂不检验" groupName="tqztwjjb"/>
+					<s:RadioButton id="ytq" label="已提取" groupName="tqztwjjb"/>
+					<s:RadioButton id="ykz" label="已扩增" groupName="tqztwjjb"/>
+					<s:RadioButton id="jb" label="检毕" groupName="tqztwjjb"/>
+				</s:HGroup>
+				<s:HGroup width="100%" verticalAlign="middle">
+					<s:Label text="受理时间："/>
+					<tool:DateZh id="slsjs" width="180"/>
+					<s:Label width="70" text="      到"/>
+					<tool:DateZh id="slsje" width="180"/>
+					<s:Label text="库  类  型："/>
+					<tool:DictDdl id="sc" width="180" allEnable="true" dictName="库类型"/>
+					<s:Spacer width="100" height="10"/>
+					<s:Button id="btn" label="查询" click="queryClickHandler(event)"
+							  enabled="{PsbLocator.getInstance().npending}"/>
+				</s:HGroup>
+				<s:HGroup width="100%" verticalAlign="middle">
+					<s:Label text="样本类型："/>
+					<tool:DictCgp id="type" width="700" dictName="样本类型">
+					</tool:DictCgp>
+				</s:HGroup>
+				<s:HGroup width="100%" verticalAlign="middle">
+					<s:Label color="#0000FF" text="全部样本（请选中对应的样本，并把它们拖到右侧列表中）"/>
+					<s:Spacer width="170" height="10"/>
+					<s:HGroup verticalAlign="middle">
+						<s:Label color="#0000FF" text="要提取的样本"/>
+						<s:Label color="#ff0000" text="共"/>
+						<s:Label color="#ff0000" text="{tmplistObj.length}"/>
+						<s:Label color="#ff0000" text="条"/>
+						<s:Label color="#0000FF" text="（双击移除）"/>
+					</s:HGroup>
+					<s:Button label="手工提取" click="tabnavigator1_changeHandler()"/>
+					<s:Spacer width="105" height="10"/>
+					<s:Button label="暂不检验" click="noTest(event)" enabled="{wj.selected==true}"/>
+				</s:HGroup>
+				<s:HGroup width="100%" height="100%">
+					<s:VGroup width="521" height="100%" gap="0" horizontalAlign="right">
+						<s:HGroup width="100%" gap="0">
+							<s:TextInput width="163" text="实验室编号" textAlign="center" editable="false"/>
+							<s:TextInput width="252" text="物证名称" textAlign="center" editable="false"/>
+							<s:TextInput width="105" text="物证类型" textAlign="center" editable="false"/>
+						</s:HGroup>
+						<s:List id="list1" width="100%" height="100%" allowMultipleSelection="true"
+								dataProvider="{locObj.ExtractListObj}"
+								doubleClick="locObj.ExtractListObj.removeItemAt(list1.selectedIndex)"
+								doubleClickEnabled="true" dragEnabled="true"
+								itemRenderer="view.idcase.sampletest.SampleRenderer"></s:List>
+						<s:Spacer width="10" height="6"/>
+						<ns1:ListPager id="pager"
+									   creationComplete="pager.addEventListener(ListPager.PAGE_INDEX_CHANGE_EVENT,queryClickHandler);locObj.ExtractListPager=pager;"
+									   pageSize="36">
+						</ns1:ListPager>
+					</s:VGroup>
+					<s:Spacer width="10" height="10"/>
+					<s:VGroup width="100%" height="100%" gap="0">
+						<s:HGroup width="100%" gap="0">
+							<s:TextInput width="163" text="实验室编号" textAlign="center" editable="false"/>
+							<s:TextInput width="252" text="物证名称" textAlign="center" editable="false"/>
+							<s:TextInput width="105" text="物证类型" textAlign="center" editable="false"/>
+						</s:HGroup>
+						<s:List id="list0" width="520" height="100%" dataProvider="{tmplistObj}"
+								doubleClick="tmplistObj.removeItemAt(list0.selectedIndex)"
+								doubleClickEnabled="true" dropEnabled="true"
+								itemRenderer="view.idcase.sampletest.SampleRenderer"></s:List>
+					</s:VGroup>
+				</s:HGroup>
+			</s:VGroup>
+		</s:NavigatorContent>	
+		<s:NavigatorContent id="NC02" width="100%" height="100%" label="提取信息" enabled="false">
+			<s:VGroup left="10" right="10" top="10" bottom="10" gap="10">
+				<s:HGroup width="813" verticalAlign="middle">
+					<s:Label text="提    取   人："/>
+					<s:Label width="100" text="{SysUserLocator.getInstance().loginUser.NAME}"/>
+					<s:Label text="提取时间："/>
+					<tool:DateZh id="syrq" width="180" text="{Helper.getStrByDate(new Date())}"/>
+					<s:Spacer width="100%" height="10"/>
+					<s:Label text="提取方法："/>
+					<tool:DictCbb id="tqffset" width="130" dictName="提取方法"/>
+					<s:Button id="setTQ" label="应用方法" click="setTQ_clickHandler(event)"/>
+				</s:HGroup>
+				<s:HGroup width="813" verticalAlign="middle">
+					<s:Label text="提取记录号："/>
+					<s:TextInput width="200" id="tqph"/>
+					<s:HGroup verticalAlign="middle">
+						<s:Label color="#FF0000" text="提取样本"/>
+						<s:Label color="#ff0000" text="共"/>
+						<s:Label color="#ff0000" text="{tmplistObj.length}"/>
+						<s:Label color="#ff0000" text="条"/>
+					</s:HGroup>
+					<s:Spacer y="5" width="100%" height="14"/>
+					<s:Label text="提取用量："/>
+					<s:TextInput id="tqyl" width="130"/>
+					<s:Button id="setYL" label="应用用量" click="setYL_clickHandler(event)"/>
+				</s:HGroup>
+				<mx:DataGrid id="dg2" width="813" height="100%" allowMultipleSelection="true" dataProvider="{tmplistObj}">
+					<mx:columns>
+						<mx:DataGridColumn width="160" dataField="SLN" headerText="样本编号"/>
+						<mx:DataGridColumn dataField="NAME" headerText="样本名称"/>
+						<mx:DataGridColumn dataField="SAMPLE_TYPE" headerText="样本类型"/>
+						<mx:DataGridColumn dataField="TQ_METHOD" headerText="提取方法"/>
+						<mx:DataGridColumn dataField="TQTJYL" headerText="提取用量"/>
+					</mx:columns>
+				</mx:DataGrid>
+				<s:HGroup width="100%" verticalAlign="middle">
+					<s:Label text="提 取 方 法："/>
+					<tool:DictDdl id="tqff" width="200" dictName="提取方法"/>
+					<s:Button label="读取仪器设置" click="tqff_changeHandler()"/>
+				</s:HGroup>
+				<s:HGroup width="100%" verticalAlign="middle">
+					<s:Label width="85" text="离   心   机 ："/>
+					<tool:DictCgp id="lxj" dictName="提取离心机">
+					</tool:DictCgp>
+				</s:HGroup>
+				<s:HGroup width="100%" verticalAlign="middle">
+					<s:Label width="85" text="移   液   器 ："/>
+					<tool:DictCgp id="yyq" dictName="移液器">
+					</tool:DictCgp>
+				</s:HGroup>
+				<s:HGroup width="100%" verticalAlign="middle">
+					<s:Label width="85" text="加   热   仪 ："/>
+					<tool:DictCgp id="jry" dictName="加热仪">
+					</tool:DictCgp>
+				</s:HGroup>
+				<s:HGroup width="100%" verticalAlign="middle">
+					<s:Label width="85" text="恒温混匀仪："/>
+					<tool:DictCgp id="hwhyy" dictName="恒温混匀仪">
+					</tool:DictCgp>
+				</s:HGroup>
+				<s:HGroup width="100%" verticalAlign="middle">
+					<s:Label width="85" text="漩涡混合器："/>
+					<tool:DictCgp id="xwhhq" dictName="提取漩涡混合器">
+					</tool:DictCgp>
+				</s:HGroup>
+				<s:HGroup width="100%" verticalAlign="middle">
+					<s:Label width="85" text="水 浴/干 浴："/>
+					<tool:DictCgp id="sy" dictName="水浴">
+					</tool:DictCgp>
+				</s:HGroup>
+				<s:HGroup width="100%" verticalAlign="middle">
+					<s:Label width="85" text="显   微   镜 ："/>
+					<tool:DictCgp id="xwj" dictName="显微镜">
+					</tool:DictCgp>
+				</s:HGroup>
+				<s:HGroup width="100%" verticalAlign="middle">
+					<s:Label width="85" text="工   作   站 ："/>
+					<tool:DictCgp id="gzz" dictName="提取工作站">
+					</tool:DictCgp>
+				</s:HGroup>
+				<s:HGroup width="400" horizontalAlign="right">
+					<s:Button click="ExtractSave(event)" skinClass="assets.skins.Button_bc"/>
+				</s:HGroup>
+			</s:VGroup>
+			<s:Label x="599" y="-8" color="#FF0000" text="设置完成后，请在页面底部点击保存"/>
+		</s:NavigatorContent>
+		<s:NavigatorContent id="NC03" width="100%" height="100%" label="纯化信息" enabled="false">
+			<s:VGroup left="10" top="0" width="813" height="100%" gap="10">
+				<s:HGroup width="100%" verticalAlign="middle">
+					<s:Label color="#FF0000" text="提示：如果没有用到纯化方法，请直接关闭窗口"/>
+					<s:Spacer width="100%" height="10"/>
+				<!--	<mx:LinkButton label="提取记录表" textDecoration="underline" click="PrintTQRecord_clickHandler(event)"
+								    enabled="{locObj.ExtractInsertFlag}" visible="{PsbLocator.getInstance().npending}"/>-->
+				</s:HGroup>
+				<mx:DataGrid id="dg" width="100%" height="100%" allowMultipleSelection="true" dataProvider="{locObj.PureListObj}">
+					<mx:columns>
+						<mx:DataGridColumn width="160" dataField="SLN" headerText="样本编号"/>
+						<mx:DataGridColumn dataField="NAME" headerText="样本名称"/>
+						<mx:DataGridColumn dataField="SAMPLE_TYPE" headerText="样本类型"/>
+						<mx:DataGridColumn dataField="CH_METHOD" headerText="纯化方法"/>
+					</mx:columns>
+				</mx:DataGrid>
+				<s:VGroup width="100%" visible="{dg.selectedItem!=null}">
+					<s:HGroup width="100%" verticalAlign="middle">
+						<s:Label width="85" text="纯 化 方 法："/>
+						<tool:DictCbb id="chff" width="242" dictName="纯化方法" change="chff_changeHandler()" />
+					</s:HGroup>
+					<s:HGroup width="100%" verticalAlign="middle">
+						<s:Label width="85" text="离   心   机 ："/>
+						<tool:DictCgp id="lxj0" dictName="提取离心机">
+						</tool:DictCgp>
+					</s:HGroup>
+					<s:HGroup width="100%" verticalAlign="middle">
+						<s:Label width="85" text="移   液   器 ："/>
+						<tool:DictCgp id="yyq0" dictName="移液器">
+						</tool:DictCgp>
+					</s:HGroup>
+					<s:HGroup width="100%" verticalAlign="middle">
+						<s:Label width="85" text="加   热   仪 ："/>
+						<tool:DictCgp id="jry0" dictName="加热仪">
+						</tool:DictCgp>
+					</s:HGroup>
+					<s:HGroup width="100%" verticalAlign="middle">
+						<s:Label width="85" text="恒温混匀仪："/>
+						<tool:DictCgp id="hwhyy0" dictName="恒温混匀仪">
+						</tool:DictCgp>
+					</s:HGroup>
+					<s:HGroup width="100%" verticalAlign="middle">
+						<s:Label width="85" text="漩涡混合器："/>
+						<tool:DictCgp id="xwhhq0" dictName="提取漩涡混合器">
+						</tool:DictCgp>
+					</s:HGroup>
+					<s:HGroup width="100%" verticalAlign="middle">
+						<s:Label width="85" text="水 浴/干 浴："/>
+						<tool:DictCgp id="sy0" dictName="水浴">
+						</tool:DictCgp>
+					</s:HGroup>
+					<s:HGroup width="100%" verticalAlign="middle">
+						<s:Label width="85" text="显   微   镜 ："/>
+						<tool:DictCgp id="xwj0" dictName="显微镜">
+						</tool:DictCgp>
+					</s:HGroup>
+					<s:HGroup width="100%" verticalAlign="middle">
+						<s:Label width="85" text="工   作   站 ："/>
+						<tool:DictCgp id="gzz0" dictName="提取工作站">
+						</tool:DictCgp>
+					</s:HGroup>
+					<s:HGroup width="530" horizontalAlign="right" verticalAlign="middle">
+						<s:Button click="PureSave(event)" skinClass="assets.skins.Button_bc" enabled="{PsbLocator.getInstance().npending}"/>
+					</s:HGroup>
+				</s:VGroup>	
+			</s:VGroup>
+		</s:NavigatorContent>
+	</mx:TabNavigator>
+</s:TitleWindow>

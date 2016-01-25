@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Module xmlns:fx="http://ns.adobe.com/mxml/2009" 
+		  xmlns:s="library://ns.adobe.com/flex/spark" 
+		  xmlns:mx="library://ns.adobe.com/flex/mx" 
+		  width="953" height="598" fontSize="14"
+		  creationComplete="module1_creationCompleteHandler(event)" >
+	<fx:Declarations>
+		<!-- 将非可视元素（例如服务、值对象）放在此处 -->
+	</fx:Declarations>
+	<fx:Script>
+		<![CDATA[
+			import com.adobe.cairngorm.control.CairngormEventDispatcher;
+			
+			import control.*;
+			
+			import locator.DictLocator;
+			import locator.MenuLocator;
+			import locator.SysUserLocator;
+			
+			import mx.collections.ArrayList;
+			import mx.events.FlexEvent;
+			
+			private var dictName:String="";
+			
+			protected function module1_creationCompleteHandler(event:FlexEvent):void
+			{
+				MenuLocator.getInstance().changeMenu(menuGp);
+				if(SysUserLocator.getInstance().loginUser.OFFICE=="DNA")
+				{
+					VG.removeElement(VG01);
+				}
+				else
+				{
+					VG.removeElement(VG02);
+				}
+			}
+			
+			//字典库设置
+			protected function dict_changeHandler(event:Event):void
+			{
+				dictName=(event.currentTarget as RadioButton).label;
+				var dictItemList:ArrayList = DictLocator.getInstance().getItem(dictName);
+				this.dictItemList.dataProvider=dictItemList;
+				addDictBtn.visible=true;
+			}
+			
+			protected function addDictBtn_clickHandler(event:MouseEvent):void
+			{
+				var locObj:DictLocator=DictLocator.getInstance();
+				var newItem:String=dictItemText.text.replace("(","（");
+				newItem=newItem.replace(")","）");
+				locObj.dictdictName=dictName;
+				locObj.itemitemName=newItem;
+				CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.DICTWS_InsertXml));
+			}
+			
+			protected function delDictBtn_clickHandler(event:MouseEvent):void
+			{
+				var locObj:DictLocator=DictLocator.getInstance();
+				locObj.dictdictName = dictName;
+				locObj.itemitemName = dictItemText.text;
+				CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.DICTWS_DeleteXml));
+			}
+
+			
+		]]>
+	</fx:Script>
+	
+	<s:Panel  width="953" height="598">
+		<s:HGroup id="menuGp" x="10" y="-27"/>	
+		<s:HGroup left="10" right="10" top="10" bottom="10" gap="14">
+			<s:HGroup width="300" height="100%">
+				<s:Label text="字典内容："/>
+				<s:List id="dictItemList" width="100%" height="100%"></s:List>
+			</s:HGroup>
+			<s:VGroup id="VG" width="100%" height="100%">
+				<s:VGroup id="VG01" width="100%">
+					<s:HGroup width="100%" verticalAlign="middle">
+						<s:RadioButton label="年份" change="dict_changeHandler(event)" />
+						<s:RadioButton label="认证认可" change="dict_changeHandler(event)" />
+					</s:HGroup>
+					<s:HGroup width="100%" verticalAlign="middle">
+						<s:RadioButton label="检材包装" change="dict_changeHandler(event)" />
+						<s:RadioButton label="检材性质" change="dict_changeHandler(event)" />
+						<s:RadioButton label="重量单位" change="dict_changeHandler(event)" />
+					</s:HGroup>
+					<s:HGroup width="100%">
+						<s:RadioButton label="设备类别" change="dict_changeHandler(event)" />
+					</s:HGroup>
+				</s:VGroup>
+
+				<s:VGroup id="VG02" width="100%">
+					<s:HGroup width="100%" verticalAlign="middle">
+						<s:RadioButton label="预试验方法" change="dict_changeHandler(event)" />
+						<s:RadioButton label="确证试验方法" change="dict_changeHandler(event)" />
+						<s:RadioButton label="提取方法" change="dict_changeHandler(event)" />
+						<s:RadioButton label="纯化方法" change="dict_changeHandler(event)" />
+						<s:RadioButton label="试剂盒" change="dict_changeHandler(event)" />
+					</s:HGroup>
+					<s:HGroup width="100%" verticalAlign="middle">
+						<s:RadioButton label="提取离心机" change="dict_changeHandler(event)" />
+						<s:RadioButton label="移液器" change="dict_changeHandler(event)" />
+						<s:RadioButton label="加热仪" change="dict_changeHandler(event)" />
+						<s:RadioButton label="恒温混匀仪" change="dict_changeHandler(event)" />
+						<s:RadioButton label="提取漩涡混合器" change="dict_changeHandler(event)" />
+						<s:RadioButton label="水浴" change="dict_changeHandler(event)" />
+						<s:RadioButton label="显微镜" change="dict_changeHandler(event)" />
+					</s:HGroup>
+					<s:HGroup width="100%" verticalAlign="middle">
+						<s:RadioButton label="提取工作站" change="dict_changeHandler(event)" />
+					</s:HGroup>
+					<s:HGroup width="100%" verticalAlign="middle">
+						<s:RadioButton label="扩增仪" change="dict_changeHandler(event)" />
+						<s:RadioButton label="扩增离心机" change="dict_changeHandler(event)" />
+						<s:RadioButton label="扩增漩涡混合器" change="dict_changeHandler(event)" />
+						<s:RadioButton label="超净台" change="dict_changeHandler(event)" />
+						<s:RadioButton label="扩增工作站" change="dict_changeHandler(event)" />
+						<s:RadioButton label="质控样本" change="dict_changeHandler(event)" />
+					</s:HGroup>
+					<s:HGroup width="100%" verticalAlign="middle">
+						<s:RadioButton label="电泳仪" change="dict_changeHandler(event)" />
+						<s:RadioButton label="检测离心机" change="dict_changeHandler(event)" />
+						<s:RadioButton label="检测漩涡混合器" change="dict_changeHandler(event)" />
+						<s:RadioButton label="制冰机" change="dict_changeHandler(event)" />
+						<s:RadioButton label="电泳工作站" change="dict_changeHandler(event)" />
+						<s:RadioButton label="内标" change="dict_changeHandler(event)" />
+						<s:RadioButton label="变性溶剂" change="dict_changeHandler(event)" />
+					</s:HGroup>
+					<s:HGroup>
+						<s:RadioButton label="案件类型" change="dict_changeHandler(event)" />
+						<s:RadioButton label="案件性质" change="dict_changeHandler(event)" />
+						<s:RadioButton label="案件类别" change="dict_changeHandler(event)" />
+						<s:RadioButton label="鉴定要求" change="dict_changeHandler(event)" />
+					</s:HGroup>
+				</s:VGroup>
+				<s:HGroup width="100%" verticalAlign="middle">
+					<s:Label text="字典内容："/>
+					<s:TextInput id="dictItemText" width="100%" text="{dictItemList.selectedItem.label}"/>
+				</s:HGroup>
+				<s:HGroup width="100%" verticalAlign="middle">
+					<s:Button visible="{dictItemList.selectedIndex&gt;=0}" label="删除" click="delDictBtn_clickHandler(event)"/>
+					<s:Button id="addDictBtn" visible="false" label="增加" click="addDictBtn_clickHandler(event)"/>
+				</s:HGroup>
+			</s:VGroup>
+		</s:HGroup>
+		
+	</s:Panel>
+</s:Module>

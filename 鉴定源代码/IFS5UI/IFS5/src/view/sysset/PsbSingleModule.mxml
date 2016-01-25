@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Module xmlns:fx="http://ns.adobe.com/mxml/2009"
+		  xmlns:s="library://ns.adobe.com/flex/spark"
+		  xmlns:mx="library://ns.adobe.com/flex/mx"
+		  xmlns:tool="view.tool.*"
+		  width="953" height="598" fontSize="14"
+		  creationComplete="MenuLocator.getInstance().changeMenu(menuGp);">
+	
+	<fx:Script>
+		<![CDATA[
+			import com.adobe.cairngorm.control.CairngormEventDispatcher;
+			
+			import control.*;
+			
+			import locator.PsbLocator;
+			import locator.MenuLocator;	
+			import locator.SysUserLocator;
+			import util.Helper;
+			
+			import vo.PsbVo;
+			import vo.SysUserVo;
+			
+			private var locObj:PsbLocator=PsbLocator.getInstance();
+			
+			protected function button2_clickHandler(event:MouseEvent):void
+			{
+				PsbLocator.getInstance().wsObj=new PsbVo(SysUserLocator.getInstance().loginUser.PSBID,SysUserLocator.getInstance().loginUser.PID,
+					SysUserLocator.getInstance().loginUser.PTYPE,pn.text,pname.text,
+					addr.text,pc.text,SysUserLocator.getInstance().loginUser.PNICKNAME,phone.text,"");
+				CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.PSBWS_Update));
+			}
+			
+		]]>
+	</fx:Script>
+	
+	<fx:Declarations>
+		<!-- 将非可视元素（例如服务、值对象）放在此处 -->
+	</fx:Declarations>
+	<s:Panel width="953" height="598">
+		<s:HGroup id="menuGp" x="10" y="-27"/>	
+		<s:Label x="271" y="214" text="电        话："/>
+		<s:Button x="613" y="269" label="修改" click="button2_clickHandler(event)"
+				  enabled="{PsbLocator.getInstance().npending}"/>
+		<s:TextInput id="phone" x="349" y="204" width="334" text="{SysUserLocator.getInstance().loginUser.PPHONE}"/>
+		<s:Label x="271" y="182" text="邮        编："/>
+		<s:TextInput id="pc" x="349" y="172" width="334" text="{SysUserLocator.getInstance().loginUser.PPOSTCODE}"/>
+		<s:Label x="271" y="150" text="地        址："/>
+		<s:TextInput id="addr" x="349" y="140" width="334" text="{SysUserLocator.getInstance().loginUser.PADDRESS}"/>
+		<s:Label x="271" y="118" text="名        称："/>
+		<s:Label id="pname" x="349" y="118" text="{SysUserLocator.getInstance().loginUser.PNAME}"/>
+		<s:Label x="271" y="86" text="编        号："/>
+		<s:Label id="pn" x="349" y="86" text="{SysUserLocator.getInstance().loginUser.PNUMBER}"/>
+	</s:Panel>
+</s:Module>

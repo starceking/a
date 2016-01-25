@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:HGroup xmlns:fx="http://ns.adobe.com/mxml/2009"
+		  xmlns:s="library://ns.adobe.com/flex/spark"
+		  xmlns:mx="library://ns.adobe.com/flex/mx"
+		  fontSize="14">
+	<fx:Declarations>
+		<!-- 将非可视元素（例如服务、值对象）放在此处 -->
+	</fx:Declarations>
+	<fx:Script>
+		<![CDATA[			
+			public function set role(roleArg:String):void
+			{
+				ld.selected=roleArg.search("Leader")>=0;
+				jg.selected=roleArg.search("Techer")>=0;
+//				jdr.selected=roleArg.search("Office")>=0;
+				dna.selected=roleArg.search("DNA")>=0;
+				xzry.selected=roleArg.search("Insider")>=0;
+			}
+			
+			public function get role():String
+			{
+				var roleArg:String="";
+				
+				if(ld.selected) roleArg+="Leader，";
+				if(jg.selected) roleArg+="Techer，";
+//				if(jdr.selected) roleArg+="Office，";
+				if(dna.selected) roleArg+="DNA，";
+				if(xzry.selected) roleArg+="Insider，";
+				
+				if(roleArg.length>0)return roleArg.substr(0,roleArg.length-1);
+				return roleArg;
+			}
+		]]>
+	</fx:Script>
+	<s:CheckBox id="ld" label="领导"/>
+	<s:CheckBox id="jg" label="技管"/>
+<!--	<s:CheckBox id="jdr" label="鉴定人"/>-->
+	<s:CheckBox id="dna" label="DNA"/>
+	<s:CheckBox id="xzry" label="行政人员"/>
+</s:HGroup>

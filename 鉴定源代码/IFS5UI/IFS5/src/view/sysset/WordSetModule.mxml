@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Module xmlns:fx="http://ns.adobe.com/mxml/2009"
+		  xmlns:s="library://ns.adobe.com/flex/spark"
+		  xmlns:mx="library://ns.adobe.com/flex/mx"
+		  xmlns:tool="view.tool.*"
+		  xmlns:ns1="*"
+		  width="953" height="598" fontSize="14"
+		  creationComplete="MenuLocator.getInstance().changeMenu(menuGp);">
+	<fx:Declarations>
+		<!-- 将非可视元素（例如服务、值对象）放在此处 -->		
+	</fx:Declarations>
+	<fx:Script>
+		<![CDATA[			
+			import com.adobe.cairngorm.control.CairngormEventDispatcher;
+			
+			import control.*;
+			import locator.MenuLocator;	
+			import locator.JusTypeLocator;
+			import locator.PsbLocator;
+			import locator.SysUserLocator;
+			import locator.WordLocator;
+			
+			import mx.controls.Alert;
+			import mx.events.CloseEvent; 
+			
+			import util.Server;
+			
+			import vo.WordVo;
+			
+			private var wtype:String="";
+			protected function officeRgpChanged(evt:Event):void
+			{
+				if(office.office=="DNA")return;
+				jusType.office=office.office;
+			}
+			private function upload():void
+			{
+				var jtype:String=jusType.jusType;
+				if(office.office=="DNA")jtype="DNA";
+				else jtype=JusTypeLocator.getInstance().getJusType(office.office,jtype).Id;
+				
+				if(jtype.length==0)return;
+				if(wtype.length==0)return;
+				
+				mfu.upload_url=Server.getCaseWordUploadUrl(PsbLocator.getInstance().idPsb.ID,jtype,wtype);
+				mfu.uploadAll();
+			}
+			
+			protected function button1_clickHandler():void
+			{
+				var jtype:String=jusType.jusType;
+				if(office.office=="DNA")jtype="DNA";
+				
+				if(jtype.length==0)return;
+				if(wtype.length==0)return;
+				var wwtype:String=wtype;
+				switch (wwtype)
+				{
+					case "1": wwtype = "委托书"; break;
+					case "2": wwtype = "受理书"; break;
+					case "3": wwtype = "检验检查记录"; break;
+					case "4": wwtype = "意见报告书"; break;
+					case "5": wwtype = "封皮"; break;
+					case "6": wwtype = "其他"; break;
+					case "7": wwtype = "物证描述"; break;
+					default:
+						return;
+				}
+				
+				WordLocator.getInstance().idPsb=PsbLocator.getInstance().idPsb.ID;
+				WordLocator.getInstance().jusType=jtype;
+				WordLocator.getInstance().wordType=wwtype;
+				
+				CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.WORDWS_GetCaseWordManageList));
+			}
+			
+			protected function button2_clickHandler(event:MouseEvent):void
+			{
+				if(list.selectedItem!=null)
+				{
+					Alert.show("确定删除此文书模板么？","温馨提示",Alert.YES|Alert.CANCEL,this,delhandler,null,Alert.CANCEL); 
+				}
+			}
+			private function delhandler(evt:CloseEvent):void
+			{
+				if(evt.detail==Alert.YES)
+				{
+					//执行内容
+					WordLocator.getInstance().wsObj=list.selectedItem as WordVo;
+					CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.WORDWS_DeleteWord));
+					WordLocator.getInstance().maList.removeItemAt(list.selectedIndex);
+				}
+			}
+			
+			protected function list1_doubleClickHandler(event:MouseEvent):void
+			{
+				if(list.selectedItem!=null)
+					navigateToURL(new URLRequest(list.selectedItem.OpenWordUrl));
+			}
+			
+			protected function jusType_clickHandler(event:MouseEvent):void
+			{
+				WordLocator.getInstance().maList.removeAll();
+				button1_clickHandler();
+			}
+			
+		]]>
+	</fx:Script>
+	<s:Panel  width="953" height="598">
+		<s:HGroup id="menuGp" x="10" y="-27"/>	
+		<s:VGroup left="10" right="10" top="10" bottom="10">
+			<s:HGroup width="100%" verticalAlign="middle">
+				<s:Label text="专业科室："/>
+				<tool:OfficeRgp id="office"
+								creationComplete="office.addEventListener(OfficeRgp.event_name,officeRgpChanged)"
+								queryOfc="{SysUserLocator.getInstance().loginUser.OFFICE}">
+				</tool:OfficeRgp>
+			</s:HGroup>
+			<s:HGroup width="100%" verticalAlign="middle">
+				<s:Label text="鉴定类别："/>
+				<tool:JusTypeRgp id="jusType" click="jusType_clickHandler(event)" >
+				</tool:JusTypeRgp>
+			</s:HGroup>
+			<s:HGroup width="100%" verticalAlign="middle">
+				<s:Label text="文书类别："/>
+				<s:RadioButton label="委托书" change="wtype='1';button1_clickHandler();" groupName="dsff"/>
+				<s:RadioButton label="受理书" change="wtype='2';button1_clickHandler();" groupName="dsff"/>
+				<s:RadioButton label="检验检查记录" change="wtype='3';button1_clickHandler();" groupName="dsff"/>
+				<s:RadioButton label="意见报告书" change="wtype='4';button1_clickHandler();" groupName="dsff"/>
+				<s:RadioButton label="封皮" change="wtype='5';button1_clickHandler();" groupName="dsff"/>
+				<s:RadioButton label="其他" change="wtype='6';button1_clickHandler();" groupName="dsff"/>
+				<s:RadioButton label="物证描述" change="wtype='7';button1_clickHandler();" groupName="dsff"/>
+				<s:Spacer width="10" height="10"/>
+				<s:Button label="查询" click="button1_clickHandler()"
+						  enabled="{WordLocator.getInstance().npending}"/>
+			</s:HGroup>
+			<s:HGroup width="100%">
+				<s:Label text="可双击列表下载文书模板"/>
+				<s:Spacer width="168" height="10"/>
+				<s:Label text="如果文书模板有错误，请将正确的文书模板上传替换"/>
+			</s:HGroup>
+			<s:HGroup width="100%">
+				<s:List id="list" width="100%" height="100%" dataProvider="{WordLocator.getInstance().maList}"
+						doubleClick="list1_doubleClickHandler(event)" doubleClickEnabled="true"
+						labelField="FileName"></s:List>
+				<ns1:MultiFileUploader id="mfu">
+				</ns1:MultiFileUploader>
+			</s:HGroup>
+			<s:HGroup width="100%">
+				<s:Button label="下载文书模板" click="list1_doubleClickHandler(event)" visible="{list.selectedItem!=null}"/>
+				<s:Spacer width="95" height="10"/>
+				<s:Button label="删除文书模板" click="button2_clickHandler(event)"
+						  enabled="{WordLocator.getInstance().npending}" visible="{list.selectedItem!=null}"/>
+				<mx:LinkButton label="书签模版下载" click="navigateToURL(new URLRequest(Server.bmDown));"
+							   textDecoration="underline"/>
+				<s:Spacer width="100%" height="10"/>
+				<s:Button label="上传文书模板" click="upload()"/>
+				<s:Spacer width="10" height="10"/>
+			</s:HGroup>
+		</s:VGroup>
+		
+	</s:Panel>
+</s:Module>

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Skin xmlns:s="library://ns.adobe.com/flex/spark"
+		xmlns:fx="http://ns.adobe.com/mxml/2009"
+		width="70" height="21">
+	<fx:Metadata>[HostComponent("spark.components.Button")]</fx:Metadata>
+	<s:states>
+		<s:State name="up"/>
+		<s:State name="over"/>
+		<s:State name="down"/>
+		<s:State name="disabled"/>
+	</s:states>
+	<s:BitmapImage x="0" y="0" smooth="true"
+				   source="@Embed('/assets/images/menu/step.png')"/>
+	<s:RichText whiteSpaceCollapse="preserve" fontFamily="宋体" color.over="#c5c7ca" color="#ffffff" fontSize="14" lineHeight="120%" x="14" y="4">
+		<s:content><s:p><s:span>修  改</s:span></s:p></s:content>
+	</s:RichText>
+	<s:filters>
+		<s:DropShadowFilter includeIn="up,down" alpha="0.5" angle="45.0" blurX="2" blurY="2"
+							color="#000000" distance="2" hideObject="false" inner="false"
+							knockout="false" quality="2" strength="1"/>
+		<s:GlowFilter includeIn="over" alpha="1.0" blurX="4.0" blurY="4.0" color="#222222"
+					  inner="false" knockout="false" quality="2" strength="1"/>
+	</s:filters>
+	
+</s:Skin>

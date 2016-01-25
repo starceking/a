@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009"
+		 xmlns:s="library://ns.adobe.com/flex/spark"
+		 xmlns:mx="library://ns.adobe.com/flex/mx"
+		 xmlns:tool="view.tool.*"
+		 xmlns:ns1="*"
+		 width="813" height="547" creationComplete="creationCompleteHandler(event)" fontSize="14">
+	<fx:Declarations>
+		<!-- 将非可视元素（例如服务、值对象）放在此处 -->
+	</fx:Declarations>
+	<fx:Script>
+		<![CDATA[
+			import com.adobe.cairngorm.control.CairngormEventDispatcher;
+			
+			import control.*;
+			
+			import locator.CasePersonnelSampleShrLocator;
+			import locator.IdFlowLocator;
+			
+			import mx.events.FlexEvent;
+			
+			import vo.CasePersonnelSampleVo;
+			
+			private var sampleCategory:String="受害人";
+			private var locObj:CasePersonnelSampleShrLocator=CasePersonnelSampleShrLocator.getInstance();
+			
+			protected function creationCompleteHandler(evt:Event):void
+			{
+				var conno:String=IdFlowLocator.getInstance().curObj.CONNO;
+				if(conno.length==19)
+				{
+					locObj.wsObj=new CasePersonnelSampleVo("","",conno,sampleCategory,
+						"","","","","",
+						"","","","","",
+						"","","","","","","");
+					CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.CASEPERSONNELSAMPLE_SHRWS_GetAll));
+				}
+			}
+			
+		]]>
+	</fx:Script>
+	<s:Label x="10" y="373" text="姓        名："/>
+	<s:Label id="pname" x="88" y="373" text="{dg.selectedItem.NAME}"/>
+	<s:Label x="276" y="373" text="性        别："/>
+	<s:Label id="gender" x="354" y="373" text="{dg.selectedItem.GENDER}"/>
+	<s:Label x="545" y="373" text="身  份  证："/>
+	<s:Label id="idcard" x="623" y="373" text="{dg.selectedItem.ID_CARD_NO}"/>
+	<s:Label x="10" y="403" text="出生日期："/>
+	<s:Label id="birthday" x="88" y="403" text="{dg.selectedItem.BIRTH_DATE}"/>
+	<s:Label x="276" y="403" text="学        历："/>
+	<s:Label x="545" y="433" text="身        份："/>
+	<s:Label id="identity" x="623" y="433" text="{dg.selectedItem.IDENTITY}"/>
+	<s:DataGrid id="dg" x="10" y="50" width="793" height="254" dataProvider="{locObj.listObj}">
+		<s:columns>
+			<s:ArrayList>
+				<s:GridColumn width="160" dataField="SLN" headerText="样本编号"></s:GridColumn>
+				<s:GridColumn dataField="SAMPLE_TYPE" headerText="样本类型"></s:GridColumn>
+				<s:GridColumn dataField="NAME" headerText="姓名"></s:GridColumn>
+				<s:GridColumn dataField="GENDER" headerText="性别"></s:GridColumn>
+				<s:GridColumn dataField="ID_CARD_NO" headerText="身份证"></s:GridColumn>
+			</s:ArrayList>
+		</s:columns>
+	</s:DataGrid>
+	<s:Label x="10" y="343" text="样本编号："/>
+	<s:Label id="pnum" x="88" y="343" text="{dg.selectedItem.SLN}"/>
+	<s:Label x="276" y="343" text="样本类型："/>
+	<s:Label id="stype" x="354" y="343" text="{dg.selectedItem.SAMPLE_TYPE}"/>
+	<s:Label id="nativeplace" x="88" y="463" text="{dg.selectedItem.NATIVE_PLACE_ADDR}"/>
+	<s:Label x="10" y="493" text="样本描述："/>
+	<s:Label x="10" y="523" text="备        注："/>
+	<s:Label id="remark" x="88" y="523" text="{dg.selectedItem.REMARK}"/>
+	<s:Label id="sdes" x="88" y="493" text="{dg.selectedItem.SAMPLE_DESCRIPTION}"/>
+	<s:Label id="edu" x="354" y="403" text="{dg.selectedItem.EDUCATION_LEVEL}"/>
+	<s:Label x="545" y="403" text="人员类型："/>
+	<s:Label id="ptype" x="623" y="403" text="{dg.selectedItem.PERSONNEL_TYPE}"/>
+	<s:Label x="545" y="343" text="样本包装："/>
+	<s:Label id="pack" x="623" y="343" text="{dg.selectedItem.SAMPLE_PACKAGING}"/>
+	<s:Label x="10" y="463" text="籍        贯："/>
+	<s:Label x="276" y="463" text="现  住  址："/>
+	<s:Label x="10" y="433" text="国        籍："/>
+	<s:Label id="nation" x="88" y="433" text="{dg.selectedItem.DISTRICT}"/>
+	<s:Label x="276" y="433" text="民        族："/>
+	<s:Label id="district" x="354" y="433" text="{dg.selectedItem.NATIONALITY}"/>
+	<s:Label id="residenceplace" x="354" y="463" text="{dg.selectedItem.RESIDENCE_ADDR}"/>
+	<ns1:ListPager id="pager" x="402" y="311"
+				   creationComplete="pager.addEventListener(ListPager.PAGE_INDEX_CHANGE_EVENT,creationCompleteHandler);locObj.listPager=pager;"
+				   pageSize="8">
+	</ns1:ListPager>
+	<s:Label x="10" y="10" color="#0A37FA" fontSize="20" fontWeight="bold" text="受害人样本信息"/>
+</s:Group>

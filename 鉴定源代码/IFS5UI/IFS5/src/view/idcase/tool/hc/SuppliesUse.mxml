@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
+		 xmlns:s="library://ns.adobe.com/flex/spark" 
+		 xmlns:mx="library://ns.adobe.com/flex/mx"
+		 fontSize="14" width="813" height="529"
+		 xmlns:tool="view.tool.*"
+		 creationComplete="select_sfUpdate_clickHandler(event)"
+		 >
+	<fx:Declarations>
+		<!-- 将非可视元素（例如服务、值对象）放在此处 -->
+	</fx:Declarations>
+	<fx:Script>
+		<![CDATA[
+			import com.adobe.cairngorm.control.CairngormEventDispatcher;
+			
+			import control.*;
+			
+			import locator.MenuLocator;
+			import locator.SuppliesLocator;
+			import locator.SuppliesUseLocator;
+			
+			import mx.events.FlexEvent;
+			
+			import util.Helper;
+			
+			import vo.MenuVo;
+			import vo.SuppliesVo;
+			import vo.SuppliesUseVo;
+			
+			
+			protected function select_sfUpdate_clickHandler(event:FlexEvent):void
+			{
+				// TODO Auto-generated method stub
+				SuppliesUseLocator.getInstance().wsObj =new SuppliesUseVo("",SuppliesLocator.getInstance().currObj.ID,"","","","");
+				CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.SUPPLIESUSE_GetOne)); 
+				
+			}
+			protected function BtnAdd_clickHandler(event:MouseEvent):void
+			{
+				// TODO Auto-generated method stub
+				SuppliesUseLocator.getInstance().wsObj = new SuppliesUseVo(Helper.getGUID(),SuppliesLocator.getInstance().currObj.ID,TextSyr.text,TextSyrq.text,TextXhl.text,ph.text);
+				CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.SUPPLIESUSE_Insert));
+			}
+			
+			protected function BtnDelete_clickHandler(event:MouseEvent):void
+			{
+				// TODO Auto-generated method stub
+				
+				SuppliesUseLocator.getInstance().wsObj =gd.selectedItem as SuppliesUseVo ;
+				CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.SUPPLIESUSE_Delete));
+				
+				
+			}
+			
+			protected function BrnUpdate_clickHandler(event:MouseEvent):void
+			{
+				// TODO Auto-generated method stub
+				SuppliesUseLocator.getInstance().wsObj = new SuppliesUseVo(gd.selectedItem.ID,SuppliesLocator.getInstance().currObj.ID,TextSyr.text,TextSyrq.text,TextXhl.text,ph.text);
+				CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.SUPPLIESUSE_Update));
+				
+			}
+			
+			protected function button1_clickHandler(event:MouseEvent):void
+			{
+				// TODO Auto-generated method stub
+				SuppliesUseLocator.getInstance().wsObj = new SuppliesUseVo(gd.selectedItem.ID,SuppliesLocator.getInstance().currObj.ID,TextSyr.text,TextSyrq.text,TextXhl.text,ph.text);
+				SuppliesUseLocator.getInstance().filename=Helper.getGUID();
+				SuppliesUseLocator.getInstance().wordname="CSTCSG-500-038重要消耗品使用一览表.doc";
+				CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.SUPPLIESUSE_MackAllHCSY));
+			}
+			
+		]]>
+	</fx:Script>
+	<s:Label x="10" y="10" color="#0A37FA" fontSize="20" fontWeight="bold" text="领用记录"/>
+	<s:DataGrid id="gd" x="10" y="38" width="553" height="481" dataProvider="{SuppliesUseLocator.getInstance().listObj}">
+		<s:columns>
+			<s:ArrayList>
+				<s:GridColumn dataField="SYR" headerText="领用人"></s:GridColumn>
+				<s:GridColumn dataField="SYRQ" headerText="领用日期"></s:GridColumn>
+				<s:GridColumn dataField="XHSL" headerText="领用量"></s:GridColumn>
+				<s:GridColumn dataField="PH" headerText="批号"></s:GridColumn>
+			</s:ArrayList>
+		</s:columns>
+	</s:DataGrid>
+	<s:Label x="571" y="70" text="领  用 人："/>
+	<s:TextInput id="TextSyr" x="647" y="60" width="156" text="{gd.selectedItem.SYR}"/>
+	<s:Label x="571" y="102" text="领用日期："/>
+	<tool:DateZh  id="TextSyrq" x="647" y="92" width="156" text="{gd.selectedItem.SYRQ}"/>
+	<s:Label x="571" y="134" text="领  用  量："/>
+	<s:TextInput id="TextXhl" x="647" y="124" width="154" restrict="0123456789"
+				 text="{gd.selectedItem.XHSL}"/>
+	<s:Button id="BtnAdd" x="578" y="498" label="增加" click="BtnAdd_clickHandler(event)"/>
+	<s:Button id="BtnDelete" x="734" y="498" label="删除" click="BtnDelete_clickHandler(event)" enabled="{gd.selectedItem!=null}"/>
+	<s:Button id="BrnUpdate" x="656" y="498" label="修改" click="BrnUpdate_clickHandler(event)" enabled="{gd.selectedItem!=null}"/>
+	<mx:LinkButton x="686" y="10" label="打印领用一览表" click="button1_clickHandler(event)" enabled="{gd.selectedItem!=null}" textDecoration="underline" color="blue"/>
+	<s:Label x="571" y="167" text="批        号："/>
+	<s:TextInput id="ph" x="647" y="157" width="154" restrict="0123456789"
+				 text="{gd.selectedItem.PH}"/>
+</s:Group>

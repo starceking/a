@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:ItemRenderer xmlns:fx="http://ns.adobe.com/mxml/2009" 
+				xmlns:s="library://ns.adobe.com/flex/spark" 
+				xmlns:mx="library://ns.adobe.com/flex/mx"
+				xmlns:tool="view.tool.*"
+				fontSize="14" height="26">
+	<fx:Declarations>
+		<!-- 将非可视元素（例如服务、值对象）放在此处 -->
+	</fx:Declarations>
+	<fx:Script>
+		<![CDATA[
+			import spark.events.TextOperationEvent;
+			
+			import util.Helper;
+			private function ddlchange(evt:Event):void
+			{
+				data.YL=yl.getSelectedItem();
+			}
+			
+			protected function dywz_changeHandler(event:TextOperationEvent):void
+			{
+				data.WZ=dywz.text;
+			}
+			
+		]]>
+	</fx:Script>
+	<s:HGroup verticalAlign="middle" verticalCenter="0">
+		<s:Label width="200" text="{data.SLN}" textAlign="center" verticalAlign="middle"
+				 verticalCenter="0"/>
+		<s:Label width="230" text="{data.NAME}" textAlign="center" verticalAlign="middle"
+				 verticalCenter="0"/>
+		<s:TextInput id="dywz" width="100" change="dywz_changeHandler(event)" text="{data.WZ}"
+					 textAlign="center"/>
+		<tool:DictCbb id="yl" width="100"
+					  creationComplete="yl.addEventListener(DictCbb.event_name,ddlchange)"
+					  dictName="模板用量" selectedItem="{data.YL}" textAlign="center" verticalCenter="0"/>
+		<s:Label width="80" text="{data.SAMPLE_TYPE}" textAlign="center" verticalAlign="middle"
+				 verticalCenter="0"/>
+	</s:HGroup>
+</s:ItemRenderer>

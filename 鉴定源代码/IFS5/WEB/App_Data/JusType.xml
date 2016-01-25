@@ -1,0 +1,29 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <PSB Id="1">
+    <ADMIN>
+      <YEAR>2013</YEAR>
+      <SHORTNOTE>
+        <TESTER>0</TESTER>
+        <TESTER2>0</TESTER2>
+        <TESTER3>0</TESTER3>
+        <TESTER4>0</TESTER4>
+        <CHECKER>0</CHECKER>
+        <SIGN>0</SIGN>
+        <TECH>0</TECH>
+        <LEADER>0</LEADER>
+        <TESTERSD>0</TESTERSD>
+      </SHORTNOTE>
+    </ADMIN>
+    <DNA Leader="1" WholeNo="0" DocName="物" PlanDate="30" Enabled="1">
+      <IDREQ>DNA检验</IDREQ>
+      <CLN>yyyyScccc</CLN>
+      <SESLN>yyyy-FW-cccc-JCnnn</SESLN>
+      <CPSSLN>yyyy-FW-cccc-YBnnn</CPSSLN>
+      <RSLN>yyyy-FW-cccc-YBnnn</RSLN>
+      <USLN>yyyy-FW-cccc-YBnnn</USLN>
+      <LSLN>yyyy-FW-cccc-YBnnn</LSLN>
+      <LRSLN>yyyy-FW-cccc-YBnnn</LRSLN>
+    </DNA>
+  </PSB>
+</root>

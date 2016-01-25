@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009"
+		 xmlns:s="library://ns.adobe.com/flex/spark"
+		 xmlns:mx="library://ns.adobe.com/flex/mx"
+		 xmlns:tool="view.tool.*"
+		 xmlns:idcase="view.idcase.tool.idcase.*"
+		 width="813" height="450" fontSize="14" xmlns:local="*">
+	<fx:Script>
+		<![CDATA[
+			import com.adobe.cairngorm.control.CairngormEventDispatcher;
+			
+			import control.*;
+			import util.*;
+			
+			import locator.SysUserLocator;
+			
+			import mx.containers.ViewStack;
+			import mx.events.FlexEvent;
+			
+			public var vs:ViewStack;
+			
+			private var sysuser:SysUserLocator=SysUserLocator.getInstance();
+			private var filter:FileFilter=new FileFilter("jpg图片(*.jpg)","*.jpg");
+			protected function button1_clickHandler(event:MouseEvent):void
+			{
+				// TODO Auto-generated method stub
+				sysuser.wsObj.ID=sysuser.curObj.ID;
+				sysuser.wsObj.IDCARDNO=idcardno.text;
+				sysuser.wsObj.ZW=zw.text;
+				sysuser.wsObj.BrithDay=brithDay.text;
+				sysuser.wsObj.Address=address.text;
+				sysuser.wsObj.POSTCODE=postcode.text;
+				sysuser.wsObj.PHONE=phone.text;
+				sysuser.wsObj.NativeAddr=nativeaddr.getSelectedItem();
+				sysuser.wsObj.PoliticalState=politicalState.getSelectedItem();
+				sysuser.wsObj.JobStartDate=jobStartDate.text;
+				sysuser.wsObj.JobTitle1=jobTitle1.text;
+				sysuser.wsObj.AcquireDate1=acquireDate1.text;
+				sysuser.wsObj.JobTitle2=jobTitle2.text;
+				sysuser.wsObj.AcquireDate2=acquireDate2.text;
+				sysuser.wsObj.Discipline=discipline.text;
+				sysuser.wsObj.JusType=jusType.text;
+				sysuser.wsObj.PractisingCertificateNo=practisingCertificateNo.text;
+				sysuser.wsObj.JG=jg.text;
+				
+				CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.SYSUSERWS_UpdateJBXX));
+				
+			}
+		]]>
+	</fx:Script>
+	<fx:Declarations>
+		<!-- 将非可视元素（例如服务、值对象）放在此处 -->
+	</fx:Declarations>
+	<s:Label x="10" y="60" text="姓       名："/>
+	<s:TextInput id="sname" x="88" y="50" width="199" text="{sysuser.curObj.NAME}" enabled="false"/>
+	<s:Label x="312" y="60" text="性       别："/>
+	<s:TextInput id="gender" x="400" y="50" width="189" text="{sysuser.curObj.GENDER}" enabled="false"/>
+	<s:Label x="9" y="95"  text="联系方式："/>
+	<s:TextInput id="phone" x="87" y="85" width="199" text="{sysuser.curObj.PHONE}"/>
+	<s:Label x="9" y="375"  text="现 从事 专业："/>
+	<s:TextInput id="discipline" x="107" y="369" width="180" text="{sysuser.curObj.Discipline}"/>
+	<s:Label x="0" y="309"  text="专业技术职称1："/>
+	<s:TextInput id="jobTitle1" x="107" y="300" width="180" text="{sysuser.curObj.JobTitle1}"/>
+	<s:Label x="10" y="130" text="民       族："/>
+	<s:Label x="10" y="168" text="联系地址："/>
+	<s:Label x="295" y="272" text="参加工作时间："/>
+	<tool:DateZh id="jobStartDate" x="404" y="265" width="185" text="{sysuser.curObj.JobStartDate}"/>
+	<s:Label x="311" y="92" text="出生日期："/>
+	<tool:DateZh id="brithDay" x="399" y="85" width="190" text="{sysuser.curObj.BrithDay}"/>
+	<s:Label x="294" y="309" text="取  得  时   间1："/>
+	<tool:DateZh id="acquireDate1" x="404" y="299" width="185" text="{sysuser.curObj.AcquireDate1}"/>
+	<s:TextInput id="jobTitle2" x="107" y="330" width="180" text="{sysuser.curObj.JobTitle2}"/>
+	<tool:DateZh id="acquireDate2" x="404" y="331" width="185" text="{sysuser.curObj.AcquireDate2}"/>
+	<s:Label x="312" y="130" text="政治面貌："/>
+	<s:TextArea id="address" x="88" y="147" width="501" height="50" text="{sysuser.curObj.Address}"/>
+	<s:Label x="10" y="210"  text="家庭电话："/>
+	<s:TextInput id="postcode" x="88" y="204" width="198" text="{sysuser.curObj.POSTCODE}"/>
+	<s:Label x="10" y="240"  text="籍      贯："/>
+	<s:TextInput id="jg" x="88" y="234" width="501" text="{sysuser.curObj.JG}"/>
+	<s:Label x="319" y="365" text="司法 鉴定人&#xd;登记 项目："/>
+	<s:TextInput id="jusType" x="404" y="368" width="160" text="{sysuser.curObj.JusType}"/>
+	<s:Label x="576" y="376" text="证书编号："/>
+	<s:Label x="620" y="317" text="照片上传后请刷新页面查看"/>
+	<s:TextInput id="practisingCertificateNo" x="651" y="367" width="152" text="{sysuser.curObj.PractisingCertificateNo}"/>
+	<s:Button y="421" horizontalCenter="-33" click="button1_clickHandler(event)"
+			  skinClass="assets.skins.Button_bc"/>
+	<tool:DictCbb id="nativeaddr" x="88" y="119" width="199" dictName="民族" selectedItem="{sysuser.curObj.NativeAddr}"/>
+	<s:Label x="9" y="275" text="现任行政职务："/>
+	<s:TextInput id="zw" x="106" y="266" width="181" text="{sysuser.curObj.ZW}"/>
+	<tool:DictCbb id="politicalState" x="400" y="120" width="189" dictName="政治面貌" selectedItem="{sysuser.curObj.PoliticalState}"/>
+	<s:Image id="img" x="612" y="48" width="180" height="250"
+			 source="{Server.getSysUserPicDownload(sysuser.curObj.ID)}"/>
+	<s:Label x="625" y="16" text="照片"/>
+	<local:SingleFileUploader x="753" y="11" id="sfu" filter="{filter}" label="下载" 
+							  upload_url="{Server.getSysUserPicUpload(sysuser.curObj.ID)}"
+							  download_url="{Server.getSysUserPicDownload(sysuser.curObj.ID)}" visible="false"/>
+	<mx:LinkButton x="737" y="11" label="上传" textDecoration="underline" click="if(sysuser.curObj.ID!=null)sfu.selectFile()"/>
+	<s:Label x="10" y="10" color="#0A37FA" fontSize="20" fontWeight="bold" text="基本信息"/>
+	<s:Label x="310" y="210"  text="身份证号："/>
+	<s:TextInput id="idcardno" x="388" y="204" width="198" text="{sysuser.curObj.IDCARDNO}"/>
+	<s:Label x="0" y="339"  text="专业技术职称2："/>
+	<s:Label x="294" y="335" text="取  得  时   间2："/>
+</s:Group>

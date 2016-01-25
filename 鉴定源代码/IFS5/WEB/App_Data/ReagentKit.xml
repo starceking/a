@@ -1,0 +1,49 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<root>
+  <KIT name="Identfiler">
+    <LOCUS name="D8S1179" />
+    <LOCUS name="D21S11" />
+    <LOCUS name="D7S820" />
+    <LOCUS name="CSF1PO" />
+    <LOCUS name="D3S1358" />
+    <LOCUS name="TH01" />
+    <LOCUS name="D13S317" />
+    <LOCUS name="D16S539" />
+    <LOCUS name="D2S1338" />
+    <LOCUS name="D19S433" />
+    <LOCUS name="vWA" />
+    <LOCUS name="TPOX" />
+    <LOCUS name="D18S51" />
+    <LOCUS name="D5S818" />
+    <LOCUS name="FGA" />
+  </KIT>
+  <KIT name="PowerPlex16">
+    <LOCUS name="D3S1358" />
+    <LOCUS name="TH01" />
+    <LOCUS name="D21S11" />
+    <LOCUS name="D18S51" />
+    <LOCUS name="Penta_E" />
+    <LOCUS name="D5S818" />
+    <LOCUS name="D13S317" />
+    <LOCUS name="D7S820" />
+    <LOCUS name="D16S539" />
+    <LOCUS name="CSF1PO" />
+    <LOCUS name="Penta_D" />
+    <LOCUS name="vWA" />
+    <LOCUS name="D8S1179" />
+    <LOCUS name="TPOX" />
+    <LOCUS name="FGA" />
+    <LOCUS name="AMEL" />
+  </KIT>
+  <KIT name="Profiler Plus">
+    <LOCUS name="D3S1358" />
+    <LOCUS name="vWA" />
+    <LOCUS name="FGA" />
+    <LOCUS name="D5S818" />
+    <LOCUS name="D13S317" />
+    <LOCUS name="D7S820" />
+    <LOCUS name="D8S1179" />
+    <LOCUS name="D21S11" />
+    <LOCUS name="D18S51" />
+  </KIT>
+</root>

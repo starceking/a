@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009"
+		 xmlns:s="library://ns.adobe.com/flex/spark"
+		 xmlns:mx="library://ns.adobe.com/flex/mx"
+		 xmlns:local="*"
+		 xmlns:tool="view.tool.*"
+		 width="813" height="547" fontSize="14">
+	<fx:Declarations>
+		<!-- 将非可视元素（例如服务、值对象）放在此处 -->
+	</fx:Declarations>
+	<fx:Script>
+		<![CDATA[
+			import locator.IdFlowLocator;
+			
+			import vo.IdFlowVo;
+			public var curObj:IdFlowVo=IdFlowLocator.getInstance().curObj;
+			
+		]]>
+	</fx:Script>
+	<s:Label x="10" y="48" text="结论意见："/>
+	<s:Label id="conclusion" x="92" y="48" text="{curObj.CONCLUSION}"/>
+	<s:Label id="accLbl" x="10" y="81" text="结论概述："/>
+	<s:TextArea id="remark" x="92" y="76" width="714" height="461" editable="false"
+				text="{curObj.CONCLUSION_REMARK}"/>
+	<s:Label x="10" y="10" color="#0A37FA" fontSize="20" fontStyle="normal" fontWeight="normal"
+			 lineThrough="false" text="选择结论/意见" textDecoration="none"/>
+</s:Group>

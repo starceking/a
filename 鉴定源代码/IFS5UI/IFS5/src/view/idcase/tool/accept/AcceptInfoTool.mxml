@@ -1,0 +1,127 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009"
+		 xmlns:s="library://ns.adobe.com/flex/spark"
+		 xmlns:mx="library://ns.adobe.com/flex/mx"
+		 xmlns:tool="view.tool.*"
+		 width="794" height="250" fontSize="14" creationComplete="getNextNoClickHandler(null)">
+	<fx:Declarations>
+		<!-- 将非可视元素（例如服务、值对象）放在此处 -->
+	</fx:Declarations>
+	<fx:Script>
+		<![CDATA[
+			import com.adobe.cairngorm.control.CairngormEventDispatcher;
+			
+			import control.*;
+			
+			import locator.IdFlowLocator;
+			import locator.PsbLocator;
+			
+			import util.Helper;
+			
+			import vo.IdFlowVo;
+			
+			public var locObj:IdFlowLocator=IdFlowLocator.getInstance();
+			public var curObj:IdFlowVo=locObj.curObj;
+			
+			protected function getNextNoClickHandler(event:MouseEvent):void
+			{
+				locObj.notxt=accNo;
+				if(curObj.ACC_CASE_NO.length==0)locObj.accCaseTxt=accCaseNo;
+				else locObj.accCaseTxt=null;
+				
+				locObj.wsObj=new IdFlowVo(curObj.CONNO,curObj.ID_PSB,"","","","","",
+					"","","","","","","","","","","","",curObj.DOC_NAME,accYear.text,"","","","","","","","","","","","",
+					"","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","",
+					"","","","","","","","","","","","","","","","","","","","","","","","","","","","");
+				CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.IDFLOWWS_GetNextAccNo));
+			}
+			
+			public function save():Boolean
+			{				
+				if(validateInput())
+				{
+					locObj.wsObj=curObj;
+					locObj.wsObj.ACC_YEAR=accYear.text;
+					locObj.wsObj.ACC_NO=accNo.text;
+					locObj.wsObj.ACC_CASE_NO=accCaseNo.text;
+					locObj.wsObj.ACC_TIME=accDate.text;
+					locObj.wsObj.PLAN_DATE=planDate.text;
+					locObj.wsObj.TESTER=tester.selectedData;
+					locObj.wsObj.RZRK=rzrk.getSelectedItem();
+					locObj.wsObj.ID_STATUS=accYes.selected?"新的委托":"不予受理";
+					locObj.wsObj.ACC_REMARK=remark.text;
+					
+					var JDFF:String="";
+					if(tqff.selectedData.length>0)JDFF+="提取方法："+tqff.selectedData+"；";
+					if(kzff.selectedData.length>0)JDFF+="检测方法："+kzff.selectedData+"；";
+					locObj.wsObj.ID_Method=JDFF;
+					return true;
+				}
+				return false;
+			}
+			
+			private function validateInput():Boolean
+			{					
+				if(accNot.selected)return true;
+				
+				if(tester.selectedData.length==0)
+				{
+					Helper.showAlert("请选择鉴定人");
+					return false;
+				}
+				
+				var result:Boolean=true;
+				result=result && Helper.validateTextInput(accYear);
+				result=result && Helper.validateTextInput(accNo);
+				return result;
+			}
+			
+		]]>
+	</fx:Script>
+	<s:VGroup left="0" right="0" top="0" bottom="0" gap="10">
+		<s:Label color="#0A37FA" fontSize="20" fontStyle="normal" fontWeight="normal" lineThrough="false"
+				 text="获取最新的受理序号，并选择受理结果" textDecoration="none"/>
+		<s:HGroup width="100%" verticalAlign="middle">
+			<s:Label color="#FC0404" text="{'公（刑）受/鉴（'+curObj.DOC_NAME+'）字['}"/>
+			<s:TextInput id="accYear" width="54" restrict="0123456789" text="{curObj.ACC_YEAR}"/>
+			<s:Label color="#FA0606" text="]"/>
+			<s:TextInput id="accCaseNo" width="58" restrict="0123456789" text="{curObj.ACC_CASE_NO}"/>
+			<s:Label text="-"/>
+			<s:TextInput id="accNo" width="58" restrict="0123456789" text="{curObj.ACC_NO}"/>
+			<s:Label color="#F80404" text="号"/>
+			<mx:LinkButton label="获取最新序号(前一个是案件号，后一个是受理序号)" click="getNextNoClickHandler(event)"
+						   color="#072EF7" enabled="{PsbLocator.getInstance().npending}"
+						   textDecoration="underline"/>
+		</s:HGroup>
+		<s:HGroup width="100%" verticalAlign="middle">
+			<s:Label text="受理人员 ："/>
+			<s:Label id="accer" width="180" text="{curObj.ACCEPTER_NAME}"/>
+			<s:Label text="受理时间："/>
+			<tool:DateZh id="accDate" width="180" text="{curObj.ACC_TIME}"/>
+			<s:Label text="计划完成："/>
+			<tool:DateZh id="planDate" width="180" text="{curObj.PLAN_DATE}"/>
+		</s:HGroup>
+		<s:HGroup width="100%" verticalAlign="middle">
+			<s:Label color="#FB0101" text="鉴  定  人："/>
+			<tool:OfficeUserDdl id="tester" width="180" auth="" selectedData="{curObj.TESTER}"/>
+			<s:Label text="认证认可："/>
+			<tool:DictCbb id="rzrk" width="180" dictName="认证认可" selectedItem="{curObj.RZRK}"/>
+		</s:HGroup>
+		<s:HGroup width="100%" verticalAlign="middle">
+			<s:Label text="鉴定方法："/>
+			<tool:DictDdl id="tqff" width="200" dictName="提取方法"/>
+			<tool:DictDdl id="kzff" width="200" dictName="试剂盒" />
+		</s:HGroup>
+		<s:HGroup width="100%" verticalAlign="middle">
+			<s:Label color="#F90505" text="受理结果："/>
+			<s:RadioButton id="accYes" label="正式受理" change="accLbl.text='受理意见：';remark.text='同意受理';"
+						   groupName="accresult" selected="{curObj.ID_STATUS!='不予受理'}"/>
+			<s:RadioButton id="accNot" label="不予受理" change="accLbl.text='拒绝原因：';remark.text='不予受理';"
+						   groupName="accresult" selected="{curObj.ID_STATUS=='不予受理'}"/>
+		</s:HGroup>
+		<s:HGroup width="100%">
+			<s:Label id="accLbl" text="{curObj.ID_STATUS=='不予受理'?'拒绝原因：':'受理意见：'}"/>
+			<s:TextArea id="remark" width="715" height="50" text="{curObj.ACC_REMARK==''?'同意受理':curObj.ACC_REMARK}"/>
+		</s:HGroup>
+	</s:VGroup>
+</s:Group>

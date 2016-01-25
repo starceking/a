@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009"
+		 xmlns:s="library://ns.adobe.com/flex/spark"
+		 xmlns:mx="library://ns.adobe.com/flex/mx"
+		 xmlns:ns1="*"
+		 width="953" height="566" fontSize="14">
+	<fx:Declarations>
+		<!-- 将非可视元素（例如服务、值对象）放在此处 -->
+	</fx:Declarations>
+	<fx:Script>
+		<![CDATA[
+			import com.adobe.cairngorm.control.CairngormEventDispatcher;
+			
+			import control.*;
+			
+			import locator.IdCaseLocator;
+			import locator.IdFlowLocator;
+			import locator.PsbLocator;
+			import locator.SysUserLocator;
+			
+			import mx.events.FlexEvent;
+			
+			import util.Helper;
+			
+			import vo.IdFlowVo;
+			private var locObj:IdCaseLocator=IdCaseLocator.getInstance();
+			private var flowLoc:IdFlowLocator=IdFlowLocator.getInstance();
+			
+			protected function label1_creationCompleteHandler(event:FlexEvent):void
+			{
+				IdCaseLocator.getInstance().getBsMain(bsLbl);
+			}
+			
+			protected function queryClickHandler(evt:Event):void
+			{
+				IdFlowLocator.getInstance().wsObj=new IdFlowVo("",PsbLocator.getInstance().idPsb.ID,"","","","","","","","","","",
+					"","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","",
+					"","","","","","","","","","","","","","","","","","","","","","",
+					"","","","","","",caseName.text,"","",caseNo.text,"","","","","","","","","","","","","","","");				
+				CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.IDCASEWS_GetAllD));
+			}
+			
+			protected function calBtn_clickHandler(event:MouseEvent):void
+			{
+				if(calBtn.label=="取消补送")
+				{
+					calBtn.label="确定取消?";
+				}
+				else if(calBtn.label=="确定取消?")
+				{
+					locObj.bsWsObj=flowLoc.curObj;
+					flowLoc.curObj.ACC_CASE_NO="";
+					setBs(flowLoc.curObj.ID,"受理后自动生成");
+					calBtn.label="取消补送";
+				}
+			}
+			
+			protected function bssetBtn_clickHandler(event:MouseEvent):void
+			{
+				if(dg.selectedItem!=null)
+				{
+					if(bssetBtn.label=="设置补送到该案件")
+					{
+						bssetBtn.label="确定设置补送到该案件?";
+					}
+					else if(bssetBtn.label=="确定设置补送到该案件?")
+					{
+						locObj.bsWsObj=dg.selectedItem as IdFlowVo;
+						flowLoc.curObj.ACC_CASE_NO=locObj.bsWsObj.ACC_CASE_NO;
+						setBs(dg.selectedItem.ID,dg.selectedItem.CASE_NO);
+						bssetBtn.label="设置补送到该案件";
+					}
+				}
+				else
+				{
+					Helper.showAlert("请先选中列表中对应的案件");
+				}
+			}
+			
+			private function setBs(srcId:String,caseNoStr:String):void
+			{				
+				locObj.bsNoLbl=bsLbl;
+				
+				flowLoc.wsObj=flowLoc.curObj;
+				flowLoc.wsObj.SRCID=srcId;
+				flowLoc.wsObj.CASE_NO=caseNoStr;
+				CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.IDCASEWS_UpdateBsInfo));
+			}
+			
+		]]>
+	</fx:Script>
+	<s:VGroup left="10" right="10" top="10" bottom="10" gap="14">
+		<s:HGroup width="100%">
+			<s:Label color="#FC0404" fontSize="16" text="请务必认真判定该案件的补送状态再继续受理操作！"/>
+		</s:HGroup>
+		<s:HGroup width="100%" verticalAlign="middle">
+			<s:Label text="送检人在填写委托信息时已将该案件设置为，补送到："/>
+			<s:Label id="bsLbl" color="#FD0303" creationComplete="label1_creationCompleteHandler(event)"
+					 fontWeight="bold" text="该案件为非补送"/>
+			<mx:LinkButton id="calBtn" label="取消补送" click="calBtn_clickHandler(event)"
+						   enabled="{PsbLocator.getInstance().npending}" textDecoration="underline"/>
+		</s:HGroup>
+		<s:HGroup width="100%" verticalAlign="middle">
+			<s:Label text="案件名称："/>
+			<s:TextInput id="caseName" width="390"/>
+			<s:Label text="受理登记号："/>
+			<s:TextInput id="caseNo" width="144"/>
+			<s:Button label="查询" click="queryClickHandler(event)"
+					  enabled="{PsbLocator.getInstance().npending}"/>
+		</s:HGroup>
+		<s:HGroup width="100%" height="100%" gap="14">
+			<s:VGroup width="100%" height="100%">
+				<s:DataGrid id="dg" width="100%" height="100%" dataProvider="{flowLoc.listObj}">
+					<s:columns>
+						<s:ArrayList>
+							<s:GridColumn dataField="CASE_NO" headerText="受理登记号" width="160"></s:GridColumn>
+							<s:GridColumn dataField="CASE_NAME" headerText="案件名称"></s:GridColumn>
+							<s:GridColumn dataField="TESTER_NAME" headerText="检验人" width="100"></s:GridColumn>
+							<s:GridColumn dataField="ACC_TIME" headerText="受理时间" width="120"></s:GridColumn>
+						</s:ArrayList>
+					</s:columns>
+				</s:DataGrid>
+				<s:HGroup width="100%" horizontalAlign="right">
+					<ns1:ListPager id="pager"
+								   creationComplete="pager.addEventListener(ListPager.PAGE_INDEX_CHANGE_EVENT,queryClickHandler);flowLoc.listPager=pager;"
+								   pageSize="14">
+					</ns1:ListPager>
+				</s:HGroup>
+			</s:VGroup>
+			<s:VGroup width="150" height="100%" gap="14">
+				<s:Spacer width="10" height="20"/>
+				<s:Label paddingLeft="7" text="当前选中："/>
+				<s:Label color="#FB0303" fontWeight="bold" paddingLeft="7"
+						 text="{dg.selectedItem.CASE_NO}"/>
+				<mx:LinkButton id="bssetBtn" visible="{dg.selectedIndex&gt;=0}" label="设置补送到该案件"
+							   click="bssetBtn_clickHandler(event)"
+							   enabled="{PsbLocator.getInstance().npending}" textDecoration="underline"/>
+			</s:VGroup>
+		</s:HGroup>
+	</s:VGroup>
+</s:Group>

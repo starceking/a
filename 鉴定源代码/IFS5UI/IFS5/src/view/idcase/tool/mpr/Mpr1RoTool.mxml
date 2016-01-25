@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009"
+		 xmlns:s="library://ns.adobe.com/flex/spark"
+		 xmlns:mx="library://ns.adobe.com/flex/mx"
+		 width="813" height="267" fontSize="14">
+	<fx:Declarations>
+		<!-- 将非可视元素（例如服务、值对象）放在此处 -->
+	</fx:Declarations>
+	<fx:Script>
+		<![CDATA[
+			import locator.MRelativeLocator;
+			
+			import util.Helper;
+			
+			private var locObj:MRelativeLocator=MRelativeLocator.getInstance();
+		]]>
+	</fx:Script>
+	<s:Label x="545" y="210" text="目标关系："/>
+	<s:Label id="rwt" x="623" y="210" text="{locObj.curObj.R1_RELATION_WITH_TARGET}"/>
+	<s:Label x="10" y="10" color="#0A37FA" fontSize="20"
+			 text="父母关系请在此填写“父信息”；配偶子女请在此填写“配偶信息”；祖孙请在此填写“祖信息”"/>
+	<s:Label x="10" y="90" text="姓        名："/>
+	<s:Label id="pname" x="88" y="90" text="{locObj.curObj.R1_NAME}"/>
+	<s:Label x="276" y="90" text="性        别："/>
+	<s:Label id="gender" x="354" y="90" text="{locObj.curObj.R1_GENDER}"/>
+	<s:Label x="545" y="90" text="身  份  证："/>
+	<s:Label id="idcard" x="623" y="90" text="{locObj.curObj.R1_ID_CARD_NO}"/>
+	<s:Label x="10" y="120" text="出生日期："/>
+	<s:Label id="birthday" x="88" y="120" text="{locObj.curObj.R1_BIRTH_DATE}"/>
+	<s:Label x="276" y="120" text="学        历："/>
+	<s:Label x="545" y="150" text="身        份："/>
+	<s:Label id="identity" x="623" y="150" text="{locObj.curObj.R1_IDENTITY}"/>
+	<s:Label x="10" y="60" text="样本编号："/>
+	<s:Label id="pnum" x="88" y="60" text="{locObj.curObj.R1_SLN}"/>
+	<s:Label x="276" y="60" text="样本类型："/>
+	<s:Label id="stype" x="354" y="60" text="{locObj.curObj.R1_SAMPLE_TYPE}"/>
+	<s:Label id="nativeplace" x="623" y="180" text="{locObj.curObj.R1_NATIVE_PLACE_ADDR}"/>
+	<s:Label x="10" y="210" text="样本描述："/>
+	<s:Label x="10" y="240" text="备        注："/>
+	<s:Label id="sdes" x="88" y="210" text="{locObj.curObj.R1_SAMPLE_DESCRIPTION}"/>
+	<s:Label id="edu" x="354" y="120" text="{locObj.curObj.R1_EDUCATION_LEVEL}"/>
+	<s:Label x="545" y="120" text="人员类型："/>
+	<s:Label id="ptype" x="623" y="120" text="{locObj.curObj.R1_PERSONNEL_TYPE}"/>
+	<s:Label x="545" y="60" text="样本包装："/>
+	<s:Label id="pack" x="623" y="60" text="{locObj.curObj.R1_SAMPLE_PACKAGING}"/>
+	<s:Label x="545" y="180" text="籍        贯："/>
+	<s:Label x="10" y="180" text="现  住  址："/>
+	<s:Label x="10" y="150" text="国        籍："/>
+	<s:Label id="nation" x="88" y="150" text="{locObj.curObj.R1_DISTRICT}"/>
+	<s:Label x="276" y="150" text="民        族："/>
+	<s:Label id="district" x="354" y="150" text="{locObj.curObj.R1_NATIONALITY}"/>
+	<s:Label id="residenceplace" x="88" y="180" text="{locObj.curObj.R1_RESIDENCE_ADDR}"/>
+	<s:Label id="remark" x="88" y="240" text="{locObj.curObj.R1_REMARK}"/>
+</s:Group>

@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Module xmlns:fx="http://ns.adobe.com/mxml/2009"
+		  xmlns:s="library://ns.adobe.com/flex/spark"
+		  xmlns:mx="library://ns.adobe.com/flex/mx"
+		  xmlns:tool="view.tool.*"
+		  xmlns:ns1="*"
+		  width="953" height="598" creationComplete="module1_creationCompleteHandler(event)" 
+		  fontSize="14">
+	<fx:Declarations>
+		<!-- 将非可视元素（例如服务、值对象）放在此处 -->		
+	</fx:Declarations>
+	<fx:Script>
+		<![CDATA[
+			import com.adobe.cairngorm.control.CairngormEventDispatcher;
+			
+			import control.*;
+			
+			import locator.CaseFileLocator;
+			import locator.MenuLocator;
+			import locator.PsbLocator;
+			import locator.SysUserLocator;
+			
+			import mx.events.FlexEvent;
+			
+			import util.Helper;
+			import util.Server;
+			
+			import vo.CaseFileVo;
+			
+			protected function module1_creationCompleteHandler(event:FlexEvent):void
+			{
+				MenuLocator.getInstance().changeMenu(menuGp);
+				
+				CaseFileLocator.getInstance().fileOffs="公用";
+				CaseFileLocator.getInstance().fileType="1";
+				CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.CASEFILEWS_GetAllFileData));
+			}
+			
+			protected function UpLoad_clickHandler(event:MouseEvent):void
+			{	
+				if(office.office=="")
+				{
+					Helper.showAlert("请先选择文件类型");
+					return;
+				}
+				var type:String="0";
+				if(office.office=="公用")type="1";
+				
+				mfu.upload_url=Server.getFileDataUpload(PsbLocator.getInstance().idPsb.ID,
+					office.office,type);
+				mfu.uploadAll();
+			}
+			
+			protected function refreshFile():void
+			{
+				CaseFileLocator.getInstance().fileOffs=office.office;
+				if(office.office=="公用"||office.office=="")CaseFileLocator.getInstance().fileType="1";
+				else CaseFileLocator.getInstance().fileType="0";
+				CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.CASEFILEWS_GetAllFileData));
+			}
+			
+			protected function delete_clickHandler(event:MouseEvent):void
+			{
+				if(list.selectedItem!=null)
+				{
+					CaseFileLocator.getInstance().wsObj=list.selectedItem as CaseFileVo;
+					CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.CASEFILEWS_Delete));
+				}
+			}
+			
+			protected function list_doubleClickHandler(event:MouseEvent):void
+			{
+				if(list.selectedItem!=null)
+				{
+					navigateToURL(new URLRequest(list.selectedItem.Url));
+				}
+			}
+			
+		]]>
+	</fx:Script>
+	<s:Panel width="953" height="598">
+		<s:HGroup id="menuGp" x="10" y="-27"/>	
+		<s:VGroup left="10" right="10" top="10" bottom="10" gap="10">
+			<s:HGroup width="100%" verticalAlign="middle" visible="{SysUserLocator.getInstance().loginUser.CURRENT_ROLE!='Consign'}">
+				<s:Label color="#FF0000" text="请先选择文件类型："/>
+				<tool:OfficeRgp id="office" width="570" dnaEnable="4" click="refreshFile()"/>
+				<s:Spacer width="10" height="10"/>
+				<s:Label color="#0000FF" text="【文件】由技管账号进行管理"/>
+			</s:HGroup>	
+			<s:HGroup width="100%" height="100%">
+				<s:VGroup width="100%" height="100%">
+					<s:HGroup width="187">
+						<s:Button click="refreshFile()" enabled="{PsbLocator.getInstance().npending}"
+								  skinClass="assets.skins.Button_refresh"/>
+						<s:Spacer width="10" height="10"/>
+						<s:Button click="delete_clickHandler(event)" enabled="{PsbLocator.getInstance().npending}"
+								  skinClass="assets.skins.Button_sc" visible="{SysUserLocator.getInstance().loginUser.CURRENT_ROLE=='Techer'}"/>
+					</s:HGroup>
+					<s:Label color="#0000FF" text="提示：双击打开（图片可直接复制黏贴到文本中）"/>
+					<s:List id="list" width="100%" height="100%" verticalScrollPolicy="auto"
+							dataProvider="{CaseFileLocator.getInstance().tableList}"
+							doubleClick="list_doubleClickHandler(event)" doubleClickEnabled="true"
+							labelField="FileName"></s:List>
+				</s:VGroup>
+				<s:VGroup width="630" height="492" horizontalAlign="center" visible="{SysUserLocator.getInstance().loginUser.CURRENT_ROLE=='Techer'}">
+					<ns1:MultiFileUploader id="mfu" height="436" backgroundAlpha="0.0" contentBackgroundAlpha="0.0">
+					</ns1:MultiFileUploader>
+					<s:Button label="上传" click="UpLoad_clickHandler(event)"
+							  skinClass="assets.skins.Button_upload"/>
+				</s:VGroup>
+			</s:HGroup>
+		</s:VGroup>
+	</s:Panel>
+</s:Module>

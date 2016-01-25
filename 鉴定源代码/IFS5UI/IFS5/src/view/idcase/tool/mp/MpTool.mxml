@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009"
+		 xmlns:s="library://ns.adobe.com/flex/spark"
+		 xmlns:mx="library://ns.adobe.com/flex/mx"
+		 xmlns:tool="view.tool.*"
+		 xmlns:idcase="view.idcase.tool.idcase.*"
+		 width="813" height="544" contentBackgroundAlpha="1.0" fontSize="14">
+	<fx:Declarations>
+		<!-- 将非可视元素（例如服务、值对象）放在此处 -->
+	</fx:Declarations>
+	<fx:Script>
+		<![CDATA[
+			import com.adobe.cairngorm.control.CairngormEventDispatcher;
+			
+			import control.*;
+			
+			import locator.DictLocator;
+			import locator.IdFlowLocator;
+			import locator.JusTypeLocator;
+			import locator.MissingPersonLocator;
+			import locator.PsbLocator;
+			import locator.SysUserLocator;
+			
+			import mx.containers.ViewStack;
+			
+			import spark.events.IndexChangeEvent;
+			import spark.events.TextOperationEvent;
+			
+			import util.Helper;
+			import util.Server;
+			import vo.IdFlowVo;
+			
+			private var locObj:MissingPersonLocator=MissingPersonLocator.getInstance();
+			public var vs:ViewStack;
+			
+			protected function save():Boolean
+			{
+				if(validateInput()) 
+				{
+										
+					locObj.wsObj=locObj.curObj;
+					
+					locObj.wsObj.CASE_NAME=caseName.text;
+					locObj.wsObj.SLN=pnum.text;
+					locObj.wsObj.SAMPLE_TYPE=stype.selectedData;
+					locObj.wsObj.NAME=pname.text;
+					locObj.wsObj.GENDER=gender.selectedData;
+					locObj.wsObj.ID_CARD_NO=idcard.text;
+					locObj.wsObj.BIRTH_DATE=birthday.text;
+					locObj.wsObj.EDUCATION_LEVEL=edu.selectedData;
+					locObj.wsObj.IDENTITY=identity.selectedData;
+					locObj.wsObj.NATIONALITY=nation.selectedData;
+					locObj.wsObj.DISTRICT=district.selectedData;
+					locObj.wsObj.PERSONNEL_TYPE=ptype.selectedData;
+					locObj.wsObj.SAMPLE_PACKAGING=pack.getSelectedItem();
+					locObj.wsObj.NATIVE_PLACE_ADDR=nativeplace.text;
+					locObj.wsObj.RESIDENCE_ADDR=residenceplace.text;
+					locObj.wsObj.SAMPLE_DESCRIPTION=sdes.text;
+					locObj.wsObj.REMARK=remark.text;
+					
+					switch(IdFlowLocator.getInstance().curObj.ID_STATUS)
+					{
+						case "信息录入":
+							CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.MISSINGPERSONWS_Insert));break;
+						default:
+							CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.MISSINGPERSONWS_Update));break;
+					}
+					return true;
+				}
+				return false;
+			}	
+			
+			private function validateInput():Boolean
+			{
+				var caseStatus:String=IdFlowLocator.getInstance().curObj.ID_STATUS;
+				if((caseStatus=="信息录入")||(caseStatus=="新的委托"))
+				{
+					pnum.text="受理后自动生成";
+				}
+				
+				var result:Boolean=cit.save();
+				result=result && Helper.validateTextInput(caseName);
+				result=result && Helper.validateTextInput(pname);
+				result=result && Helper.validateTextInput(cit.conYear);
+				result=result && Helper.validateTextInput(cit.conNo);
+				result=result && Helper.validateTextInput(cit.coner1name);
+				result=result && Helper.validateTextInput(cit.coner1Pn);
+				result=result && Helper.validateTextInput(cit.coner1Phone);
+				result=result && Helper.validateTextInput(cit.coner2name);
+				result=result && Helper.validateTextInput(cit.coner2Pn);
+				result=result && Helper.validateTextInput(cit.coner2Phone);
+				return result;
+			}
+			
+			protected function caseNoChange(event:TextOperationEvent):void				
+			{
+				var status:String=(event.target as TextInput).text;
+				if(status=="受理后自动生成")
+				{
+					event.preventDefault();
+				}
+			}
+			
+			private function delCase():void
+			{
+				if(delBtn.label=="删除")
+				{
+					delBtn.label="确认删除？";
+				}
+				else if(delBtn.label=="确认删除？")
+				{
+					CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.MISSINGPERSONWS_Delete));
+				}
+			}
+		]]>
+	</fx:Script>
+	<s:VGroup left="10" right="10" top="10" bottom="10">
+		<s:HGroup width="100%" verticalAlign="middle">
+			<s:Label color="#0A37FA" fontSize="20" fontWeight="bold" text="失踪人基本信息"/>
+			<s:Spacer width="100%" height="10"/>
+			<s:Button click="Server.getSmallBcUrl(IdFlowLocator.getInstance().curObj.CONNO,'失踪人员')"
+					  skinClass="assets.skins.Button_dytm"/>
+		</s:HGroup>
+		<s:HGroup width="100%" verticalAlign="middle">
+			<s:Label color="#FE0707" text="案件名称："/>
+			<s:TextInput id="caseName" width="715" text="{locObj.curObj.CASE_NAME}"/>
+		</s:HGroup>
+		<s:HGroup width="100%" verticalAlign="middle">
+			<s:Label color="#FE0707" text="样本编号："/>
+			<s:TextInput id="pnum" width="180" changing="caseNoChange(event)" prompt="受理后自动生成"
+						 text="{locObj.curObj.SLN}"/>
+			<s:Label width="72" text="样本类型："/>
+			<tool:DictDdl id="stype" width="180" dictName="样本类型" requireSelection="true"
+						  selectedData="{locObj.curObj.SAMPLE_TYPE}"/>
+			<s:Label width="72" text="样本包装："/>
+			<tool:DictCbb id="pack" width="180" dictName="检材包装"
+						  selectedItem="{locObj.curObj.SAMPLE_PACKAGING}"/>
+		</s:HGroup>
+		<s:HGroup width="100%" verticalAlign="middle">
+			<s:Label color="#FE0707" text="姓       名："/>
+			<s:TextInput id="pname" width="180" text="{locObj.curObj.NAME}"/>
+			<s:Label width="72" text="性       别："/>
+			<tool:DictDdl id="gender" width="180" dictName="性别" requireSelection="true"
+						  selectedData="{locObj.curObj.GENDER}"/>
+			<s:Label width="72" color="#FF0000" text="身  份  证："/>
+			<s:TextInput id="idcard" width="180" text="{locObj.curObj.ID_CARD_NO}" maxChars="18" restrict="0-9 \x \X"/>
+		</s:HGroup>
+		<s:HGroup width="100%" verticalAlign="middle">
+			<s:Label text="出生日期："/>
+			<tool:DateZh id="birthday" width="180" text="{locObj.curObj.BIRTH_DATE}"/>
+			<s:Label width="72" text="学       历："/>
+			<tool:DictDdl id="edu" width="180" dictName="学历" requireSelection="true"
+						  selectedData="{locObj.curObj.EDUCATION_LEVEL}"/>
+			<s:Label width="72" text="人员类型："/>
+			<tool:DictDdl id="ptype" width="180" dictName="人员类型" requireSelection="true"
+						  selectedData="{locObj.curObj.PERSONNEL_TYPE}"/>
+		</s:HGroup>
+		<s:HGroup width="100%" verticalAlign="middle">
+			<s:Label text="国       籍："/>
+			<tool:DictDdl id="district" width="180" dictName="国籍" requireSelection="true"
+						  selectedData="{locObj.curObj.DISTRICT}"/>
+			<s:Label width="72" text="民       族："/>
+			<tool:DictDdl id="nation" width="180" dictName="民族" requireSelection="true"
+						  selectedData="{locObj.curObj.NATIONALITY}"/>
+			<s:Label width="72" text="身       份："/>
+			<tool:DictDdl id="identity" width="180" dictName="身份" requireSelection="true"
+						  selectedData="{locObj.curObj.IDENTITY}"/>
+		</s:HGroup>
+		<s:HGroup width="100%" verticalAlign="middle">
+			<s:Label color="#FF0000" text="籍       贯："/>
+			<s:TextInput id="nativeplace" width="180" text="{locObj.curObj.NATIVE_PLACE_ADDR}"/>
+			<s:Label width="72" text="现  住  址："/>
+			<s:TextInput id="residenceplace" width="449" text="{locObj.curObj.RESIDENCE_ADDR}"/>
+		</s:HGroup>
+		<s:HGroup width="100%" verticalAlign="middle">
+			<s:Label text="样本描述："/>
+			<s:TextInput id="sdes" width="715" text="{locObj.curObj.SAMPLE_DESCRIPTION}"/>
+		</s:HGroup>
+		<s:HGroup width="100%" verticalAlign="middle">
+			<s:Label text="备       注："/>
+			<s:TextInput id="remark" width="715" text="{locObj.curObj.REMARK}"/>
+		</s:HGroup>
+		<idcase:ConInfoTool id="cit">
+		</idcase:ConInfoTool>
+	</s:VGroup>
+	<s:Button y="517" click="if(save())if(vs!=null)vs.selectedIndex++;" horizontalCenter="0"
+			  skinClass="assets.skins.Button_bc" visible="{IdFlowLocator.getInstance().curObj.ID_STATUS=='信息录入'}"/>
+	<s:Button y="517" click="save()" horizontalCenter="0"
+			  skinClass="assets.skins.Button_bc" visible="{IdFlowLocator.getInstance().curObj.ID_STATUS!='信息录入'}"/>
+	<s:Button x="450" y="518" label="删除" id="delBtn" click="delCase()" visible="{IdFlowLocator.getInstance().curObj.ID_STATUS=='新的委托'}"/>
+</s:Group>

@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009"
+		 xmlns:s="library://ns.adobe.com/flex/spark"
+		 xmlns:mx="library://ns.adobe.com/flex/mx"
+		 width="813" height="500" creationComplete="creationCompleteHandler(event)" fontSize="14">
+	<fx:Declarations>
+		<!-- 将非可视元素（例如服务、值对象）放在此处 -->
+	</fx:Declarations>
+	<fx:Script>
+		<![CDATA[
+			import com.adobe.cairngorm.control.CairngormEventDispatcher;
+			
+			import control.*;
+			
+			import locator.IdFlowLocator;
+			import locator.IdPersonLocator;
+			
+			import mx.events.FlexEvent;
+			
+			import vo.IdPersonVo;
+			
+			private var locObj:IdPersonLocator=IdPersonLocator.getInstance();
+			
+			protected function creationCompleteHandler(event:FlexEvent):void
+			{
+				var conno:String=IdFlowLocator.getInstance().curObj.CONNO;
+				if(conno.length==19)
+				{
+					locObj.wsObj=new IdPersonVo("",conno,"","","","","","","","",
+						"","","");
+					CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.IDPERSONWS_GetAll));
+				}
+			}
+		]]>
+	</fx:Script>
+	<s:DataGrid id="dg" x="10" y="50" width="793" height="352" dataProvider="{locObj.listObj}">
+		<s:columns>
+			<s:ArrayList>
+				<s:GridColumn dataField="NAME" headerText="姓名"></s:GridColumn>
+				<s:GridColumn dataField="GENDER" headerText="性别"></s:GridColumn>
+				<s:GridColumn dataField="IDCARDNO" headerText="身份证"></s:GridColumn>
+				<s:GridColumn dataField="BIRTH_DATE" headerText="出生日期"></s:GridColumn>
+				<s:GridColumn dataField="NATIVE_PLACE" headerText="籍贯"></s:GridColumn>
+			</s:ArrayList>
+		</s:columns>
+	</s:DataGrid>
+	<s:Label x="10" y="410" text="姓        名："/>
+	<s:Label id="pname" x="90" y="410" width="175" text="{dg.selectedItem.NAME}"/>
+	<s:Label x="277" y="410" text="性        别："/>
+	<s:Label x="548" y="410" text="身  份  证："/>
+	<s:Label id="idcard" x="628" y="410" width="175" text="{dg.selectedItem.IDCARDNO}"/>
+	<s:Label x="548" y="432" text="电        话："/>
+	<s:Label id="phone" x="628" y="432" width="175" text="{dg.selectedItem.PHONE}"/>
+	<s:Label x="10" y="432" text="出生日期："/>
+	<s:Label id="birthday" x="90" y="432" width="175" text="{dg.selectedItem.BIRTH_DATE}"/>
+	<s:Label x="277" y="432" text="年        龄："/>
+	<s:Label id="age" x="359" y="432" width="175" text="{dg.selectedItem.AGE}"/>
+	<s:Label x="277" y="454" text="职        业："/>
+	<s:Label id="job" x="359" y="454" width="175" text="{dg.selectedItem.JOB}"/>
+	<s:Label x="548" y="454" text="学        历："/>
+	<s:Label id="education" x="628" y="454" width="175" text="{dg.selectedItem.EDUCATION}"/>
+	<s:Label x="8" y="454" text="籍        贯："/>
+	<s:Label id="nativeplace" x="90" y="454" width="175" text="{dg.selectedItem.NATIVE_PLACE}"/>
+	<s:Label x="10" y="476" text="现  住  址："/>
+	<s:Label id="residenceplace" x="90" y="476" width="300" text="{dg.selectedItem.RESIDENCE_PLACE}"/>
+	<s:Label x="422" y="476" text="工作地点："/>
+	<s:Label id="workplace" x="502" y="476" width="300" text="{dg.selectedItem.WORK_PLACE}"/>
+	<s:Label id="gender" x="359" y="410" width="175" text="{dg.selectedItem.GENDER}"/>
+	<s:Label x="10" y="10" color="#0A37FA" fontSize="20" fontWeight="bold" text="被鉴定人/涉案人员信息"/>
+</s:Group>

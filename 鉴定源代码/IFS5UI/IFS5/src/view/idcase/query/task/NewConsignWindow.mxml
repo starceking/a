@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:TitleWindow xmlns:fx="http://ns.adobe.com/mxml/2009"
+			   xmlns:s="library://ns.adobe.com/flex/spark"
+			   xmlns:mx="library://ns.adobe.com/flex/mx"
+			   xmlns:local="*"
+			   width="800" height="600" close="PopUpManager.removePopUp(this);" fontSize="14"
+			   title="【关联警综平台或现场勘验】双击关联数据">
+	<fx:Script>
+		<![CDATA[
+			import com.adobe.cairngorm.control.CairngormEventDispatcher;
+			
+			import control.*;
+			
+			import mx.events.CloseEvent; 
+			import mx.managers.PopUpManager;
+			
+			import locator.ExCaseLocator;
+			import locator.PsbLocator;
+			
+			import view.idcase.query.task.NewConsignModule;
+			
+			import vo.ExCaseVo;
+			
+			protected function dg_doubleClickHandler(event:MouseEvent):void
+			{
+				if(dg.selectedItem!=null)
+				{
+					ExCaseLocator.getInstance().currentCase=dg.selectedItem as ExCaseVo;
+					ExCaseLocator.getInstance().winMsgLable.text="将要对“"+dg.selectedItem.CASE_NAME+"”进行送检，确定请进行下一步，否则点击“取消”";
+					
+					ExCaseLocator.getInstance().listObj.removeAll();				
+					ExCaseLocator.getInstance().listObj.addItem(dg.selectedItem);
+					
+					PopUpManager.removePopUp(this);
+				}
+			}
+			protected function queryExClickHandler(evt:Event):void
+			{
+				CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.EXCASEWS_GetExCaseList));
+			}
+		]]>
+	</fx:Script>
+	<s:Label visible="{PsbLocator.getInstance().npending}" x="285" y="-20" color="#0000FF"
+			 text="(数据检索中...)"/>
+	<s:VGroup left="10" right="10" top="10" bottom="10">
+		<s:DataGrid id="dg" width="100%" height="100%"
+					dataProvider="{ExCaseLocator.getInstance().winlistObj}"
+					doubleClick="dg_doubleClickHandler(event)" doubleClickEnabled="true">
+			<s:columns>
+				<s:ArrayList>
+					<s:GridColumn dataField="CASE_NAME" headerText="案件名称"></s:GridColumn>
+					<s:GridColumn dataField="DFGKNO" headerText="警综编号"></s:GridColumn>
+					<s:GridColumn dataField="XCKYNO" headerText="现勘编号"></s:GridColumn>
+				</s:ArrayList>
+			</s:columns>
+		</s:DataGrid>
+		<s:HGroup width="100%" horizontalAlign="right">
+			<local:ListPager id="pager"
+							 creationComplete="pager.addEventListener(ListPager.PAGE_INDEX_CHANGE_EVENT,queryExClickHandler);ExCaseLocator.getInstance().listPager=pager;"
+							 pageSize="18">
+			</local:ListPager>
+			<s:Spacer x="753" width="120" height="10"/>
+		</s:HGroup>
+	</s:VGroup>
+	
+	
+</s:TitleWindow>

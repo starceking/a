@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009"
+		 xmlns:s="library://ns.adobe.com/flex/spark"
+		 xmlns:mx="library://ns.adobe.com/flex/mx"
+		 xmlns:tool="view.tool.*"
+		 width="813" height="547" fontSize="14" creationComplete="creationCompleteHandler(event)">
+	<fx:Script>
+		<![CDATA[
+			import com.adobe.cairngorm.control.CairngormEventDispatcher;
+			
+			import control.*;
+			
+			import locator.WorkLocator;
+			import locator.PsbLocator;
+			import locator.SysUserLocator;
+			
+			import mx.containers.ViewStack;
+			import mx.events.FlexEvent;
+			
+			import util.Helper;
+			
+			import vo.WorkVo;
+			
+			private var locObj:WorkLocator=WorkLocator.getInstance();
+			private var sysuser:SysUserLocator=SysUserLocator.getInstance();
+			public var vs:ViewStack;
+			
+			protected function creationCompleteHandler(event:FlexEvent):void
+			{
+				locObj.wsObj=new WorkVo("",sysuser.curObj.ID,"","","","","","","");
+				CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.WORKWS_GetAll));
+			}
+			
+			private function getOperVo():WorkVo
+			{
+				return new WorkVo(Helper.getGUID(),sysuser.curObj.ID,unit.text,place.text,
+					startDate.text,endDate.text,section.text,jobTitle.text,remark.text);
+			}
+			protected function insertClickHandler(event:MouseEvent):void
+			{
+				locObj.wsObj=getOperVo();
+				CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.WORKWS_Insert));					
+			}
+			protected function updateClickHandler(event:MouseEvent):void
+			{				
+				if(dg.selectedItem!=null)
+				{
+					locObj.wsObj=getOperVo();
+					locObj.wsObj.ID=dg.selectedItem.ID;
+					CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.WORKWS_Update));
+				}
+				else
+				{
+					Helper.showAlert("请先选中对应数据行");
+				}
+			}
+			protected function deleteClickHandler(event:MouseEvent):void
+			{
+				if(dg.selectedItem!=null)
+				{
+					locObj.wsObj=getOperVo();
+					locObj.wsObj.ID=dg.selectedItem.ID;
+					CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.WORKWS_Delete));
+				}
+				else
+				{
+					Helper.showAlert("请先选中对应数据行");
+				}
+			}
+			
+		]]>
+	</fx:Script>
+	<fx:Declarations>
+		<!-- 将非可视元素（例如服务、值对象）放在此处 -->
+	</fx:Declarations>
+	<s:Label x="10" y="10" color="#0A37FA" fontSize="20" fontWeight="bold" text="工作经历"/>
+	<s:DataGrid id="dg" x="14" y="44" width="780" height="220" dataProvider="{locObj.listObj}">
+		<s:columns>
+			<s:ArrayList>
+				<s:GridColumn dataField="Unit" headerText="工作单位"></s:GridColumn>
+				<s:GridColumn dataField="Place" headerText="工作地点"></s:GridColumn>
+				<s:GridColumn dataField="Section" headerText="部门"></s:GridColumn>
+				<s:GridColumn dataField="JobTitle" headerText="职务"></s:GridColumn>
+				<s:GridColumn dataField="Remark" headerText="备注"></s:GridColumn>
+			</s:ArrayList>
+		</s:columns>
+	</s:DataGrid>
+	<s:Label x="23" y="375" text="备       注："/>
+	<s:Label x="20" y="285" text="工作单位："/>
+	<s:TextInput id="place" x="494" y="277" width="300" text="{dg.selectedItem.Place}"/>
+	<s:Label x="23" y="346" text="所属部门："/>
+	<s:TextInput id="jobTitle" x="493" y="343" width="301" text="{dg.selectedItem.JobTitle}"/>
+	<s:Label x="415" y="349" text="职       务："/>
+	<s:TextInput id="section" x="104" y="339" width="280" text="{dg.selectedItem.Section}"/>
+	<s:Label x="416" y="284" text="工作地点："/>
+	<s:TextInput id="unit" x="104" y="277" width="280" text="{dg.selectedItem.Unit}"/>
+	<s:Label x="20" y="314" text="起始时间："/>
+	<s:Label x="416" y="311" text="终止时间："/>
+	<s:Button x="560" y="491" label="新增" click="insertClickHandler(event)"/>
+	<s:Button x="720" y="491" label="删除" click="deleteClickHandler(event)"  visible="{dg.selectedItem!=null}"/>
+	<s:Button x="642" y="491" label="保存" click="updateClickHandler(event)"  visible="{dg.selectedItem!=null}"/>
+	<tool:DateZh id="startDate" x="104" y="305" width="280" text="{dg.selectedItem.StartDate}"/>
+	<tool:DateZh id="endDate" x="494" y="305" width="300" text="{dg.selectedItem.EndDate}"/>
+	<s:TextArea id="remark" x="103" y="375" width="691" height="88" text="{dg.selectedItem.Remark}"/>
+</s:Group>

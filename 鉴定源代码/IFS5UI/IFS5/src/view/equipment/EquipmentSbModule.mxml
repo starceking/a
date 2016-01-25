@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Module xmlns:fx="http://ns.adobe.com/mxml/2009" 
+		  xmlns:s="library://ns.adobe.com/flex/spark" 
+		  xmlns:mx="library://ns.adobe.com/flex/mx"
+		  xmlns:idcase="view.idcase.tool.sb.*"
+		  width="953" height="598" fontSize="14"
+		  creationComplete="MenuLocator.getInstance().changeMenu(menuGp);vs.selectedIndex=0;" xmlns:sb="view.idcase.tool.sb.*">
+	<fx:Declarations>
+		<!-- 将非可视元素（例如服务、值对象）放在此处 -->
+		<fx:XML id="mtree">
+			<root> 
+				<mtc label="基本信息" ico="ajxx"/>
+				<mtc label="使用记录" ico="syjl"/>
+				<mtc label="维护记录" ico="jlyj"/>
+				<mtc label="检定校准" ico="xcwz"/>
+				<mtc label="期间核查" ico="sary"/>
+				<mtc label="维修记录" ico="dnaxyr"/>
+			</root> 
+		</fx:XML>
+	</fx:Declarations>
+	<fx:Script>
+		<![CDATA[
+			import locator.MenuLocator;	
+			import mx.events.ListEvent;
+			// 嵌入图标文件
+			[Embed(source="assets/images/tree/ajxx.png")]
+			public var ajxx:Class;
+			[Embed(source="assets/images/tree/slxx.png")]
+			public var syjl:Class;			
+			[Embed(source="assets/images/tree/jlyj.png")]
+			public var jlyj:Class;
+			[Embed(source="assets/images/tree/xcwz.png")]
+			public var xcwz:Class;
+			[Embed(source="assets/images/tree/sary.png")]
+			public var sary:Class;
+			[Embed(source="assets/images/tree/xyr.png")]
+			public var dnaxyr:Class;
+			
+			protected function tree_changeHandler(event:ListEvent):void
+			{
+				vs.selectedIndex=tree.selectedIndex;
+			}
+			
+		]]>
+	</fx:Script>
+	<s:Panel width="953" height="598">
+		<s:HGroup id="menuGp" x="10" y="-27"/>
+		<mx:Tree id="tree" x="10" y="10" width="112" height="547" change="tree_changeHandler(event)"
+				 dataProvider="{mtree.mtc}" iconField="@ico" labelField="@label" showRoot="true"></mx:Tree>
+		<mx:ViewStack id="vs" x="130" y="10" width="813" height="547" selectedIndex="13">
+			
+			<s:NavigatorContent width="100%" height="100%" label="基本信息">
+				<idcase:Equipment/>
+			</s:NavigatorContent>
+			<s:NavigatorContent width="100%" height="100%" label="使用记录">
+				<idcase:EquipmentUse/>
+			</s:NavigatorContent>
+			<s:NavigatorContent width="100%" height="100%" label="维护记录">
+				<idcase:EquipmentMaintain/>
+			</s:NavigatorContent>
+			<s:NavigatorContent width="100%" height="100%" label="检定校准">
+				<idcase:EquipmentInspection/>
+			</s:NavigatorContent>
+			<s:NavigatorContent width="100%" height="100%" label="期间核查">
+				<idcase:EquipmentCheck/>
+			</s:NavigatorContent>
+			<s:NavigatorContent width="100%" height="100%" label="维修记录">
+				<idcase:EquipmentRepair/>
+			</s:NavigatorContent>
+		</mx:ViewStack>
+	</s:Panel>
+</s:Module>

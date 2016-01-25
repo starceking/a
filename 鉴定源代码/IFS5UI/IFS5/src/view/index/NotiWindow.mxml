@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:TitleWindow xmlns:fx="http://ns.adobe.com/mxml/2009"
+			   xmlns:s="library://ns.adobe.com/flex/spark"
+			   xmlns:mx="library://ns.adobe.com/flex/mx"
+			   xmlns:local="*" close="PopUpManager.removePopUp(this);"
+			   width="680" height="484" fontSize="14">
+	<fx:Script>
+		<![CDATA[
+			import locator.NotificationLocator;
+			import locator.PsbLocator;
+			
+			import mx.events.FlexEvent;
+			import mx.managers.PopUpManager;
+			
+			import util.Server;
+			
+			import vo.NotificationVo;
+			private var curObj:NotificationVo=NotificationLocator.getInstance().currentObj;			
+		]]>
+	</fx:Script>
+	<s:Label x="10" y="-22" color="#0024FF" text="通知通告"/>
+	<s:Label id="TITLE" x="145" y="6" fontSize="20" fontWeight="bold" horizontalCenter="0"
+			 text="{curObj.TITLE}" textDecoration="none"/>
+	<s:TextArea id="content_text" x="10" y="72" width="660" height="370" editable="false"
+				text="{curObj.CONTENT_TEXT}"/>
+	<local:SingleFileUploader x="444" y="45" id="sfu" label="附件下载" download_url="{Server.getNotiDownload(PsbLocator.getInstance().ID_PSB_ID,curObj.ID)}"/>
+	<s:Label x="537" y="50" text="{curObj.CREATE_DATETIME}"/>
+
+</s:TitleWindow>

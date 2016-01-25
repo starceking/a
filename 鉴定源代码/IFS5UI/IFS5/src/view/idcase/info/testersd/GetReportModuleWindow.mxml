@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:TitleWindow xmlns:fx="http://ns.adobe.com/mxml/2009"
+			   xmlns:s="library://ns.adobe.com/flex/spark"
+			   xmlns:mx="library://ns.adobe.com/flex/mx"
+			   xmlns:audit="view.idcase.tool.audit.*"
+			   width="953" height="598" fontSize="14"
+			   close="PopUpManager.removePopUp(this);">
+	<fx:Script>
+		<![CDATA[
+			import mx.events.CloseEvent;
+			import mx.managers.PopUpManager;
+		]]>
+	</fx:Script>
+	<audit:GetReportTool y="27" horizontalCenter="0"/>
+</s:TitleWindow>

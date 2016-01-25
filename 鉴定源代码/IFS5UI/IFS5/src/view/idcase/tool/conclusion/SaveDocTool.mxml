@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009"
+		 xmlns:s="library://ns.adobe.com/flex/spark"
+		 xmlns:mx="library://ns.adobe.com/flex/mx"
+		 width="813" height="171" fontSize="14">
+	<fx:Declarations>
+		<!-- 将非可视元素（例如服务、值对象）放在此处 -->
+	</fx:Declarations>
+	<fx:Script>
+		<![CDATA[
+			import com.adobe.cairngorm.control.CairngormEventDispatcher;
+			
+			import control.*;
+		
+			import locator.IdFlowLocator;
+			import locator.PsbLocator;
+			import util.Helper;
+			import vo.IdFlowVo;
+			public var curObj:IdFlowVo=IdFlowLocator.getInstance().curObj;
+			
+			protected function saveClickHandler(event:MouseEvent):void
+			{
+				curObj.DOC_YEAR=docYear.text;
+				curObj.DOC_NO=docNo.text;
+				IdFlowLocator.getInstance().wsObj=curObj;
+				IdFlowLocator.getInstance().operReason=cdyy.text;
+				IdFlowLocator.getInstance().isSubmit="2";
+				CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.IDFLOWWS_UpdateTesterFinish));
+			}
+		]]>
+	</fx:Script>
+	<s:Button y="140" click="saveClickHandler(event)" enabled="{PsbLocator.getInstance().npending}"
+			  horizontalCenter="0" skinClass="assets.skins.Button_bc"/>
+	<s:Label x="10" y="60" color="#FC0303" text="存档原因："/>
+	<s:TextArea id="cdyy" x="88" y="50" width="715" height="50"/>
+	<s:Label x="10" y="118" text="关联文号："/>
+	<s:TextInput id="docYear" x="149" y="108" width="89" restrict="0123456789"
+				 text="{curObj.DOC_YEAR}"/>
+	<s:TextInput id="docNo" x="246" y="108" width="89" restrict="0123456789" text="{curObj.DOC_NO}"/>
+	<s:Label x="88" y="118" text="{curObj.DOC_NAME+'鉴字'}"/>
+	<s:Label x="343" y="118" text="号（如果本案件与其他案件共用一个发文号）"/>
+	<s:Label x="10" y="10" color="#0A37FA" fontSize="20" text="因任何原因本次受理不出具检验鉴定报告/意见书"/>
+</s:Group>

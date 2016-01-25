@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:ItemRenderer xmlns:fx="http://ns.adobe.com/mxml/2009"
+				xmlns:s="library://ns.adobe.com/flex/spark"
+				xmlns:mx="library://ns.adobe.com/flex/mx"
+				width="350" height="116" fontSize="14">
+	<fx:Declarations>
+		<!-- 将非可视元素（例如服务、值对象）放在此处 -->
+	</fx:Declarations>
+	<fx:Script>
+		<![CDATA[
+			import com.adobe.cairngorm.control.CairngormEventDispatcher;
+			
+			import control.*;
+			import util.Server;
+			import locator.IdFlowLocator;
+			import locator.WordLocator;
+			
+			import vo.WordVo;
+			
+			private var locObj:WordLocator=WordLocator.getInstance();
+			
+			protected function geneClickHandler(event:MouseEvent):void
+			{
+				locObj.wsObj=data as WordVo;
+				if(locObj.wsObj.FileName.search("委托书")>=0)
+				{
+					navigateToURL(new URLRequest(Server.getConWordUrl(IdFlowLocator.getInstance().curObj.CONNO)));
+				}
+				else
+				{		
+					locObj.isTesNote=(locObj.wsObj.FileName=="材料单.doc"?"1":"0");
+					locObj.status=IdFlowLocator.getInstance().curObj.ID_STATUS;
+					locObj.conno=IdFlowLocator.getInstance().curObj.CONNO;				
+					CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.WORDWS_GenerateWord));
+					
+				}
+				
+			}
+			
+			protected function delClickHandler(event:MouseEvent):void
+			{
+				if(delBtn.label=="删除服务器上文档")
+				{
+					delBtn.label="确认删除吗？";
+				}
+				else if(delBtn.label=="确认删除吗？")
+				{
+					locObj.wsObj=data as WordVo;
+					CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.WORDWS_DeleteWord));
+					delBtn.label="删除服务器上文档";
+				}
+			}
+			
+		]]>
+	</fx:Script>
+	<s:Group x="10">		
+		<s:Image x="10" y="10" width="99" height="96" source="assets/images/other/word.jpg" doubleClickEnabled="true" doubleClick="geneClickHandler(event)"/>
+		<mx:LinkButton x="106" y="10" label="{data.FileName}" click="geneClickHandler(event)"
+					   enabled="{locObj.npending}" fontWeight="bold" textDecoration="underline"/>
+		<s:Label x="116" y="40" fontSize="12" text="{data.CreationTime}"/>
+		<s:Label x="116" y="62" fontSize="12" text="{data.LastWriteTime}"/>
+		<mx:LinkButton id="delBtn" x="106" y="84" label="删除服务器上文档" textDecoration="underline"
+					   visible="{IdFlowLocator.getInstance().curObj.ID_STATUS=='新的委托'||IdFlowLocator.getInstance().curObj.ID_STATUS=='检验中'}"
+					   click="delClickHandler(event)" enabled="{locObj.npending}"/>
+	</s:Group>
+</s:ItemRenderer>

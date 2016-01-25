@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009"
+		 xmlns:s="library://ns.adobe.com/flex/spark"
+		 xmlns:mx="library://ns.adobe.com/flex/mx"
+		 width="813" height="547" fontSize="14" xmlns:ns1="*" creationComplete="refreshFile()">
+	<fx:Script>
+		<![CDATA[
+			import com.adobe.cairngorm.control.CairngormEventDispatcher;			
+			import control.*;	
+			import locator.CaseFileLocator;
+			
+			protected function refreshFile():void
+			{
+				CaseFileLocator.getInstance().fileType="照片图像";
+				CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.CASEFILEWS_GetAll));
+			}			
+		]]>
+	</fx:Script>
+	<fx:Declarations>
+		<!-- 将非可视元素（例如服务、值对象）放在此处 -->
+	</fx:Declarations>
+	<s:List id="list" dataProvider="{CaseFileLocator.getInstance().picList}" 
+			x="10" y="50" width="793" height="487" 
+			itemRenderer="view.idcase.tool.renderer.CasePicRenderer">
+		<s:layout>
+			<s:TileLayout requestedColumnCount="4"/>
+		</s:layout>
+	</s:List>
+	<s:Label x="10" y="10" color="#0A37FA" fontSize="20" fontWeight="bold" text="照片/图像信息"/>
+</s:Group>

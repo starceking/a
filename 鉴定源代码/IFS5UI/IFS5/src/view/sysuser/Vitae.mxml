@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009"
+		 xmlns:s="library://ns.adobe.com/flex/spark"
+		 xmlns:mx="library://ns.adobe.com/flex/mx"
+		 xmlns:tool="view.tool.*"
+		 width="813" height="547" fontSize="14" creationComplete="creationCompleteHandler(event)">
+	<fx:Script>
+		<![CDATA[
+			import com.adobe.cairngorm.control.CairngormEventDispatcher;
+			
+			import control.*;
+			
+			import locator.VitaeLocator;
+			import locator.PsbLocator;
+			import locator.SysUserLocator;
+			
+			import mx.containers.ViewStack;
+			import mx.events.FlexEvent;
+			
+			import util.Helper;
+			
+			import vo.VitaeVo;
+			
+			private var locObj:VitaeLocator=VitaeLocator.getInstance();
+			private var sysuser:SysUserLocator=SysUserLocator.getInstance();
+			public var vs:ViewStack;
+			
+			protected function creationCompleteHandler(event:FlexEvent):void
+			{
+				locObj.wsObj=new VitaeVo("",sysuser.curObj.ID,"","","","","","");
+				CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.VITAEWS_GetAll));
+			}
+			
+			private function getOperVo():VitaeVo
+			{
+				return new VitaeVo(Helper.getGUID(),sysuser.curObj.ID,vitaes.text,
+					startDate.text,endDate.text,dept.text,section.text,remark.text);
+			}
+			protected function insertClickHandler(event:MouseEvent):void
+			{
+				locObj.wsObj=getOperVo();
+				CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.VITAEWS_Insert));					
+			}
+			protected function updateClickHandler(event:MouseEvent):void
+			{				
+				if(dg.selectedItem!=null)
+				{
+					locObj.wsObj=getOperVo();
+					locObj.wsObj.ID=dg.selectedItem.ID;
+					CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.VITAEWS_Update));
+				}
+				else
+				{
+					Helper.showAlert("请先选中对应数据行");
+				}
+			}
+			protected function deleteClickHandler(event:MouseEvent):void
+			{
+				if(dg.selectedItem!=null)
+				{
+					//locObj.wsObj=getOperVo();
+					locObj.wsObj.ID=dg.selectedItem.ID;
+					CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.VITAEWS_Delete));
+				}
+				else
+				{
+					Helper.showAlert("请先选中对应数据行");
+				}
+			}
+			
+		]]>
+	</fx:Script>
+	<fx:Declarations>
+		<!-- 将非可视元素（例如服务、值对象）放在此处 -->
+	</fx:Declarations>
+	<s:Label x="10" y="10" color="#0A37FA" fontSize="20" fontWeight="bold" text="学历信息"/>
+	<s:DataGrid id="dg" x="14" y="38" width="773" height="274" dataProvider="{locObj.listObj}">
+		<s:columns>
+			<s:ArrayList>
+				<s:GridColumn dataField="StartDate" headerText="开始时间"></s:GridColumn>
+				<s:GridColumn dataField="EndDate" headerText="结束时间"></s:GridColumn>
+				<s:GridColumn dataField="Section" headerText="毕业院校"></s:GridColumn>
+				<s:GridColumn dataField="Dept" headerText="专业/部门"></s:GridColumn>
+				<s:GridColumn dataField="Remark" headerText="备注"></s:GridColumn>
+			</s:ArrayList>
+		</s:columns>
+	</s:DataGrid>
+	<s:Label x="16" y="422" text="备       注："/>
+	<s:Label x="416" y="328" text="专        业："/>
+	<s:TextInput id="section" x="101" y="390" width="686" text="{dg.selectedItem.Section}"/>
+	<s:Label x="16" y="398" text="毕业院校："/>
+	<s:TextInput id="dept" x="498" y="320" width="291" text="{dg.selectedItem.Dept}"/>
+	<s:Label x="17" y="331" text="学      历："/>
+	<s:TextInput id="vitaes" x="101" y="322" width="280" text="{dg.selectedItem.Vitaes}"/>
+	<s:Label x="16" y="364" text="起始时间："/>
+	<s:Label x="419" y="365" text="终止时间："/>
+	<s:Button x="556" y="504" label="新增" click="insertClickHandler(event)"/>
+	<s:Button x="716" y="504" label="删除" click="deleteClickHandler(event)"  visible="{dg.selectedItem!=null}"/>
+	<s:Button x="638" y="504" label="保存" click="updateClickHandler(event)" visible="{dg.selectedItem!=null}"/>
+	<tool:DateZh id="startDate" x="101" y="359" width="280" text="{dg.selectedItem.StartDate}"/>
+	<tool:DateZh id="endDate" x="495" y="359" width="294" text="{dg.selectedItem.EndDate}"/>
+	<s:TextArea id="remark" x="101" y="422" width="686" height="72" text="{dg.selectedItem.Remark}"/>
+</s:Group>

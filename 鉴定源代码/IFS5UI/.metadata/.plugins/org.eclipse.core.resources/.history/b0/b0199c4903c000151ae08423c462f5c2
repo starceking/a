@@ -1,0 +1,258 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Application xmlns:fx="http://ns.adobe.com/mxml/2009"
+			   xmlns:s="library://ns.adobe.com/flex/spark"
+			   xmlns:mx="library://ns.adobe.com/flex/mx"
+			   xmlns:frame="view.frame.*"
+			   xmlns:control="control.*"
+			   xmlns:tool="view.tool.*"
+			   width="100%" height="868" creationComplete="creationCompleteHandler(event)"
+			   fontSize="14" backgroundColor.Login="#f7f7f7">
+	<fx:Declarations>
+		<control:IFSControl id="ifsCtrl"/>
+	</fx:Declarations>
+	<fx:Style source="assets/style/main.css"/>
+	<fx:Script>
+		<![CDATA[
+			import com.adobe.cairngorm.control.CairngormEventDispatcher;
+			
+			import control.*;
+			
+			import locator.ExCaseLocator;
+			import locator.IdTestimonyLocator;
+			import locator.NotificationLocator;
+			import locator.PsbLocator;
+			import locator.SysUserLocator;
+			
+			import mx.controls.Alert;
+			import mx.events.FlexEvent;
+			import mx.managers.PopUpManager;
+			
+			import util.Helper;
+			import util.Server;
+			
+			import view.idcase.query.query.IdCaseQueryWindow;
+			import view.idcase.sampletest.Amplify.AmplifyWindow;
+			import view.idcase.sampletest.ConfirmExam.ConfirmExamWindow;
+			import view.idcase.sampletest.Electrophoresis.ElectrophoresisWindow;
+			import view.idcase.sampletest.Extract.ExtractWindow;
+			import view.idcase.sampletest.PreExam.PreExamWindow;
+			import view.idcase.sampletest.SampleTestUpdateWindow;
+			import view.idcase.str.StrWindow;
+			import view.idcase.testimony.PicTakeWindow;
+			import view.idcase.tool.idcase.PsbSelectWindow;
+			import view.idcase.tool.idcase.RegionSelectWindow;
+			import view.index.NotiWindow;
+			import view.index.RegisterWindow;
+			import view.index.SearchPsbWindow;
+			
+			import vo.ExCaseVo;
+			import vo.NotificationVo;
+			import vo.PsbVo;
+			protected function creationCompleteHandler(event:FlexEvent):void
+			{				
+				flash.system.Security.loadPolicyFile("http://10.49.132.69/IFS5Web/crossdomain.xml"); 
+				
+				Alert.yesLabel="确定";
+				Alert.cancelLabel="取消";	
+				PsbLocator.getInstance().wsObj=new PsbVo("","","0","","","","","","","初始化");
+				CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.PSBWS_GetAll));
+				//获取最新的通知
+				NotificationLocator.getInstance().voObj=new NotificationVo();
+				CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.NOTIFICATIONWS_GET_ALL));
+				CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.NOTIFICATIONWS_GetImportant));
+				
+				//待批案件
+				CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.EXCASEWS_GetSpTaskAmount));
+				//待领取
+				var locObj:ExCaseLocator=ExCaseLocator.getInstance();
+				locObj.wsObj=new ExCaseVo("","","","","","","","","","","","");
+				CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.EXCASEWS_QueryGetReportCase));
+			}
+			
+			public function showQueryModule():void
+			{				
+				//案件查询
+				var childWin:IdCaseQueryWindow=new IdCaseQueryWindow();
+				childWin.owner=this;
+				childWin.width=this.width-20;
+				childWin.height=this.height-20;
+				PopUpManager.addPopUp(childWin, this, true);
+				PopUpManager.centerPopUp(childWin);
+			}
+			public function showTesPicModule(sln:String,sName:String):void
+			{			
+				//检材拍照
+				IdTestimonyLocator.getInstance().sln=sln;
+				IdTestimonyLocator.getInstance().sName=sName;
+				
+				var childWin:PicTakeWindow=new PicTakeWindow();
+				childWin.owner=this;
+				PopUpManager.addPopUp(childWin, this, true);
+				PopUpManager.centerPopUp(childWin);
+			}
+			public function showStrModule():void
+			{					
+				//STR大窗口
+				var childWin:StrWindow=new StrWindow();
+				childWin.owner=this;
+				childWin.width=this.width-20;
+				childWin.height=this.height-20;
+				PopUpManager.addPopUp(childWin, this, true);
+				PopUpManager.centerPopUp(childWin);
+			}
+			public function showPreExamModule():void
+			{					
+				//预实验
+				var childWin:PreExamWindow=new PreExamWindow();
+				childWin.owner=this;
+				childWin.width=this.width-20;
+				childWin.height=this.height-20;
+				PopUpManager.addPopUp(childWin, this, true);
+				PopUpManager.centerPopUp(childWin);
+			}
+			public function showConfirmExamModule():void
+			{				
+				//确证试验
+				var childWin:ConfirmExamWindow=new ConfirmExamWindow();
+				childWin.owner=this;
+				childWin.width=this.width-20;
+				childWin.height=this.height-20;
+				PopUpManager.addPopUp(childWin, this, true);
+				PopUpManager.centerPopUp(childWin);
+			}
+			public function showExtractModule():void
+			{					
+				//提取
+				var childWin:ExtractWindow=new ExtractWindow();
+				childWin.owner=this;
+				childWin.width=this.width-20;
+				childWin.height=this.height-20;
+				PopUpManager.addPopUp(childWin, this, true);
+				PopUpManager.centerPopUp(childWin);
+			}
+			public function showAmplifyModule():void
+			{				
+				//扩增
+				var childWin:AmplifyWindow=new AmplifyWindow();
+				childWin.owner=this;
+				childWin.width=this.width-20;
+				childWin.height=this.height-20;
+				PopUpManager.addPopUp(childWin, this, true);
+				PopUpManager.centerPopUp(childWin);
+			}
+			public function showElectrophoresisModule():void
+			{				
+				//电泳
+				var childWin:ElectrophoresisWindow=new ElectrophoresisWindow();
+				childWin.owner=this;
+				childWin.width=this.width-20;
+				childWin.height=this.height-20;
+				PopUpManager.addPopUp(childWin, this, true);
+				PopUpManager.centerPopUp(childWin);
+			}
+			public function showSampleTestUpdateModule():void
+			{			
+				//样本检测查询
+				var childWin:SampleTestUpdateWindow=new SampleTestUpdateWindow();
+				childWin.owner=this;
+				childWin.width=this.width-20;
+				childWin.height=this.height-20;
+				PopUpManager.addPopUp(childWin, this, true);
+				PopUpManager.centerPopUp(childWin);
+			}
+			public function showNotiModule():void
+			{						
+				//通知通告
+				var childWin:NotiWindow=new NotiWindow();
+				childWin.owner=this;
+				PopUpManager.addPopUp(childWin, this, true);
+				PopUpManager.centerPopUp(childWin);
+			}
+			public function showRegisterModule():void
+			{							
+				//注册
+				var childWin:RegisterWindow=new RegisterWindow();
+				childWin.owner=this;
+				PopUpManager.addPopUp(childWin, this, true);
+				PopUpManager.centerPopUp(childWin);
+			}
+			public function showSearchCodeModule():void
+			{							
+				//查询单位代码
+				var childWin:SearchPsbWindow=new SearchPsbWindow();
+				childWin.owner=this;
+				PopUpManager.addPopUp(childWin, this, true);
+				PopUpManager.centerPopUp(childWin);
+			}
+			
+			public function showRegionSelectModule():void
+			{							
+				//选择案发地点区域
+				var childWin:RegionSelectWindow=new RegionSelectWindow();
+				childWin.owner=this;
+				PopUpManager.addPopUp(childWin, this, true);
+				PopUpManager.centerPopUp(childWin);
+			}
+			
+			public function showPsbSelectModule():void
+			{							
+				//选择更换委托单位
+				var childWin:PsbSelectWindow=new PsbSelectWindow();
+				childWin.owner=this;
+				PopUpManager.addPopUp(childWin, this, true);
+				PopUpManager.centerPopUp(childWin);
+			}
+		]]>
+	</fx:Script>
+	<s:states>
+		<s:State name="Login"/>
+		<s:State name="Consign"/>
+		<s:State name="Insider"/>
+		<s:State name="Office"/>
+		<s:State name="DNA"/>
+		<s:State name="Techer"/>
+		<s:State name="Leader"/>
+	</s:states>	
+	<s:Group horizontalCenter="0" verticalCenter="0">
+		<s:Image id="login_img" x="0" y="0" smooth="true"
+				 creationComplete="login_img.source=Server.getUIImage('login_img_'+PsbLocator.getInstance().ID_PSB_ID+'.png');" includeIn="Login" horizontalCenter="0" verticalCenter="0"/>
+		<s:Label includeIn="Login" x="52" y="509" color="#005D98" fontFamily="宋体" text="V 1.2.2" />
+		<s:Group excludeFrom="Login">
+			<s:BitmapImage x="0" y="0" smooth="true" source="@Embed('/assets/images/index/bg.png')" />	
+			<s:Image id="img2" x="0" y="0" smooth="true"
+					 creationComplete="img2.source=Server.getUIImage('Top_img_'+PsbLocator.getInstance().ID_PSB_ID+'.png');"/>
+			<s:Image id="img" x="160" y="41" smooth="true"
+					 creationComplete="img.source=Server.getUIImage(PsbLocator.getInstance().ID_PSB_ID+'.png');"/>
+			<!--<s:Image id="img5" x="170" y="99" smooth="true"
+					 creationComplete="img5.source=Server.getUIImage(PsbLocator.getInstance().ID_PSB_ID+'_word.png');"/>-->
+			<s:Image id="img3" x="733" y="112" smooth="true"
+					 creationComplete="img3.source=Server.getUIImage('宣言.png');"/>
+			<s:Image id="img4" x="16" y="14" smooth="true" 
+					 creationComplete="img4.source=Server.getUIImage('logo.png');"/>
+			<s:BitmapImage x="0" y="154" smooth="true" source="@Embed('/assets/images/index/menubg.png')"/>
+			<s:BitmapImage x="14" y="214" smooth="true" source="@Embed('/assets/images/index/bg1.png')"/>	
+			<s:BitmapImage x="14" y="214" blendMode="multiply" smooth="true"
+						   source="@Embed('/assets/images/index/center.png')"/>
+			<s:BitmapImage x="0" y="822" smooth="true" source="@Embed('/assets/images/index/block.png')"/>
+		</s:Group>
+		
+		<frame:ConsignFrame includeIn="Consign"/>
+		<frame:InsiderFrame includeIn="Insider"/>
+		<frame:OfficeFrame includeIn="Office"/>
+		<frame:DnaFrame includeIn="DNA"/>
+		<frame:TechFrame includeIn="Techer"/>
+		<frame:LeaderFrame includeIn="Leader"/>
+		
+		<s:Label excludeFrom="Login" x="40" y="202" color="#040215" fontFamily="宋体"
+				 text="{'欢迎您：'+ SysUserLocator.getInstance().loginUser.PNAME +'  '+ SysUserLocator.getInstance().loginUser.NAME}"/>	
+		
+		<s:RichText x="130" y="832" color="#ffffff" fontFamily="宋体" fontSize="12" lineHeight="183.35%"
+					whiteSpaceCollapse="preserve" excludeFrom="Login">
+			<s:content><s:p><s:span>杭州亿诚通科技有限公司版权所有    地址：杭州市新城时代广场4号楼1427    电话：0571-86604333    传真：0571-85086488  </s:span></s:p></s:content>
+		</s:RichText>	
+		<s:Group x="23" y="224" width="953" height="598">
+			<s:ModuleLoader id="contentModule" url="view/index/IndexModule.swf"/>
+		</s:Group>
+		<tool:RoleChangeTool id="rcRgp" excludeFrom="Login" x="664" y="198" />
+	</s:Group>
+</s:Application>

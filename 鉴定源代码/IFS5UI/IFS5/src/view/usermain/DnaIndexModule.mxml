@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Module xmlns:fx="http://ns.adobe.com/mxml/2009"
+		  xmlns:s="library://ns.adobe.com/flex/spark"
+		  xmlns:mx="library://ns.adobe.com/flex/mx"
+		  xmlns:tool="view.tool.*"
+		  width="953" height="598" creationComplete="MenuLocator.getInstance().changeMenu(menuGp);"
+		  fontSize="14">
+	<fx:Declarations>
+		<!-- 将非可视元素（例如服务、值对象）放在此处 -->
+	</fx:Declarations>
+	<fx:Script>
+		<![CDATA[
+			import locator.MenuLocator;		
+			import locator.SysUserLocator;
+			import locator.PsbLocator;
+			import locator.ExCaseLocator;
+			import mx.events.FlexEvent;			
+			import util.Helper;			
+			import vo.MenuVo;
+			import util.Server;
+			
+			protected function psbinfo_creationCompleteHandler(event:FlexEvent):void
+			{
+				if(SysUserLocator.getInstance().loginUser.PADDRESS.length==0||
+					SysUserLocator.getInstance().loginUser.PPOSTCODE.length==0||
+					SysUserLocator.getInstance().loginUser.PPHONE.length==0||
+					SysUserLocator.getInstance().loginUser.PADDRESS==SysUserLocator.getInstance().loginUser.PNAME)
+				{
+					psbinfo.label="检测到贵单位的信息不完整，请完善";
+				}
+				else
+				{
+					psbinfo.label="如果要修改本单位的基本信息，请点击此处";
+				}
+					
+			}
+			
+			protected function psbinfo_clickHandler(event:MouseEvent):void
+			{
+				Helper.pushMenu("修改本单位信息","view/sysset/PsbSingleModule.swf");
+			}
+			
+		]]>
+	</fx:Script>
+	<s:Panel width="953" height="598">
+		<s:HGroup id="menuGp" x="10" y="-27"/>
+		<s:VGroup x="10">
+			<s:HGroup height="24" verticalAlign="middle">
+				<s:Label fontWeight="bold"
+						 text="{'这里是'+PsbLocator.getInstance().idPsb.NAME+'！    欢迎您：'+SysUserLocator.getInstance().loginUser.NAME+ExCaseLocator.getInstance().jjdq}"/>
+				<mx:LinkButton id="psbinfo" label="检测到贵单位的信息不完整，请完善" color="#FD0404"
+							   textDecoration="underline" creationComplete="psbinfo_creationCompleteHandler(event)"
+							   click="psbinfo_clickHandler(event)"/>
+			</s:HGroup>
+			<s:HGroup height="130" verticalAlign="middle">
+				<tool:MenuTool url="assets/images/main/案件委托.png" label="案件委托" clickUrl="view/idcase/query/task/NewConsignModule.swf" />
+				<tool:MenuTool url="assets/images/main/案件受理.png" label="案件受理" clickUrl="view/idcase/query/task/AcceptTask.swf" />
+			</s:HGroup>
+			<s:HGroup height="130" verticalAlign="middle">
+				<tool:MenuTool url="assets/images/main/预试验.png" label="预试验" />
+				<tool:MenuTool url="assets/images/main/确证试验.png" label="确证试验" />
+				<tool:MenuTool url="assets/images/main/提取.png" label="提取" />
+				<tool:MenuTool url="assets/images/main/扩增.png" label="扩增" />
+				<tool:MenuTool url="assets/images/main/电泳.png" label="电泳" />
+				<tool:MenuTool url="assets/images/main/导入Codies.png" label="导入Codis" clickUrl="view/idcase/str/ImportCodiesModule.swf" />
+				<tool:MenuTool url="assets/images/main/概率计算.png" label="概率计算" clickUrl="view/idcase/str/PrintStrRatModule.swf" />
+				
+			</s:HGroup>
+			<s:HGroup height="130" verticalAlign="middle">
+				<tool:MenuTool url="assets/images/main/文书撰写.png" label="{'文书撰写'+ExCaseLocator.getInstance().jyrw}" clickUrl="view/idcase/query/task/TestTaskModule.swf" />
+				<tool:MenuTool url="assets/images/main/文书审核.png" label="{'文书审核'+ExCaseLocator.getInstance().shrw}" clickUrl="view/idcase/query/task/AuditTaskModule.swf" />
+				<tool:MenuTool url="assets/images/main/文书制作.png" label="{'文书打印'+ExCaseLocator.getInstance().wszz}" clickUrl="view/idcase/query/task/TesterSdTaskModule.swf" />
+				<tool:MenuTool url="assets/images/main/报告领取.png" label="文书发放" clickUrl="view/idcase/query/task/GetReportTaskModule.swf" />
+			</s:HGroup>
+			<s:HGroup height="130" verticalAlign="middle">
+				<tool:MenuTool url="assets/images/main/记录查询.png" label="记录查询" clickUrl="view/idcase/sampletest/SampletestQueryModule.swf"/>
+				<tool:MenuTool url="assets/images/main/案件查询.png" label="案件查询" clickUrl="view/idcase/query/query/QueryIdCaseModule.swf" />
+				<tool:MenuTool url="assets/images/main/前科导入.png" label="物证查询" clickUrl="view/idcase/testimony/DNASampleQueryModule.swf" />
+				<tool:MenuTool url="assets/images/main/统计报表.png" label="统计报表" clickUrl="view/report/StatisticsView.swf" />
+			</s:HGroup>
+		</s:VGroup>	
+		</s:Panel>
+</s:Module>

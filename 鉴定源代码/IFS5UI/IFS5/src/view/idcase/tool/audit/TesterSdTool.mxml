@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009"
+		 xmlns:s="library://ns.adobe.com/flex/spark"
+		 xmlns:mx="library://ns.adobe.com/flex/mx"
+		 xmlns:word="view.idcase.tool.word.*"
+		 width="813" height="547" fontSize="14">
+	<fx:Declarations>
+		<!-- 将非可视元素（例如服务、值对象）放在此处 -->
+	</fx:Declarations>
+	<fx:Script>
+		<![CDATA[
+			import com.adobe.cairngorm.control.CairngormEventDispatcher;
+			
+			import control.*;
+			
+			import locator.ExCaseLocator;
+			import locator.IdFlowLocator;
+			import locator.PsbLocator;
+			import locator.SysUserLocator;
+			
+			import util.Helper;
+			
+			import vo.IdFlowVo;
+			public var locObj:IdFlowLocator=IdFlowLocator.getInstance();
+			public var curObj:IdFlowVo=locObj.curObj;
+			
+			protected function getNextNoClickHandler(event:MouseEvent):void
+			{
+				locObj.notxt=docNo;
+				locObj.wsObj=new IdFlowVo(locObj.curObj.CONNO,locObj.curObj.ID_PSB,"","","","","",
+					"","","","","","","","","","","","",locObj.curObj.DOC_NAME,"","","",docYear.text,"","","","","","","",
+					"","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","",
+					"","","","","","","","","","","","","","","","","","","","","","","","","","","","","","");
+				CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.IDFLOWWS_GetNextDocNo));
+			}
+			
+			protected function saveClickHandler(event:MouseEvent):void
+			{
+				if(validateInput())
+				{
+					locObj.wsObj=curObj;
+					locObj.oper=SysUserLocator.getInstance().loginUser.NAME;
+					locObj.operTimeCol="发文确认";
+					locObj.operReason=docYear.text+"-"+docNo.text;
+					locObj.wsObj.ID_STATUS="通过";
+					curObj.TESTERSDF="now";
+					CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.IDFLOWWS_UpdateAudit));
+				}
+			}
+			
+			private function validateInput():Boolean
+			{
+				var result:Boolean=true;
+				result=result && Helper.validateTextInput(docYear);
+				result=result && Helper.validateTextInput(docNo);
+				return result;
+			}
+			
+			protected function saveClickHandler2(event:MouseEvent):void
+			{
+				ExCaseLocator.getInstance().sendNote(curObj.CONER1LPHONE,"1");
+			}
+		]]>
+	</fx:Script>
+	<s:Button x="733" y="50" click="saveClickHandler(event)"
+			  enabled="{PsbLocator.getInstance().npending}" skinClass="assets.skins.Button_zzwc"/>
+	<s:Label x="10" y="60" color="#FC0202" text="发文年份："/>
+	<s:TextInput id="docYear" x="88" y="50" width="180" restrict="0123456789"
+				 text="{curObj.DOC_YEAR}"/>
+	<s:Label x="276" y="60" color="#FD0202" text="发文序号："/>
+	<s:TextInput id="docNo" x="354" y="50" width="180" restrict="0123456789" text="{curObj.DOC_NO}"/>
+	<mx:LinkButton x="545" y="50" label="获取最新序号" click="getNextNoClickHandler(event)"
+				   enabled="{PsbLocator.getInstance().npending}" textDecoration="underline"/>
+	<word:WordAllTool x="0" y="79" height="468">
+	</word:WordAllTool>
+	<s:Button y="50" click="saveClickHandler2(event)" enabled="{PsbLocator.getInstance().npending}"
+			  horizontalCenter="282" skinClass="assets.skins.Button_lqtz"/>
+	<s:Label x="10" y="10" color="#0A37FA" fontSize="20" fontStyle="normal" fontWeight="normal"
+			 lineThrough="false" text="获取最新的发文序号。“领取通知”指自动发送一条短信息给委托方，通知其前来领取报告"
+			 textDecoration="none"/>
+</s:Group>

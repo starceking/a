@@ -1,0 +1,707 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<s:TitleWindow xmlns:fx="http://ns.adobe.com/mxml/2009" 
+			   xmlns:s="library://ns.adobe.com/flex/spark" 
+			   xmlns:mx="library://ns.adobe.com/flex/mx" 
+			   xmlns:ns1="*"
+			   xmlns:tool="view.tool.*"
+			   defaultButton="{btn}"
+			   width="1080" height="840" fontSize="14"
+			   creationComplete="titlewindow1_creationCompleteHandler(event)"
+			   close="PopUpManager.removePopUp(this);" 
+			   title="电泳">
+	<fx:Script>
+		<![CDATA[
+			import com.adobe.cairngorm.control.CairngormEventDispatcher;
+			
+			import control.*;
+			
+			import locator.DictLocator;
+			import locator.ElectrophoresisLocator;
+			import locator.PsbLocator;
+			import locator.SysUserLocator;
+			import locator.WordLocator;
+			
+			import mx.collections.ArrayCollection;
+			import mx.controls.Alert;
+			import mx.events.CloseEvent;
+			import mx.events.FlexEvent;
+			import mx.managers.PopUpManager;
+			
+			import spark.components.CheckBox;
+			
+			import util.Helper;
+			
+			import vo.ExtractSampleVo;
+			import vo.ExtractVo;			
+			
+			public static var hour:ArrayCollection = new ArrayCollection([  
+				{id:0,label:'0'},{id:1,label:'1'},{id:2,label:'2'},{id:3,label:'3'},{id:4,label:'4'},{id:5,label:'5'},
+				{id:6,label:'6'},{id:7,label:'7'},{id:8,label:'8'},{id:9,label:'9'},{id:10,label:'10'},{id:11,label:'11'},
+				{id:12,label:'12'},{id:13,label:'13'},{id:14,label:'14'},{id:15,label:'15'},{id:16,label:'16'},{id:17,label:'17'},
+				{id:18,label:'18'},{id:19,label:'19'},{id:20,label:'20'},{id:21,label:'21'},{id:22,label:'22'},{id:23,label:'23'},
+			]); 
+			public static var minute:ArrayCollection = new ArrayCollection([  
+				{id:0,label:'00'},{id:1,label:'10'},{id:2,label:'20'},{id:3,label:'30'},{id:4,label:'40'},{id:5,label:'50'}]); 
+			
+			public static var record:ArrayCollection = new ArrayCollection([  
+				{id:0,label:'3130XL'},
+				{id:1,label:'3500XL'},
+				{id:2,label:'电泳位置表格'}]); 
+			
+			private var loc:ElectrophoresisLocator=ElectrophoresisLocator.getInstance();
+			private var dyid:String="";
+			
+			protected function titlewindow1_creationCompleteHandler(event:FlexEvent):void
+			{
+				// 页面加载
+				loc.EPListObj.removeAll();
+				loc.SampleEPListObj.removeAll();
+				ElectrophoresisLocator.getInstance().EPInsertFlag=false;
+				
+				dyid=Helper.getGUID();
+				
+				queryClickHandler(null);
+			}
+			
+			protected function queryClickHandler(evt:Event):void
+			{				
+				//扩增记录
+				loc.rqs=slsjs.text;
+				loc.rqe=slsje.text;
+				loc.kzqr="0";
+				
+				CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.ELECTROPHORESISWS_QueryAmplifyRecord));
+			}
+			
+			protected function dg0_clickHandler(event:MouseEvent):void
+			{
+				// 更换数据 事件
+				if(dg.selectedItem!=null)
+				{
+					loc.KZID=dg.selectedItem.ID;
+					CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.ELECTROPHORESISWS_GetSampleEP));
+				}
+			}
+			protected function yang_clickHandler(jrzkyb:String):void
+			{
+				// 加入质控样本
+				loc.SampleEPListObj.addItem(new ExtractSampleVo("","",
+					"","","",jrzkyb,"","","","1","",
+					"","","","","","","","","","","","","","","","","","","","","","","","1",""));	
+			}
+			
+			protected function join_clickHandler(jcbh:String,event:MouseEvent):void
+			{
+				// 检材加入
+				if(jcbh.length==0)
+				{
+					Helper.showAlert("检材编号为空");
+				}
+				else
+				{
+					loc.jcbh=jcbh;
+					CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.ELECTROPHORESISWS_JoinEP));
+				}	
+			}
+			protected function removed_clickHandler(list:List,ListObj:ArrayList):void
+			{
+				// 移除检材
+				ListObj.removeItem(list.selectedItem);
+			}
+			
+			protected function next_clickHandler(event:MouseEvent):void
+			{
+				// 扩增
+				tn.removeElement(NC01);
+				NC02.enabled=true;
+				NC03.enabled=true;
+				//默认位置			
+				WZ_set_handler("A01",loc.SampleEPListObj);
+			}
+			protected function set_clickHandler(event:MouseEvent):void
+			{
+				// 设置 扩增位置
+				if(SPosition.text.length!=3)
+				{
+					Helper.showAlert("输入的起始电泳位置有误！例：A01");
+					return;
+				}
+				var row:String=SPosition.text.substring(0,1).toUpperCase();
+				if(("A，B，C，D，E，F，G，H").search(row)<0)
+				{
+					Helper.showAlert("输入的起始电泳位置有误！");
+					return;
+				}
+				var cel:String=SPosition.text.substring(1,SPosition.text.length);
+				var c:int=Number(cel);
+				if(c<1||c>12)
+				{
+					Helper.showAlert("输入的起始电泳位置有误！");
+					return;
+				}
+				WZ_set_handler(SPosition.text,loc.SampleEPListObj);
+			}
+			protected function mbyl_clickHandler(event:MouseEvent):void
+			{
+				//更改 模板用量
+				if(list2.selectedItems==null)
+					Helper.showAlert("请选择数据！");
+				else
+				{
+					var len:int=loc.SampleEPListObj.length;
+					for(var i:int=0;i<list2.selectedItems.length;i++)
+					{	
+						var voObj2:ExtractSampleVo=list2.selectedItems[i] as ExtractSampleVo;
+						voObj2.YL=mbylGG.text;
+						
+						for(var j:int=0;j<len;j++)
+						{	
+							var voObj1:ExtractSampleVo=loc.SampleEPListObj.getItemAt(j) as ExtractSampleVo;
+							if(voObj1.WZ==voObj2.WZ)
+							{
+								loc.SampleEPListObj.setItemAt(voObj2,j);
+								continue;
+							}
+						}
+					}				
+				}
+			}
+			protected function savedy():void
+			{
+				//电泳仪器 保存
+				loc.wsObj=new ExtractVo("","","","","","","","","","","","","","","","","","","","","","","","","","","",
+					"","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","");
+				loc.wsObj.KZDYPH=dyph.text;//电泳批号
+				loc.wsObj.DYY=dyy.getSelectedItems();//电泳仪
+				loc.wsObj.DYLXJ=dylxj.getSelectedItems();//电泳离心机
+				loc.wsObj.DYJRY=dyjry.getSelectedItems();//电泳加热仪
+				loc.wsObj.DYXWHHQ=dyxwhhq.getSelectedItems();//电泳漩涡混合器
+				loc.wsObj.DYYYQ=dyyyq.getSelectedItems();//电泳移液器
+				loc.wsObj.DYZBJ=zbj.getSelectedItems();//电泳制冰机
+				loc.wsObj.DYCJT=dycjt.getSelectedItems();//电泳超净台
+				loc.wsObj.DYGZZ=dygzz.getSelectedItems();//电泳工作站
+				loc.wsObj.NB=nb.getSelectedItems();//内标
+				loc.wsObj.NBL=nbl.text;//内标量
+				loc.wsObj.JCSJKS=dysjs0.text+" "+DYhours0.selectedItem.label+":"+DYminute0.selectedItem.label;//电泳时间开始
+				loc.wsObj.JCSJJS=dysje1.text+" "+DYhours1.selectedItem.label+":"+DYminute1.selectedItem.label;//电泳时间结束
+				loc.wsObj.BXRJ=bxrj.getSelectedItems();//变性溶剂
+				loc.wsObj.RJL=rjl.text;//溶剂量
+				loc.wsObj.CWL=cwl.text;//产物量
+				loc.wsObj.JY=jy.text;//胶液
+				loc.wsObj.JYPH=jyph.text;//胶液批号
+				loc.wsObj.YDYDL=ydydl.text;//预电泳电流
+				loc.wsObj.DYDL=dydl.text;//电泳电流
+				loc.wsObj.SampleSheet=ss.text;//SampleSheet
+				loc.wsObj.RunFold=rf.text;//RunFold
+				loc.wsObj.DYHJWD=dywd.text;//电泳环境温度
+				loc.wsObj.DYHJSD=dysd.text;//电泳环境湿度			
+				tn.selectedIndex+=1;
+			}
+			protected function DY_SAVE_clickHandler(event:MouseEvent):void
+			{
+				//电泳样本 保存
+				Alert.show("是否确认提交信息？","温馨提示",Alert.YES|Alert.CANCEL,this,save_handler,null,Alert.CANCEL); 
+			}
+			private function save_handler(evt:CloseEvent):void
+			{		
+				if(evt.detail==Alert.YES)
+				{
+					var arr1:Array=new Array();
+					arr1[0]=dyid;//电泳ID
+					arr1[1]=loc.wsObj.KZDYPH;//电泳批号
+					arr1[2]=loc.wsObj.DYY;//电泳仪
+					arr1[3]=loc.wsObj.DYLXJ;//电泳离心机
+					arr1[4]=loc.wsObj.DYJRY;//电泳加热仪
+					arr1[5]=loc.wsObj.DYXWHHQ;//电泳漩涡混合器
+					arr1[6]=loc.wsObj.DYYYQ;//电泳移液器
+					arr1[7]=loc.wsObj.DYZBJ;//电泳制冰机
+					arr1[8]=loc.wsObj.DYCJT;//电泳超净台
+					arr1[9]=loc.wsObj.DYGZZ;//电泳工作站
+					arr1[10]=loc.wsObj.NB;//内标
+					arr1[11]=loc.wsObj.NBL;//内标量
+					arr1[12]=loc.wsObj.JCSJKS;//电泳时间开始
+					arr1[13]=loc.wsObj.JCSJJS;//电泳时间结束
+					arr1[14]=loc.wsObj.BXRJ;//变性溶剂
+					arr1[15]=loc.wsObj.RJL;//溶剂量
+					arr1[16]=loc.wsObj.CWL;//产物量
+					arr1[17]=loc.wsObj.JY;//胶液
+					arr1[18]=loc.wsObj.JYPH;//胶液批号
+					arr1[19]=loc.wsObj.YDYDL;//预电泳电流
+					arr1[20]=loc.wsObj.DYDL;//电泳电流
+					arr1[21]=loc.wsObj.SampleSheet;//SampleSheet
+					arr1[22]=loc.wsObj.RunFold;//RunFold
+					arr1[23]=loc.wsObj.DYHJWD;//电泳环境温度
+					arr1[24]=loc.wsObj.DYHJSD;//电泳环境湿度
+					arr1[25]=SysUserLocator.getInstance().loginUser.ID;//电泳人
+					arr1[26]=PsbLocator.getInstance().idPsb.ID;//鉴定单位
+					arr1[27]="0";//电泳确认
+					arr1[28]=loc.KZID;//对应扩增记录ID
+					
+					loc.EPRecordArray=arr1;
+					
+					var listNum=loc.SampleEPListObj.length;
+					var arr:Array=new Array();
+					for(var i:int=0;i<listNum;i++)
+					{
+						var voObj:ExtractSampleVo=loc.SampleEPListObj.getItemAt(i) as ExtractSampleVo;
+						
+						arr.push(new Array());
+						arr[i][0]=voObj.CASE_ID;//案件ID
+						arr[i][1]=voObj.CONNO;//委托编号
+						arr[i][2]=voObj.SC;//库类型
+						arr[i][3]=voObj.SLN;//样本编号
+						arr[i][4]=voObj.NAME;//样本名称
+						arr[i][5]=voObj.SAMPLE_TYPE;//样本类型
+						arr[i][6]=voObj.WZ;//电泳位置
+						arr[i][7]=voObj.YL;//电泳模版用量
+						arr[i][8]=dyid;//电泳ID
+					}
+					loc.EPArray=arr;
+					
+					if(!loc.EPInsertFlag)
+					{
+						CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.ELECTROPHORESISWS_InsertEP));
+					}
+					else
+					{
+						CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.ELECTROPHORESISWS_UpdateEP));	
+					}	
+				}
+			}
+			
+			private function WZ_set_handler(sition:String,lastList:ArrayList):void
+			{
+				//设置扩增位置
+				var row:String=sition.substring(0,1).toUpperCase();
+				var cel:String=sition.substring(1,sition.length);
+				var c:int=Number(cel);
+				var r:int;
+				switch(row)
+				{
+					case "A":r=1;break;
+					case "B":r=2;break;
+					case "C":r=3;break;
+					case "D":r=4;break;
+					case "E":r=5;break;
+					case "F":r=6;break;
+					case "G":r=7;break;
+					case "H":r=8;break;
+				}
+				var len:int=lastList.length;
+				for(var i:int=0;i<len;i++)
+				{		
+					var voObj:ExtractSampleVo=lastList.getItemAt(i) as ExtractSampleVo;					
+					switch(r)
+					{
+						case 1:row="A";r++;break;
+						case 2:row="B";r++;break;
+						case 3:row="C";r++;break;
+						case 4:row="D";r++;break;
+						case 5:row="E";r++;break;
+						case 6:row="F";r++;break;
+						case 7:row="G";r++;break;
+						case 8:row="H";r=1;break;
+					}					
+					if(c>=1&&c<=9)voObj.WZ=row+"0"+String(c);
+					else voObj.WZ=row+String(c);
+					
+					lastList.setItemAt(voObj,i);				
+					if(row=="H")c++;	
+				}
+			}
+			protected function dyff_changeHandler():void
+			{
+				DianYongClear();		
+				
+				var list:ArrayList=DictLocator.getInstance().getItem("电泳默认设置");
+				
+				for(var i:int=0;i<list.length;i++)
+				{
+					var Item:String=list.getItemAt(i).label;
+					var ff:Array=Item.split("@");
+					
+					if(ff[0]==dyff.getSelectedItem())
+					{
+						var yq:Array=ff[1].split("￥");
+						
+						for(var j:int=0;j<yq.length;j++)
+						{
+							var mc:Array=yq[j].split("|");
+							
+							if(mc[0]=="电泳仪")CheckBoxSet(dyy,"电泳仪",mc);
+							else if(mc[0]=="检测离心机")CheckBoxSet(dylxj,"检测离心机",mc);
+							else if(mc[0]=="加热仪")CheckBoxSet(dyjry,"加热仪",mc);
+							else if(mc[0]=="检测漩涡混合器")CheckBoxSet(dyxwhhq,"检测漩涡混合器",mc);
+							else if(mc[0]=="移液器")CheckBoxSet(dyyyq,"移液器",mc);
+							else if(mc[0]=="制冰机")CheckBoxSet(zbj,"制冰机",mc);
+							else if(mc[0]=="超净台")CheckBoxSet(dycjt,"超净台",mc);
+							else if(mc[0]=="电泳工作站")CheckBoxSet(dygzz,"电泳工作站",mc);
+							else if(mc[0]=="内标")CheckBoxSet(nb,"内标",mc);
+							else if(mc[0]=="变性溶剂")CheckBoxSet(bxrj,"变性溶剂",mc);
+							else if(mc[0]=="内标量")nbl.text=mc[1];
+							else if(mc[0]=="产物量")cwl.text=mc[1];
+							else if(mc[0]=="溶剂量")rjl.text=mc[1];
+							else if(mc[0]=="胶液")jy.text=mc[1];
+							else if(mc[0]=="胶液批号")jyph.text=mc[1];
+							else if(mc[0]=="预电泳电流")ydydl.text=mc[1];
+							else if(mc[0]=="电泳电流")dydl.text=mc[1];
+							else if(mc[0]=="环境温度")dywd.text=mc[1];
+							else if(mc[0]=="环境湿度")dysd.text=mc[1];
+						}
+					}
+				}
+			}
+			private function DianYongClear():void
+			{
+				//电泳设置 清空
+				CheckBoxClear(dyy,"电泳仪");
+				CheckBoxClear(dylxj,"检测离心机");
+				CheckBoxClear(dyjry,"加热仪");
+				CheckBoxClear(dyxwhhq,"检测漩涡混合器");
+				CheckBoxClear(dyyyq,"移液器");
+				CheckBoxClear(zbj,"制冰机");
+				CheckBoxClear(dycjt,"超净台");
+				CheckBoxClear(dygzz,"电泳工作站");
+				CheckBoxClear(nb,"内标");
+				CheckBoxClear(bxrj,"变性溶剂");
+				nbl.text="";
+				cwl.text="";
+				rjl.text="";
+				jy.text="";
+				jyph.text="";
+				ydydl.text="";
+				dydl.text="";
+				dywd.text="";
+				dysd.text="";
+			}
+			private function CheckBoxSet(id:DictCgp,Item:String,mc:Array):void
+			{
+				id.removeAllElements();
+				var yqlist:ArrayList=DictLocator.getInstance().getItem(Item);
+				
+				for(var k:int=0;k<yqlist.length;k++)
+				{
+					var cb:CheckBox=new CheckBox();
+					cb.label=yqlist.getItemAt(k).label;
+					if(cb.label=="")continue;
+					if(mc.length>1)cb.selected=(mc[1].search(cb.label+"，")>=0);
+					id.addElement(cb);
+				}
+			}
+			private function CheckBoxClear(id:DictCgp,Item:String):void
+			{
+				id.removeAllElements();
+				var yqlist:ArrayList=DictLocator.getInstance().getItem(Item);
+				
+				for(var k:int=0;k<yqlist.length;k++)
+				{
+					var cb:CheckBox=new CheckBox();
+					cb.label=yqlist.getItemAt(k).label;
+					if(cb.label=="")continue;
+					id.addElement(cb);
+				}
+			}
+			
+			protected function PrintDYRecord_clickHandler(event:MouseEvent):void
+			{
+				// 打印电泳记录表
+				WordLocator.getInstance().FileName="DNA电泳记录表.doc";
+				WordLocator.getInstance().wordType="doc";
+				WordLocator.getInstance().RecordType="电泳记录";
+				WordLocator.getInstance().RecordID=dyid;
+				CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.WORDWS_PrintSampleTestRecord));
+			}
+			
+			protected function PrintPositionTable_clickHandler(type1:String,type2:String):void
+			{
+				// 打印电泳位置表格
+				WordLocator.getInstance().FileName="样本位置表格.doc";
+				WordLocator.getInstance().wordType=type2;
+				WordLocator.getInstance().RecordType=type1;
+				WordLocator.getInstance().RecordID=dyid;
+				CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.WORDWS_PrintDNATestHelpFile));
+			}
+			
+			protected function outRecord_clickHandler(event:MouseEvent):void
+			{
+				var type:String="";
+				if(recordList.selectedItem.label=="电泳位置表格")type="doc";
+				else type="txt";
+				
+				PrintPositionTable_clickHandler(recordList.selectedItem.label,type);
+			}
+			
+		]]>
+	</fx:Script>
+	<mx:TabNavigator id="tn" left="10" right="10" top="10" bottom="10">
+		<s:NavigatorContent id="NC01" width="100%" height="100%" label="样本信息">
+			<s:VGroup width="1048" height="100%" horizontalAlign="right">
+				<s:HGroup width="100%" verticalAlign="middle">
+					<s:Label color="#0A37FA" fontSize="16" text="选择扩增记录"/>
+					<s:Spacer width="100%" height="10"/>
+					<s:Label color="#0A37FA" fontSize="16" text="电泳检材"/>
+					<s:Spacer width="490" height="10"/>
+					<s:Label color="#FF0000" text="手动加入的检材需要手动调整位置"/>
+				</s:HGroup>
+				<s:HGroup width="100%" height="100%">
+					<s:VGroup width="100%" height="100%">
+						<s:HGroup width="100%" verticalAlign="middle">
+							<s:Label text="扩增时间："/>
+							<tool:DateZh id="slsjs" width="100%"/>
+							<s:Label text="到"/>
+							<tool:DateZh id="slsje" width="100%"/>
+							<s:Button id="btn" label="查询" click="queryClickHandler(event)"
+									  enabled="{PsbLocator.getInstance().npending}"/>
+						</s:HGroup>
+						<s:DataGrid id="dg" width="100%" height="100%" dataProvider="{loc.EPListObj}" click="dg0_clickHandler(event)" >
+							<s:columns>
+								<s:ArrayList>
+									<s:GridColumn dataField="KZDYPH" headerText="扩增记录号"></s:GridColumn>
+									<s:GridColumn dataField="KZSJKS" headerText="扩增日期"></s:GridColumn>
+								</s:ArrayList>
+							</s:columns>
+						</s:DataGrid>
+						<s:HGroup width="100%" horizontalAlign="right">
+							<ns1:ListPager id="pager"
+										   creationComplete="pager.addEventListener(ListPager.PAGE_INDEX_CHANGE_EVENT,queryClickHandler);loc.EPListPager=pager;"
+										   pageSize="23">
+							</ns1:ListPager>
+						</s:HGroup>
+					</s:VGroup>
+					<s:VGroup width="100%" height="100%">
+						<s:HGroup width="100%" verticalAlign="bottom">
+							<s:VGroup width="100%">
+								<s:HGroup width="560" verticalAlign="middle">
+									<s:Label text="检材编号："/>
+									<s:TextInput id="join_jcbh" text="{testlist.selectedItem.SLN}"/>
+									<s:Button label="加入检材" click="join_clickHandler(join_jcbh.text,event)" />
+									<s:Button label="移除检材" click="removed_clickHandler(testlist,loc.SampleEPListObj)"/>
+								</s:HGroup>
+								<s:HGroup width="560" verticalAlign="middle">
+									<s:HGroup verticalAlign="middle">
+										<s:Label text="质控样本："/>
+										<tool:DictDdl id="zkyb2" width="148" dictName="质控样本"/>
+									</s:HGroup>
+									<s:Button label="加入样本" click="yang_clickHandler(zkyb2.selectedData)" />
+									<s:Spacer width="100%" height="10"/>
+									<s:HGroup>
+										<s:Label color="#ff0000" text="共"/>
+										<s:Label color="#ff0000" text="{loc.SampleEPListObj.length}"/>
+										<s:Label color="#ff0000" text="条"/>
+									</s:HGroup>
+									<s:Button label="下一步" click="next_clickHandler(event)" skinClass="assets.skins.Button_xyb"/>
+								</s:HGroup>
+							</s:VGroup>
+						</s:HGroup>
+						<s:VGroup width="560" height="100%" gap="0">
+							<s:HGroup width="100%" gap="0">
+								<s:TextInput width="166" text="实验室编号" textAlign="center" editable="false"/>
+								<s:TextInput width="216" text="物证名称" textAlign="center" editable="false"/>
+								<s:TextInput width="36" text="位置" textAlign="center" editable="false"/>
+								<s:TextInput width="36" text="用量" textAlign="center" editable="false"/>
+								<s:TextInput width="106" text="物证类型" textAlign="center" editable="false"/>
+							</s:HGroup>
+							<s:List id="testlist" width="100%" height="100%"
+									dataProvider="{loc.SampleEPListObj}" dragEnabled="true" dropEnabled="true" dragMoveEnabled="true"
+									itemRenderer="view.idcase.sampletest.Electrophoresis.ElectrophoresisRenderer" allowMultipleSelection="true"></s:List>
+						</s:VGroup>
+						
+					</s:VGroup>
+				</s:HGroup>
+			</s:VGroup>
+		</s:NavigatorContent>
+		<s:NavigatorContent id="NC02" width="100%" height="100%" label="电泳信息" enabled="false">
+			<s:VGroup x="10">
+				<s:HGroup verticalAlign="middle">
+					<s:Label width="110" text="电 泳 记 录 号 ： "/>
+					<s:TextInput id="dyph" width="200"/>
+				</s:HGroup>
+				<s:HGroup>
+					<s:Label width="110" paddingTop="6" text="试      剂      盒："/>
+					<tool:DictCbb id="dyff" width="200" dictName="试剂盒" change="dyff_changeHandler()">
+					</tool:DictCbb>
+				</s:HGroup>
+				<s:HGroup verticalAlign="middle">
+					<s:Label width="110" text="电   泳   时   间："/>
+					<tool:DateZh id="dysjs0" text="{Helper.getStrByDate(new Date())}"/>
+					<s:DropDownList id="DYhours0" width="60" dataProvider="{hour}" requireSelection="true"></s:DropDownList>
+					<s:Label text="时"/>
+					<s:DropDownList id="DYminute0" width="60" dataProvider="{minute}" requireSelection="true"></s:DropDownList>
+					<s:Label text="分"/>	
+					<s:Label text="—"/>
+					<tool:DateZh id="dysje1" text="{Helper.getStrByDate(new Date())}"/>
+					<s:DropDownList id="DYhours1" width="60" dataProvider="{hour}" requireSelection="true"></s:DropDownList>
+					<s:Label paddingTop="6" text="时"/>
+					<s:DropDownList id="DYminute1" width="60" dataProvider="{minute}" requireSelection="true"></s:DropDownList>
+					<s:Label text="分"/>
+				<!--	<s:TextInput id="dysjs" width="150" text="{Helper.getTime()}"/>
+					<s:Label paddingTop="6" text="    到   "/>
+					<s:TextInput id="dysje" width="150" text="{Helper.getTime()}"/>-->
+				</s:HGroup>
+				<s:HGroup>
+					<s:Label width="110" paddingTop="6" text="电      泳      仪："/>
+					<tool:DictCgp id="dyy" dictName="电泳仪">
+					</tool:DictCgp>
+				</s:HGroup>
+				<s:HGroup>
+					<s:Label width="110" paddingTop="6" text="离      心      机："/>
+					<tool:DictCgp id="dylxj" dictName="检测离心机">
+					</tool:DictCgp>
+				</s:HGroup>
+				<s:HGroup>
+					<s:Label width="110" paddingTop="6" text="加      热      仪："/>
+					<tool:DictCgp id="dyjry" dictName="加热仪">
+					</tool:DictCgp>
+				</s:HGroup>
+				<s:HGroup>
+					<s:Label width="110" paddingTop="6" text="漩 涡 混 合 器 ："/>
+					<tool:DictCgp id="dyxwhhq" dictName="检测漩涡混合器">
+					</tool:DictCgp>
+				</s:HGroup>
+				<s:HGroup>
+					<s:Label width="110" paddingTop="6" text="移      液      器："/>
+					<tool:DictCgp id="dyyyq" dictName="移液器">
+					</tool:DictCgp>
+				</s:HGroup>
+				<s:HGroup>
+					<s:Label width="110" paddingTop="6" text="制      冰      机："/>
+					<tool:DictCgp id="zbj" dictName="制冰机">
+					</tool:DictCgp>
+				</s:HGroup>
+				<s:HGroup>
+					<s:Label width="110" paddingTop="6" text="超      净      台："/>
+					<tool:DictCgp id="dycjt" dictName="超净台">
+					</tool:DictCgp>
+				</s:HGroup>
+				<s:HGroup>
+					<s:Label width="110" paddingTop="6" text="工      作      站："/>
+					<tool:DictCgp id="dygzz" dictName="电泳工作站">
+					</tool:DictCgp>
+				</s:HGroup>
+				<s:HGroup>
+					<s:Label width="110" paddingTop="6" text="内                标："/>
+					<tool:DictCgp id="nb" dictName="内标"/>
+					<s:Label paddingTop="6" text="内    标   量："/>
+					<s:TextInput id="nbl"/>	
+				</s:HGroup>
+				<s:HGroup>
+					<s:Label width="110" paddingTop="6" text="变   性   溶   剂："/>
+					<tool:DictCgp id="bxrj" dictName="变性溶剂">
+					</tool:DictCgp>
+				</s:HGroup>
+				<s:HGroup>
+					<s:Label width="110" paddingTop="6" text="产      物      量："/>
+					<s:TextInput id="cwl"/>
+					<s:Label width="90" paddingTop="6" text="溶    剂   量 ："/>
+					<s:TextInput id="rjl"/>
+				</s:HGroup>
+				<s:HGroup>
+					<s:Label width="110" paddingTop="6" text="胶                液："/>
+					<s:TextInput id="jy"/>
+					<s:Label width="90" paddingTop="6" text="胶 液 批 号 ："/>
+					<s:TextInput id="jyph"/>
+				</s:HGroup>
+				<s:HGroup>
+					<s:Label width="110" paddingTop="6" text="预 电 泳 电 流 ："/>
+					<s:TextInput id="ydydl"/>
+					<s:Label width="90" paddingTop="6" text="电 泳 电 流 ："/>
+					<s:TextInput id="dydl"/>
+				</s:HGroup>
+				<s:HGroup>
+					<s:Label width="110" paddingTop="6" text="SampleSheet ："/>
+					<s:TextInput id="ss"/>
+					<s:Label width="90" paddingTop="6" text="RunFold     ："/>
+					<s:TextInput id="rf"/>
+				</s:HGroup>
+				<s:HGroup>
+					<s:Label width="110" paddingTop="6" text="环  境  温  度  ："/>
+					<s:TextInput id="dywd"/>
+					<s:Label width="90" paddingTop="6" text="环 境 湿 度 ："/>
+					<s:TextInput id="dysd"/>
+				</s:HGroup>
+				<s:HGroup height="38" horizontalAlign="left" verticalAlign="bottom">
+					<mx:Spacer width="400"/>
+					<s:Button label="保存" click="savedy()" enabled="{PsbLocator.getInstance().npending}" skinClass="assets.skins.Button_bc"/>
+				</s:HGroup>
+			</s:VGroup>
+		</s:NavigatorContent>
+		<s:NavigatorContent id="NC03" width="100%" height="100%" label="样本详细信息" enabled="false">
+			<s:VGroup left="0" right="10" top="10" bottom="10">
+				<s:VGroup width="100%" height="100%">
+					<s:HGroup width="100%" verticalAlign="middle">
+						<s:HGroup verticalAlign="middle">
+							<s:Label text="检材编号："/>
+							<s:TextInput id="join_jcbh2" text="{list2.selectedItem.SLN}"/>
+							<s:Button label="加入检材" click="join_clickHandler(join_jcbh2.text,event)" />
+							<s:Button label="移除检材" click="removed_clickHandler(list2,loc.SampleEPListObj)"/>
+							<s:Label color="#0000FF" text="手动加入的检材需要手动调整位置"/>
+						</s:HGroup>
+						<s:Spacer width="100%" height="10"/>
+				<!--		<mx:LinkButton label="电泳记录表" textDecoration="underline" click="PrintDYRecord_clickHandler(event)"
+									   enabled="{loc.EPInsertFlag}" visible="{PsbLocator.getInstance().npending}"/>-->
+					</s:HGroup>
+					<s:HGroup width="960" verticalAlign="middle">
+						<s:HGroup verticalAlign="middle">
+							<s:Label text="质控样本："/>
+							<tool:DictDdl id="zkyb3" width="148" dictName="质控样本"/>
+						</s:HGroup>
+						<s:Button label="加入样本" click="yang_clickHandler(zkyb3.selectedData)" />
+						<s:Spacer width="100%" height="10"/>
+						<s:HGroup>
+							<s:Label color="#ff0000" text="共"/>
+							<s:Label color="#ff0000" text="{loc.SampleEPListObj.length}"/>
+							<s:Label color="#ff0000" text="条"/>
+						</s:HGroup>
+						<s:Label text="起始扩增位置："/>
+						<s:TextInput id="SPosition" width="45" maxChars="3" restrict="A-H0-9a-h"
+									 text="A01"/>
+						<s:Button id="set" label="设置" click="set_clickHandler(event)" />
+						<s:HGroup verticalAlign="middle" visible="{list2.selectedItem!=null}">
+							<s:Label text="模板用量："/>
+							<s:TextInput id="mbylGG" width="50"/>
+							<s:Button label="更改" click="mbyl_clickHandler(event)" />
+						</s:HGroup>
+					</s:HGroup>
+					<s:VGroup width="100%" height="100%" gap="0">
+						<s:HGroup width="100%" gap="0">
+							<s:TextInput width="206" text="实验室编号" textAlign="center" editable="false"/>
+							<s:TextInput width="236" text="物证名称" textAlign="center" editable="false"/>
+							<s:TextInput width="106" text="位置" textAlign="center" editable="false"/>
+							<s:TextInput width="106" text="用量" textAlign="center" editable="false"/>
+							<s:TextInput width="86" text="物证类型" textAlign="center" editable="false"/>
+						</s:HGroup>
+						<s:List id="list2" width="100%" height="100%" 
+								dataProvider="{loc.SampleEPListObj}" dragEnabled="true" dragMoveEnabled="true" dropEnabled="true"
+								itemRenderer="view.idcase.sampletest.Electrophoresis.ElectrophoresisItemRenderer" allowMultipleSelection="true"></s:List>
+					</s:VGroup>
+					
+					<s:HGroup width="100%" verticalAlign="middle">
+						<s:Spacer width="175" height="10"/>
+						<s:Label color="#FF0000" text="设置完成后，请将数据提交数据库"/>
+						<s:Button label="提交信息" skinClass="assets.skins.Button_bc" click="DY_SAVE_clickHandler(event)"/>
+						<s:Label text="电泳进样表："/>
+						<s:DropDownList id="recordList" width="159" dataProvider="{record}" requireSelection="true"></s:DropDownList>
+						<s:Button id="outRecord" label="导出" click="outRecord_clickHandler(event)"
+								  enabled="{loc.EPInsertFlag}" visible="{PsbLocator.getInstance().npending}"/>
+						
+						<!--<mx:LinkButton id="DY3130xl" label="3130XL" textDecoration="underline" click="PrintPositionTable_clickHandler(DY3130xl.label,'txt')" 
+									   enabled="{loc.EPInsertFlag}" visible="{PsbLocator.getInstance().npending}"/>
+						<mx:LinkButton id="DY3500xl" label="3500XL" textDecoration="underline" click="PrintPositionTable_clickHandler(DY3500xl.label,'txt')" 
+									   enabled="{loc.EPInsertFlag}" visible="{PsbLocator.getInstance().npending}"/>
+						<mx:LinkButton id="DYwz" label="电泳位置表格" textDecoration="underline" click="PrintPositionTable_clickHandler(DYwz.label,'doc')" 
+									   enabled="{loc.EPInsertFlag}" visible="{PsbLocator.getInstance().npending}"/>-->
+					</s:HGroup>
+					<!--<mx:DataGrid id="dg2" width="100%" height="100%" sortableColumns="true" allowMultipleSelection="true" dataProvider="{loc.SampleAmplifyListObj}">
+					<mx:columns>
+					<mx:DataGridColumn dataField="SLN" headerText="样本编号"/>
+					<mx:DataGridColumn dataField="NAME" headerText="样本名称"/>
+					<mx:DataGridColumn dataField="SAMPLE_TYPE" headerText="样本类型"/>
+					<mx:DataGridColumn dataField="WZ" headerText="扩增位置"/>
+					<mx:DataGridColumn dataField="TQTJYL" headerText="模板用量"/>
+					</mx:columns>
+					</mx:DataGrid>-->
+				</s:VGroup>
+			</s:VGroup>
+		</s:NavigatorContent>
+	</mx:TabNavigator>
+</s:TitleWindow>

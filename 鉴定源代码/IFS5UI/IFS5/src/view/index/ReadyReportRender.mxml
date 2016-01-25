@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:ItemRenderer xmlns:fx="http://ns.adobe.com/mxml/2009" 
+				xmlns:s="library://ns.adobe.com/flex/spark" 
+				xmlns:mx="library://ns.adobe.com/flex/mx">
+	<fx:Declarations>
+		<!-- 将非可视元素（例如服务、值对象）放在此处 -->
+	</fx:Declarations>
+	<s:HGroup width="100%" >
+		<mx:Label text="{'['+data.DOC_NAME+']'+data.CASE_NO}" width="110"  fontSize="12"/>
+		<mx:Label text="{data.CASE_NAME}" width="178"  fontSize="12"/>
+		<mx:Label text="{data.CON_PSBNAME}" width="144"  fontSize="12"/>
+	</s:HGroup>
+</s:ItemRenderer>

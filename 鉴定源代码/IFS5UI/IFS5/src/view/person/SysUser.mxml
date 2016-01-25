@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Module xmlns:fx="http://ns.adobe.com/mxml/2009"
+		  xmlns:s="library://ns.adobe.com/flex/spark"
+		  xmlns:mx="library://ns.adobe.com/flex/mx"
+		  xmlns:ns1="*"
+		  xmlns:tool="view.tool.*"
+		  xmlns:sysuser="view.sysuser.*"
+		  width="953" height="598" fontSize="14" 
+		  creationComplete="MenuLocator.getInstance().changeMenu(menuGp);">
+	<fx:Declarations>
+		<fx:XML id="mtree">
+			<root> 
+				<mtc label="基本信息" ico="ajxx"/>
+				<mtc label="学历信息" ico="sary"/>
+				<mtc label="工作经历" ico="xcwz"/>
+				<mtc label="著作信息" ico="dzyb"/>
+				<mtc label="专业成果" ico="zpsc"/>
+				<mtc label="培训记录" ico="pxjl"/>
+				<mtc label="培训实施记录" ico="pxssjl"/>
+				<mtc label="岗前培训" ico="gqpx"/>
+				<mtc label="能力考评" ico="nlkp"/>
+			</root> 
+		</fx:XML>	
+	</fx:Declarations>
+	<fx:Script>
+		<![CDATA[
+			import locator.MenuLocator;	
+			import mx.events.IndexChangedEvent;
+			import mx.events.ListEvent;
+			import com.adobe.cairngorm.control.CairngormEventDispatcher;
+			import locator.WordLocator;
+			import locator.PsbLocator;
+			import locator.IdFlowLocator;
+			import locator.SysUserLocator;
+			import control.*;
+			// 嵌入图标文件
+			[Embed(source="assets/images/tree/ajxx.png")]
+			public var ajxx:Class;
+			[Embed(source="assets/images/tree/sary.png")]
+			public var sary:Class;
+			[Embed(source="assets/images/tree/xcwz.png")]
+			public var xcwz:Class;
+			[Embed(source="assets/images/tree/dzyb.png")]
+			public var dzyb:Class;
+			[Embed(source="assets/images/tree/zpsc.png")]
+			public var zpsc:Class;
+			[Embed(source="assets/images/tree/zpsc.png")]
+			public var pxjl:Class;
+			[Embed(source="assets/images/tree/zpsc.png")]
+			public var pxssjl:Class;
+			[Embed(source="assets/images/tree/zpsc.png")]
+			public var gqpx:Class;
+			[Embed(source="assets/images/tree/zpsc.png")]
+			public var nlkp:Class;
+			
+			protected function tree_changeHandler(event:ListEvent):void
+			{
+				vs.selectedIndex=tree.selectedIndex;
+			}
+			
+		]]>
+	</fx:Script>
+	<s:Panel width="953" height="598" >
+		<s:HGroup id="menuGp" x="10" y="-27"/>	
+		<mx:Tree id="tree" x="10" y="10" width="112" height="547" change="tree_changeHandler(event)"
+				 dataProvider="{mtree.mtc}" iconField="@ico" labelField="@label" showRoot="true"></mx:Tree>
+		<mx:ViewStack id="vs" x="130" y="10" width="813" height="547">
+			<s:NavigatorContent width="100%" height="100%" label="基本信息">
+				<sysuser:SysUserBasicInput id="BasicInput" creationComplete="BasicInput.vs=vs;"/>
+			</s:NavigatorContent>
+			<s:NavigatorContent width="100%" height="100%" label="学历信息">
+				<sysuser:Vitae id="Vitae" creationComplete="Vitae.vs=vs;"/>
+			</s:NavigatorContent>
+			<s:NavigatorContent width="100%" height="100%" label="工作经历">
+				<sysuser:Work id="Work" creationComplete="Work.vs=vs;"/>
+			</s:NavigatorContent>
+			<s:NavigatorContent width="100%" height="100%" label="著作信息">
+				<sysuser:Writing id="Writing" creationComplete="Writing.vs=vs;"/>
+			</s:NavigatorContent>
+			<s:NavigatorContent width="100%" height="100%" label="专业成果">
+				<sysuser:Fruitful id="Fruitful" creationComplete="Fruitful.vs=vs;"/>
+			</s:NavigatorContent>
+			<s:NavigatorContent width="100%" height="100%" label="培训记录">
+				<sysuser:TrainNote id="TrainNote" creationComplete="TrainNote.vs=vs;"/>
+			</s:NavigatorContent>
+			<s:NavigatorContent width="100%" height="100%" label="培训实施">
+				<sysuser:TrainSSNote id="TrainSSNote" creationComplete="TrainSSNote.vs=vs;"/>
+			</s:NavigatorContent>
+			<s:NavigatorContent width="100%" height="100%" label="岗前培训">
+				<sysuser:ServiceTrain id="ServiceTrain" creationComplete="ServiceTrain.vs=vs;"/>
+			</s:NavigatorContent>
+			<s:NavigatorContent width="100%" height="100%" label="能力考评">
+				<sysuser:AbiTest id="AbiTest" creationComplete="AbiTest.vs=vs;"/>
+			</s:NavigatorContent>
+		</mx:ViewStack>
+	</s:Panel>
+</s:Module>

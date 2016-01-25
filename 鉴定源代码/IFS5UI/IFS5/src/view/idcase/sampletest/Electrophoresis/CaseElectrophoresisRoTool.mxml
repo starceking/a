@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
+		 xmlns:s="library://ns.adobe.com/flex/spark" 
+		 xmlns:mx="library://ns.adobe.com/flex/mx" 
+		 xmlns:tool="view.tool.*"
+		 xmlns:ns1="*"
+		 width="813" height="547" fontSize="14"
+		 creationComplete="creationCompleteHandler(event)">
+	<fx:Declarations>
+		<!-- 将非可视元素（例如服务、值对象）放在此处 -->
+	</fx:Declarations>
+	<fx:Script>
+		<![CDATA[
+			import com.adobe.cairngorm.control.CairngormEventDispatcher;
+			
+			import control.*;
+			
+			import locator.ElectrophoresisLocator;
+			import locator.IdFlowLocator;
+			import locator.PsbLocator;
+			import locator.WordLocator;
+			
+			import util.Helper;
+			
+			import mx.events.FlexEvent;
+			
+			private var EPloc:ElectrophoresisLocator=ElectrophoresisLocator.getInstance();
+			
+			protected function creationCompleteHandler(evt:Event):void
+			{
+				if(IdFlowLocator.getInstance().wholeCase)
+				{
+					EPloc.CaseID=IdFlowLocator.getInstance().curObj.SRCID;
+					EPloc.ConNo="";
+				}
+				else
+				{
+					EPloc.CaseID="";
+					EPloc.ConNo=IdFlowLocator.getInstance().curObj.CONNO;
+				}
+				CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.ELECTROPHORESISWS_QueryCaseEP));
+			}
+			
+			protected function PrintCaseDYRecord_clickHandler(event:MouseEvent):void
+			{
+				// 打印扩增电泳记录表
+				if(dg.selectedItem==null)
+				{
+					Helper.showAlert("请选择提取记录");
+					return;
+				}
+				WordLocator.getInstance().FileName="扩增电泳记录表.doc";
+				WordLocator.getInstance().wordType="doc";
+				WordLocator.getInstance().RecordType="扩增电泳记录";
+				WordLocator.getInstance().RecordID=dg.selectedItem.KZDY_ID;
+				WordLocator.getInstance().conno=dg.selectedItem.CONNO;
+				CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.WORDWS_PrintCaseTestRecord));
+			}
+			
+		]]>
+	</fx:Script>
+	<s:VGroup left="10" right="10" top="10" bottom="10" gap="10">
+		<s:HGroup width="100%" verticalAlign="middle">
+			<s:Label color="#0A37FA" fontSize="20" fontWeight="bold" text="电泳信息"/>
+			<s:Spacer width="100%" height="10"/>
+			<s:Button label="扩增电泳记录表" click="PrintCaseDYRecord_clickHandler(event)"
+					  enabled="{PsbLocator.getInstance().npending}" />
+			<!--<s:Label color="#0000FF" fontSize="16" text="请在&quot;检验记录&quot;中生成文书"/>-->
+		</s:HGroup>
+		<s:DataGrid id="dg" width="100%" height="100%" dataProvider="{EPloc.EPCaseListObj}">
+			<s:columns>
+				<s:ArrayList>
+					<s:GridColumn width="160" dataField="SLN" headerText="检材编号"></s:GridColumn>
+					<s:GridColumn dataField="NAME" headerText="检材名称"></s:GridColumn>
+					<s:GridColumn width="90" dataField="SAMPLE_TYPE" headerText="检材类型"></s:GridColumn>
+					<s:GridColumn width="100" dataField="KZDYPH" headerText="电泳名称"></s:GridColumn>
+					<s:GridColumn width="70" dataField="WZ" headerText="电泳位置"></s:GridColumn>
+					<s:GridColumn width="70" dataField="YL" headerText="模板用量"></s:GridColumn>
+					<s:GridColumn width="100" dataField="SampleSheet" headerText="SampleSheet"></s:GridColumn>
+					<s:GridColumn width="80" dataField="RunFold" headerText="RunFold"></s:GridColumn>
+				</s:ArrayList>
+			</s:columns>
+		</s:DataGrid>
+		<s:HGroup width="100%" horizontalAlign="right">
+			<ns1:ListPager id="pager"
+						   creationComplete="pager.addEventListener(ListPager.PAGE_INDEX_CHANGE_EVENT,creationCompleteHandler);EPloc.EPCaseListPager=pager;"
+						   pageSize="16">
+			</ns1:ListPager>
+		</s:HGroup>
+	</s:VGroup>
+	
+</s:Group>

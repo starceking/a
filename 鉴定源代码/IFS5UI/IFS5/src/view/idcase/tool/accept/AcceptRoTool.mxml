@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009"
+		 xmlns:s="library://ns.adobe.com/flex/spark"
+		 xmlns:mx="library://ns.adobe.com/flex/mx"
+		 xmlns:tool="view.tool.*"
+		 width="813" height="300" fontSize="14">
+	<fx:Declarations>
+		<!-- 将非可视元素（例如服务、值对象）放在此处 -->
+	</fx:Declarations>
+	<fx:Script>
+		<![CDATA[
+			import com.adobe.cairngorm.control.CairngormEventDispatcher;
+			
+			import control.*;
+			
+			import locator.IdFlowLocator;
+			import locator.PsbLocator;
+			import locator.SysUserLocator;
+			
+			import mx.events.FlexEvent;
+			
+			import util.Helper;
+			
+			import vo.IdFlowVo;
+			
+			public var locObj:IdFlowLocator=IdFlowLocator.getInstance();
+			public var curObj:IdFlowVo=locObj.curObj;	
+			
+			private function validateInput():Boolean
+			{							
+				if(tester.selectedData.length==0)
+				{
+					Helper.showAlert("请选择鉴定人");
+					return false;
+				}
+				return true;
+			}
+			
+			protected function button1_clickHandler(event:MouseEvent):void
+			{
+				if(validateInput())
+				{
+					locObj.wsObj=curObj;
+					locObj.wsObj.ACC_TIME=accDate.text;
+					locObj.wsObj.PLAN_DATE=planDate.text;
+					locObj.wsObj.TESTER=tester.selectedData;
+					locObj.wsObj.RZRK=rzrk.getSelectedItem();
+					locObj.wsObj.ACC_REMARK=remark.text;
+					CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.IDFLOWWS_UpdateAccept));
+				}
+			}
+			
+			protected function button2_clickHandler(event:MouseEvent):void
+			{
+				if(qxsl.label=="取消受理")
+				{
+					qxsl.label="确定取消？";
+				}
+				else if(qxsl.label=="确定取消？")
+				{
+					CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.IDFLOWWS_Cancel));
+					qxsl.label="取消受理";
+				}
+			}
+			
+			protected function button3_clickHandler(event:MouseEvent):void
+			{
+				if(SysUserLocator.getInstance().loginUser.AUTH.search("专业负责人")<0)
+				{
+					Helper.showAlert("删除案件失败，您没有足够的权限，请联系专业负责人！");
+					return;
+				}
+				
+				if(scaj.label=="删除案件")
+				{
+					scaj.label="确定删除？";
+				}
+				else if(scaj.label=="确定删除？")
+				{
+					if(curObj.CONNO.search("C")>=0)
+					{
+						CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.IDCASEWS_DeleteC));
+					}
+					else if(curObj.CONNO.search("D")>=0)
+					{
+						CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.IDCASEWS_DeleteD));
+					}
+					else if(curObj.CONNO.search("R")>=0)
+					{
+						CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.MRELATIVEWS_DeleteR));
+					}
+					else if(curObj.CONNO.search("L")>=0)
+					{
+						CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.MISSINGPERSONWS_Delete));
+					}
+					scaj.label="删除案件";
+				}
+			}
+			
+		]]>
+	</fx:Script>
+	<s:VGroup left="0" right="0" top="0" bottom="0" gap="10">
+		<s:Label color="#0A37FA" fontSize="20" fontStyle="normal" fontWeight="normal" lineThrough="false"
+				 text="受理信息&lt;DNA请及时检查，确保案件已同步。若未同步，应先取消受理再重新受理一遍。&gt;" textDecoration="none"/>
+		<s:HGroup width="100%" height="23" verticalAlign="middle">
+			<s:Label color="#FC0404" text="{'公（刑）受/鉴（'+curObj.DOC_NAME+'）字['}"/>
+			<s:Label id="accYear" text="{curObj.ACC_YEAR}"/>
+			<s:Label color="#FA0606" text="]"/>
+			<s:Label id="accNo" text="{curObj.ACC_CASE_NO+'-'+curObj.ACC_NO}"/>
+			<s:Label color="#F80404" text="号(前一个是案件号，后一个是受理序号)"/>
+		</s:HGroup>
+		<s:HGroup width="100%" height="23" verticalAlign="middle">
+			<s:Label text="受理人员："/>
+			<s:Label id="accer" width="180" text="{curObj.ACCEPTER_NAME}"/>
+			<s:Label text="受理时间："/>
+			<tool:DateZh id="accDate" width="180" text="{curObj.ACC_TIME}"/>
+			<s:Label text="计划完成："/>
+			<tool:DateZh id="planDate" width="180" text="{curObj.PLAN_DATE}"/>
+		</s:HGroup>
+		<s:HGroup width="100%" verticalAlign="middle">
+			<s:Label text="鉴  定  人："/>
+			<tool:UserDdl id="tester" width="180" auth="" office="{curObj.ID_OFFICE}" role="Office"
+						  selectedData="{curObj.TESTER}"/>
+			<s:Label text="认证认可："/>
+			<tool:DictCbb id="rzrk" width="180" dictName="认证认可" selectedItem="{curObj.RZRK}"/>
+		</s:HGroup>
+		<s:HGroup width="100%" verticalAlign="middle">
+			<s:Label text="鉴定方法："/>
+			<s:Label text="{curObj.ID_Method}"/>
+		</s:HGroup>
+		<s:HGroup width="100%" height="23" verticalAlign="middle">
+			<s:Label text="鉴定状态："/>
+			<s:Label text="{curObj.ID_STATUS}"/>
+		</s:HGroup>
+		<s:HGroup width="100%">
+			<s:Label id="accLbl" text="{curObj.ID_STATUS=='不予受理'?'拒绝原因：':'受理意见：'}"/>
+			<s:TextArea id="remark" width="715" height="50" text="{curObj.ACC_REMARK}"/>
+		</s:HGroup>
+		<s:HGroup width="100%">
+			<s:Spacer width="100%" height="10"/>
+			<s:Button click="button1_clickHandler(event)" enabled="{PsbLocator.getInstance().npending}"
+					  skinClass="assets.skins.Button_bc"/>
+			<s:Spacer width="100%" height="10"/>
+			<s:Button id="qxsl" label="取消受理" click="button2_clickHandler(event)"
+					  enabled="{PsbLocator.getInstance().npending}"/>
+			<s:Button id="scaj" label="删除案件" click="button3_clickHandler(event)"
+					  enabled="{PsbLocator.getInstance().npending}" visible="false"/>
+			<s:Spacer width="100" height="10"/>
+		</s:HGroup>
+	</s:VGroup>
+</s:Group>

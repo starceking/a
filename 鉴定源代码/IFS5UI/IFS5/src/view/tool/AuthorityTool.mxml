@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:HGroup xmlns:fx="http://ns.adobe.com/mxml/2009"
+		  xmlns:s="library://ns.adobe.com/flex/spark"
+		  xmlns:mx="library://ns.adobe.com/flex/mx"
+		  fontSize="14">
+	<fx:Declarations>
+		<!-- 将非可视元素（例如服务、值对象）放在此处 -->
+	</fx:Declarations>
+	<fx:Script>
+		<![CDATA[			
+			import locator.JusTypeLocator;
+			
+			import mx.events.FlexEvent;
+			
+			public function set authority(auth:String):void
+			{
+				zyfzr.selected=auth.search("专业负责人")>=0;
+				sqqz.selected=auth.search("授权签字")>=0;
+				sbgl.selected=auth.search("设备管理")>=0;
+				sjgl.selected=auth.search("试剂管理")>=0;
+			}
+			
+			public function get authority():String
+			{
+				var arg:String="";
+				
+				if(zyfzr.selected) arg+="专业负责人，";
+				if(sqqz.selected) arg+="授权签字，";
+				if(sbgl.selected) arg+="设备管理，";
+				if(sjgl.selected) arg+="试剂管理，";
+				
+				if(arg.length>0)return arg.substr(0,arg.length-1);
+				return arg;
+			}
+			
+		]]>
+	</fx:Script>
+	<s:CheckBox id="zyfzr" label="专业负责人"/>
+	<s:CheckBox id="sqqz" label="授权签字"/>
+	<s:CheckBox id="sbgl" label="设备管理"/>
+	<s:CheckBox id="sjgl" label="试剂管理"/>
+</s:HGroup>

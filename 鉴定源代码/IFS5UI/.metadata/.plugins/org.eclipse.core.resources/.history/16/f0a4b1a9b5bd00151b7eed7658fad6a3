@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009"
+		 xmlns:s="library://ns.adobe.com/flex/spark"
+		 xmlns:mx="library://ns.adobe.com/flex/mx"
+		 width="813" height="229" fontSize="14">
+	<fx:Declarations>
+		<!-- 将非可视元素（例如服务、值对象）放在此处 -->
+	</fx:Declarations>
+	<fx:Script>
+		<![CDATA[
+			import com.adobe.cairngorm.control.CairngormEventDispatcher;
+			
+			import control.*;
+			
+			import locator.ExCaseLocator;
+			import locator.IdFlowLocator;
+			import locator.PsbLocator;
+			import locator.SysUserLocator;
+			
+			import util.Helper;
+			
+			import vo.IdFlowVo;
+			public var locObj:IdFlowLocator=IdFlowLocator.getInstance();
+			public var curObj:IdFlowVo=locObj.curObj;
+			
+			protected function saveClickHandler(event:MouseEvent):void
+			{
+				if(validateInput())
+				{
+					locObj.wsObj=curObj;
+					locObj.wsObj.SDER=SysUserLocator.getInstance().loginUser.ID;
+					locObj.wsObj.GP1NAME=gp1.text;
+					locObj.wsObj.GP1PHONE=phone1.text;
+					locObj.wsObj.GP2NAME=gp2.text;
+					locObj.wsObj.GP2PHONE=phone2.text;
+					CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.IDFLOWWS_UpdateRepGet));
+				}
+			}
+			
+			private function validateInput():Boolean
+			{
+				var result:Boolean=true;
+				result=result && Helper.validateTextInput(gp1);
+				result=result && Helper.validateTextInput(phone1);
+				return result;
+			}
+			
+			protected function saveClickHandler2(event:MouseEvent):void
+			{
+				ExCaseLocator.getInstance().sendNote(curObj.CONER1LPHONE,"1");
+			}
+		]]>
+	</fx:Script>
+	<s:Label x="10" y="150" color="#FD0202" text="领取人一："/>
+	<s:TextInput id="gp1" x="88" y="140" width="315" text="{curObj.CONER1NAME2}"/>
+	<s:Label x="411" y="150" color="#FD0202" text="联系电话："/>
+	<s:TextInput id="phone1" x="489" y="140" width="315" restrict="0123456789-"
+				 text="{curObj.CONER1LPHONE}"/>
+	<s:Label x="10" y="180" text="领取人二："/>
+	<s:TextInput id="gp2" x="88" y="170" width="315" text="{curObj.CONER2NAME}"/>
+	<s:Label x="411" y="180" text="联系电话："/>
+	<s:TextInput id="phone2" x="489" y="170" width="315" restrict="0123456789-"
+				 text="{curObj.GP2PHONE}"/>
+	<s:Button id="saCaseBtn" y="202" click="saveClickHandler(event)"
+			  enabled="{PsbLocator.getInstance().npending}" horizontalCenter="39"
+			  skinClass="assets.skins.Button_bc"/>
+	<s:Button y="202" click="saveClickHandler2(event)" enabled="{PsbLocator.getInstance().npending}"
+			  horizontalCenter="-39" skinClass="assets.skins.Button_lqtz"/>
+	<s:Label x="10" y="60" text="案件名称："/>
+	<s:Label x="88" y="60" text="{curObj.CASE_NAME}"/>
+	<s:Label x="10" y="120" text="送检人一："/>
+	<s:Label x="88" y="120"
+			 text="{curObj.CONER1NAME2+'('+curObj.CONER1PHONE')'}"/>
+	<s:Label x="10" y="10" color="#0A37FA" fontSize="20" fontWeight="normal"
+			 text="{curObj.DOC_NO_SHOW+'：领件日期为'+(curObj.SDF.length==0?Helper.getStrByDate(new Date()):curObj.SDF)}"/>
+	<s:Label x="411" y="120" text="送检人二："/>
+	<s:Label x="489" y="120"
+			 text="{curObj.CONER2NAME}"/>
+	<s:Label x="10" y="90" text="委托单位："/>
+	<s:Label x="88" y="90" text="{curObj.CON_PSBNAME}"/>
+</s:Group>

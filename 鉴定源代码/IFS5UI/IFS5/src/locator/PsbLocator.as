@@ -1,0 +1,274 @@
+package locator
+{
+	import com.adobe.cairngorm.control.CairngormEventDispatcher;
+	import com.adobe.cairngorm.model.ModelLocator;
+	
+	import control.*;
+	
+	import flash.external.ExternalInterface;
+	
+	import mx.collections.ArrayList;
+	import mx.managers.BrowserManager;
+	import mx.managers.IBrowserManager;
+	
+	import util.Helper;
+	
+	import vo.PsbVo;
+	
+	public class PsbLocator implements ModelLocator
+	{
+		//Singleton
+		private static var locObj:PsbLocator;
+		public static function getInstance():PsbLocator
+		{
+			if(locObj==null)
+			{
+				locObj=new PsbLocator();
+			}
+			return locObj;
+		}
+		//For the view
+		[Bindable]
+		public var idPsb:PsbVo=null;
+		[Bindable]
+		public var loginPsb:PsbVo;
+		[Bindable]
+		public var psbList:ArrayList=new ArrayList();
+		[Bindable]
+		public var idpsbList:ArrayList=new ArrayList();//鉴定单位
+		[Bindable]
+		public var ConsignpsbList:ArrayList=new ArrayList();//委托单位
+		[Bindable]
+		public var psbList11:ArrayList=new ArrayList();//单位区划11
+		[Bindable]
+		public var psbList12:ArrayList=new ArrayList();//单位区划12
+		[Bindable]
+		public var psbList13:ArrayList=new ArrayList();//单位区划13
+		[Bindable]
+		public var psbList14:ArrayList=new ArrayList();//单位区划14
+		[Bindable]
+		public var msg:String="";
+		[Bindable]
+		public var npending:Boolean=true;
+		//psbid
+		private var idPsbId:String="";
+		public function get ID_PSB_ID():String
+		{
+			if(idPsbId.length>0)return idPsbId;
+			var bm:IBrowserManager;
+			bm=BrowserManager.getInstance();
+			bm.init(); 
+			var url:String = bm.url;
+			var urlarr:Array=url.split("?psb=");
+			if(urlarr.length<2)idPsbId="1";
+			else
+			{
+				var pid:String=urlarr[1];
+				if(pid.search("#")>0)
+				{
+					pid=pid.substr(0,pid.length-1);
+				}
+				idPsbId=pid;
+			}			
+			return idPsbId;
+		}
+		//for the ws
+		public var wsObj:PsbVo;
+		//Ws call
+		public function getAll(xml:XML):void
+		{			
+			var find:Boolean=false;
+			for(var i:int=0;i<xml.children().length();i++)
+			{
+				var voObj:PsbVo=new PsbVo(xml.children()[i].ID,xml.children()[i].父单位,xml.children()[i].类型,
+					xml.children()[i].编号,xml.children()[i].名称,xml.children()[i].地址,xml.children()[i].邮编,
+					xml.children()[i].简称,xml.children()[i].电话,xml.children()[i].PSBtype);
+				//psbList.addItem(voObj);
+				if(xml.children()[i].PSBtype=="初始化")
+				{
+					if(ID_PSB_ID==xml.children()[i].ID)
+					{
+						idPsb=voObj;
+						CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.JUSTYPEWS_GetXml));
+						CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.DICTWS_GetXml));
+						find=true;
+					}
+					else
+					{
+						if(!find)
+						{
+							Helper.showAlert("不存在的单位："+ID_PSB_ID+"！");
+						}
+					}
+				}
+				else if(xml.children()[i].PSBtype=="0")
+				{
+					if(voObj.PTYPE=="0")idpsbList.addItem(voObj);
+				}
+				else if(xml.children()[i].PSBtype=="1")
+				{
+					if(voObj.PTYPE=="1")ConsignpsbList.addItem(voObj);
+				}
+				else if(xml.children()[i].PSBtype=="11")
+				{
+					if(voObj.PTYPE=="1")
+					{
+						//设置默认值
+						if(voObj.NAME=="辽宁省")
+							psbList11.addItemAt(voObj,0);
+						else
+							psbList11.addItem(voObj);
+					}
+				}
+				else if(xml.children()[i].PSBtype=="12")
+				{
+					if(voObj.PTYPE=="1")psbList12.addItem(voObj);
+				}
+				else if(xml.children()[i].PSBtype=="13")
+				{
+					if(voObj.PTYPE=="1")psbList13.addItem(voObj);
+				}
+				else if(xml.children()[i].PSBtype=="14")
+				{
+					if(voObj.PTYPE=="1")psbList14.addItem(voObj);
+				}
+			}
+			
+		}
+		//Ex call
+		public function clearData():void
+		{
+			CaseFileLocator.getInstance().picList.removeAll();
+			CaseFileLocator.getInstance().edataList.removeAll();
+			
+			CasePersonnelSampleQtrLocator.getInstance().listObj.removeAll();
+			CasePersonnelSampleShrLocator.getInstance().listObj.removeAll();
+			CasePersonnelSampleXyrLocator.getInstance().listObj.removeAll();
+			CaseRelativeShrLocator.getInstance().listObj.removeAll();
+			CaseRelativeXyrLocator.getInstance().listObj.removeAll();
+			DnaSeLocator.getInstance().listObj.removeAll();
+			UnknownDeceasedLocator.getInstance().listObj.removeAll();
+			
+			ExCaseLocator.getInstance().listObj.removeAll();
+			IdCtrLocator.getInstance().listObj.removeAll();
+			IdFlowLocator.getInstance().listObj.removeAll();
+			IdPersonLocator.getInstance().listObj.removeAll();
+			IdTestimonyLocator.getInstance().listObj.removeAll();
+			
+			WordLocator.getInstance().consignList.removeAll();
+			WordLocator.getInstance().acceptList.removeAll();
+			WordLocator.getInstance().testList.removeAll();
+			WordLocator.getInstance().reportList.removeAll();
+			WordLocator.getInstance().coverList.removeAll();
+			WordLocator.getInstance().otherList.removeAll();
+			WordLocator.getInstance().listObj.removeAll();
+			
+			CodiesLocator.getInstance().tmpStrList.removeAll();
+			CodiesLocator.getInstance().allStrList.removeAll();
+		}
+		public function setMsg(msg:String):void
+		{
+			this.msg=msg;
+			Helper.setIndexContentNoMenu("view/index/MsgModule.swf");
+		}
+		public function getList(PID:String="",PTYPE:String="1"):ArrayList
+		{
+			var list:ArrayList=new ArrayList();
+			for(var i:int=0;i<psbList.length;i++)
+			{				
+				var voObj:PsbVo=psbList.getItemAt(i) as PsbVo;
+				if((PID.length==0)&&voObj.PID.length>0) continue;
+				else if((PID.length>0)&&voObj.PID!=PID) continue;
+				if(voObj.PTYPE!=PTYPE) continue;
+				
+				list.addItem(voObj);
+			}
+			return list;
+		}
+//		public function getSinglePsb(ID:String):PsbVo
+//		{
+//			for(var i:int=0;i<psbList.length;i++)
+//			{				
+//				var voObj:PsbVo=psbList.getItemAt(i) as PsbVo;
+//				if(ID==voObj.ID)return voObj;
+//			}
+//			return null;
+//		}
+		public function insert():void
+		{
+			psbList.addItemAt(wsObj,0);
+			Helper.showAlert("增加成功，刷新左边列表可查看");
+		}
+		public function update():void
+		{
+			if(wsObj.ID==SysUserLocator.getInstance().loginUser.PSBID)
+			{
+				SysUserLocator.getInstance().loginUser.PADDRESS=wsObj.ADDRESS;
+				SysUserLocator.getInstance().loginUser.PPOSTCODE=wsObj.POSTCODE;
+				SysUserLocator.getInstance().loginUser.PPHONE=wsObj.PHONE;
+				//loginPsb=wsObj;
+			}
+			else
+			{
+				var index:int=getVoIndex(wsObj.ID);
+				psbList.removeItemAt(index);
+				psbList.addItemAt(wsObj,index);
+			}
+			
+			Helper.showAlert("修改成功");
+		}		
+		public function deleteFunc():void
+		{
+			psbList.removeItemAt(getVoIndex(wsObj.ID));
+			Helper.showAlert("删除成功，刷新左边列表可查看");
+		}
+		private function getVoIndex(id:String):int
+		{
+			for(var i:int=0;i<psbList.length;i++)
+			{
+				var voObj:PsbVo=psbList.getItemAt(i) as PsbVo;
+				if(voObj.ID==id)
+				{
+					return i;
+				}
+			}
+			return -1;
+		}
+//		public function getIdPsbName(id:String):String
+//		{
+//			for(var i:int=0;i<idpsbList.length;i++)
+//			{
+//				var voObj:PsbVo=idpsbList.getItemAt(i) as PsbVo;
+//				if(voObj.ID==id)
+//				{
+//					return voObj.NAME;
+//				}
+//			}
+//			return "";
+//		}
+//		public function getConsignPsbName(id:String):String
+//		{
+//			for(var i:int=0;i<ConsignpsbList.length;i++)
+//			{
+//				var voObj:PsbVo=ConsignpsbList.getItemAt(i) as PsbVo;
+//				if(voObj.ID==id)
+//				{
+//					return voObj.NAME;
+//				}
+//			}
+//			return "";
+//		}
+//		public function getNICKNAME(id:String):String
+//		{
+//			for(var i:int=0;i<psbList.length;i++)
+//			{
+//				var voObj:PsbVo=psbList.getItemAt(i) as PsbVo;
+//				if(voObj.ID==id)
+//				{
+//					return voObj.NICKNAME;
+//				}
+//			}
+//			return "";
+//		}
+	}
+}

@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Module xmlns:fx="http://ns.adobe.com/mxml/2009" 
+		  xmlns:s="library://ns.adobe.com/flex/spark" 
+		  xmlns:mx="library://ns.adobe.com/flex/mx" 
+		  xmlns:idcase="view.idcase.tool.hc.*"
+		  width="953" height="598" fontSize="14"
+		  creationComplete="MenuLocator.getInstance().changeMenu(menuGp);vs.selectedIndex=0;">
+	<fx:Declarations>
+		<!-- 将非可视元素（例如服务、值对象）放在此处 -->
+		<fx:XML id="mtree">
+			<root> 
+				<mtc label="基本信息" ico="ajxx"/>
+				<mtc label="采购记录" ico="slxx"/>
+				<mtc label="期间查核" ico="jlyj"/>
+				<mtc label="领用记录" ico="xcwz"/>
+			</root> 
+		</fx:XML>
+	</fx:Declarations>
+	<fx:Script>
+		<![CDATA[
+			import locator.MenuLocator;	
+			import mx.events.ListEvent;
+			// 嵌入图标文件
+			[Embed(source="assets/images/tree/ajxx.png")]
+			public var ajxx:Class;
+			[Embed(source="assets/images/tree/slxx.png")]
+			public var slxx:Class;			
+			[Embed(source="assets/images/tree/jlyj.png")]
+			public var jlyj:Class;
+			[Embed(source="assets/images/tree/xcwz.png")]
+			public var xcwz:Class;
+			[Embed(source="assets/images/tree/sary.png")]
+			public var sary:Class;
+			[Embed(source="assets/images/tree/xyr.png")]
+			public var dnaxyr:Class;
+			
+			protected function tree_changeHandler(event:ListEvent):void
+			{
+				vs.selectedIndex=tree.selectedIndex;
+			}
+			
+		]]>
+	</fx:Script>
+	<s:Panel width="953" height="598">
+		<s:HGroup id="menuGp" x="10" y="-27"/>
+		<mx:Tree id="tree" x="10" y="10" width="112" height="547" change="tree_changeHandler(event)"
+				 dataProvider="{mtree.mtc}" iconField="@ico" labelField="@label" showRoot="true"></mx:Tree>
+		<mx:ViewStack id="vs" x="130" y="10" width="813" height="547" selectedIndex="13">
+			
+			<s:NavigatorContent width="100%" height="100%" label="基本信息">
+				<idcase:SuppliesInfo/>
+			</s:NavigatorContent>
+			<s:NavigatorContent width="100%" height="100%" label="采购记录">
+				<idcase:SuppliesProcurement/>
+			</s:NavigatorContent>
+			<s:NavigatorContent width="100%" height="100%" label="期间查核">
+				<idcase:SuppliesVerification/>
+			</s:NavigatorContent>
+			<s:NavigatorContent width="100%" height="100%" label="领用记录">
+				<idcase:SuppliesUse/>
+			</s:NavigatorContent>
+		</mx:ViewStack>
+	</s:Panel>
+</s:Module>

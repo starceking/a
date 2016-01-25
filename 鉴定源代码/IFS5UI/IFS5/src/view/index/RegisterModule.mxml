@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Module xmlns:fx="http://ns.adobe.com/mxml/2009"
+		  xmlns:s="library://ns.adobe.com/flex/spark"
+		  xmlns:mx="library://ns.adobe.com/flex/mx"
+		  width="953" height="598" fontSize="14">
+	<fx:Declarations>
+		<!-- 将非可视元素（例如服务、值对象）放在此处 -->
+	</fx:Declarations>
+	<fx:Script>
+		<![CDATA[
+			import com.adobe.cairngorm.control.CairngormEventDispatcher;
+			
+			import control.*;
+			
+			import locator.PsbLocator;
+			import locator.SysUserLocator;
+			
+			import util.Helper;
+			
+			import vo.SysUserVo;
+			protected function regClickHandler(event:MouseEvent):void
+			{
+				if(!(validateInput()))return;
+				SysUserLocator.getInstance().wsObj=new SysUserVo(Helper.getGUID(),sPsb.selectedItem.ID,"",policeNo.text,
+					pwd.text,pName.text,'',idCard.text,
+					lphone.text,sphone.text,"","Consign","","","",policeNo0.text,"","","","","","","","","","","","","",
+					"","","","","","","","","","");
+				CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.SYSUSERWS_Insert));
+			}			
+			
+			protected function radiobutton1_changeHandler(event:Event):void
+			{
+				pPsb.dataProvider=PsbLocator.getInstance().getList("","0");
+				sPsb.dataProvider=null;
+			}
+			
+			protected function radiobutton2_changeHandler(event:Event):void
+			{
+				pPsb.dataProvider=PsbLocator.getInstance().getList("","1");
+				sPsb.dataProvider=null;
+			}
+			
+			private function validateInput():Boolean
+			{		
+				if(pwd.text!=pwdAg.text)
+				{
+					Helper.showAlert("两次密码不一致");
+					return false;
+				}
+				
+				if(sPsb.selectedItem==null)
+				{
+					Helper.showAlert("请选择所属单位");
+					return false;
+				}
+				
+				var result:Boolean=true;
+				result=result && Helper.validateTextInput(pName);
+				result=result && Helper.validateTextInput(idCard);
+				result=result && Helper.validateTextInput(policeNo);
+				result=result && Helper.validateTextInput(pwd);
+				
+				return result;
+			}
+			
+		]]>
+	</fx:Script>
+	<s:Panel width="953" height="598" title="用户注册">
+		<s:VGroup left="10" right="10" top="10" bottom="10" gap="14">
+			<s:Spacer width="10" height="20"/>
+			<s:HGroup width="100%" verticalAlign="middle">
+				<s:Spacer width="160" height="10"/>
+				<s:Label color="#0000FF" fontSize="16" text="请填写有效信息"/>
+			</s:HGroup>
+			<s:HGroup width="100%" verticalAlign="middle">
+				<s:Spacer width="160" height="10"/>
+				<s:Label width="72" color="#FB0505" text="姓       名："/>
+				<s:TextInput id="pName" width="200"/>
+				<s:Label width="72" color="#FB0505" text="身  份  证："/>
+				<s:TextInput id="idCard" width="200" maxChars="18" restrict="0-9 \x"/>
+			</s:HGroup>
+			<s:HGroup width="100%" verticalAlign="middle">
+				<s:Spacer width="160" height="10"/>
+				<s:Label width="72" color="#FB0505" text="警       号："/>
+				<s:TextInput id="policeNo" width="200" maxChars="8"/>
+				<s:Label width="72" text="职       务："/>
+				<s:TextInput id="policeNo0" width="200"/>
+			</s:HGroup>
+			<s:HGroup width="100%" verticalAlign="middle">
+				<s:Spacer width="160" height="10"/>
+				<s:Label width="72" color="#FB0505" text="登录密码："/>
+				<s:TextInput id="pwd" width="200" displayAsPassword="true"/>
+				<s:Label width="72" color="#FB0505" text="密码确认："/>
+				<s:TextInput id="pwdAg" width="200" displayAsPassword="true"/>
+			</s:HGroup>
+			<s:HGroup width="100%" verticalAlign="middle">
+				<s:Spacer width="160" height="10"/>
+				<s:Label width="72" color="#FD0404" text="手机号码："/>
+				<s:TextInput id="lphone" width="200" maxChars="11" restrict="0-9"/>
+				<s:Label width="72" color="#FD0404" text="虚  拟  号："/>
+				<s:TextInput id="sphone" width="200" maxChars="6" restrict="0-9"/>
+			</s:HGroup>
+			<s:HGroup width="100%" verticalAlign="middle">
+				<s:Spacer width="160" height="10"/>
+				<s:Label width="72" color="#FB0505" text="所属单位："/>
+				<s:RadioButton id="jddwrb" label="鉴定单位" change="radiobutton1_changeHandler(event)"
+							   enabled="false"/>
+				<s:RadioButton label="委托单位" change="radiobutton2_changeHandler(event)" enabled="false"
+							   selected="true"/>
+			</s:HGroup>
+			<s:HGroup width="100%" verticalAlign="middle">
+				<s:Spacer width="240" height="10"/>
+				<s:DropDownList id="pPsb" width="486"
+								dataProvider="{PsbLocator.getInstance().getList('','1')}" labelField="NAME"></s:DropDownList>
+			</s:HGroup>
+			<s:HGroup width="100%" verticalAlign="middle">
+				<s:Spacer width="240" height="10"/>
+				<s:DropDownList id="sPsb" width="486"
+								dataProvider="{PsbLocator.getInstance().getList(pPsb.selectedItem.ID,jddwrb.selected?'0':'1')}"
+								labelField="NAME"></s:DropDownList>
+			</s:HGroup>
+			<s:HGroup width="100%" verticalAlign="middle">
+				<s:Spacer width="582" height="10"/>
+				<s:Button label="注册" click="regClickHandler(event)"
+						  enabled="{PsbLocator.getInstance().npending}"/>
+				<s:Button label="返回" click="Helper.setIndexContentNoMenu('view/index/IndexModule.swf')"/>
+			</s:HGroup>
+		</s:VGroup>
+	</s:Panel>
+</s:Module>

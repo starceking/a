@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009"
+		 xmlns:s="library://ns.adobe.com/flex/spark"
+		 xmlns:mx="library://ns.adobe.com/flex/mx"
+		 xmlns:accept="view.idcase.tool.accept.*"
+		 width="813" height="566" fontSize="14">
+	<fx:Declarations>
+		<!-- 将非可视元素（例如服务、值对象）放在此处 -->
+	</fx:Declarations>
+	<fx:Script>
+		<![CDATA[
+			import com.adobe.cairngorm.control.CairngormEventDispatcher;
+			
+			import control.*;
+			
+			import locator.IdCaseLocator;
+			import locator.IdFlowLocator;
+			import locator.JusTypeLocator;
+			import locator.PsbLocator;
+			import mx.containers.ViewStack;
+			import util.Helper;
+			
+			public var locObj:IdFlowLocator=IdFlowLocator.getInstance();
+			public var vs:ViewStack;
+			
+			protected function getNextMpNoClickHandler(event:MouseEvent):void
+			{
+				var year:String=ait.accYear.text;
+				var no:String=ait.accCaseNo.text;
+				if(year.length>0&&no.length>0)
+				{
+					if(locObj.curObj.ID==locObj.curObj.SRCID)
+					{
+						caseNo.text=Helper.getSlnStr(JusTypeLocator.getInstance().jusTypeVo.CLN,year,no,"");
+					}
+					else
+					{
+						caseNo.text=IdCaseLocator.getInstance().bsMainObj.CASE_NO;
+						year=IdCaseLocator.getInstance().bsMainObj.ACC_YEAR;
+						no=IdCaseLocator.getInstance().bsMainObj.ACC_CASE_NO;
+					}
+					locObj.mpnotxt=null;
+					locObj.mpr1notxt=null;
+					
+					locObj.wsObj=locObj.curObj;
+					locObj.wsObj.ACC_YEAR=year;
+					locObj.wsObj.ACC_NO=no;					
+					if(JusTypeLocator.getInstance().jusTypeVo.WholeNo=="0")
+					{				
+						locObj.senotxt=seNo;
+						locObj.cpsnotxt=cpsNo;
+						locObj.crnotxt=crNo;
+						locObj.udnotxt=udNo;
+						
+						locObj.preFixSe=Helper.getSlnStr(JusTypeLocator.getInstance().jusTypeVo.SESLN,year,no,"");
+						locObj.preFixCps=Helper.getSlnStr(JusTypeLocator.getInstance().jusTypeVo.CPSSLN,year,no,"");
+						locObj.preFixCr=Helper.getSlnStr(JusTypeLocator.getInstance().jusTypeVo.RSLN,year,no,"");
+						locObj.preFixUd=Helper.getSlnStr(JusTypeLocator.getInstance().jusTypeVo.USLN,year,no,"");
+						
+						seLbl.text=Helper.getSlnStr(JusTypeLocator.getInstance().jusTypeVo.SESLN,year,no,"X");
+						cpsLbl.text=Helper.getSlnStr(JusTypeLocator.getInstance().jusTypeVo.CPSSLN,year,no,"X");
+						crLbl.text=Helper.getSlnStr(JusTypeLocator.getInstance().jusTypeVo.RSLN,year,no,"X");
+						udLbl.text=Helper.getSlnStr(JusTypeLocator.getInstance().jusTypeVo.USLN,year,no,"X");
+						
+						CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.IDFLOWWS_GetCaseNextSLN));
+					}
+					else
+					{			
+						locObj.senotxt=allNo;						
+						locObj.preFixSe=Helper.getSlnStr(JusTypeLocator.getInstance().jusTypeVo.SESLN,year,no,"");
+						locObj.tableName="样本视图";											
+						allLbl.text=Helper.getSlnStr(JusTypeLocator.getInstance().jusTypeVo.SESLN,year,no,"X");
+						CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.IDFLOWWS_GetNextSLN));
+					}					
+				}
+				else
+				{
+					Helper.showAlert("请先获取受理序号");
+				}
+			}
+			
+			protected function saveClickHandler(event:MouseEvent):void
+			{
+				if(locObj.curObj.ORA_FLAG=="0")
+				{
+					if(validateInput()) 
+					{
+						locObj.wsObj.CASE_NO=caseNo.text;
+						locObj.preFixSe=flbh.selected?seNo.text:allNo.text;
+						locObj.preFixCps=cpsNo.text;
+						locObj.preFixCr=crNo.text;
+						locObj.preFixUd=udNo.text;
+						CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.IDFLOWWS_UpdateAcceptDna));
+						if(vs!=null)vs.selectedIndex++;
+					}
+				}
+				else
+				{
+					Helper.showAlert("不能重复受理!");
+				}
+			}
+			
+			private function validateInput():Boolean
+			{		
+				var result:Boolean=ait.save();
+				if(result)
+				{
+					if(locObj.wsObj.ID_STATUS=="不予受理")return true;
+					
+					result=result && Helper.validateTextInput(caseNo);
+					if(flbh.selected)
+					{
+						result=result && Helper.validateTextInput(seNo);
+						result=result && Helper.validateTextInput(cpsNo);
+						result=result && Helper.validateTextInput(crNo);
+						result=result && Helper.validateTextInput(udNo);
+					}
+					else
+					{
+						result=result && Helper.validateTextInput(allNo);
+					}
+				}
+				return result;
+			}
+			
+		]]>
+	</fx:Script>
+	<s:VGroup left="10" right="10" top="10" bottom="10" gap="8">
+		<accept:AcceptInfoTool id="ait" height="244">
+		</accept:AcceptInfoTool>
+		<s:HGroup width="100%" verticalAlign="middle">
+			<s:Label color="#FC0808" text="受理登记号："/>
+			<s:TextInput id="caseNo" width="180"
+						 editable="{IdFlowLocator.getInstance().curObj.ID==IdFlowLocator.getInstance().curObj.SRCID}"
+						 text="{IdFlowLocator.getInstance().curObj.CASE_NO}"/>
+			<mx:LinkButton label="获取本案件及样本的编号（补送的案件和样本其编号将沿用主案件）" click="getNextMpNoClickHandler(event)"
+						   enabled="{PsbLocator.getInstance().npending}" textDecoration="underline"/>
+		</s:HGroup>
+		<s:HGroup width="100%">
+			<s:VGroup width="340">
+				<s:HGroup width="100%" verticalAlign="middle">
+					<s:RadioButton id="flbh" label="分类编号（不同库别的样本不同的编号规则）" color="#AA1AF4" enabled="false"
+								   selected="{JusTypeLocator.getInstance().jusTypeVo.WholeNo=='0'}"/>
+				</s:HGroup>
+				<s:HGroup width="100%" verticalAlign="middle">
+					<s:Label visible="{JusTypeLocator.getInstance().jusTypeVo.WholeNo=='0'}" color="#FC0808"
+							 text="物证检材起始编号："/>
+					<s:TextInput id="seNo" visible="{JusTypeLocator.getInstance().jusTypeVo.WholeNo=='0'}" width="54"
+								 restrict="0123456789"/>
+					<s:Label id="seLbl"
+							 visible="{JusTypeLocator.getInstance().jusTypeVo.WholeNo=='0'}"
+							 text="尚未进行获取"/>
+				</s:HGroup>
+				<s:HGroup width="100%" verticalAlign="middle">
+					<s:Label visible="{JusTypeLocator.getInstance().jusTypeVo.WholeNo=='0'}" color="#FC0808"
+							 text="人员样本起始编号："/>
+					<s:TextInput id="cpsNo" visible="{JusTypeLocator.getInstance().jusTypeVo.WholeNo=='0'}"
+								 width="54" restrict="0123456789"/>
+					<s:Label id="cpsLbl" visible="{JusTypeLocator.getInstance().jusTypeVo.WholeNo=='0'}"
+							 text="尚未进行获取"/>
+				</s:HGroup>
+				<s:HGroup width="100%" verticalAlign="middle" visible="false">
+					<s:Label visible="{JusTypeLocator.getInstance().jusTypeVo.WholeNo=='0'}" color="#FC0808"
+							 text="亲属样本起始编号："/>
+					<s:TextInput id="crNo"
+								 visible="{JusTypeLocator.getInstance().jusTypeVo.WholeNo=='0'}"
+								 width="54" restrict="0123456789" text="1"/>
+					<s:Label id="crLbl" visible="{JusTypeLocator.getInstance().jusTypeVo.WholeNo=='0'}" text="尚未进行获取"/>
+				</s:HGroup>
+				<s:HGroup width="100%" verticalAlign="middle" visible="false">
+					<s:Label visible="{JusTypeLocator.getInstance().jusTypeVo.WholeNo=='0'}" color="#FC0808"
+							 text="尸体样本起始编号："/>
+					<s:TextInput id="udNo"
+								 visible="{JusTypeLocator.getInstance().jusTypeVo.WholeNo=='0'}"
+								 width="54" restrict="0123456789" text="1"/>
+					<s:Label id="udLbl" visible="{JusTypeLocator.getInstance().jusTypeVo.WholeNo=='0'}" text="尚未进行获取"/>
+				</s:HGroup>
+			</s:VGroup>
+			<s:VGroup width="100%">
+				<s:HGroup width="100%">
+					<s:RadioButton label="全库统一编号（所有样本采用一致的编号规则）" color="#AA1AF4" enabled="false" groupName="ybbhgz"
+								   selected="{JusTypeLocator.getInstance().jusTypeVo.WholeNo=='1'}"/>
+				</s:HGroup>
+				<s:HGroup width="100%" verticalAlign="middle">
+					<s:Label visible="{JusTypeLocator.getInstance().jusTypeVo.WholeNo=='1'}" color="#FC0808"
+							 text="所有样本起始编号："/>
+					<s:TextInput id="allNo" visible="{JusTypeLocator.getInstance().jusTypeVo.WholeNo=='1'}"
+								 width="54" restrict="0123456789"/>
+					<s:Label id="allLbl" visible="{JusTypeLocator.getInstance().jusTypeVo.WholeNo=='1'}"
+							 text="尚未进行获取"/>
+				</s:HGroup>
+			</s:VGroup>
+		</s:HGroup>
+		<s:HGroup width="100%" verticalAlign="middle">
+			<s:Spacer y="5" width="175" height="10"/>
+			<s:Button click="saveClickHandler(event)" enabled="{PsbLocator.getInstance().npending}"
+					  skinClass="assets.skins.Button_bc"/>
+			<s:Label color="#FF0000" text="注意：案件若未自动同步到DNA系统。请立即让鉴定人先取消受理后，再重新受理一次"/>
+		</s:HGroup>
+	</s:VGroup>
+</s:Group>

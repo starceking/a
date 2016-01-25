@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
+		 xmlns:s="library://ns.adobe.com/flex/spark" 
+		 xmlns:mx="library://ns.adobe.com/flex/mx"
+		 xmlns:tool="view.tool.*"
+		 fontSize="14" width="813" height="553"
+		 creationComplete="module1_creationCompleteHandler(event)"
+		 >
+	<fx:Script>
+		<![CDATA[
+			import com.adobe.cairngorm.control.CairngormEventDispatcher;
+			import control.*;
+			
+			import locator.EquipmentLocator;
+			import locator.MenuLocator;
+			import locator.EquipmentInspectionLocator;
+			import mx.events.FlexEvent;
+			import util.Helper;
+			import vo.EquipmentInspectionVo;
+			import vo.MenuVo;	
+			
+			protected function module1_creationCompleteHandler(event:FlexEvent):void
+			{
+				// TODO Auto-generated method stub
+				EquipmentInspectionLocator.getInstance().wsObj=new EquipmentInspectionVo(Helper.getGUID(),EquipmentLocator.getInstance().currObj.ID,TextJzjg.text,TextJzrq.text,TextJznr.text,TextJjg.text);
+				CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.EQUIPMENTINSPECTION_GetOne)); 
+			}
+			protected function BtnAdd_clickHandler(event:MouseEvent):void
+			{
+				// TODO Auto-generated method stub
+				EquipmentInspectionLocator.getInstance().wsObj=new EquipmentInspectionVo(Helper.getGUID(),EquipmentLocator.getInstance().currObj.ID,TextJzjg.text,TextJzrq.text,TextJznr.text,TextJjg.text);
+				CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.EQUIPMENTINSPECTION_Insert));
+				Helper.showAlert("新增成功！");
+			}
+			
+			protected function BtnDelete_clickHandler(event:MouseEvent):void
+			{
+				// TODO Auto-generated method stub
+				
+				EquipmentInspectionLocator.getInstance().wsObj =gd.selectedItem as EquipmentInspectionVo;
+				CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.EQUIPMENTINSPECTION_Delete));
+				Helper.showAlert("删除成功！");
+				
+			}
+			
+			protected function BtnUpfate_clickHandler(event:MouseEvent):void
+			{
+				// TODO Auto-generated method stub
+				
+				EquipmentInspectionLocator.getInstance().wsObj=new EquipmentInspectionVo(gd.selectedItem.ID,EquipmentLocator.getInstance().currObj.ID,TextJzjg.text,TextJzrq.text,TextJznr.text,TextJjg.text);
+				CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.EQUIPMENTINSPECTION_Update));
+				Helper.showAlert("修改成功！");
+				
+			}
+			
+			protected function button1_clickHandler(event:MouseEvent):void
+			{
+				// TODO Auto-generated method stub
+				EquipmentLocator.getInstance().wordName="CX24-02仪器设备检定校准情况一览表.doc";
+				EquipmentLocator.getInstance().num=EquipmentLocator.getInstance().currObj.ID;
+				EquipmentLocator.getInstance().filename=Helper.getGUID();
+				CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.EQUIPMENT_MackAllFB));
+			}
+			
+		]]>
+	</fx:Script>
+	<fx:Declarations>
+		<!-- 将非可视元素（例如服务、值对象）放在此处 -->
+	</fx:Declarations>
+	<s:Label x="10" y="10" color="#0A37FA" fontSize="20" fontWeight="bold" text="检定校准"/>
+	<s:DataGrid id="gd" x="10" y="38" width="793" height="292" dataProvider="{EquipmentInspectionLocator.getInstance().listObj}" >
+		<s:columns>
+			<s:ArrayList>
+				<s:GridColumn dataField="JYJG" headerText="校准机构"></s:GridColumn>
+				<s:GridColumn dataField="JYRQ" headerText="校准日期"></s:GridColumn>
+				<s:GridColumn dataField="JYNR" headerText="校准内容"></s:GridColumn>
+				<s:GridColumn dataField="JYJG" headerText="校准结果"></s:GridColumn>
+			</s:ArrayList>
+		</s:columns>
+	</s:DataGrid>
+	<s:Label x="9" y="349" text="校准机构："/>
+	<s:TextInput id="TextJzjg" x="76" y="339" width="323" text="{gd.selectedItem.JYJG}"/>
+	<s:Label x="407" y="343" text="校准日期："/>
+	<tool:DateZh id="TextJzrq" x="474" y="338" width="329" text="{gd.selectedItem.JYRQ}"/>
+	<s:Label x="8" y="380" text="校准内容："/>
+	<s:TextArea id="TextJznr" x="76" y="370" width="727" height="65"  text="{gd.selectedItem.JYNR}"/>
+	<s:Label x="10" y="443" text="校准结果："/>
+	<s:TextArea id="TextJjg" x="76" y="443" width="727" height="72" text="{gd.selectedItem.JYJG}"/>
+	<s:Button id="BtnAdd" x="564" y="523" label="新增" click="BtnAdd_clickHandler(event)" />
+	<s:Button id="BtnDelete" x="726" y="523" label="删除" click="BtnDelete_clickHandler(event)" enabled="{gd.selectedItem!=null}"/>
+	<s:Button id="BtnUpfate" x="648" y="523" label="修改" click="BtnUpfate_clickHandler(event)" enabled="{gd.selectedItem!=null}"/>
+	<mx:LinkButton x="575" y="9" width="227" label="打印仪器设备校准情况一览表" click="button1_clickHandler(event)" textDecoration="underline" color="blue"/>
+	
+</s:Group>

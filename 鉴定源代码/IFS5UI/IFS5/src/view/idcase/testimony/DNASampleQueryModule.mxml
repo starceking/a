@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Module xmlns:fx="http://ns.adobe.com/mxml/2009"
+		  xmlns:s="library://ns.adobe.com/flex/spark"
+		  xmlns:mx="library://ns.adobe.com/flex/mx"
+		  xmlns:tool="view.tool.*"
+		  xmlns:ns1="*"
+		  width="953" height="598" fontSize="14"
+		  creationComplete="MenuLocator.getInstance().changeMenu(menuGp);">
+	<fx:Declarations>
+		<!-- 将非可视元素（例如服务、值对象）放在此处 -->		
+	</fx:Declarations>
+	<fx:Script>
+		<![CDATA[
+			import com.adobe.cairngorm.control.CairngormEventDispatcher;
+			
+			import control.*;
+			import locator.MenuLocator;	
+			import locator.CodiesLocator;
+			import locator.DictLocator;
+			import locator.JusTypeLocator;
+			import locator.PsbLocator;
+			import locator.SysUserLocator;
+			
+			import vo.StrVo;
+			
+			private var locObj:CodiesLocator=CodiesLocator.getInstance();
+			protected function queryClickHandler(evt:Event):void
+			{
+				var imp:String="";
+				if(imp2.selected)imp="1";
+				else if(imp3.selected)imp="0";
+				var str:String="";
+				if(cgstr2.selected)str="1";
+				else if(cgstr3.selected)str="0";
+				var ystr:String="";
+				if(ystr2.selected)ystr="1";
+				else if(ystr3.selected)ystr="0";
+				locObj.wsObj=new StrVo("","","","",pnum.text,pname.text,sc.selectedData,"","","","","","","","","","","","","",
+					"","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","");
+				locObj.slsjs=slsjs.text;
+				locObj.slsje=slsje.text;
+				locObj.yblx=stype.selectedData;
+				locObj.yjr=yjr.selectedData;
+				locObj.imp=imp;
+				locObj.str=str;
+				locObj.ystr=ystr;
+				
+				locObj.jystatus=jcstatus.selectedData;
+				locObj.preexam="";
+				locObj.confirm="";
+				
+				CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.CODIESWS_QuerySample));
+			}
+			
+		]]>
+	</fx:Script>
+	<s:Panel width="953" height="598">
+		<s:HGroup id="menuGp" x="10" y="-27"/>	
+		<s:Button x="814" y="73" label="查询" click="queryClickHandler(event)" enabled="{PsbLocator.getInstance().npending}"/>
+		<s:Label x="276" y="52" color="#000000" text="名        称："/>
+		<s:TextInput id="pname" x="354" y="42" width="180"/>
+		<s:Label x="545" y="52" text="样本类型："/>
+		<s:Label x="10" y="52" color="#000000" text="检材编号："/>
+		<s:TextInput id="pnum" x="88" y="42" width="180" />
+		<s:Label x="233" y="19" color="#000000" text="YSTR："/>
+		<s:Label x="10" y="86" text="受理时间："/>
+		<tool:DateZh id="slsjs" x="88" y="76" width="180"/>
+		<s:Label x="297" y="85" text="到"/>
+		<tool:DateZh id="slsje" x="354" y="75" width="180" />
+		<s:DataGrid x="10" y="105" width="933" height="425" dataProvider="{locObj.allStrList}">
+			<s:columns>
+				<s:ArrayList>
+					<s:GridColumn dataField="SLN" headerText="编号"></s:GridColumn>
+					<s:GridColumn dataField="NAME" headerText="名称"></s:GridColumn>
+					<s:GridColumn dataField="SC" headerText="库类型"></s:GridColumn>
+					<s:GridColumn dataField="STR_FLAG" headerText="常规STR"></s:GridColumn>
+					<s:GridColumn dataField="IMP_FLAG" headerText="导入状态"></s:GridColumn>
+					<s:GridColumn dataField="YSTR_FLAG" headerText="YSTR"></s:GridColumn>
+				</s:ArrayList>
+			</s:columns>
+		</s:DataGrid>
+		<ns1:ListPager id="pager" x="542" y="533" pageSize="14"
+					   creationComplete="pager.addEventListener(ListPager.PAGE_INDEX_CHANGE_EVENT,queryClickHandler);locObj.allListPager=pager;">
+		</ns1:ListPager>
+		<s:Label x="542" y="83" text="一  检  人："/>
+		<tool:QueryUserDdl id="yjr" x="622" y="73" width="184" auth=""/>
+		<s:Label x="10" y="20" color="#000000" text="常规STR："/>
+		<s:RadioButton id="cgstr2" x="141" y="15" label="有" groupName="cgstr"/>
+		<s:RadioButton id="cgstr1" x="89" y="15" label="全部" groupName="cgstr" selected="true"/>
+		<s:RadioButton id="cgstr3" x="181" y="15" label="无" groupName="cgstr"/>
+		<s:Label x="453" y="20" color="#000000" text="导入状态："/>
+		<s:RadioButton id="imp2" x="585" y="16" label="已导入" groupName="impstr"/>
+		<s:RadioButton id="imp3" x="657" y="16" label="未导入" groupName="impstr"/>
+		<tool:DictDdl id="stype" x="623" y="44" width="135" dictName="样本类型" requireSelection="false"/>
+		<s:Label x="772" y="22" text="库类型："/>
+		<tool:DictDdl id="sc" x="836" y="15" width="100" allEnable="true" dictName="库类型"/>
+		<s:RadioButton id="ystr2" x="341" y="14" label="有" groupName="ystr"/>
+		<s:RadioButton id="ystr1" x="289" y="14" label="全部" groupName="ystr" selected="true"/>
+		<s:RadioButton id="ystr3" x="381" y="14" label="无" groupName="ystr"/>
+		<s:RadioButton id="imp1" x="531" y="15" label="全部" groupName="impstr" selected="true"/>
+		<s:Label x="772" y="51" text="状  态："/>
+		<tool:DictDdl id="jcstatus" x="836" y="44" width="100" allEnable="true" dictName="检测状态"/>
+	</s:Panel>
+</s:Module>

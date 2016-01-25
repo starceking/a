@@ -1,0 +1,388 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Module xmlns:fx="http://ns.adobe.com/mxml/2009" 
+		  xmlns:s="library://ns.adobe.com/flex/spark" 
+		  xmlns:mx="library://ns.adobe.com/flex/mx"
+		  width="953" height="598" fontSize="14"
+		  xmlns:tool="view.tool.*"
+		  creationComplete="module1_creationCompleteHandler()" >
+	<fx:Declarations>
+		<!-- 将非可视元素（例如服务、值对象）放在此处 -->
+	</fx:Declarations>
+	<fx:Script>
+		<![CDATA[
+			import com.adobe.cairngorm.control.CairngormEventDispatcher;
+			
+			import control.*;
+			
+			import locator.JusTypeLocator;
+			import locator.MenuLocator;
+			
+			import mx.controls.Alert;
+			import mx.collections.ArrayList;
+			import mx.events.CloseEvent; 
+			
+			import spark.components.RadioButton;
+			
+			import util.Helper;
+			
+			import vo.JusTypeVo;
+			import vo.OfficeJusTypeVo;
+			import vo.OfficeVo;
+			
+			private var jusTypeNow:String;
+			private var emptyList:ArrayList;
+			private var JusLoc:JusTypeLocator=JusTypeLocator.getInstance();
+			protected function module1_creationCompleteHandler():void
+			{
+				MenuLocator.getInstance().changeMenu(menuGp);
+				CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.DICTWS_GetXml));
+				
+				office.office="DNA";
+				office_clickHandler(null);
+			}
+			
+			protected function office_clickHandler(event:MouseEvent):void
+			{
+				//得到 专业科室信息
+				if(office.office.length>0)
+				{
+					if(office.office=="DNA")
+					{
+						OfficeName.selectedData="DNA";
+						Leader.text="2";
+						PlanDate.text="30";	
+						
+						P_Idcase.visible=false;
+						P_DNA.visible=true;
+					}
+					else
+					{
+						P_Idcase.visible=true;
+						P_DNA.visible=false;
+						
+						var officeVo:OfficeVo=JusLoc.getOffice(office.office);
+						OfficeName.selectedData=officeVo.Name;
+						Leader.text=officeVo.Leader;
+						PlanDate.text=officeVo.PlanDate;	
+					}
+				}
+				JusTypeName.text="";DocName.text="";TesName.text="";JusItem.text="";
+				IDREQ.text="";Sesln.text="";CONCLUSION.text="";
+				//得到 鉴定类别
+				JusType.removeAllElements();
+				var jusTypeList:ArrayList=JusLoc.getAllJusType(office.office);
+				for(var i:int=0;i<jusTypeList.length;i++)
+				{
+					var rb:RadioButton=new RadioButton();
+					var jusType:String = jusTypeList.getItemAt(i).label;
+					rb.label=jusType;
+					rb.groupName="JusType";
+					rb.addEventListener("change",jusType_ChangeHandler);
+					JusType.addElement(rb);					
+				}
+			}
+			protected function jusType_ChangeHandler(event:Event):void
+			{
+				jusTypeNow=(event.currentTarget as RadioButton).label;
+				var officeJusTypeVo:OfficeJusTypeVo=JusLoc.getJusType(office.office,jusTypeNow);
+				JusTypeName.text=officeJusTypeVo.Name;
+				Sesln.text=officeJusTypeVo.SESLN;
+				DocName.text=officeJusTypeVo.DocName;
+				TesName.text=officeJusTypeVo.TESNAME;
+				JusItem.text=officeJusTypeVo.JUSITEM;
+				IDREQ.text=officeJusTypeVo.IDREQ;
+				CONCLUSION.text=officeJusTypeVo.CONCLUSION;
+			}
+			
+			protected function OfficeAdd_clickHandler(event:MouseEvent):void
+			{
+				//新增 专业科室
+				if(OfficeName.selectedData.length>0)
+				{
+					JusLoc.officeVo=new OfficeVo(OfficeName.selectedData,Leader.text,PlanDate.text,
+						emptyList);
+					CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.JUSTYPEWS_InsertOffice));
+				}
+				else
+					Helper.showAlert("请选择科室名称！");
+			}
+			
+			protected function OfficeDelete_clickHandler(event:MouseEvent):void
+			{
+				// 删除 专业科室
+				if(office.office.length>0)
+				{
+					Alert.show("确定删除此科室么？","温馨提示",Alert.YES|Alert.CANCEL,this,office_delhandler,null,Alert.CANCEL); 
+				}
+				else
+					Helper.showAlert("请选择鉴定科室！");
+			}
+			private function office_delhandler(evt:CloseEvent):void
+			{
+				if(evt.detail==Alert.YES)
+				{
+					//执行内容
+					if(office.office=="DNA")
+					{
+						JusLoc.Office="DNA";
+					}
+					else
+					{
+						var officeVo:OfficeVo=JusLoc.getOffice(office.office);
+						JusLoc.Office=officeVo.Name;
+					}
+					CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.JUSTYPEWS_DeleteOffice));
+				}
+			}
+			
+			protected function TypeAdd_clickHandler(event:MouseEvent):void
+			{
+				// 新增 鉴定类别
+				if(office.office.length>0)
+				{
+					if(JusTypeName.text.length==0)
+						Helper.showAlert("类别名称不能为空！");
+					else
+					{
+						JusLoc.Office=office.office;
+						JusLoc.TypeVo=new OfficeJusTypeVo("",JusTypeName.text,DocName.text,TesName.text,JusItem.text,
+							IDREQ.text,Sesln.text,CONCLUSION.text);
+						CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.JUSTYPEWS_InsertType));
+					}
+				}
+				else
+					Helper.showAlert("请先选择专业科室！再添加鉴定类别");
+				
+			}
+			
+			protected function TypeUpdate_clickHandler(event:MouseEvent):void
+			{
+				// 修改 鉴定类别
+				if(office.office.length==0)
+					Helper.showAlert("请选择专业科室！");
+				else if(jusTypeNow==null)
+					Helper.showAlert("请选择鉴定类别！");
+				else
+				{
+					JusLoc.Office=office.office;
+					JusLoc.JUSTYPE=jusTypeNow;
+					JusLoc.TypeVo=new OfficeJusTypeVo("",JusTypeName.text,DocName.text,TesName.text,JusItem.text,
+						IDREQ.text,Sesln.text,CONCLUSION.text);
+					CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.JUSTYPEWS_UpdateType));
+				}	
+			}
+			
+			protected function TypeDelete_clickHandler(event:MouseEvent):void
+			{
+				// 删除 鉴定类别
+				if(office.office.length==0)
+					Helper.showAlert("请选择专业科室！");
+				else if(jusTypeNow==null)
+					Helper.showAlert("请选择鉴定类别！");
+				else
+				{
+					Alert.show("确定删除此类别么？","温馨提示",Alert.YES|Alert.CANCEL,this,type_delhandler,null,Alert.CANCEL); 
+				}
+			}
+			private function type_delhandler(evt:CloseEvent):void
+			{
+				if(evt.detail==Alert.YES)
+				{
+					//执行内容
+					JusLoc.Office=office.office;
+					JusLoc.JUSTYPE=jusTypeNow;
+					CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.JUSTYPEWS_DeleteType));
+				}
+			}
+			
+			protected function DNASave_clickHandler(event:MouseEvent):void
+			{
+				// 保存 DNA科室 信息
+				if(office.office.length==0)
+					Helper.showAlert("请选择专业科室！");
+				else
+				{
+					JusLoc.DnaVo=new JusTypeVo(YEAR.text,TESTER.text,TESTER2.text,TESTER3.text,TESTER4.text,CHECKER.text,
+						SIGN.text,TECH.text,LEADER.text,TESTERSD.text,DNA_Leader.text,WholeNo.text,DNA_DocName.text,DNA_PlanDate.text,
+						Enabled.text,DNA_IDREQ.text,CLN.text,SESLN.text,CPSSLN.text,RSLN.text,USLN.text,LSLN.text,LRSLN.text);
+					
+					CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.JUSTYPEWS_UpdateDna));
+				}
+			}
+			
+		]]>
+	</fx:Script>
+	<s:Panel width="953" height="598">
+		<s:HGroup id="menuGp" x="10" y="-27"/>	
+		<s:VGroup id="VG_Group" width="100%" height="100%" gap="0">
+			<s:Panel width="100%" borderVisible="false" chromeColor="#FFFFFF" cornerRadius="0"
+					 dropShadowVisible="false" title="专业科室">
+				<s:VGroup left="10" right="10" top="10" bottom="10" gap="14">
+					<s:HGroup width="100%" verticalAlign="middle">
+						<s:Label text="鉴定科室："/>
+						<tool:OfficeRgp id="office" width="800" click="office_clickHandler(event)"
+										dnaEnable="0"/>
+					</s:HGroup>
+					<s:HGroup width="100%" verticalAlign="middle">
+						<s:Label text="科室名称："/>
+						<tool:DictDdl id="OfficeName" width="100%" dictName="专业科室"/>
+						<s:Label text="默认审批领导：" visible="false"/>
+						<s:TextInput id="Leader" width="100%" text="2" visible="false"/>
+						<s:Label text="案件预计完成周期：" visible="false"/>
+						<s:TextInput id="PlanDate" width="100%" text="30" visible="false"/>	
+					</s:HGroup>
+					<s:HGroup width="100%" horizontalAlign="left">
+						<s:Spacer width="70" height="10"/>
+						<s:Button id="OfficeAdd" label="新增科室" click="OfficeAdd_clickHandler(event)"/>
+						<s:Button id="OfficeDelete" label="删除科室" click="OfficeDelete_clickHandler(event)"/>
+					</s:HGroup>
+				</s:VGroup>
+			</s:Panel>
+			<s:Panel id="P_Idcase" width="100%" borderVisible="false" chromeColor="#FFFFFF" cornerRadius="0"
+					 dropShadowVisible="false" title="鉴定类别">
+				<s:VGroup left="10" right="10" top="10" height="100%" gap="14">
+					<s:HGroup width="100%" verticalAlign="middle">
+						<s:Label backgroundAlpha="1.0" text="鉴定类别："/>
+						<s:HGroup id="JusType" />
+					</s:HGroup>
+					<s:HGroup width="100%" verticalAlign="middle">
+						<s:Label text="鉴定类别名称："/>
+						<s:TextInput id="JusTypeName" width="100%" />
+						<s:Label text="检材编号格式："/>
+						<s:TextInput id="Sesln" width="100%"/>
+						<s:Label text="发文简称："/>
+						<s:TextInput id="DocName" width="100%"/>
+					</s:HGroup>
+					<s:HGroup width="100%" verticalAlign="top">
+						<s:Label text="常用检材名称："/>
+						<s:TextArea id="TesName" width="100%" height="50" verticalScrollPolicy="off"/>
+						<s:Label color="#FF0000" fontFamily="宋体" paddingTop="20"
+								 text="* 如果常用的项数比较多请用中文逗号“，”隔开"/>
+					</s:HGroup>
+					<s:HGroup width="100%" verticalAlign="top">
+						<s:Label text="鉴  定  项  目 ："/>
+						<s:TextArea id="JusItem" width="100%" height="50" verticalScrollPolicy="off"/>
+						<s:Label color="#FF0000" fontFamily="宋体" paddingTop="20"
+								 text="* 如果常用的项数比较多请用中文逗号“，”隔开"/>
+					</s:HGroup>
+					<s:HGroup width="100%" verticalAlign="top">
+						<s:Label text="默认鉴定要求："/>
+						<s:TextArea id="IDREQ" width="100%" height="50" verticalScrollPolicy="off"/>
+						<s:Label color="#FF0000" fontFamily="宋体" paddingTop="20"
+								 text="* 如果常用的项数比较多请用中文逗号“，”隔开"/>
+					</s:HGroup>
+					<s:HGroup width="100%" verticalAlign="top">
+						<s:Label text="默认鉴定结论："/>
+						<s:TextArea id="CONCLUSION" width="100%" height="50" verticalScrollPolicy="off"/>
+						<s:Label color="#FF0000" fontFamily="宋体" paddingTop="20"
+								 text="* 如果常用的项数比较多请用中文逗号“，”隔开"/>
+					</s:HGroup>
+					<s:HGroup width="100%">
+						<s:Spacer width="370" height="10"/>
+						<s:Button id="TypeAdd" label="新增类别" click="TypeAdd_clickHandler(event)"/>
+						<s:Button id="TypeUpdate" label="修改类别" click="TypeUpdate_clickHandler(event)" />
+						<s:Button id="TypeDelete" label="删除类别" click="TypeDelete_clickHandler(event)" />
+					</s:HGroup>
+				</s:VGroup>
+			</s:Panel>
+		</s:VGroup>
+		<s:Panel id="P_DNA" visible="false" top="145" width="100%" height="100%" borderVisible="false"
+				 chromeColor="#FFFFFF" cornerRadius="0" dropShadowVisible="false" title="DNA科室">
+			<s:HGroup left="10" right="10" top="10" height="100%">
+				<s:VGroup width="100%" height="100%">
+					<s:HGroup verticalAlign="middle" visible="false">
+						<s:Label text="默认审批领导："/>
+						<s:TextInput id="DNA_Leader" text="{JusLoc.jusTypeVo.Leader}"/>
+						<s:Label text="是否全库统一编号："/>
+						<s:TextInput id="WholeNo" text="{JusLoc.jusTypeVo.WholeNo}"/>
+					</s:HGroup>
+					<s:HGroup verticalAlign="middle">
+						<s:Label text="发  文  简  称 ："/>
+						<s:TextInput id="DNA_DocName" text="{JusLoc.jusTypeVo.DocName}"/>
+						<s:Label text="年       份："/>
+						<s:TextInput id="YEAR" text="{JusLoc.jusTypeVo.YEAR}"/>
+					</s:HGroup>
+					<s:HGroup verticalAlign="middle" visible="false">
+						<s:Label text="案件预计完成周期："/>
+						<s:TextInput id="DNA_PlanDate" text="{JusLoc.jusTypeVo.PlanDate}"/>
+						<s:Label text="是否启用："/>
+						<s:TextInput id="Enabled" text="{JusLoc.jusTypeVo.Enabled}"/>
+					</s:HGroup>
+					<s:HGroup width="100%" verticalAlign="middle">
+						<s:Label text="默认鉴定要求："/>
+						<s:TextInput id="DNA_IDREQ" width="100%" text="{JusLoc.jusTypeVo.IDREQ}"/>
+					</s:HGroup>
+					<s:HGroup width="100%" verticalAlign="middle" visible="false">
+						<s:Label text="受理登记号："/>
+						<s:TextInput id="CLN" text="{JusLoc.jusTypeVo.CLN}"/>
+					</s:HGroup>
+					<s:HGroup width="100%" verticalAlign="middle" visible="false">
+						<s:Label text="物证编号："/>
+						<s:TextInput id="SESLN" text="{JusLoc.jusTypeVo.SESLN}"/>
+					</s:HGroup>
+					<s:HGroup width="100%" verticalAlign="middle" visible="false">
+						<s:Label text="人员编号："/>
+						<s:TextInput id="CPSSLN" text="{JusLoc.jusTypeVo.CPSSLN}"/>
+					</s:HGroup>
+					<s:HGroup width="100%" verticalAlign="middle" visible="false">
+						<s:Label text="嫌疑人或受害人亲属编号："/>
+						<s:TextInput id="RSLN" text="{JusLoc.jusTypeVo.RSLN}"/>
+					</s:HGroup>	
+					<s:HGroup width="100%" verticalAlign="middle" visible="false">
+						<s:Label text="无名尸编号："/>
+						<s:TextInput id="USLN" text="{JusLoc.jusTypeVo.USLN}"/>
+					</s:HGroup>	
+					<s:HGroup width="100%" verticalAlign="middle" visible="false">
+						<s:Label text="失踪人员编号："/>
+						<s:TextInput id="LSLN" text="{JusLoc.jusTypeVo.LSLN}"/>
+					</s:HGroup>	
+					<s:HGroup width="100%" verticalAlign="middle" visible="false">
+						<s:Label text="失踪人员亲属编号："/>
+						<s:TextInput id="LRSLN" text="{JusLoc.jusTypeVo.LRSLN}"/>
+					</s:HGroup>	
+					<s:HGroup width="100%" horizontalAlign="right">
+						<s:Button id="DNASave" label="保存" click="DNASave_clickHandler(event)" />
+					</s:HGroup>
+				</s:VGroup>
+				<s:VGroup height="100%" visible="false">
+					<s:HGroup verticalAlign="middle"> 
+						<s:Label text="一  检  人："/>
+						<s:TextInput id="TESTER" text="{JusLoc.jusTypeVo.TESTER}"/>
+					</s:HGroup>
+					<s:HGroup verticalAlign="middle">
+						<s:Label text="二  检  人："/>
+						<s:TextInput id="TESTER2" text="{JusLoc.jusTypeVo.TESTER2}"/>
+					</s:HGroup>
+					<s:HGroup verticalAlign="middle">
+						<s:Label text="三  检  人："/>
+						<s:TextInput id="TESTER3" text="{JusLoc.jusTypeVo.TESTER3}"/>
+					</s:HGroup>
+					<s:HGroup verticalAlign="middle">
+						<s:Label text="四  检  人："/>
+						<s:TextInput id="TESTER4" text="{JusLoc.jusTypeVo.TESTER4}"/>
+					</s:HGroup>
+					<s:HGroup verticalAlign="middle">
+						<s:Label text="复  核  人："/>
+						<s:TextInput id="CHECKER" text="{JusLoc.jusTypeVo.CHECKER}"/>
+					</s:HGroup>
+					<s:HGroup verticalAlign="middle">
+						<s:Label text="授权签字："/>
+						<s:TextInput id="SIGN" text="{JusLoc.jusTypeVo.SIGN}"/>
+					</s:HGroup>
+					<s:HGroup verticalAlign="middle">
+						<s:Label text="技       管："/>
+						<s:TextInput id="TECH" text="{JusLoc.jusTypeVo.TECH}"/>
+					</s:HGroup>
+					<s:HGroup verticalAlign="middle">
+						<s:Label text="领       导："/>
+						<s:TextInput id="LEADER" text="{JusLoc.jusTypeVo.LEADER}"/>
+					</s:HGroup>
+					<s:HGroup verticalAlign="middle">
+						<s:Label text="文书制作："/>
+						<s:TextInput id="TESTERSD" text="{JusLoc.jusTypeVo.TESTERSD}"/>
+					</s:HGroup>
+				</s:VGroup>
+			</s:HGroup>
+		</s:Panel>
+	</s:Panel>
+</s:Module>

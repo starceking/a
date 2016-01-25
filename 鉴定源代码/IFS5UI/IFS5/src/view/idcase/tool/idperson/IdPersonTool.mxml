@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009"
+		 xmlns:s="library://ns.adobe.com/flex/spark"
+		 xmlns:mx="library://ns.adobe.com/flex/mx"
+		 width="813" height="547" creationComplete="creationCompleteHandler(event)" fontSize="14" xmlns:tool="view.tool.*">
+	<fx:Declarations>
+		<!-- 将非可视元素（例如服务、值对象）放在此处 -->
+	</fx:Declarations>
+	<fx:Script>
+		<![CDATA[
+			import com.adobe.cairngorm.control.CairngormEventDispatcher;
+			
+			import control.*;
+			
+			import locator.IdFlowLocator;
+			import locator.IdPersonLocator;
+			import locator.PsbLocator;
+			
+			import mx.containers.ViewStack;
+			import mx.events.FlexEvent;
+			
+			import util.Helper;
+			
+			import vo.IdPersonVo;
+			
+			private var locObj:IdPersonLocator=IdPersonLocator.getInstance();
+			public var vs:ViewStack;
+			
+			protected function creationCompleteHandler(event:FlexEvent):void
+			{
+				var conno:String=IdFlowLocator.getInstance().curObj.CONNO;
+				if(conno.length==19)
+				{
+					locObj.wsObj=new IdPersonVo("",conno,"","","","","","","","",
+						"","","");
+					CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.IDPERSONWS_GetAll));
+				}
+			}
+			
+			private function getOperVo():IdPersonVo
+			{
+				return new IdPersonVo(Helper.getGUID(),IdFlowLocator.getInstance().curObj.CONNO,pname.text,
+					gender.selectedData,idcard.text,phone.text,birthday.text,age.text,job.getSelectedItem(),education.getSelectedItem(),
+					nativeplace.text,workplace.text,residenceplace.text);
+			}
+			
+			protected function insertClickHandler(event:MouseEvent):void
+			{
+				if(validateInput()) 
+				{
+					locObj.wsObj=getOperVo();
+					CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.IDPERSONWS_Insert));	
+					ClearData();
+				}
+			}
+			
+			protected function updateClickHandler(event:MouseEvent):void
+			{				
+				if(dg.selectedItem!=null)
+				{
+					if(validateInput()) 
+					{
+						locObj.wsObj=getOperVo();
+						locObj.wsObj.ID=dg.selectedItem.ID;
+						CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.IDPERSONWS_Update));
+					}
+					ClearData();
+				}
+				else
+				{
+					Helper.showAlert("请先选中对应数据行");
+				}
+			}
+			
+			protected function deleteClickHandler(event:MouseEvent):void
+			{
+				if(dg.selectedItem!=null)
+				{
+					locObj.wsObj=getOperVo();
+					locObj.wsObj.ID=dg.selectedItem.ID;
+					CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.IDPERSONWS_Delete));
+					ClearData();
+				}
+				else
+				{
+					Helper.showAlert("请先选中对应数据行");
+				}
+			}
+			
+			private function validateInput():Boolean
+			{
+				if(IdFlowLocator.getInstance().curObj.CONNO.length==1)
+				{
+					Helper.showAlert("请先保存案件信息。");
+					return false;
+				}
+				
+				var result:Boolean=true;
+				result=result && Helper.validateTextInput(pname);
+				return result;
+			}
+			
+			protected function button1_clickHandler(event:MouseEvent):void
+			{
+				if(vs!=null)vs.selectedIndex++;
+			}
+			
+			private function ClearData():void
+			{
+				pname.text="";
+				idcard.text="";
+				birthday.text="";
+				age.text="";
+				phone.text="";
+				nativeplace.text="";
+				job.textInput.text="";
+				education.textInput.text="";
+				residenceplace.text="";
+				workplace.text="";
+			}
+			
+		]]>
+	</fx:Script>
+	<s:VGroup left="10" right="10" top="10" bottom="10" gap="10">
+		<s:Label color="#0A37FA" fontSize="20" fontWeight="bold" text="被鉴定人/涉案人员信息"/>
+		<s:DataGrid id="dg" width="100%" height="100%" dataProvider="{locObj.listObj}">
+			<s:columns>
+				<s:ArrayList>
+					<s:GridColumn dataField="NAME" headerText="姓名"></s:GridColumn>
+					<s:GridColumn dataField="GENDER" headerText="性别"></s:GridColumn>
+					<s:GridColumn dataField="IDCARDNO" headerText="身份证"></s:GridColumn>
+					<s:GridColumn dataField="BIRTH_DATE" headerText="出生日期"></s:GridColumn>
+					<s:GridColumn dataField="NATIVE_PLACE" headerText="户籍地/籍贯"></s:GridColumn>
+				</s:ArrayList>
+			</s:columns>
+		</s:DataGrid>
+		<s:HGroup width="100%" verticalAlign="middle">
+			<s:Label color="#FC0404" text="姓           名："/>
+			<s:TextInput id="pname" width="100%" text="{dg.selectedItem.NAME}"/>
+			<s:Label color="#FE0303" text="性        别："/>
+			<tool:DictDdl id="gender" width="100%" dictName="性别" requireSelection="true"
+						  selectedData="{dg.selectedItem.GENDER}"/>
+			<s:Label color="#FF0000" text="身  份  证："/>
+			<s:TextInput id="idcard" width="100%" text="{dg.selectedItem.IDCARDNO}"/>
+		</s:HGroup>
+		<s:HGroup width="100%" verticalAlign="middle">
+			<s:Label text="出 生 日 期 ："/>
+			<s:TextInput id="birthday" width="100%" text="{dg.selectedItem.BIRTH_DATE}"/>
+			<s:Label text="年        龄："/>
+			<s:TextInput id="age" width="100%" text="{dg.selectedItem.AGE}"/>
+			<s:Label color="#FF0000" text="电        话："/>
+			<s:TextInput id="phone" width="100%" text="{dg.selectedItem.PHONE}"/>
+		</s:HGroup>
+		<s:HGroup width="100%" verticalAlign="middle">
+			<s:Label text="户籍地/籍贯："/>
+			<s:TextInput id="nativeplace" width="100%" text="{dg.selectedItem.NATIVE_PLACE}"/>
+			<s:Label text="职        业："/>
+			<tool:DictCbb id="job" width="100%" dictName="身份" selectedItem="{dg.selectedItem.JOB}"/>
+			<s:Label text="学        历："/>
+			<tool:DictCbb id="education" width="100%" dictName="学历" selectedItem="{dg.selectedItem.EDUCATION}"/>
+		</s:HGroup>
+		<s:HGroup width="100%" verticalAlign="middle">
+			<s:Label color="#FE0000" text="现    住    址："/>
+			<s:TextInput id="residenceplace" width="100%" text="{dg.selectedItem.RESIDENCE_PLACE}"/>
+			<s:Label text="工作地点："/>
+			<s:TextInput id="workplace" width="100%" text="{dg.selectedItem.WORK_PLACE}"/>
+		</s:HGroup>
+		<s:HGroup width="100%" horizontalAlign="right" verticalAlign="middle">
+			<s:Button label="增加" click="insertClickHandler(event)"
+					  enabled="{PsbLocator.getInstance().npending}" skinClass="assets.skins.Button_zj"/>
+			<s:Button label="修改" click="updateClickHandler(event)"
+					  enabled="{PsbLocator.getInstance().npending}" skinClass="assets.skins.Button_xg"/>
+			<s:Button label="删除" click="deleteClickHandler(event)"
+					  enabled="{PsbLocator.getInstance().npending}" skinClass="assets.skins.Button_sc"/>
+			<s:Label color="#0A37FA" text="请注意：确保信息已“增加”到上方列表"/>
+			<s:Button click="button1_clickHandler(event)" skinClass="assets.skins.Button_xyb"/>
+		</s:HGroup>
+	</s:VGroup>
+</s:Group>

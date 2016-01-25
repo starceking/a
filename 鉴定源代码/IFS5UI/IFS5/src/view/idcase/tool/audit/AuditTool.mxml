@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009"
+		 xmlns:s="library://ns.adobe.com/flex/spark"
+		 xmlns:mx="library://ns.adobe.com/flex/mx"
+		 width="813" height="353" fontSize="14">
+	<fx:Declarations>
+		<!-- 将非可视元素（例如服务、值对象）放在此处 -->
+	</fx:Declarations>
+	<fx:Script>
+		<![CDATA[
+			import com.adobe.cairngorm.control.CairngormEventDispatcher;
+			
+			import control.*;
+			
+			import locator.IdFlowLocator;
+			import locator.PsbLocator;
+			import locator.SysUserLocator;
+			
+			import vo.IdFlowVo;
+			public var locObj:IdFlowLocator=IdFlowLocator.getInstance();
+			public var curObj:IdFlowVo=locObj.curObj;
+			
+			protected function saveClickHandler(event:MouseEvent):void
+			{
+				locObj.wsObj=curObj;
+				
+				locObj.oper=SysUserLocator.getInstance().loginUser.NAME;
+				locObj.operTimeCol=IdFlowLocator.getInstance().getOperTimeCol();
+				locObj.operReason=remark.text;
+				
+				if(shtg.selected)
+				{
+					locObj.wsObj.ID_STATUS="通过";
+				}
+				else if(shth.selected)
+				{
+					locObj.wsObj.ID_STATUS="退回";
+				}
+				else if(shcd.selected)
+				{
+					locObj.wsObj.ID_STATUS="存档";
+				}
+				CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.IDFLOWWS_UpdateAudit));
+			}
+			
+		]]>
+	</fx:Script>
+	<s:Label id="shLbl" x="10" y="90" text="审核意见："/>
+	<s:TextArea id="remark" x="88" y="80" width="715" height="50" text="通过"/>
+	<s:Button y="138" click="saveClickHandler(event)" enabled="{PsbLocator.getInstance().npending}"
+			  horizontalCenter="0" skinClass="assets.skins.Button_bc"/>
+	<s:RadioButton id="shtg" x="88" y="50" label="通过" change="shLbl.text='审核意见：';remark.text='通过';" selected="true"/>
+	<s:RadioButton id="shth" x="142" y="50" label="退回" change="shLbl.text='退回原因：';remark.text='退回';"/>
+	<s:RadioButton id="shcd" x="196" y="50" label="直接存档" change="shLbl.text='存档原因：';remark.text='存档';"/>
+	<s:Label x="10" y="55" color="#FB0505" text="审核结果："/>
+	<s:Label x="278" y="55" color="#AA1AF4" text="注：因任何原因终止鉴定，请选择存档。"/>
+	<s:Label x="10" y="10" color="#0A37FA" fontSize="20" fontStyle="normal" fontWeight="normal"
+			 lineThrough="false" text="选择审核结果。A.通过：进入下一阶段；B.退回：退回到一检人的文书撰写任务中" textDecoration="none"/>
+	<s:Label id="shLbl0" x="10" y="177" text="一检留言："/>
+	<s:TextArea id="remark0" x="88" y="167" width="715" height="176" editable="false" text="{curObj.TESTER_REMARK}"/>
+</s:Group>

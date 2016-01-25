@@ -1,0 +1,257 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009"
+		 xmlns:s="library://ns.adobe.com/flex/spark"
+		 xmlns:mx="library://ns.adobe.com/flex/mx"
+		 xmlns:tool="view.tool.*"
+		 xmlns:ns1="*"
+		 width="813" height="547" creationComplete="creationCompleteHandler(event)" fontSize="14">
+	<fx:Declarations>
+		<!-- 将非可视元素（例如服务、值对象）放在此处 -->
+	</fx:Declarations>
+	<fx:Script>
+		<![CDATA[
+			import com.adobe.cairngorm.control.CairngormEventDispatcher;
+			
+			import control.*;
+			
+			import locator.CasePersonnelSampleShrLocator;
+			import locator.DictLocator;
+			import locator.IdCaseLocator;
+			import locator.IdFlowLocator;
+			import locator.SysUserLocator;
+			import locator.PsbLocator;
+			
+			import mx.containers.ViewStack;
+			import mx.events.FlexEvent;
+			
+			import spark.events.TextOperationEvent;
+			
+			import util.Helper;
+			import util.Server;
+			import vo.CasePersonnelSampleVo;
+			
+			private var sampleCategory:String="受害人";
+			private var locObj:CasePersonnelSampleShrLocator=CasePersonnelSampleShrLocator.getInstance();
+			public var vs:ViewStack;
+			
+			protected function creationCompleteHandler(evt:Event):void
+			{
+				if(IdFlowLocator.getInstance().wholeCase)
+				{
+					locObj.wsObj=new CasePersonnelSampleVo("",IdFlowLocator.getInstance().curObj.SRCID,"",sampleCategory,
+						"","","","","",
+						"","","","","",
+						"","","","","","","");
+					CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.CASEPERSONNELSAMPLE_SHRWS_GetAll));
+				}
+				else
+				{
+					var conno:String=IdFlowLocator.getInstance().curObj.CONNO;
+					if(conno.length==19)
+					{
+						locObj.wsObj=new CasePersonnelSampleVo("","",conno,sampleCategory,
+							"","","","","",
+							"","","","","",
+							"","","","","","","");
+						CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.CASEPERSONNELSAMPLE_SHRWS_GetAll));
+					}
+				}	
+			}
+			
+			private function getOperVo():CasePersonnelSampleVo
+			{
+				return new CasePersonnelSampleVo(Helper.getGUID(),IdFlowLocator.getInstance().curObj.SRCID,IdFlowLocator.getInstance().curObj.CONNO,sampleCategory,
+					pname.text,stype.selectedData,gender.selectedData,ptype.selectedData,birthday.text,
+					nation.selectedData,district.selectedData,idcard.text,edu.selectedData,identity.selectedData,
+					nativeplace.text,residenceplace.text,pack.getSelectedItem(),sdes.text,remark.text,pnum.text,"");	
+			}
+			
+			protected function insertClickHandler(event:MouseEvent):void
+			{
+				if(validateInput())
+				{
+					locObj.wsObj=getOperVo();
+					if((IdFlowLocator.getInstance().curObj.ID_STATUS!="新的委托")&&
+						(IdFlowLocator.getInstance().curObj.ID_STATUS!="信息录入"))
+					{
+						locObj.wsObj.ORA_FLAG=IdFlowLocator.getInstance().curObj.ORA_FLAG;
+						CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.CASEPERSONNELSAMPLE_SHRWS_InsertWithNo));
+					}
+					else
+					{
+						CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.CASEPERSONNELSAMPLE_SHRWS_Insert));
+					}
+					ClearData();
+				}
+			}
+			
+			protected function updateClickHandler(event:MouseEvent):void
+			{
+				if(dg.selectedItem!=null)
+				{
+					if(validateInput())
+					{
+						locObj.wsObj=getOperVo();
+						locObj.wsObj.ID=dg.selectedItem.ID;
+						locObj.wsObj.ORA_FLAG=dg.selectedItem.ORA_FLAG;
+						CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.CASEPERSONNELSAMPLE_SHRWS_Update));
+					}
+					ClearData();
+				}
+				else
+				{
+					Helper.showAlert("请先选中对应数据行");
+				}
+			}
+			
+			protected function deleteClickHandler(event:MouseEvent):void
+			{
+				if(dg.selectedItem!=null)
+				{
+					locObj.wsObj=getOperVo();
+					locObj.wsObj.ID=dg.selectedItem.ID;
+					locObj.wsObj.ORA_FLAG=dg.selectedItem.ORA_FLAG;
+					CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.CASEPERSONNELSAMPLE_SHRWS_Delete));
+					ClearData();
+				}
+				else
+				{
+					Helper.showAlert("请先选中对应数据行");
+				}
+			}
+			
+			private function validateInput():Boolean
+			{
+				if(IdFlowLocator.getInstance().curObj.CONNO.length==1)
+				{
+					Helper.showAlert("请先保存案件信息。");
+					return false;
+				}
+				
+				var caseStatus:String=IdFlowLocator.getInstance().curObj.ID_STATUS;
+				if((caseStatus=="信息录入")||(caseStatus=="新的委托"))
+				{
+					pnum.text="受理后自动生成";
+				}
+				
+				var result:Boolean=true;
+				result=result && Helper.validateTextInput(pname);
+				return result;
+			}
+			
+			protected function caseNoChange(event:TextOperationEvent):void				
+			{
+				var status:String=(event.target as TextInput).text;
+				if(status=="受理后自动生成")
+				{
+					event.preventDefault();
+				}
+			}
+			
+			private function ClearData():void
+			{
+				pnum.text="";
+				pack.textInput.text="";
+				pname.text="";
+				idcard.text="";
+				birthday.text="";
+				nativeplace.text="";
+				residenceplace.text="";
+				sdes.text="";
+				remark.text="";
+			}
+			
+		]]>
+	</fx:Script>
+	<s:VGroup left="10" right="10" top="10" bottom="10" gap="10">
+		<s:HGroup width="100%">
+			<s:Label color="#0A37FA" fontSize="20" fontWeight="bold" text="受害人样本信息"/>
+			<s:Spacer width="100%" height="10"/>
+			<s:Button click="Server.getSmallBcUrl(IdFlowLocator.getInstance().curObj.CONNO,'受害人')"
+					  skinClass="assets.skins.Button_dytm"/>
+		</s:HGroup>
+		<s:DataGrid id="dg" width="100%" height="190" dataProvider="{locObj.listObj}">
+			<s:columns>
+				<s:ArrayList>
+					<s:GridColumn width="160" dataField="SLN" headerText="样本编号"></s:GridColumn>
+					<s:GridColumn dataField="SAMPLE_TYPE" headerText="样本类型"></s:GridColumn>
+					<s:GridColumn dataField="NAME" headerText="姓名"></s:GridColumn>
+					<s:GridColumn dataField="GENDER" headerText="性别"></s:GridColumn>
+					<s:GridColumn dataField="ID_CARD_NO" headerText="身份证"></s:GridColumn>
+					<s:GridColumn dataField="SAMPLE_PACKAGING" headerText="包装"></s:GridColumn>
+				</s:ArrayList>
+			</s:columns>
+		</s:DataGrid>
+		<s:HGroup width="100%" horizontalAlign="right">
+			<ns1:ListPager id="pager"
+						   creationComplete="pager.addEventListener(ListPager.PAGE_INDEX_CHANGE_EVENT,creationCompleteHandler);locObj.listPager=pager;"
+						   pageSize="6">
+			</ns1:ListPager>
+		</s:HGroup>
+		<s:HGroup width="100%" verticalAlign="middle">
+			<s:Label color="#FC0303" text="样本编号："/>
+			<s:TextInput id="pnum" width="100%" changing="caseNoChange(event)" enabled="true"
+						 prompt="受理后自动生成" text="{dg.selectedItem.SLN}"/>
+			<s:Label color="#FF0000" text="样本类型："/>
+			<tool:DictDdl id="stype" width="100%" dictName="样本类型" requireSelection="true"
+						  selectedData="{dg.selectedItem.SAMPLE_TYPE}"/>
+			<s:Label text="样本包装："/>
+			<tool:DictCbb id="pack" width="100%" dictName="检材包装"
+						  selectedItem="{dg.selectedItem.SAMPLE_PACKAGING}"/>
+		</s:HGroup>
+		<s:HGroup width="100%" verticalAlign="middle">
+			<s:Label color="#FC0303" text="姓       名："/>
+			<s:TextInput id="pname" width="100%" text="{dg.selectedItem.NAME}"/>
+			<s:Label color="#FE0101" text="性        别："/>
+			<tool:DictDdl id="gender" width="100%" dictName="性别" requireSelection="true"
+						  selectedData="{dg.selectedItem.GENDER}"/>
+			<s:Label color="#FF0000" text="身  份  证："/>
+			<s:TextInput id="idcard" width="100%" text="{dg.selectedItem.ID_CARD_NO}" maxChars="18" restrict="0-9 \x \X"/>
+		</s:HGroup>
+		<s:HGroup width="100%" verticalAlign="middle">
+			<s:Label text="出生日期："/>
+			<tool:DateZh id="birthday" width="100%" text="{dg.selectedItem.BIRTH_DATE}"/>
+			<s:Label text="学        历："/>
+			<tool:DictDdl id="edu" width="100%" dictName="学历" requireSelection="true"
+						  selectedData="{dg.selectedItem.EDUCATION_LEVEL}"/>
+			<s:Label text="人员类型："/>
+			<tool:DictDdl id="ptype" width="100%" dictName="人员类型" requireSelection="true"
+						  selectedData="{dg.selectedItem.PERSONNEL_TYPE}"/>
+		</s:HGroup>
+		<s:HGroup width="100%" verticalAlign="middle">
+			<s:Label text="国       籍："/>
+			<tool:DictDdl id="district" width="100%" dictName="国籍" requireSelection="true"
+						  selectedData="{dg.selectedItem.DISTRICT}"/>
+			<s:Label text="民        族："/>
+			<tool:DictDdl id="nation" width="100%" dictName="民族" requireSelection="true"
+						  selectedData="{dg.selectedItem.NATIONALITY}"/>
+			<s:Label text="身        份："/>
+			<tool:DictDdl id="identity" width="100%" dictName="身份" requireSelection="true"
+						  selectedData="{dg.selectedItem.IDENTITY}"/>
+		</s:HGroup>
+		<s:HGroup width="100%" verticalAlign="middle">
+			<s:Label color="#FF0000" text="户籍地/籍贯："/>
+			<s:TextInput id="nativeplace" width="100%" text="{dg.selectedItem.NATIVE_PLACE_ADDR}"/>
+			<s:Label text="现  住  址："/>
+			<s:TextInput id="residenceplace" width="100%" text="{dg.selectedItem.RESIDENCE_ADDR}"/>
+		</s:HGroup>
+		<s:HGroup width="100%" verticalAlign="middle">
+			<s:Label color="#FF0000" text="样 本  描 述："/>
+			<s:TextInput id="sdes" width="100%" text="{dg.selectedItem.SAMPLE_DESCRIPTION}"/>
+		</s:HGroup>
+		<s:HGroup width="100%" verticalAlign="middle">
+			<s:Label text="备           注："/>
+			<s:TextInput id="remark" width="100%" text="{dg.selectedItem.REMARK}"/>
+		</s:HGroup>
+		<s:HGroup width="100%" horizontalAlign="right" verticalAlign="middle">
+			<s:Button label="增加" click="insertClickHandler(event)"
+					  enabled="{PsbLocator.getInstance().npending}" skinClass="assets.skins.Button_zj"/>
+			<s:Button label="修改" click="updateClickHandler(event)"
+					  enabled="{PsbLocator.getInstance().npending}" skinClass="assets.skins.Button_xg"/>
+			<s:Button label="删除" click="deleteClickHandler(event)"
+					  enabled="{PsbLocator.getInstance().npending}" skinClass="assets.skins.Button_sc"/>
+			<s:Label color="#0A37FA" text="请注意：确保信息已“增加”到上方列表"/>
+			<s:Button click="if(vs!=null)vs.selectedIndex++;" skinClass="assets.skins.Button_xyb"/>
+		</s:HGroup>
+	</s:VGroup>
+</s:Group>

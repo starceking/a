@@ -1,0 +1,221 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009"
+		 xmlns:s="library://ns.adobe.com/flex/spark"
+		 xmlns:mx="library://ns.adobe.com/flex/mx"
+		 xmlns:tool="view.tool.*"
+		 xmlns:ns1="*"
+		 width="813" height="547" creationComplete="creationCompleteHandler(event)" fontSize="14">
+	<fx:Declarations>
+		<!-- 将非可视元素（例如服务、值对象）放在此处 -->
+	</fx:Declarations>
+	<fx:Script>
+		<![CDATA[
+			import com.adobe.cairngorm.control.CairngormEventDispatcher;
+			
+			import control.*;
+			
+			import locator.DnaSeLocator;
+			import locator.IdCaseLocator;
+			import locator.IdFlowLocator;
+			import locator.PsbLocator;
+			
+			import mx.containers.ViewStack;
+			import mx.core.FlexGlobals;
+			import mx.events.FlexEvent;
+			
+			import org.hamcrest.mxml.text.EmptyString;
+			import org.hamcrest.text.emptyString;
+			
+			import spark.events.TextOperationEvent;
+			
+			import util.Helper;
+			import util.Server;
+			
+			import vo.DnaSeVo;
+			
+			private var locObj:DnaSeLocator=DnaSeLocator.getInstance();
+			public var vs:ViewStack;
+			
+			protected function creationCompleteHandler(evt:Event):void
+			{
+				if(IdFlowLocator.getInstance().wholeCase)
+				{
+					locObj.wsObj=new DnaSeVo("",IdFlowLocator.getInstance().curObj.SRCID,"","","","","","","","");
+					CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.DNASEWS_GetAll));
+				}
+				else
+				{
+					var conno:String=IdFlowLocator.getInstance().curObj.CONNO;
+					if(conno.length==19)
+					{
+						locObj.wsObj=new DnaSeVo("","",conno,"","","","","","","");
+						CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.DNASEWS_GetAll));
+					}
+				}
+			}
+			
+			private function getOperVo():DnaSeVo
+			{
+				return new DnaSeVo(Helper.getGUID(),IdFlowLocator.getInstance().curObj.SRCID,IdFlowLocator.getInstance().curObj.CONNO,
+					pname.text,stype.selectedData,amount.text,carrier.selectedData,pnum.text,"",pack.getSelectedItem());
+			}
+			
+			protected function insertClickHandler(event:MouseEvent):void
+			{
+				if(validateInput()) 
+				{
+					locObj.wsObj=getOperVo();
+					if((IdFlowLocator.getInstance().curObj.ID_STATUS!="新的委托")&&
+						(IdFlowLocator.getInstance().curObj.ID_STATUS!="信息录入"))
+					{
+						locObj.wsObj.ORA_FLAG=IdFlowLocator.getInstance().curObj.ORA_FLAG;
+						CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.DNASEWS_InsertWithNo));	
+					}
+					else
+					{
+						CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.DNASEWS_Insert));
+					}
+					ClearData();
+				}				
+			}
+			
+			protected function updateClickHandler(event:MouseEvent):void
+			{				
+				if(dg.selectedItem!=null)
+				{
+					if(validateInput()) 
+					{
+						locObj.wsObj=getOperVo();
+						locObj.wsObj.ID=dg.selectedItem.ID;
+						locObj.wsObj.ORA_FLAG=dg.selectedItem.ORA_FLAG;
+						CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.DNASEWS_Update));
+					}
+					ClearData();
+				}
+				else
+				{
+					Helper.showAlert("请先选中对应数据行");
+				}
+			}
+			
+			protected function deleteClickHandler(event:MouseEvent):void
+			{
+				if(dg.selectedItem!=null)
+				{
+						locObj.wsObj=getOperVo();
+						locObj.wsObj.ID=dg.selectedItem.ID;
+						locObj.wsObj.ORA_FLAG=dg.selectedItem.ORA_FLAG;
+						CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.DNASEWS_Delete));
+						ClearData();
+				}
+				else
+				{
+					Helper.showAlert("请先选中对应数据行");
+				}
+			}
+			
+			private function validateInput():Boolean
+			{
+				if(IdFlowLocator.getInstance().curObj.CONNO.length==1)
+				{
+					Helper.showAlert("请先保存案件信息。");
+					return false;
+				}
+				
+				var caseStatus:String=IdFlowLocator.getInstance().curObj.ID_STATUS;
+				if((caseStatus=="信息录入")||(caseStatus=="新的委托"))
+				{
+					pnum.text="受理后自动生成";
+				}
+				
+				var result:Boolean=true;
+				result=result && Helper.validateTextInput(pname);
+				result=result && Helper.validateTextInput(amount);
+				return result;
+			}
+			
+			protected function caseNoChange(event:TextOperationEvent):void				
+			{
+				var status:String=(event.target as TextInput).text;
+				if(status=="受理后自动生成")
+				{
+					event.preventDefault();
+				}
+			}
+			protected function dg_doubleClickHandler(event:MouseEvent):void
+			{
+				if(dg.selectedItem!=null)
+				{
+					if(dg.selectedItem.SLN!="受理后自动生成")
+						FlexGlobals.topLevelApplication.showTesPicModule(dg.selectedItem.SLN,dg.selectedItem.NAME);
+				}
+			}
+			
+			private function ClearData():void
+			{
+				pnum.text="";
+				pname.text="";
+				pack.textInput.text="";
+				amount.text="";
+			}
+		]]>
+	</fx:Script>
+	<s:VGroup left="10" right="10" top="10" bottom="10" gap="10">
+		<s:HGroup width="100%">
+			<s:Label color="#0A37FA" fontSize="20" fontWeight="bold" text="现场物证样本信息"/>
+			<s:Spacer width="100%" height="10"/>
+			<s:Button click="Server.getSmallBcUrl(IdFlowLocator.getInstance().curObj.CONNO,'样本信息')"
+					  skinClass="assets.skins.Button_dytm"/>
+		</s:HGroup>
+		<s:DataGrid id="dg" width="100%" height="352" dataProvider="{locObj.listObj}"
+					doubleClick="dg_doubleClickHandler(event)" doubleClickEnabled="true">
+			<s:columns>
+				<s:ArrayList>
+					<s:GridColumn width="160" dataField="SLN" headerText="编号"></s:GridColumn>
+					<s:GridColumn dataField="NAME" headerText="名称"></s:GridColumn>
+					<s:GridColumn dataField="SAMPLE_TYPE" headerText="样本类型"></s:GridColumn>
+					<s:GridColumn dataField="AMOUNT" width="50" headerText="数量"></s:GridColumn>
+					<s:GridColumn dataField="SAMPLE_PACKAGING" headerText="包装"></s:GridColumn>
+					<s:GridColumn dataField="CARRIER" headerText="承载物"></s:GridColumn>
+				</s:ArrayList>
+			</s:columns>
+		</s:DataGrid>
+		<s:HGroup width="100%" horizontalAlign="right">
+			<ns1:ListPager id="pager"
+						   creationComplete="pager.addEventListener(ListPager.PAGE_INDEX_CHANGE_EVENT,creationCompleteHandler);locObj.listPager=pager;"
+						   pageSize="12">
+			</ns1:ListPager>
+		</s:HGroup>
+		<s:HGroup width="100%" verticalAlign="middle">
+			<s:Label color="#FC0303" text="样本编号："/>
+			<s:TextInput id="pnum" width="100%" changing="caseNoChange(event)" enabled="true"
+						 prompt="受理后自动生成" text="{dg.selectedItem.SLN}"/>
+			<s:Label color="#FC0303" text="名        称："/>
+			<s:TextInput id="pname" width="100%" text="{dg.selectedItem.NAME}"/>
+			<s:Label color="#FF0000" text="包        装："/>
+			<tool:DictCbb id="pack" width="100%" dictName="检材包装"
+						  selectedItem="{dg.selectedItem.SAMPLE_PACKAGING}"/>
+		</s:HGroup>
+		<s:HGroup width="100%" verticalAlign="middle">
+			<s:Label color="#FF0101" text="样本类型："/>
+			<tool:DictDdl id="stype" width="100%" dictName="样本类型" requireSelection="true"
+						  selectedData="{dg.selectedItem.SAMPLE_TYPE}"/>
+			<s:Label color="#FF0000" text="承  载  物："/>
+			<tool:DictDdl id="carrier" width="100%" dictName="承载物" requireSelection="true"
+						  selectedData="{dg.selectedItem.CARRIER}"/>
+			<s:Label color="#FF0000" text="数        量："/>
+			<s:TextInput id="amount" width="100%" text="{dg.selectedItem.AMOUNT}"/>
+		</s:HGroup>
+		<s:HGroup width="100%" horizontalAlign="right" verticalAlign="middle">
+			<s:Button label="增加" click="insertClickHandler(event)"
+					  enabled="{PsbLocator.getInstance().npending}" skinClass="assets.skins.Button_zj"/>
+			<s:Button label="修改" click="updateClickHandler(event)"
+					  enabled="{PsbLocator.getInstance().npending}" skinClass="assets.skins.Button_xg"/>
+			<s:Button label="删除" click="deleteClickHandler(event)"
+					  enabled="{PsbLocator.getInstance().npending}" skinClass="assets.skins.Button_sc"/>
+			<s:Label color="#0A37FA" text="请注意：确保信息已“增加”到上方列表"/>
+			<s:Button click="if(vs!=null)vs.selectedIndex++;" skinClass="assets.skins.Button_xyb"/>
+		</s:HGroup>
+	</s:VGroup>
+	
+</s:Group>

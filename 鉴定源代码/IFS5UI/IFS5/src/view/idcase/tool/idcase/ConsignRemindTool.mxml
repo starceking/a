@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009"
+		 xmlns:s="library://ns.adobe.com/flex/spark"
+		 xmlns:mx="library://ns.adobe.com/flex/mx"
+		 xmlns:tool="view.tool.*"
+		 width="813" height="500" fontSize="14">
+	<fx:Declarations>
+		<!-- 将非可视元素（例如服务、值对象）放在此处 -->
+	</fx:Declarations>
+	<fx:Script>
+		<![CDATA[			
+			import locator.CasePersonnelSampleQtrLocator;
+			import locator.CasePersonnelSampleShrLocator;
+			import locator.CasePersonnelSampleXyrLocator;
+			import locator.CaseRelativeShrLocator;
+			import locator.CaseRelativeXyrLocator;
+			import locator.DnaSeLocator;
+			import locator.IdCtrLocator;
+			import locator.IdFlowLocator;
+			import locator.IdPersonLocator;
+			import locator.IdTestimonyLocator;
+			import locator.JusTypeLocator;
+			import locator.MRelativeLocator;
+			import locator.MissingPersonLocator;
+			import locator.PsbLocator;
+			import locator.SysUserLocator;
+			import locator.UnknownDeceasedLocator;
+			
+			import util.Helper;
+			
+			import vo.IdFlowVo;
+			import vo.MRelativeVo;
+			import vo.MissingPersonVo;
+			import vo.OfficeJusTypeVo;
+			
+			protected function officeRgpChanged(evt:Event):void
+			{
+				jusType.office=office.office;
+			}
+			
+			protected function nextBtn_clickHandler(event:MouseEvent):void
+			{	
+				var caseId:String=Helper.getGUID();		
+				var voObj:IdFlowVo=IdFlowLocator.getInstance().curObj;
+				if(office.office=="DNA")
+				{
+					if(jusType.jusType=="DNA案件")
+					{				
+						IdFlowLocator.getInstance().curObj=new IdFlowVo("D",PsbLocator.getInstance().idPsb.ID,caseId,"信息录入",
+							SysUserLocator.getInstance().loginUser.PSBID,SysUserLocator.getInstance().loginUser.ID,"","","",
+							voObj.CONER2NAME,voObj.CONER2POLICENO,"",
+							JusTypeLocator.getInstance().jusTypeVo.YEAR,"",Helper.getStrByDate(new Date()),office.office,
+							jusType.jusType,"",JusTypeLocator.getInstance().jusTypeVo.IDREQ,JusTypeLocator.getInstance().jusTypeVo.DocName,
+							"","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","",
+							"","","","","",SysUserLocator.getInstance().loginUser.NAME,"","","","","","","","","","","",caseId,
+							voObj.DFGKNO,voObj.XCKYNO,voObj.CASE_NAME,voObj.CASE_TYPE,voObj.CASE_TYPE2,voObj.CASE_NO,voObj.SCENE_PLACE,voObj.RegionCode,voObj.OCCURRENCE_DATE,
+							voObj.CASE_PROPERTY,voObj.CASE_SUMMARY,caseId,"","","","","","","","","");
+						Helper.setIndexContentNoMenu("view/idcase/info/consign/ConsignDnaModule.swf");
+					}
+				}
+				else if(jusType.jusType.length>0)
+				{
+					var jtypex:OfficeJusTypeVo=JusTypeLocator.getInstance().getJusType(office.office,jusType.jusType);
+					IdFlowLocator.getInstance().curObj=new IdFlowVo("C",PsbLocator.getInstance().idPsb.ID,caseId,"信息录入",
+						SysUserLocator.getInstance().loginUser.PSBID,SysUserLocator.getInstance().loginUser.ID,"","","",
+						voObj.CONER2NAME,voObj.CONER2POLICENO,"",
+						JusTypeLocator.getInstance().jusTypeVo.YEAR,"",Helper.getStrByDate(new Date()),office.office,
+						jusType.jusType,"",jtypex.IDREQ,jtypex.DocName,
+						"","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","",
+						"","","","","",SysUserLocator.getInstance().loginUser.NAME,"","","","","","","","","","","",caseId,
+						voObj.DFGKNO,voObj.XCKYNO,voObj.CASE_NAME,voObj.CASE_TYPE,voObj.CASE_TYPE2,voObj.CASE_NO,voObj.SCENE_PLACE,voObj.RegionCode,voObj.OCCURRENCE_DATE,
+						voObj.CASE_PROPERTY,voObj.CASE_SUMMARY,caseId,"","","","","","","","","");
+					Helper.setIndexContentNoMenu("view/idcase/info/consign/ConsignIdCaseModule.swf");
+				}
+				else
+				{
+					Helper.showAlert("请选择鉴定专业与类别");
+				}
+				PsbLocator.getInstance().clearData();
+			}
+			
+		]]>
+	</fx:Script>
+	<s:Label x="10" y="60" text="注意及建议事项："/>
+	<s:Label x="88" y="90" color="#AA1AF4" text="1、委托单和材料单必须加盖公章，并保证委托书上的委托单位名称完整准确"/>
+	<s:Label x="88" y="150" color="#AA1AF4" text="3、如不能保证本次委托信息填写的正确性，在有条件的情况下，可携带单位公章前去送检（可能会重新打印委托书）"/>
+	<s:Label x="88" y="120" color="#AA1AF4" text="{'2、送检前可先向'+PsbLocator.getInstance().idPsb.NAME+IdFlowLocator.getInstance().curObj.ID_OFFICE+'相关人员咨询，避免误送检'}"/>
+	<s:Label x="10" y="180" text="本案件是否仍需要送检到别的专业进行另外项目的鉴定？"/>
+	<s:Label x="10" y="10" color="#0A37FA" fontSize="20" fontWeight="bold" text="感谢您认真填完了上述信息，并打印出来委托书"/>
+	<s:Label x="88" y="210" color="#FE0505" text="鉴定专业："/>
+	<s:Label x="88" y="240" color="#FE0505" text="鉴定类别："/>
+	<tool:OfficeRgp id="office" x="164" y="205" width="640"
+					creationComplete="office.addEventListener(OfficeRgp.event_name,officeRgpChanged)"
+					dnaEnable="{JusTypeLocator.getInstance().jusTypeVo.Enabled=='1'?'0':'1'}">
+	</tool:OfficeRgp>
+	<tool:JusTypeRgp id="jusType" x="164" y="235" width="640">
+	</tool:JusTypeRgp>
+	<s:Button id="nextBtn" y="270" click="nextBtn_clickHandler(event)" horizontalCenter="14"
+			  skinClass="assets.skins.Button_jxsj"/>
+</s:Group>

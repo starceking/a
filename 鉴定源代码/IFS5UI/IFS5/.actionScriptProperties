@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<actionScriptProperties analytics="false" mainApplicationPath="IFS5.mxml" projectUUID="c697f1bd-eda0-48ae-bab9-1ff8c56eaaeb" version="10">
+  <compiler additionalCompilerArguments="-locale en_US" autoRSLOrdering="true" copyDependentFiles="true" fteInMXComponents="false" generateAccessible="true" htmlExpressInstall="true" htmlGenerate="true" htmlHistoryManagement="true" htmlPlayerVersionCheck="true" includeNetmonSwc="false" outputFolderPath="bin-debug" removeUnusedRSL="true" sourceFolderPath="src" strict="true" targetPlayerVersion="0.0.0" useApolloConfig="false" useDebugRSLSwfs="true" verifyDigests="true" warn="true">
+    <compilerSourcePath/>
+    <libraryPath defaultLinkType="0">
+      <libraryPathEntry kind="4" path="">
+        <excludedEntries>
+          <libraryPathEntry kind="3" linkType="1" path="${PROJECT_FRAMEWORKS}/libs/flex.swc" useDefaultLinkType="false"/>
+          <libraryPathEntry kind="3" linkType="1" path="${PROJECT_FRAMEWORKS}/libs/core.swc" useDefaultLinkType="false"/>
+        </excludedEntries>
+      </libraryPathEntry>
+      <libraryPathEntry kind="1" linkType="1" path="libs"/>
+      <libraryPathEntry kind="1" linkType="1" path="${FLEXUNIT_LIB_LOCATION}/version4libs/Common"/>
+      <libraryPathEntry kind="1" linkType="1" path="${FLEXUNIT_LIB_LOCATION}/version4libs/FlexProject"/>
+      <libraryPathEntry kind="1" linkType="1" path="${FLEXUNIT_LIB_LOCATION}/version4libs/FlexProject_Extended"/>
+      <libraryPathEntry kind="1" linkType="1" path="${FLEXUNIT_LOCALE_LOCATION}/version4locale/"/>
+    </libraryPath>
+    <sourceAttachmentPath/>
+  </compiler>
+  <applications>
+    <application path="IFS5.mxml"/>
+  </applications>
+  <modules>
+    <module application="src/IFS5.mxml" destPath="view/person/UserManageModule.swf" optimize="true" sourcePath="src/view/person/UserManageModule.mxml"/>
+    <module application="src/IFS5.mxml" destPath="view/sysset/DictSetModule.swf" optimize="true" sourcePath="src/view/sysset/DictSetModule.mxml"/>
+    <module application="src/IFS5.mxml" destPath="view/usermain/insider/JdlcModule.swf" optimize="true" sourcePath="src/view/usermain/insider/JdlcModule.mxml"/>
+    <module application="src/IFS5.mxml" destPath="view/idcase/query/task/GetReportTaskModule.swf" optimize="true" sourcePath="src/view/idcase/query/task/GetReportTaskModule.mxml"/>
+    <module application="src/IFS5.mxml" destPath="view/idcase/info/accept/dna/DnaBsSetModule.swf" optimize="true" sourcePath="src/view/idcase/info/accept/dna/DnaBsSetModule.mxml"/>
+    <module application="src/IFS5.mxml" destPath="view/idcase/info/casedoc/dna/ConsignRoModule.swf" optimize="true" sourcePath="src/view/idcase/info/casedoc/dna/ConsignRoModule.mxml"/>
+    <module application="src/IFS5.mxml" destPath="view/sysset/PsbManaModule.swf" optimize="true" sourcePath="src/view/sysset/PsbManaModule.mxml"/>
+    <module application="src/IFS5.mxml" destPath="view/sysset/NotificationMaModule.swf" optimize="true" sourcePath="src/view/sysset/NotificationMaModule.mxml"/>
+    <module application="src/IFS5.mxml" destPath="view/idcase/info/casedoc/mpr/ConsignRoModule.swf" optimize="true" sourcePath="src/view/idcase/info/casedoc/mpr/ConsignRoModule.mxml"/>
+    <module application="src/IFS5.mxml" destPath="view/idcase/info/casedoc/mp/DocModule.swf" optimize="true" sourcePath="src/view/idcase/info/casedoc/mp/DocModule.mxml"/>
+    <module application="src/IFS5.mxml" destPath="view/usermain/ConsignIndexModule.swf" optimize="true" sourcePath="src/view/usermain/ConsignIndexModule.mxml"/>
+    <module application="src/IFS5.mxml" destPath="view/sysset/DNAtestSetModule.swf" optimize="true" sourcePath="src/view/sysset/DNAtestSetModule.mxml"/>
+    <module application="src/IFS5.mxml" destPath="view/usermain/leader/JdlcModule.swf" optimize="true" sourcePath="src/view/usermain/leader/JdlcModule.mxml"/>
+    <module application="src/IFS5.mxml" destPath="view/idcase/info/audit/AuditMpModule.swf" optimize="true" sourcePath="src/view/idcase/info/audit/AuditMpModule.mxml"/>
+    <module application="src/IFS5.mxml" destPath="view/usermain/office/JdlcModule.swf" optimize="true" sourcePath="src/view/usermain/office/JdlcModule.mxml"/>
+    <module application="src/IFS5.mxml" destPath="view/idcase/query/task/TestTaskModule.swf" optimize="true" sourcePath="src/view/idcase/query/task/TestTaskModule.mxml"/>
+    <module application="src/IFS5.mxml" destPath="view/usermain/TecherIndexModule.swf" optimize="true" sourcePath="src/view/usermain/TecherIndexModule.mxml"/>
+    <module application="src/IFS5.mxml" destPath="view/usermain/InsiderIndexModule.swf" optimize="true" sourcePath="src/view/usermain/InsiderIndexModule.mxml"/>
+    <module application="src/IFS5.mxml" destPath="view/idcase/info/accept/mp/AcceptConfirmModule.swf" optimize="true" sourcePath="src/view/idcase/info/accept/mp/AcceptConfirmModule.mxml"/>
+    <module application="src/IFS5.mxml" destPath="view/equipment/EquipmentModule.swf" optimize="true" sourcePath="src/view/equipment/EquipmentModule.mxml"/>
+    <module application="src/IFS5.mxml" destPath="view/idcase/info/accept/mp/CheckConInfoModule.swf" optimize="true" sourcePath="src/view/idcase/info/accept/mp/CheckConInfoModule.mxml"/>
+    <module application="src/IFS5.mxml" destPath="view/idcase/str/PrintStrRatModule.swf" optimize="true" sourcePath="src/view/idcase/str/PrintStrRatModule.mxml"/>
+    <module application="src/IFS5.mxml" destPath="view/usermain/office/JddaModule.swf" optimize="true" sourcePath="src/view/usermain/office/JddaModule.mxml"/>
+    <module application="src/IFS5.mxml" destPath="view/idcase/query/query/QueryIdCaseConsignModule.swf" optimize="true" sourcePath="src/view/idcase/query/query/QueryIdCaseConsignModule.mxml"/>
+    <module application="src/IFS5.mxml" destPath="view/idcase/info/test/TestMpModule.swf" optimize="true" sourcePath="src/view/idcase/info/test/TestMpModule.mxml"/>
+    <module application="src/IFS5.mxml" destPath="view/usermain/LeaderIndexModule.swf" optimize="true" sourcePath="src/view/usermain/LeaderIndexModule.mxml"/>
+    <module application="src/IFS5.mxml" destPath="view/idcase/info/consign/ConsignMpModule.swf" optimize="true" sourcePath="src/view/idcase/info/consign/ConsignMpModule.mxml"/>
+    <module application="src/IFS5.mxml" destPath="view/idcase/info/accept/mpr/AcceptConfirmModule.swf" optimize="true" sourcePath="src/view/idcase/info/accept/mpr/AcceptConfirmModule.mxml"/>
+    <module application="src/IFS5.mxml" destPath="view/index/MsgModule.swf" optimize="true" sourcePath="src/view/index/MsgModule.mxml"/>
+    <module application="src/IFS5.mxml" destPath="view/sysset/SprModModule.swf" optimize="true" sourcePath="src/view/sysset/SprModModule.mxml"/>
+    <module application="src/IFS5.mxml" destPath="view/supplies/SuppliesInfoModule.swf" optimize="true" sourcePath="src/view/supplies/SuppliesInfoModule.mxml"/>
+    <module application="src/IFS5.mxml" destPath="view/idcase/query/task/DnaBsQueryModule.swf" optimize="true" sourcePath="src/view/idcase/query/task/DnaBsQueryModule.mxml"/>
+    <module application="src/IFS5.mxml" destPath="view/idcase/info/testersd/GetReportModule.swf" optimize="true" sourcePath="src/view/idcase/info/testersd/GetReportModule.mxml"/>
+    <module application="src/IFS5.mxml" destPath="view/idcase/info/testersd/TesterSdMpModule.swf" optimize="true" sourcePath="src/view/idcase/info/testersd/TesterSdMpModule.mxml"/>
+    <module application="src/IFS5.mxml" destPath="view/usermain/OfficeIndexModule.swf" optimize="true" sourcePath="src/view/usermain/OfficeIndexModule.mxml"/>
+    <module application="src/IFS5.mxml" destPath="view/idcase/info/casedoc/mp/RoModule.swf" optimize="true" sourcePath="src/view/idcase/info/casedoc/mp/RoModule.mxml"/>
+    <module application="src/IFS5.mxml" destPath="view/idcase/info/accept/mpr/CheckConInfoModule.swf" optimize="true" sourcePath="src/view/idcase/info/accept/mpr/CheckConInfoModule.mxml"/>
+    <module application="src/IFS5.mxml" destPath="view/idcase/info/casedoc/dna/DnaCaseModule.swf" optimize="true" sourcePath="src/view/idcase/info/casedoc/dna/DnaCaseModule.mxml"/>
+    <module application="src/IFS5.mxml" destPath="view/report/StaModule/CaseConclusion.swf" optimize="true" sourcePath="src/view/report/StaModule/CaseConclusion.mxml"/>
+    <module application="src/IFS5.mxml" destPath="view/idcase/info/audit/AuditMprModule.swf" optimize="true" sourcePath="src/view/idcase/info/audit/AuditMprModule.mxml"/>
+    <module application="src/IFS5.mxml" destPath="view/index/IndexModule.swf" optimize="true" sourcePath="src/view/index/IndexModule.mxml"/>
+    <module application="src/IFS5.mxml" destPath="view/idcase/info/test/TestDnaModule.swf" optimize="true" sourcePath="src/view/idcase/info/test/TestDnaModule.mxml"/>
+    <module application="src/IFS5.mxml" destPath="view/sysset/JusTypeSetModule.swf" optimize="true" sourcePath="src/view/sysset/JusTypeSetModule.mxml"/>
+    <module application="src/IFS5.mxml" destPath="view/frame/TechFrame.swf" optimize="true" sourcePath="src/view/frame/TechFrame.mxml"/>
+    <module application="src/IFS5.mxml" destPath="view/frame/OfficeFrame.swf" optimize="true" sourcePath="src/view/frame/OfficeFrame.mxml"/>
+    <module application="src/IFS5.mxml" destPath="view/idcase/info/audit/AuditIdCaseModule.swf" optimize="true" sourcePath="src/view/idcase/info/audit/AuditIdCaseModule.mxml"/>
+    <module application="src/IFS5.mxml" destPath="view/idcase/info/casedoc/idcase/ConsignRoModule.swf" optimize="true" sourcePath="src/view/idcase/info/casedoc/idcase/ConsignRoModule.mxml"/>
+    <module application="src/IFS5.mxml" destPath="view/person/ConsignUserManageModule.swf" optimize="true" sourcePath="src/view/person/ConsignUserManageModule.mxml"/>
+    <module application="src/IFS5.mxml" destPath="view/usermain/insider/JddaModule.swf" optimize="true" sourcePath="src/view/usermain/insider/JddaModule.mxml"/>
+    <module application="src/IFS5.mxml" destPath="view/idcase/info/testersd/TesterSdDnaModule.swf" optimize="true" sourcePath="src/view/idcase/info/testersd/TesterSdDnaModule.mxml"/>
+    <module application="src/IFS5.mxml" destPath="view/idcase/info/testersd/TesterSdMprModule.swf" optimize="true" sourcePath="src/view/idcase/info/testersd/TesterSdMprModule.mxml"/>
+    <module application="src/IFS5.mxml" destPath="view/equipment/EquipmentSbModule.swf" optimize="true" sourcePath="src/view/equipment/EquipmentSbModule.mxml"/>
+    <module application="src/IFS5.mxml" destPath="view/usermain/xtsz/XtszModule.swf" optimize="true" sourcePath="src/view/usermain/xtsz/XtszModule.mxml"/>
+    <module application="src/IFS5.mxml" destPath="view/sysset/TableDownModule.swf" optimize="true" sourcePath="src/view/sysset/TableDownModule.mxml"/>
+    <module application="src/IFS5.mxml" destPath="view/usermain/techer/JdlcModule.swf" optimize="true" sourcePath="src/view/usermain/techer/JdlcModule.mxml"/>
+    <module application="src/IFS5.mxml" destPath="view/report/StaModule/PersonWork.swf" optimize="true" sourcePath="src/view/report/StaModule/PersonWork.mxml"/>
+    <module application="src/IFS5.mxml" destPath="view/idcase/info/casedoc/dna/RoModule.swf" optimize="true" sourcePath="src/view/idcase/info/casedoc/dna/RoModule.mxml"/>
+    <module application="src/IFS5.mxml" destPath="view/usermain/dna/JdlcModule.swf" optimize="true" sourcePath="src/view/usermain/dna/JdlcModule.mxml"/>
+    <module application="src/IFS5.mxml" destPath="view/idcase/query/task/NewConsignModule.swf" optimize="true" sourcePath="src/view/idcase/query/task/NewConsignModule.mxml"/>
+    <module application="src/IFS5.mxml" destPath="view/idcase/query/task/AuditTaskModule.swf" optimize="true" sourcePath="src/view/idcase/query/task/AuditTaskModule.mxml"/>
+    <module application="src/IFS5.mxml" destPath="view/idcase/info/accept/idcase/AcceptConfirmModule.swf" optimize="true" sourcePath="src/view/idcase/info/accept/idcase/AcceptConfirmModule.mxml"/>
+    <module application="src/IFS5.mxml" destPath="view/sysset/WordSetModule.swf" optimize="true" sourcePath="src/view/sysset/WordSetModule.mxml"/>
+    <module application="src/IFS5.mxml" destPath="view/report/StatisticsView.swf" optimize="true" sourcePath="src/view/report/StatisticsView.mxml"/>
+    <module application="src/IFS5.mxml" destPath="view/idcase/info/consign/ConsignMprModule.swf" optimize="true" sourcePath="src/view/idcase/info/consign/ConsignMprModule.mxml"/>
+    <module application="src/IFS5.mxml" destPath="view/idcase/tool/word/WordConsignTool.swf" optimize="true" sourcePath="src/view/idcase/tool/word/WordConsignTool.mxml"/>
+    <module application="src/IFS5.mxml" destPath="view/idcase/info/consign/ConsignDnaModule.swf" optimize="true" sourcePath="src/view/idcase/info/consign/ConsignDnaModule.mxml"/>
+    <module application="src/IFS5.mxml" destPath="view/idcase/info/consign/ConsignIdCaseModule.swf" optimize="true" sourcePath="src/view/idcase/info/consign/ConsignIdCaseModule.mxml"/>
+    <module application="src/IFS5.mxml" destPath="view/idcase/query/query/StaModule.swf" optimize="true" sourcePath="src/view/idcase/query/query/StaModule.mxml"/>
+    <module application="src/IFS5.mxml" destPath="view/idcase/info/casedoc/idcase/RoModule.swf" optimize="true" sourcePath="src/view/idcase/info/casedoc/idcase/RoModule.mxml"/>
+    <module application="src/IFS5.mxml" destPath="view/idcase/info/accept/idcase/AcceptDupShowModule.swf" optimize="true" sourcePath="src/view/idcase/info/accept/idcase/AcceptDupShowModule.mxml"/>
+    <module application="src/IFS5.mxml" destPath="view/idcase/info/accept/dna/AcceptConfirmModule.swf" optimize="true" sourcePath="src/view/idcase/info/accept/dna/AcceptConfirmModule.mxml"/>
+    <module application="src/IFS5.mxml" destPath="view/report/StaModule/CaseProperty.swf" optimize="true" sourcePath="src/view/report/StaModule/CaseProperty.mxml"/>
+    <module application="src/IFS5.mxml" destPath="view/idcase/info/casedoc/mp/ConsignRoModule.swf" optimize="true" sourcePath="src/view/idcase/info/casedoc/mp/ConsignRoModule.mxml"/>
+    <module application="src/IFS5.mxml" destPath="view/usermain/sysgl/sysglModule.swf" optimize="true" sourcePath="src/view/usermain/sysgl/sysglModule.mxml"/>
+    <module application="src/IFS5.mxml" destPath="view/frame/LeaderFrame.swf" optimize="true" sourcePath="src/view/frame/LeaderFrame.mxml"/>
+    <module application="src/IFS5.mxml" destPath="view/idcase/str/ImportCodiesModule.swf" optimize="true" sourcePath="src/view/idcase/str/ImportCodiesModule.mxml"/>
+    <module application="src/IFS5.mxml" destPath="view/usermain/consign/JddaModule.swf" optimize="true" sourcePath="src/view/usermain/consign/JddaModule.mxml"/>
+    <module application="src/IFS5.mxml" destPath="view/person/SysUser.swf" optimize="true" sourcePath="src/view/person/SysUser.mxml"/>
+    <module application="src/IFS5.mxml" destPath="view/usermain/DnaIndexModule.swf" optimize="true" sourcePath="src/view/usermain/DnaIndexModule.mxml"/>
+    <module application="src/IFS5.mxml" destPath="view/idcase/info/casedoc/mpr/RoModule.swf" optimize="true" sourcePath="src/view/idcase/info/casedoc/mpr/RoModule.mxml"/>
+    <module application="src/IFS5.mxml" destPath="view/report/StaModule/StationWork.swf" optimize="true" sourcePath="src/view/report/StaModule/StationWork.mxml"/>
+    <module application="src/IFS5.mxml" destPath="view/supplies/SuppliesModule.swf" optimize="true" sourcePath="src/view/supplies/SuppliesModule.mxml"/>
+    <module application="src/IFS5.mxml" destPath="view/idcase/info/accept/idcase/CheckConInfoModule.swf" optimize="true" sourcePath="src/view/idcase/info/accept/idcase/CheckConInfoModule.mxml"/>
+    <module application="src/IFS5.mxml" destPath="view/idcase/info/audit/AuditDnaModule.swf" optimize="true" sourcePath="src/view/idcase/info/audit/AuditDnaModule.mxml"/>
+    <module application="src/IFS5.mxml" destPath="view/usermain/ryda/RydaModule.swf" optimize="true" sourcePath="src/view/usermain/ryda/RydaModule.mxml"/>
+    <module application="src/IFS5.mxml" destPath="view/idcase/tool/audit/AuditTool.swf" optimize="true" sourcePath="src/view/idcase/tool/audit/AuditTool.mxml"/>
+    <module application="src/IFS5.mxml" destPath="view/idcase/info/casedoc/idcase/DocModule.swf" optimize="true" sourcePath="src/view/idcase/info/casedoc/idcase/DocModule.mxml"/>
+    <module application="src/IFS5.mxml" destPath="view/frame/ConsignFrame.swf" optimize="true" sourcePath="src/view/frame/ConsignFrame.mxml"/>
+    <module application="src/IFS5.mxml" destPath="view/idcase/query/task/TesterSdTaskModule.swf" optimize="true" sourcePath="src/view/idcase/query/task/TesterSdTaskModule.mxml"/>
+    <module application="src/IFS5.mxml" destPath="view/idcase/info/testersd/TesterSdIdCaseModule.swf" optimize="true" sourcePath="src/view/idcase/info/testersd/TesterSdIdCaseModule.mxml"/>
+    <module application="src/IFS5.mxml" destPath="view/idcase/tool/dnase/DnaSeTool.swf" optimize="true" sourcePath="src/view/idcase/tool/dnase/DnaSeTool.mxml"/>
+    <module application="src/IFS5.mxml" destPath="view/frame/DnaFrame.swf" optimize="true" sourcePath="src/view/frame/DnaFrame.mxml"/>
+    <module application="src/IFS5.mxml" destPath="view/sysset/PsbSingleModule.swf" optimize="true" sourcePath="src/view/sysset/PsbSingleModule.mxml"/>
+    <module application="src/IFS5.mxml" destPath="view/person/SysUserList.swf" optimize="true" sourcePath="src/view/person/SysUserList.mxml"/>
+    <module application="src/IFS5.mxml" destPath="view/usermain/techer/JddaModule.swf" optimize="true" sourcePath="src/view/usermain/techer/JddaModule.mxml"/>
+    <module application="src/IFS5.mxml" destPath="view/idcase/info/casedoc/mpr/DocModule.swf" optimize="true" sourcePath="src/view/idcase/info/casedoc/mpr/DocModule.mxml"/>
+    <module application="src/IFS5.mxml" destPath="view/idcase/info/accept/dna/CheckConInfoModule.swf" optimize="true" sourcePath="src/view/idcase/info/accept/dna/CheckConInfoModule.mxml"/>
+    <module application="src/IFS5.mxml" destPath="view/idcase/info/test/TestIdCaseModule.swf" optimize="true" sourcePath="src/view/idcase/info/test/TestIdCaseModule.mxml"/>
+    <module application="src/IFS5.mxml" destPath="view/idcase/testimony/TestimonyQueryModule.swf" optimize="true" sourcePath="src/view/idcase/testimony/TestimonyQueryModule.mxml"/>
+    <module application="src/IFS5.mxml" destPath="view/usermain/consign/JdlcModule.swf" optimize="true" sourcePath="src/view/usermain/consign/JdlcModule.mxml"/>
+    <module application="src/IFS5.mxml" destPath="view/idcase/query/query/QueryIdCaseModule.swf" optimize="true" sourcePath="src/view/idcase/query/query/QueryIdCaseModule.mxml"/>
+    <module application="src/IFS5.mxml" destPath="view/idcase/info/test/TestMprModule.swf" optimize="true" sourcePath="src/view/idcase/info/test/TestMprModule.mxml"/>
+    <module application="src/IFS5.mxml" destPath="view/idcase/query/task/AcceptTask.swf" optimize="true" sourcePath="src/view/idcase/query/task/AcceptTask.mxml"/>
+    <module application="src/IFS5.mxml" destPath="view/sysset/PersonnelSetModule.swf" optimize="true" sourcePath="src/view/sysset/PersonnelSetModule.mxml"/>
+    <module application="src/IFS5.mxml" destPath="view/frame/InsiderFrame.swf" optimize="true" sourcePath="src/view/frame/InsiderFrame.mxml"/>
+    <module application="src/IFS5.mxml" destPath="view/idcase/testimony/DNASampleQueryModule.swf" optimize="true" sourcePath="src/view/idcase/testimony/DNASampleQueryModule.mxml"/>
+    <module application="src/IFS5.mxml" destPath="view/usermain/dna/JddaModule.swf" optimize="true" sourcePath="src/view/usermain/dna/JddaModule.mxml"/>
+    <module application="src/IFS5.mxml" destPath="view/index/RegisterModule.swf" optimize="true" sourcePath="src/view/index/RegisterModule.mxml"/>
+    <module application="src/IFS5.mxml" destPath="view/usermain/dna/YbjcModule.swf" optimize="true" sourcePath="src/view/usermain/dna/YbjcModule.mxml"/>
+    <module application="src/IFS5.mxml" destPath="view/sysset/UserMainModule.swf" optimize="true" sourcePath="src/view/sysset/UserMainModule.mxml"/>
+    <module application="src/IFS5.mxml" destPath="view/idcase/info/casedoc/dna/DocModule.swf" optimize="true" sourcePath="src/view/idcase/info/casedoc/dna/DocModule.mxml"/>
+    <module application="src/IFS5.mxml" destPath="view/idcase/sampletest/SampleTestQueryModule.swf" optimize="true" sourcePath="src/view/idcase/sampletest/SampleTestQueryModule.mxml"/>
+  </modules>
+  <buildCSSFiles/>
+  <flashCatalyst validateFlashCatalystCompatibility="false"/>
+</actionScriptProperties>

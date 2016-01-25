@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009"
+		 xmlns:s="library://ns.adobe.com/flex/spark"
+		 xmlns:mx="library://ns.adobe.com/flex/mx"
+		 width="813" height="529" fontSize="14">
+	<fx:Declarations>
+		<!-- 将非可视元素（例如服务、值对象）放在此处 -->
+	</fx:Declarations>
+	<fx:Script>
+		<![CDATA[
+			import locator.IdFlowLocator;
+			import locator.MRelativeLocator;
+			
+			import util.Helper;
+			
+			import vo.IdFlowVo;
+			
+			private var locObj:MRelativeLocator=MRelativeLocator.getInstance();
+			private var flowLoc:IdFlowLocator=IdFlowLocator.getInstance();
+		]]>
+	</fx:Script>
+	<s:VGroup left="10" right="10" top="10" bottom="10" gap="14">
+		<s:HGroup width="100%">
+			<s:Label color="#0A37FA" fontSize="20" fontWeight="bold" text="失踪人员基本信息，其亲属信息见后两页"/>
+		</s:HGroup>
+		<s:HGroup width="100%" verticalAlign="middle">
+			<s:Label text="案件名称："/>
+			<s:Label id="caseName" text="{locObj.curObj.CASE_NAME}"/>
+		</s:HGroup>
+		<s:HGroup width="100%" verticalAlign="middle">
+			<s:Label text="亲属关系："/>
+			<s:Label id="relation" text="{locObj.curObj.RELATION}"/>
+		</s:HGroup>
+		<s:HGroup width="100%" verticalAlign="middle">
+			<s:Label text="失  踪  人："/>
+			<s:Label id="lostName" text="{locObj.curObj.PERSON_NAME}"/>
+			<s:Label text="性        别："/>
+			<s:Label id="gender" text="{locObj.curObj.PERSON_GENDER}"/>
+			<s:Label text="出生日期："/>
+			<s:Label id="birthday" text="{locObj.curObj.PERSON_BIRTHDATE}"/>
+		</s:HGroup>
+		<s:HGroup width="100%" verticalAlign="middle">
+			<s:Label text="特殊特征："/>
+			<s:Label id="bodyspec" text="{locObj.curObj.PERSON_SPEC}"/>
+		</s:HGroup>
+		<s:HGroup width="100%" verticalAlign="middle">
+			<s:Label text="体表标记："/>
+			<s:Label id="bodymark" text="{locObj.curObj.PERSON_SIGN}"/>
+		</s:HGroup>
+		<s:HGroup width="100%">
+			<s:Label text="简要案情："/>
+			<s:TextArea id="caseSummary" width="715" height="50" editable="false"
+						text="{locObj.curObj.CASE_SUMMARY}"/>
+		</s:HGroup>
+		<s:VGroup width="100%" gap="14">
+			<s:HGroup verticalAlign="middle">
+				<s:Label text="委托单位："/>
+				<s:Label text="{flowLoc.curObj.CON_PSBCODE}"/>
+				<s:Spacer width="10" height="10"/>
+				<s:Label text="{flowLoc.curObj.CON_PSBNAME}"/>
+			</s:HGroup>
+			<s:HGroup verticalAlign="middle">
+				<s:Label text="委托时间："/>
+				<s:Label id="conDate" width="148" text="{flowLoc.curObj.CON_DATE}"/>
+				<s:Label text="委托年份："/>
+				<s:Label id="conYear" width="148" text="{flowLoc.curObj.CON_YEAR}"/>
+				<s:Label text="委托序号："/>
+				<s:Label id="conNo" width="148" text="{flowLoc.curObj.CON_NO}"/>
+			</s:HGroup>
+			<s:HGroup verticalAlign="middle">
+				<s:Label text="一送姓名："/>
+				<s:Label width="148" text="{flowLoc.curObj.CONER1NAME2}"/>
+				<s:Label text="一送警号："/>
+				<s:Label width="148" text="{flowLoc.curObj.CONER1POLICENO}"/>
+				<s:Label text="一送电话："/>
+				<s:Label width="148" text="{flowLoc.curObj.CONER1PHONE}"/>
+			</s:HGroup>
+			<s:HGroup verticalAlign="middle">
+				<s:Label text="二送姓名："/>
+				<s:Label width="148" text="{flowLoc.curObj.CONER2NAME}"/>
+				<s:Label text="二送警号："/>
+				<s:Label width="148" text="{flowLoc.curObj.CONER2POLICENO}"/>
+				<s:Label text="二送电话："/>
+				<s:Label width="148" text="{flowLoc.curObj.CONER2PHONE}"/>
+			</s:HGroup>
+			<s:HGroup verticalAlign="middle">
+				<s:Label text="鉴定专业："/>
+				<s:Label id="officeLbl" text="{flowLoc.curObj.ID_OFFICE}"/>
+			</s:HGroup>
+			<s:HGroup verticalAlign="middle">
+				<s:Label text="鉴定类别："/>
+				<s:Label id="jusTypeLbl" text="{flowLoc.curObj.ID_JUSTYPE}"/>
+			</s:HGroup>
+			<s:HGroup verticalAlign="middle">
+				<s:Label text="鉴定要求："/>
+				<s:Label id="idRequest" text="{flowLoc.curObj.ID_REQUEST}"/>
+			</s:HGroup>
+		</s:VGroup>
+	</s:VGroup>
+</s:Group>

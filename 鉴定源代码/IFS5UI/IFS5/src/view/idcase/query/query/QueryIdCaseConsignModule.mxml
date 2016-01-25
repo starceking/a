@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Module xmlns:fx="http://ns.adobe.com/mxml/2009"
+		  xmlns:s="library://ns.adobe.com/flex/spark"
+		  xmlns:mx="library://ns.adobe.com/flex/mx"
+		  xmlns:tool="view.tool.*"
+		  xmlns:ns1="*"
+		  width="953" height="598" fontSize="14"
+		  creationComplete="module1_creationCompleteHandler(event)" >
+	<fx:Declarations>
+		<!-- 将非可视元素（例如服务、值对象）放在此处 -->		
+	</fx:Declarations>
+	<fx:Script>
+		<![CDATA[
+			import com.adobe.cairngorm.control.CairngormEventDispatcher;
+			
+			import control.*;
+			
+			import locator.DictLocator;
+			import locator.IdFlowLocator;
+			import locator.JusTypeLocator;
+			import locator.MRelativeLocator;
+			import locator.MenuLocator;
+			import locator.MissingPersonLocator;
+			import locator.PsbLocator;
+			import locator.SysUserLocator;
+			
+			import mx.events.FlexEvent;
+			
+			import util.Helper;
+			
+			import vo.IdFlowVo;
+			import vo.MRelativeVo;
+			import vo.MissingPersonVo;
+			
+			protected function module1_creationCompleteHandler(event:FlexEvent):void
+			{
+				MenuLocator.getInstance().changeMenu(menuGp);
+				IdFlowLocator.getInstance().listObj.removeAll();
+			}
+			
+			protected function officeRgpChanged(evt:Event):void
+			{
+				jusType.office=office.office;
+			}
+			protected function queryClickHandler(evt:Event):void
+			{
+				var dsdjsak=SysUserLocator.getInstance().loginUser.PSBID;
+				if(SysUserLocator.getInstance().loginUser.ROLES.search("Insider")==0)
+				{
+					dsdjsak="";
+				}
+				
+				IdFlowLocator.getInstance().wsObj=new IdFlowVo("","","",idStatus.status,dsdjsak,"","","","",
+					"","","",conYear.text,conNo.text,"",office.office,jusType.jusType,"","","","","","","","","","","",
+					"","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","",
+					"","",SysUserLocator.getInstance().loginUser.NAME,
+					"","","","","","","","","","","","",dfgk.text,xcky.text,caseName.text,caseType.getSelectedItem(),
+					caseNo.text,"","","","",caseProperty.getSelectedItem(),"","","","","","","","","","","");
+				IdFlowLocator.getInstance().sOccDate=occDate.text;
+				IdFlowLocator.getInstance().eOccDate=occDate0.text;
+				IdFlowLocator.getInstance().sConDate=conDate.text;
+				IdFlowLocator.getInstance().eConDate=conDate0.text;
+				CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.IDFLOWWS_QueryAllCase));
+			}
+			
+			protected function dgDoubleClickHandler(event:MouseEvent):void
+			{
+				IdFlowLocator.getInstance().wholeCase=false;
+				if(dg.selectedItem!=null)
+				{
+					IdFlowLocator.getInstance().curObj=dg.selectedItem as IdFlowVo;
+					var con:String=dg.selectedItem.CONNO;
+					var status:String=IdFlowLocator.getInstance().curObj.ID_STATUS;
+					if(status=="新的委托")
+					{
+						if(con.search("C")==0)Helper.pushMenu("案件委托","view/idcase/info/consign/ConsignIdCaseModule.swf");		
+						else if(con.search("D")==0)Helper.pushMenu("案件委托","view/idcase/info/consign/ConsignDnaModule.swf");	
+						else if(con.search("R")==0)
+						{
+							MRelativeLocator.getInstance().wsObj=new MRelativeVo(IdFlowLocator.getInstance().curObj.ID,"","","","","","","","","","","","","",
+								"","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","");
+							CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.MRELATIVEWS_GetOneMpr));
+							Helper.pushMenu("失踪人员亲属委托","view/idcase/info/consign/ConsignMprModule.swf");	
+						}
+						else if(con.search("L")==0)
+						{
+							MissingPersonLocator.getInstance().wsObj=new MissingPersonVo(IdFlowLocator.getInstance().curObj.ID,"","","","","","","","","",
+								"","","","","","","","","","");
+							CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.MISSINGPERSONWS_GetOneMp));
+							Helper.pushMenu("失踪人员委托","view/idcase/info/consign/ConsignMpModule.swf");	
+						}
+					}
+					else
+					{
+						if(con.search("C")==0)Helper.pushMenu("案件信息","view/idcase/info/casedoc/idcase/ConsignRoModule.swf");		
+						else if(con.search("D")==0)Helper.pushMenu("案件信息","view/idcase/info/casedoc/dna/ConsignRoModule.swf");	
+						else if(con.search("R")==0)
+						{
+							MRelativeLocator.getInstance().wsObj=new MRelativeVo(IdFlowLocator.getInstance().curObj.ID,"","","","","","","","","","","","","",
+								"","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","");
+							CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.MRELATIVEWS_GetOneMpr));
+							Helper.pushMenu("失踪人员亲属信息","view/idcase/info/casedoc/mpr/ConsignRoModule.swf");	
+						}
+						else if(con.search("L")==0)
+						{
+							MissingPersonLocator.getInstance().wsObj=new MissingPersonVo(IdFlowLocator.getInstance().curObj.ID,"","","","","","","","","",
+								"","","","","","","","","","");
+							CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.MISSINGPERSONWS_GetOneMp));
+							Helper.pushMenu("失踪人员信息","view/idcase/info/casedoc/mp/ConsignRoModule.swf");	
+						}
+					}
+					PsbLocator.getInstance().clearData();
+				}
+			}
+			
+		]]>
+	</fx:Script>
+	<s:Panel width="953" height="598" >
+		<s:HGroup id="menuGp" x="10" y="-27"/>	
+		<s:VGroup left="10" right="10" top="10" bottom="10">
+			<s:HGroup width="100%" verticalAlign="middle">
+				<s:Label text="警综编号："/>
+				<s:TextInput id="dfgk" width="370"/>
+				<s:Label text="现勘编号："/>
+				<s:TextInput id="xcky" width="388"/>
+			</s:HGroup>
+			<s:HGroup width="100%" verticalAlign="middle">
+				<s:Label text="案件名称："/>
+				<s:TextInput id="caseName" width="592"/>
+				<s:Label text="受理登记号："/>
+				<s:TextInput id="caseNo" width="156"/>
+			</s:HGroup>
+			<s:HGroup width="100%" verticalAlign="middle">
+				<s:Label text="发案时间："/>
+				<tool:DateZh id="occDate" width="143"/>
+				<s:Label width="72" text="      到"/>
+				<tool:DateZh id="occDate0" width="144"/>
+				<s:Label text="案件类型："/>
+				<tool:DictCbb id="caseType" width="148" dictName="案件类型"/>
+				<s:Label width="72" text="案件性质："/>
+				<tool:DictCbb id="caseProperty" width="156" dictName="案件性质"/>
+			</s:HGroup>
+			<s:HGroup width="100%" verticalAlign="middle">
+				<s:Label text="委托年份："/>
+				<s:TextInput id="conYear" width="144"/>
+				<s:Label width="72" text="委托序号："/>
+				<s:TextInput id="conNo" width="143"/>
+				<s:Label text="委托时间："/>
+				<tool:DateZh id="conDate" width="148"/>
+				<s:Label width="72" text="      到"/>
+				<tool:DateZh id="conDate0" width="157"/>
+			</s:HGroup>
+			<s:HGroup width="100%" verticalAlign="middle">
+				<s:Label text="专业科室："/>
+				<tool:OfficeRgp id="office" width="855"
+								creationComplete="office.addEventListener(OfficeRgp.event_name,officeRgpChanged)"
+								dnaEnable="{JusTypeLocator.getInstance().jusTypeVo.Enabled=='1'?'0':'1'}">
+				</tool:OfficeRgp>
+			</s:HGroup>
+			<s:HGroup width="100%" verticalAlign="middle">
+				<s:Label text="鉴定类别："/>
+				<tool:JusTypeRgp id="jusType" width="855">
+				</tool:JusTypeRgp>
+			</s:HGroup>
+			<s:HGroup width="100%" verticalAlign="middle">
+				<s:Label text="鉴定状态："/>
+				<tool:IdStatusTool id="idStatus">
+				</tool:IdStatusTool>
+				<s:Spacer width="100%" height="10"/>
+				<s:Button label="查询" click="queryClickHandler(event)"
+						  enabled="{PsbLocator.getInstance().npending}"/>
+			</s:HGroup>
+			<s:DataGrid id="dg" width="100%" height="100%"
+						dataProvider="{IdFlowLocator.getInstance().listObj}"
+						doubleClick="dgDoubleClickHandler(event)" doubleClickEnabled="true">
+				<s:columns>
+					<s:ArrayList>
+						<s:GridColumn dataField="CASE_NO" headerText="受理登记号"></s:GridColumn>
+						<s:GridColumn dataField="CASE_NAME" headerText="案件名称"></s:GridColumn>
+						<s:GridColumn dataField="ID_JUSTYPE" headerText="鉴定类别"></s:GridColumn>
+						<s:GridColumn dataField="TESTER_NAME" headerText="鉴定人"></s:GridColumn>
+						<s:GridColumn dataField="ID_STATUS" headerText="鉴定状态"></s:GridColumn>
+					</s:ArrayList>
+				</s:columns>
+			</s:DataGrid>
+			<s:HGroup width="100%" horizontalAlign="right">
+				<ns1:ListPager id="pager" pageSize="11"
+							   creationComplete="pager.addEventListener(ListPager.PAGE_INDEX_CHANGE_EVENT,queryClickHandler);IdFlowLocator.getInstance().listPager=pager;">
+				</ns1:ListPager>
+			</s:HGroup>
+		</s:VGroup>
+	</s:Panel>
+</s:Module>

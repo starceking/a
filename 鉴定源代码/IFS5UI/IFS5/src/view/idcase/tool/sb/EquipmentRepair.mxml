@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
+		 xmlns:s="library://ns.adobe.com/flex/spark" 
+		 xmlns:mx="library://ns.adobe.com/flex/mx"
+		 xmlns:tool="view.tool.*"
+		 fontSize="14" width="813" height="553"
+		 creationComplete="module1_creationCompleteHandler(event)"
+		 >
+	<fx:Script>
+		<![CDATA[
+			import com.adobe.cairngorm.control.CairngormEventDispatcher;
+			import control.*;
+			
+			import locator.EquipmentLocator;
+			import locator.MenuLocator;
+			import locator.EquipmentRepairLocator;
+			import mx.events.FlexEvent;
+			import util.Helper;
+			import vo.EquipmentRepairVo;
+			import vo.MenuVo;	
+			
+			protected function module1_creationCompleteHandler(event:FlexEvent):void
+			{
+				// TODO Auto-generated method stub
+				EquipmentRepairLocator.getInstance().wsObj=new EquipmentRepairVo(Helper.getGUID(),EquipmentLocator.getInstance().currObj.ID,TextFzr.text,TextWxsj.text,TextWxyy.text,TextXxms.text);
+				CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.EQUIPMENTREPAIR_GetOne)); 
+			}
+			protected function BtnAdd_clickHandler(event:MouseEvent):void
+			{
+				// TODO Auto-generated method stub
+				EquipmentRepairLocator.getInstance().wsObj=new EquipmentRepairVo(Helper.getGUID(),EquipmentLocator.getInstance().currObj.ID,TextFzr.text,TextWxsj.text,TextWxyy.text,TextXxms.text);
+				CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.EQUIPMENTREPAIR_Insert));
+				Helper.showAlert("新增成功！");
+			}
+			
+			protected function BtnDelete_clickHandler(event:MouseEvent):void
+			{
+				// TODO Auto-generated method stub
+				EquipmentRepairLocator.getInstance().wsObj =gd.selectedItem as EquipmentRepairVo ;
+				CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.EQUIPMENTREPAIR_Delete));
+				Helper.showAlert("删除成功！");
+				
+			}
+			
+			protected function BtnUpfate_clickHandler(event:MouseEvent):void
+			{
+				// TODO Auto-generated method stub
+				
+				EquipmentRepairLocator.getInstance().wsObj=new EquipmentRepairVo(gd.selectedItem.ID,EquipmentLocator.getInstance().currObj.ID,TextFzr.text,TextWxsj.text,TextWxyy.text,TextXxms.text);
+				CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.EQUIPMENTREPAIR_Update));
+				Helper.showAlert("修改成功！");
+				
+			}
+			
+			protected function button1_clickHandler(event:MouseEvent):void
+			{
+				// TODO Auto-generated method stub
+				EquipmentLocator.getInstance().wordName="QR21-08测量设备维修记录.doc";
+				EquipmentLocator.getInstance().num=EquipmentLocator.getInstance().currObj.ID;
+				EquipmentLocator.getInstance().filename=Helper.getGUID();
+				EquipmentLocator.getInstance().num1=gd.selectedItem.ID;
+				CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.EQUIPMENT_MackAllFB));
+			}
+			
+		]]>
+	</fx:Script>
+	<fx:Declarations>
+		<!-- 将非可视元素（例如服务、值对象）放在此处 -->
+	</fx:Declarations>
+	<s:Label x="10" y="10" color="#0A37FA" fontSize="20" fontWeight="bold" text="维修记录"/>
+	<s:DataGrid id="gd" x="10" y="38" width="793" height="274" dataProvider="{EquipmentRepairLocator.getInstance().listObj}">
+		<s:columns>
+			<s:ArrayList>
+				<s:GridColumn dataField="FZR" headerText="负责人"></s:GridColumn>
+				<s:GridColumn dataField="XLSJ" headerText="维修时间"></s:GridColumn>
+				<s:GridColumn dataField="SLYY" headerText="维修原因"></s:GridColumn>
+			</s:ArrayList>
+		</s:columns>
+	</s:DataGrid>
+	<s:Label x="14" y="328" text="负  责  人："/>
+	<s:TextInput id="TextFzr" x="90" y="320" width="309" text="{gd.selectedItem.FZR}"/>
+	<s:Label x="406" y="327" text="维修时间："/>
+	<tool:DateZh id="TextWxsj" x="481" y="321" width="321" text="{gd.selectedItem.XLSJ}"/>
+	<s:Label x="15" y="354" text="维修原因："/>
+	<s:TextArea id="TextWxyy" x="89" y="351" width="714" height="73" text="{gd.selectedItem.SLYY}"/>
+	<s:Label x="14" y="436" text="详细描述："/>
+	
+	<s:TextArea id="TextXxms" x="90" y="432" width="713" height="80" text="{gd.selectedItem.XXMS}"/>
+	<s:Button id="BtnAdd" x="571" y="522" label="新增" click="BtnAdd_clickHandler(event)"/>
+	<s:Button id="BtnDelete" x="733" y="522" label="删除" click="BtnDelete_clickHandler(event)" enabled="{gd.selectedItem!=null}"/>
+	<s:Button id="BtnUpfate" x="654" y="522" label="修改" click="BtnUpfate_clickHandler(event)" enabled="{gd.selectedItem!=null}"/>
+	<mx:LinkButton x="567" y="11" width="237" label="打印测量设备维修记录" click="button1_clickHandler(event)" enabled="{gd.selectedItem!=null}" textDecoration="underline" color="blue"/>
+	
+</s:Group>

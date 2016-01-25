@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Module xmlns:fx="http://ns.adobe.com/mxml/2009"
+		  xmlns:s="library://ns.adobe.com/flex/spark"
+		  xmlns:mx="library://ns.adobe.com/flex/mx"
+		  xmlns:accept="view.idcase.tool.accept.*"
+		  xmlns:mp="view.idcase.tool.mp.*"
+		  xmlns:upload="view.idcase.tool.upload.*"
+		  xmlns:conclusion="view.idcase.tool.conclusion.*"
+		  xmlns:word="view.idcase.tool.word.*"
+		  xmlns:audit="view.idcase.tool.audit.*"
+		  width="953" height="598" fontSize="14"
+		  creationComplete="MenuLocator.getInstance().changeMenu(menuGp);">
+	<fx:Declarations>
+		<fx:XML id="mtree">
+			<root> 
+				<mtc label="基本信息" ico="ajxx"/>
+				<mtc label="照片信息" ico="zpsc"/>
+				<mtc label="其他材料" ico="qtsc"/>
+				<mtc label="受理信息" ico="slxx"/>
+				<mtc label="结论意见" ico="jlyj"/>
+				<mtc label="文书档案" ico="dyws"/>
+				<mtc label="报告领取" ico="bglq"/>
+				<mtc label="鉴定记事" ico="jdjs"/>
+			</root> 
+		</fx:XML>	
+	</fx:Declarations>
+	<fx:Script>
+		<![CDATA[
+			import locator.MenuLocator;	
+			import mx.events.ListEvent;
+			// 嵌入图标文件
+			[Embed(source="assets/images/tree/ajxx.png")]
+			public var ajxx:Class;
+			[Embed(source="assets/images/tree/slxx.png")]
+			public var slxx:Class;	
+			[Embed(source="assets/images/tree/jlyj.png")]
+			public var jlyj:Class;
+			[Embed(source="assets/images/tree/dyws.png")]
+			public var dyws:Class;
+			[Embed(source="assets/images/tree/jdjs.png")]
+			public var jdjs:Class;
+			[Embed(source="assets/images/tree/zpsc.png")]
+			public var zpsc:Class;
+			[Embed(source="assets/images/tree/qtsc.png")]
+			public var qtsc:Class;
+			[Embed(source="assets/images/tree/bglq.png")]
+			public var bglq:Class;
+			
+			protected function tree_changeHandler(event:ListEvent):void
+			{
+				vs.selectedIndex=tree.selectedIndex;
+			}
+			
+		]]>
+	</fx:Script>
+	<s:Panel width="953" height="598">
+		<s:HGroup id="menuGp" x="10" y="-27"/>	
+		<mx:Tree id="tree" x="10" y="10" width="112" height="547" change="tree_changeHandler(event)"
+				 dataProvider="{mtree.mtc}" iconField="@ico" labelField="@label" showRoot="true"></mx:Tree>
+		<mx:ViewStack id="vs" x="130" y="10" width="813" height="547">
+			<s:NavigatorContent width="100%" height="100%" label="基本信息">
+				<mp:MpRoTool/>
+			</s:NavigatorContent>
+			<s:NavigatorContent width="100%" height="100%" label="照片信息">
+				<upload:PicRoTool/>
+			</s:NavigatorContent>
+			<s:NavigatorContent width="100%" height="100%" label="其他材料">
+				<upload:CaseFileRoTool/>
+			</s:NavigatorContent>
+			<s:NavigatorContent width="100%" height="100%" label="受理信息">
+				<accept:AcceptConTool/>
+			</s:NavigatorContent>
+			<s:NavigatorContent width="100%" height="100%" label="结论意见">
+				<conclusion:ConclusionRoTool/>
+			</s:NavigatorContent>
+			<s:NavigatorContent width="100%" height="100%" label="文书档案">
+				<word:WordAllTool/>
+			</s:NavigatorContent>
+			<s:NavigatorContent width="100%" height="100%" label="报告领取">
+				<audit:GetReportRoTool/>
+			</s:NavigatorContent>
+			<s:NavigatorContent width="100%" height="100%" label="鉴定记事">
+				<audit:IdRecordTool/>
+			</s:NavigatorContent>
+		</mx:ViewStack>
+	</s:Panel>
+</s:Module>

@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009"
+		 xmlns:s="library://ns.adobe.com/flex/spark"
+		 xmlns:mx="library://ns.adobe.com/flex/mx"
+		 xmlns:tool="view.tool.*"
+		 width="793" height="270" fontSize="14" creationComplete="group1_creationCompleteHandler(event)" >
+	<fx:Declarations>
+		<!-- 将非可视元素（例如服务、值对象）放在此处 -->
+	</fx:Declarations>
+	<fx:Script>
+		<![CDATA[
+			import com.adobe.cairngorm.control.CairngormEventDispatcher;
+			
+			import control.*;
+			
+			import locator.IdFlowLocator;
+			import locator.JusTypeLocator;
+			import locator.PsbLocator;
+			import locator.SysUserLocator;
+			
+			import mx.core.FlexGlobals;
+			import mx.events.FlexEvent;
+			
+			import spark.events.IndexChangeEvent;
+			
+			import util.Helper;
+			
+			import vo.IdFlowVo;
+			import vo.OfficeJusTypeVo;
+			import vo.SysUserVo;
+			
+			private var flowLoc:IdFlowLocator=IdFlowLocator.getInstance();
+				
+			protected function group1_creationCompleteHandler(event:FlexEvent):void
+			{
+				// 读取最新委托编号
+				if(flowLoc.curObj.CON_NO.length==0)getcnoClickHandler();
+			}
+			
+			public function save():Boolean
+			{
+				flowLoc.wsObj=flowLoc.curObj;				
+				flowLoc.wsObj.CON_DATE=conDate.text;
+				
+				flowLoc.wsObj.CONER1NAME2=coner1name.text;
+				flowLoc.wsObj.CONER1POLICENO=coner1Pn.text;
+				flowLoc.wsObj.CONER1PHONE=coner1Phone.text;
+				flowLoc.wsObj.CONER2NAME=coner2name.text;
+				flowLoc.wsObj.CONER2POLICENO=coner2Pn.text;
+				flowLoc.wsObj.CONER2PHONE=coner2Phone.text;
+				
+				flowLoc.wsObj.CON_YEAR=conYear.text;
+				flowLoc.wsObj.CON_NO=conNo.text;
+				flowLoc.wsObj.ID_JUSITEM=jusItem.selectedItems;
+				flowLoc.wsObj.ID_JUSTYPE=jusType.jusType;
+				flowLoc.wsObj.ID_REQUEST=idRequest.getSelectedItem();	
+				flowLoc.wsObj.OrgIdResult=orgres.text;
+				
+				return true;
+			}			
+			
+			//protected function coner2_changeHandler(event:IndexChangeEvent):void
+			//{
+			//	var voObj:SysUserVo=SysUserLocator.getInstance().getUserVo(coner2.selectedData);
+			//	if(voObj!=null)
+			//	{
+			//		coner2Name.text=voObj.NAME;
+			//		coner2Pn.text=voObj.POLICENO;
+			//	}
+			//}
+			
+			protected function getcnoClickHandler():void
+			{
+				IdFlowLocator.getInstance().notxt=conNo;
+				IdFlowLocator.getInstance().wsObj=new IdFlowVo(flowLoc.curObj.CONNO,"","","",flowLoc.curObj.CON_PSB,"","","","",
+					"","","",conYear.text,"","","","","","","","","","","","","","","","","","","","","","","","","",
+					"","","","","","","","","","","","","","","","","","","","","",flowLoc.curObj.CON_PSBNICKNAME,"","",
+					"","","","","","","","","","",
+					"","","","","","","","","","","","","","","","","","","","","","","");
+				CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.IDFLOWWS_GetNextConNo));
+			}
+			
+			//protected function getcno2ClickHandler(event:MouseEvent):void
+			//{
+			//	conYear.text=flowLoc.curObj.CON_YEAR;
+			//	conNo.text=flowLoc.curObj.CON_NO;
+			//}
+			
+			protected function jtypeRgpChanged(evt:Event):void
+			{
+				jusItem.jusType=jusType.jusType;
+//				if(flowLoc.curObj.ID_OFFICE!="DNA")
+//				{
+//					idRequest.text=JusTypeLocator.getInstance().getJusType(flowLoc.curObj.ID_OFFICE,jusType.jusType).IDREQ;
+//				}
+			}
+			protected function jitemRgpChanged(evt:Event):void
+			{
+
+				var dsadjsak:String=jusItem.selectedItems.substring(0,jusItem.selectedItems.length-1);
+				var dfdjkfds:String=JusTypeLocator.getInstance().getJusType(flowLoc.curObj.ID_OFFICE,jusType.jusType).IDREQ;
+//				if(!dfdjkfds.match(dsadjsak))
+//				{idRequest.text="对"+dsadjsak+dfdjkfds;}
+				
+			}
+			
+			protected function changePSB_clickHandler(event:MouseEvent):void
+			{
+				flowLoc.con_psbcode=psbcode;
+				flowLoc.con_psbname=psbname;
+				
+				FlexGlobals.topLevelApplication.showPsbSelectModule();
+			}
+			
+		]]>
+	</fx:Script>
+	<s:VGroup width="100%" height="100%" gap="10">
+		<s:HGroup width="100%" verticalAlign="middle">
+			<s:Label color="#FF0909" text="委托单位："/>
+			<s:Button label="更换单位" click="changePSB_clickHandler(event)"/>
+			<s:Spacer width="10" height="10"/>
+			<s:Label id="psbcode" text="{flowLoc.curObj.CON_PSBCODE}"/>
+			<s:Spacer width="10" height="10"/>
+			<s:Label id="psbname" text="{flowLoc.curObj.CON_PSBNAME}"/>
+		</s:HGroup>
+		<s:HGroup width="100%" verticalAlign="middle">
+			<s:Label text="委托时间："/>
+			<tool:DateZh id="conDate" width="148" text="{flowLoc.curObj.CON_DATE}"/>
+			<s:Label text="委托年份："/>
+			<s:TextInput id="conYear" width="148" restrict="0123456789" text="{flowLoc.curObj.CON_YEAR}"/>
+			<s:Label text="委托序号："/>
+			<s:TextInput id="conNo" width="148" restrict="0123456789" text="{flowLoc.curObj.CON_NO}"/>
+			<mx:LinkButton label="获取最新序号" click="getcnoClickHandler()" color="#0000FF"
+						   enabled="{PsbLocator.getInstance().npending}" textDecoration="underline"/>
+		</s:HGroup>
+		<s:HGroup width="100%" verticalAlign="middle">
+			<s:Label text="一送姓名："/>
+			<s:TextInput id="coner1name" text="{flowLoc.curObj.CONER1NAME2}"/>
+			<s:Label text="一送警号："/>
+			<s:TextInput id="coner1Pn" text="{flowLoc.curObj.CONER1POLICENO}"/>
+			<s:Label text="一送电话："/>
+			<s:TextInput id="coner1Phone" text="{flowLoc.curObj.CONER1PHONE}"/>
+		</s:HGroup>
+		<s:HGroup width="100%" verticalAlign="middle">
+			<s:Label text="二送姓名："/>
+			<s:TextInput id="coner2name" text="{flowLoc.curObj.CONER2NAME}"/>
+			<s:Label text="二送警号："/>
+			<s:TextInput id="coner2Pn" text="{flowLoc.curObj.CONER2POLICENO}"/>
+			<s:Label text="二送电话："/>
+			<s:TextInput id="coner2Phone" text="{flowLoc.curObj.CONER2PHONE}"/>
+		</s:HGroup>
+		<!--<s:HGroup width="100%" verticalAlign="middle">
+			<s:Label color="#FF0909" text="送检人一："/>
+			<s:Label width="180" text="{flowLoc.curObj.CONER1NAME}"/>
+			<s:Label text="短       号："/>
+			<s:Label width="180" text="{flowLoc.curObj.CONER1SPHONE}"/>
+		</s:HGroup>
+		<s:HGroup width="100%" verticalAlign="middle">
+			<s:Label text="送检人二："/>
+			<tool:UserDdl id="coner2" width="180" auth="" change="coner2_changeHandler(event)"/>
+			<s:Label color="#FF0909" text="姓       名："/>
+			<s:TextInput id="coner2Name" width="180" text="{flowLoc.curObj.CONER2NAME}"/>
+			<s:Label color="#FF0909" text="警       号："/>
+			<s:TextInput id="coner2Pn" width="180" restrict="0123456789"
+						 text="{flowLoc.curObj.CONER2POLICENO}"/>
+		</s:HGroup>-->
+		<s:HGroup width="100%" verticalAlign="middle">
+			<s:Label text="鉴定要求："/>
+			<tool:DictCbb id="idRequest" width="378" dictName="鉴定要求" selectedItem="{flowLoc.curObj.ID_REQUEST}"/>
+			<!--<s:TextInput id="idRequest" width="710" text="{flowLoc.curObj.ID_REQUEST}"/>-->
+		</s:HGroup>
+		
+		
+		
+		<s:HGroup width="100%" verticalAlign="middle">
+			<s:Label visible="{flowLoc.curObj.CONNO.search('C')==0}" text="原鉴定情况："/>
+			<s:TextInput id="orgres" visible="{flowLoc.curObj.CONNO.search('C')==0}" width="697"
+						 text="{flowLoc.curObj.OrgIdResult}"/>
+		</s:HGroup>
+		<s:HGroup width="100%" visible="false">
+			<s:Label color="#FC0505" text="鉴定专业："/>
+			<s:Label id="officeLbl" text="{flowLoc.curObj.ID_OFFICE}"/>
+		</s:HGroup>
+		<s:HGroup width="100%" verticalAlign="middle" visible="false">
+			<s:Label color="#FD0202" text="鉴定类别："/>
+			<tool:JusTypeRgp id="jusType" visible="{flowLoc.curObj.ID_OFFICE!='DNA'}"
+							 creationComplete="jusType.addEventListener(JusTypeRgp.event_name,jtypeRgpChanged)"
+							 jusType="{flowLoc.curObj.ID_JUSTYPE}" office="{flowLoc.curObj.ID_OFFICE}">
+			</tool:JusTypeRgp>
+		</s:HGroup>
+		<s:HGroup width="100%" verticalAlign="middle" visible="false">
+			<s:Label text="鉴定项目："/>
+			<tool:JusItemCgp id="jusItem" click="if(officeLbl.text=='理化')jitemRgpChanged(event)"
+							 jusType="{flowLoc.curObj.ID_JUSTYPE}" officeName="{flowLoc.curObj.ID_OFFICE}"
+							 selectedItems="{flowLoc.curObj.ID_JUSITEM}"/>
+		</s:HGroup>
+	</s:VGroup>
+</s:Group>

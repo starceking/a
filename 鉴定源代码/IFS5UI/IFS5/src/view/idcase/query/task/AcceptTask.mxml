@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Module xmlns:fx="http://ns.adobe.com/mxml/2009"
+		  xmlns:s="library://ns.adobe.com/flex/spark"
+		  xmlns:mx="library://ns.adobe.com/flex/mx"
+		  xmlns:tool="view.tool.*"
+		  xmlns:ns1="*"
+		  width="953" height="598" defaultButton="{scanBtn}" fontSize="14"
+		  creationComplete="module1_creationCompleteHandler(event)" >
+	<fx:Declarations>
+		<!-- 将非可视元素（例如服务、值对象）放在此处 -->		
+	</fx:Declarations>
+	<fx:Script>
+		<![CDATA[
+			import com.adobe.cairngorm.control.CairngormEventDispatcher;
+			
+			import control.*;
+			
+			import locator.IdFlowLocator;
+			import locator.ExCaseLocator;
+			import locator.JusTypeLocator;
+			import locator.MenuLocator;
+			import locator.PsbLocator;
+			import locator.SysUserLocator;
+			
+			import mx.events.FlexEvent;
+			
+			import util.Helper;
+			
+			import vo.IdFlowVo;	
+			protected function module1_creationCompleteHandler(event:FlexEvent):void
+			{
+				MenuLocator.getInstance().changeMenu(menuGp);
+				queryClickHandler(null);
+			}
+			
+			protected function queryClickHandler(event:Event):void
+			{				
+				var office:String=SysUserLocator.getInstance().loginUser.OFFICE;
+				if(SysUserLocator.getInstance().loginUser.CURRENT_ROLE=="Insider")office="";
+				IdFlowLocator.getInstance().wsObj=new IdFlowVo("",PsbLocator.getInstance().idPsb.ID,
+					"","","","","","","","","","","","",
+					"",office,jusType.jusType,"","","","","","","","","","","","","",
+					"","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","",
+					"","","","","","","","","","","","","","",caseName.text,"","","","","","","","","","","","","","","","","","");
+				CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.IDTASKWS_GetCaseAcceptTask));
+			}
+			
+			protected function dg_doubleClickHandler(event:MouseEvent):void
+			{
+				IdFlowLocator.getInstance().wholeCase=false;
+				if(dg.selectedItem!=null)
+				{
+					IdFlowLocator.getInstance().curObj=dg.selectedItem as IdFlowVo;
+					IdFlowLocator.getInstance().goToAccept();
+				}
+			}
+			//设置延时函数
+			private function delayed_clickHandler():void {
+				setTimeout(scanBtn_clickHandler, 500);
+				scanBtn.enabled = false;
+			}
+			
+			protected function scanBtn_clickHandler():void
+			{
+				IdFlowLocator.getInstance().wholeCase=false;
+				var role:String=SysUserLocator.getInstance().loginUser.CURRENT_ROLE;
+				if(barCode.text.length==0)
+				{
+					queryClickHandler(null);
+				}
+				else if(
+					((role=="Insider")||
+						(barCode.text.search("C")==0)&&role=="Office")||
+					(((barCode.text.search("D")==0)||
+						(barCode.text.search("R")==0)||
+						(barCode.text.search("L")==0))&&
+						role=="DNA"))
+				{
+					IdFlowLocator.getInstance().wsObj=new IdFlowVo(barCode.text,PsbLocator.getInstance().idPsb.ID,"","","","","",
+						"","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","",
+						"","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","",
+						"","","","","","","","","","","","","","","","","","","","","","");
+					CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.IDTASKWS_GetAcceptByBarCode));
+				}
+				else
+				{
+					Helper.showAlert("请扫描或输入正确的条形码。");
+				}
+				scanBtn.enabled = true;
+			}
+			
+			protected function button1_clickHandler(event:MouseEvent):void
+			{
+				// TODO Auto-generated method stub
+				if(dg.selectedItems==null)return;
+				if(delBtn.label=="批量删除")
+				{
+					var sc:int=dg.selectedItems.length;
+					if(sc==0)return;
+					
+					
+					var sql:String="";
+					for(var i:int=0;i<sc;i++)
+					{
+						IdFlowLocator.getInstance().curObj=dg.selectedItems[i] as IdFlowVo;
+						sql+=("delete from 鉴定流程  where 委托编号='"+IdFlowLocator.getInstance().curObj.CONNO+"';");
+					}
+					IdFlowLocator.getInstance().listObj.removeAll();
+					ExCaseLocator.getInstance().sql=sql;
+					CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.EXCASEWS_ExeSql));
+					PsbLocator.getInstance().clearData();
+				}
+			}
+
+			
+		]]>
+	</fx:Script>
+	<s:Panel width="953" height="598">
+		<s:HGroup id="menuGp" x="10" y="-27"/>	
+		<s:VGroup left="10" right="10" top="10" bottom="10" gap="10">
+			<s:HGroup width="100%" verticalAlign="middle">
+				<s:Label text="委托条码："/>
+				<s:TextInput id="barCode" width="100%"/>
+				<s:Button id="scanBtn" width="70" label="扫描" click="scanBtn_clickHandler()"
+						  enabled="{PsbLocator.getInstance().npending}"/>
+			</s:HGroup>
+			<s:HGroup width="100%" verticalAlign="middle">
+				<s:Label text="鉴定类别："/>
+				<tool:JusTypeRgp id="jusType" office="{SysUserLocator.getInstance().loginUser.OFFICE}">
+				</tool:JusTypeRgp>
+			</s:HGroup>
+			<s:HGroup width="100%" verticalAlign="middle">
+				<s:Label text="案件名称："/>
+				<s:TextInput id="caseName" width="100%"/>
+				<s:Button label="查询" click="queryClickHandler(event)"
+						  enabled="{PsbLocator.getInstance().npending}"/>
+			</s:HGroup>
+			<s:HGroup width="100%" height="100%" gap="0">
+				<s:VGroup height="100%">
+					<s:Label text="案件列表："/>
+					<s:Spacer width="10" height="100%"/>
+					<s:Button id="delBtn"
+							  visible="{SysUserLocator.getInstance().loginUser.ROLES.search('Insider')==0}"
+							  label="批量删除" click="button1_clickHandler(event)"/>
+					<s:Spacer width="10" height="100%"/>
+				</s:VGroup>
+				<s:DataGrid id="dg" width="100%" height="100%"
+							dataProvider="{IdFlowLocator.getInstance().listObj}"
+							doubleClick="dg_doubleClickHandler(event)" doubleClickEnabled="true"
+							selectionMode="multipleRows">
+					<s:columns>
+						<s:ArrayList>
+							<s:GridColumn dataField="CASE_NAME" headerText="案件名称"></s:GridColumn>
+							<s:GridColumn width="120" dataField="ID_JUSTYPE" headerText="鉴定类别"></s:GridColumn>
+							<s:GridColumn width="100" dataField="CONER1NAME2" headerText="送检人"></s:GridColumn>
+							<s:GridColumn width="140" dataField="CON_DATE" headerText="委托时间"></s:GridColumn>
+						</s:ArrayList>
+					</s:columns>
+				</s:DataGrid>
+			</s:HGroup>
+			<s:HGroup width="100%" horizontalAlign="right">
+				<ns1:ListPager id="pager" pageSize="14"
+							   creationComplete="pager.addEventListener(ListPager.PAGE_INDEX_CHANGE_EVENT,queryClickHandler);IdFlowLocator.getInstance().listPager=pager;">
+				</ns1:ListPager>
+			</s:HGroup>
+		</s:VGroup>
+	</s:Panel>
+</s:Module>

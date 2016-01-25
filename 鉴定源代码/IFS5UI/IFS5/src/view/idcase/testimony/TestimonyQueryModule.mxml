@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Module xmlns:fx="http://ns.adobe.com/mxml/2009"
+		  xmlns:s="library://ns.adobe.com/flex/spark"
+		  xmlns:mx="library://ns.adobe.com/flex/mx"
+		  xmlns:tool="view.tool.*"
+		  xmlns:ns1="*"
+		  width="953" height="598" fontSize="14" creationComplete="MenuLocator.getInstance().changeMenu(menuGp);">
+	<fx:Declarations>
+		<!-- 将非可视元素（例如服务、值对象）放在此处 -->		
+	</fx:Declarations>
+	<fx:Script>
+		<![CDATA[
+			import com.adobe.cairngorm.control.CairngormEventDispatcher;
+			
+			import control.*;
+			import locator.MenuLocator;	
+			import locator.DictLocator;
+			import locator.IdTestimonyLocator;
+			import locator.JusTypeLocator;
+			import locator.PsbLocator;
+			import locator.SysUserLocator;
+			
+			import vo.IdTestimonyVo;
+			
+			private var locObj:IdTestimonyLocator=IdTestimonyLocator.getInstance();
+			protected function jusTypeChanged(evt:Event):void
+			{
+				jusItem.officeName=SysUserLocator.getInstance().loginUser.OFFICE;
+				jusItem.jusType=jusType.jusType;
+			}
+			protected function queryClickHandler(evt:Event):void
+			{
+				locObj.wsObj=new IdTestimonyVo("",isCtrl.selected?"1":"0",conno.text,pname.text,"","",pack.getSelectedItem(),
+					property.getSelectedItem(),"","","","","",pnum.text,"");
+				locObj.ctimes=slsjs.text;
+				locObj.ctimee=slsje.text;
+				locObj.weights=weights.text;
+				locObj.weighte=weighte.text;
+				locObj.jdzy=SysUserLocator.getInstance().loginUser.OFFICE;
+				locObj.jdlb=jusType.jusType;
+				locObj.jdxm=jusItem.selectedItems;
+				locObj.yjr=yjr.selectedData;
+				CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.IDTESTIMONYWS_Query));
+			}
+			
+		]]>
+	</fx:Script>
+	<s:Panel width="953" height="598">
+		<s:HGroup id="menuGp" x="10" y="-27"/>	
+		<s:Button x="814" y="109" label="查询" click="queryClickHandler(event)" enabled="{PsbLocator.getInstance().npending}"/>
+		<s:Label x="276" y="52" color="#000000" text="名        称："/>
+		<s:TextInput id="pname" x="354" y="42" width="180"/>
+		<s:Label x="10" y="85" text="重        量："/>
+		<s:TextInput id="weights" x="88" y="75" width="180" restrict="0123456789."/>
+		<s:Label x="297" y="84" text="到"/>
+		<s:TextInput id="weighte" x="354" y="74" width="180" restrict="0123456789."/>
+		<s:Label x="545" y="83" text="包        装："/>
+		<tool:DictCbb id="pack" x="623" y="73" width="180" dictName="检材包装"/>
+		<s:Label x="545" y="52" text="性        质："/>
+		<tool:DictCbb id="property" x="623" y="42" width="180" dictName="检材性质"/>
+		<s:Label x="10" y="52" color="#000000" text="检材编号："/>
+		<s:TextInput id="pnum" x="88" y="42" width="180" />
+		<s:Label x="10" y="20" color="#000000" text="委托编号："/>
+		<s:TextInput id="conno" x="88" y="10" width="180"/>
+		<s:Label x="276" y="20" color="#000000" text="是否样本："/>
+		<s:RadioButton id="isCtrl" x="354" y="14" label="这是样本"/>
+		<s:RadioButton x="436" y="14" label="不是样本" selected="true"/>
+		<s:Label x="10" y="117" text="受理时间："/>
+		<tool:DateZh id="slsjs" x="88" y="107" width="180"/>
+		<s:Label x="297" y="116" text="到"/>
+		<tool:DateZh id="slsje" x="354" y="106" width="180" />
+		<s:DataGrid x="10" y="191" width="933" height="334" dataProvider="{locObj.listObj}">
+			<s:columns>
+				<s:ArrayList>
+					<s:GridColumn dataField="SLN" headerText="编号"></s:GridColumn>
+					<s:GridColumn dataField="NAME" headerText="名称"></s:GridColumn>
+					<s:GridColumn dataField="WEIGHT" headerText="重量"></s:GridColumn>
+					<s:GridColumn dataField="UNIT" headerText="单位"></s:GridColumn>
+					<s:GridColumn dataField="AMOUNT" headerText="数量"></s:GridColumn>
+					<s:GridColumn dataField="PROPERTY" headerText="性质"></s:GridColumn>
+					<s:GridColumn dataField="PACKAGE" headerText="包装"></s:GridColumn>
+				</s:ArrayList>
+			</s:columns>
+		</s:DataGrid>
+		<ns1:ListPager id="pager" x="542" y="533" pageSize="11"
+					   creationComplete="pager.addEventListener(ListPager.PAGE_INDEX_CHANGE_EVENT,queryClickHandler);locObj.listPager=pager;">
+		</ns1:ListPager>
+		<s:Label x="10" y="141" text="鉴定类别："/>
+		<tool:JusTypeRgp id="jusType" x="88" y="135" office="{SysUserLocator.getInstance().loginUser.OFFICE}"
+						 creationComplete="jusType.addEventListener(JusTypeRgp.event_name,jusTypeChanged)">
+		</tool:JusTypeRgp>
+		<s:Label x="10" y="169" text="鉴定项目："/>
+		<tool:JusItemCgp id="jusItem" x="88" y="163">
+		</tool:JusItemCgp>
+		<s:Label x="542" y="114" text="一  检  人："/>
+		<tool:QueryUserDdl id="yjr" x="622" y="104" width="184" auth=""/>
+	</s:Panel>
+</s:Module>

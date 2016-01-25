@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:TitleWindow xmlns:fx="http://ns.adobe.com/mxml/2009"
+			   xmlns:s="library://ns.adobe.com/flex/spark"
+			   xmlns:mx="library://ns.adobe.com/flex/mx"
+			   xmlns:idcase="view.idcase.tool.idcase.*"
+			   xmlns:accept="view.idcase.tool.accept.*"
+			   xmlns:dnase="view.idcase.tool.dnase.*"
+			   xmlns:cps="view.idcase.tool.cps.*"
+			   xmlns:caser="view.idcase.tool.caser.*"
+			   xmlns:ud="view.idcase.tool.ud.*"
+			   xmlns:upload="view.idcase.tool.upload.*"
+			   xmlns:conclusion="view.idcase.tool.conclusion.*"
+			   xmlns:word="view.idcase.tool.word.*"
+			   xmlns:audit="view.idcase.tool.audit.*"
+			   width="953" height="598" fontSize="14"
+			   close="PopUpManager.removePopUp(this);">
+	<fx:Declarations>
+		<fx:XML id="mtree">
+			<root> 
+				<mtc label="基本信息" ico="ajxx"/>
+				<mtc label="物证样本" ico="xcwz"/>
+				<mtc label="受害人" ico="sary"/>
+				<mtc label="嫌疑人" ico="dnaxyr"/>
+				<mtc label="受害人亲属" ico="qsxx"/>
+				<mtc label="嫌疑人亲属" ico="qsxx"/>
+				<mtc label="无名尸" ico="dnawmst"/>
+				<mtc label="其他人员" ico="qtry"/>
+				<mtc label="照片信息" ico="zpsc"/>
+				<mtc label="其他材料" ico="qtsc"/>
+				<mtc label="受理信息" ico="slxx"/>
+				<mtc label="结论意见" ico="jlyj"/>
+				<mtc label="文书档案" ico="dyws"/>
+				<mtc label="打委托书" ico="dyws"/>
+				<mtc label="报告领取" ico="bglq"/>
+				<mtc label="鉴定记事" ico="jdjs"/>
+			</root> 
+		</fx:XML>	
+	</fx:Declarations>
+	<fx:Script>
+		<![CDATA[
+			import com.adobe.cairngorm.control.CairngormEventDispatcher;
+			import control.*;
+			import mx.events.IndexChangedEvent;
+			
+			import locator.WordLocator;
+			import locator.PsbLocator;
+			import locator.IdFlowLocator;
+			import locator.SysUserLocator;
+			
+			import locator.MenuLocator;	
+			import mx.core.FlexGlobals;
+			import mx.events.ListEvent;
+			import mx.events.CloseEvent;
+			import mx.managers.PopUpManager;
+			// 嵌入图标文件
+			[Embed(source="assets/images/tree/ajxx.png")]
+			public var ajxx:Class;
+			[Embed(source="assets/images/tree/slxx.png")]
+			public var slxx:Class;		
+			[Embed(source="assets/images/tree/xcwz.png")]
+			public var xcwz:Class;
+			[Embed(source="assets/images/tree/sary.png")]
+			public var sary:Class;
+			[Embed(source="assets/images/tree/xyr.png")]
+			public var dnaxyr:Class;
+			[Embed(source="assets/images/tree/qsxx.png")]
+			public var qsxx:Class;
+			[Embed(source="assets/images/tree/wmst.png")]
+			public var dnawmst:Class;
+			[Embed(source="assets/images/tree/qtry.png")]
+			public var qtry:Class;	
+			[Embed(source="assets/images/tree/jlyj.png")]
+			public var jlyj:Class;
+			[Embed(source="assets/images/tree/dyws.png")]
+			public var dyws:Class;
+			[Embed(source="assets/images/tree/jdjs.png")]
+			public var jdjs:Class;
+			[Embed(source="assets/images/tree/zpsc.png")]
+			public var zpsc:Class;
+			[Embed(source="assets/images/tree/qtsc.png")]
+			public var qtsc:Class;
+			[Embed(source="assets/images/tree/bglq.png")]
+			public var bglq:Class;
+			
+			protected function tree_changeHandler(event:ListEvent):void
+			{
+				vs.selectedIndex=tree.selectedIndex;
+			}
+			
+			protected function vs_changeHandler(event:IndexChangedEvent):void
+			{
+				if(vs.selectedIndex==13)
+				{
+					var locObj:WordLocator=WordLocator.getInstance();
+					locObj.idPsb=PsbLocator.getInstance().idPsb.ID;
+					locObj.conno=IdFlowLocator.getInstance().curObj.CONNO;
+					locObj.jusType="DNA";
+					locObj.wordType="委托书";
+					
+					CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.WORDWS_GetCaseWordList));
+				}
+				else if(vs.selectedIndex==12)
+				{
+					WordLocator.getInstance().idPsb=PsbLocator.getInstance().idPsb.ID;
+					WordLocator.getInstance().conno=IdFlowLocator.getInstance().curObj.CONNO;
+					CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.WORDWS_GetAllCaseWord));
+				}
+			}
+			
+			protected function button5_clickHandler(event:MouseEvent):void
+			{
+				FlexGlobals.topLevelApplication.showStrModule();
+			}
+		]]>
+	</fx:Script>
+	<s:Button x="10" y="-26" label="导入国家库" click="button5_clickHandler(event)" 
+			  visible="{SysUserLocator.getInstance().loginUser.CURRENT_ROLE=='Leader'}"/>
+	<mx:Tree id="tree" x="10" y="10" width="112" height="547" change="tree_changeHandler(event)"
+			 dataProvider="{mtree.mtc}" iconField="@ico" labelField="@label" showRoot="true"></mx:Tree>
+	<mx:ViewStack id="vs" x="130" y="10" width="813" height="547"
+				  change="vs_changeHandler(event)">
+		<s:NavigatorContent width="100%" height="100%" label="基本信息">
+			<idcase:IdCaseRoTool/>
+		</s:NavigatorContent>
+		<s:NavigatorContent width="100%" height="100%" label="物证样本">
+			<dnase:DnaSeRoTool/>
+		</s:NavigatorContent>
+		<s:NavigatorContent width="100%" height="100%" label="受害人">
+			<cps:CpsShrRoTool/>
+		</s:NavigatorContent>
+		<s:NavigatorContent width="100%" height="100%" label="嫌疑人">
+			<cps:CpsXyrRoTool/>
+		</s:NavigatorContent>
+		<s:NavigatorContent width="100%" height="100%" label="受害人亲属">
+			<caser:CaseShrRRoTool/>
+		</s:NavigatorContent>
+		<s:NavigatorContent width="100%" height="100%" label="嫌疑人亲属">
+			<caser:CaseXyrRRoTool/>
+		</s:NavigatorContent>
+		<s:NavigatorContent width="100%" height="100%" label="无名尸体">
+			<ud:DnaUdRoTool/>
+		</s:NavigatorContent>
+		<s:NavigatorContent width="100%" height="100%" label="其他人员">
+			<cps:CpsQtrRoTool/>
+		</s:NavigatorContent>			
+		<s:NavigatorContent width="100%" height="100%" label="照片信息">
+			<upload:PicRoTool/>
+		</s:NavigatorContent>
+		<s:NavigatorContent width="100%" height="100%" label="其他材料">
+			<upload:CaseFileRoTool/>
+		</s:NavigatorContent>
+		<s:NavigatorContent width="100%" height="100%" label="受理信息">
+			<accept:AcceptConTool/>
+		</s:NavigatorContent>
+		<s:NavigatorContent width="100%" height="100%" label="结论意见">
+			<conclusion:ConclusionRoTool/>
+		</s:NavigatorContent>
+		<s:NavigatorContent width="100%" height="100%" label="文书档案">
+			<word:WordAllTool/>
+		</s:NavigatorContent>
+		<s:NavigatorContent width="100%" height="100%" label="打委托书">
+			<word:WordConsignTool/>
+		</s:NavigatorContent>
+		<s:NavigatorContent width="100%" height="100%" label="报告领取">
+			<audit:GetReportRoTool/>
+		</s:NavigatorContent>
+		<s:NavigatorContent width="100%" height="100%" label="鉴定记事">
+			<audit:IdRecordTool/>
+		</s:NavigatorContent>
+	</mx:ViewStack>
+	
+</s:TitleWindow>

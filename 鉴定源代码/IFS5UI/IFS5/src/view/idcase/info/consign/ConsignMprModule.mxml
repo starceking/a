@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Module xmlns:fx="http://ns.adobe.com/mxml/2009"
+		  xmlns:s="library://ns.adobe.com/flex/spark"
+		  xmlns:mx="library://ns.adobe.com/flex/mx"
+		  xmlns:upload="view.idcase.tool.upload.*"
+		  xmlns:word="view.idcase.tool.word.*"
+		  width="953" height="598" fontSize="14"
+		  creationComplete="MenuLocator.getInstance().changeMenu(menuGp);"
+		  xmlns:mpr="view.idcase.tool.mpr.*">
+	<fx:Declarations>
+		<fx:XML id="mtree">
+			<root> 
+				<mtc label="基本信息" ico="ajxx"/>
+				<mtc label="亲  属  一" ico="szrqs"/>
+				<mtc label="亲  属  二" ico="szrqs"/>
+				<mtc label="照片上传" ico="zpsc"/>
+				<mtc label="其他上传" ico="qtsc"/>
+				<mtc label="打委托书" ico="dyws"/>
+			</root> 
+		</fx:XML>	
+	</fx:Declarations>
+	<fx:Script>
+		<![CDATA[
+			import locator.MenuLocator;	
+			import mx.events.IndexChangedEvent;
+			import mx.events.ListEvent;
+			import com.adobe.cairngorm.control.CairngormEventDispatcher;
+			import locator.WordLocator;
+			import locator.PsbLocator;
+			import locator.IdFlowLocator;
+			import control.*;
+			// 嵌入图标文件
+			[Embed(source="assets/images/tree/ajxx.png")]
+			public var ajxx:Class;
+			[Embed(source="assets/images/tree/szrqs.png")]
+			public var szrqs:Class;
+			[Embed(source="assets/images/tree/zpsc.png")]
+			public var zpsc:Class;
+			[Embed(source="assets/images/tree/qtsc.png")]
+			public var qtsc:Class;
+			[Embed(source="assets/images/tree/dyws.png")]
+			public var dyws:Class;
+			[Embed(source="assets/images/tree/jsts.png")]
+			public var jsts:Class;
+			
+			protected function tree_changeHandler(event:ListEvent):void
+			{
+				vs.selectedIndex=tree.selectedIndex;
+			}
+			
+			protected function vs_changeHandler(event:IndexChangedEvent):void
+			{
+				if(vs.selectedIndex==5)
+				{
+					var locObj:WordLocator=WordLocator.getInstance();
+					locObj.idPsb=PsbLocator.getInstance().idPsb.ID;
+					locObj.conno=IdFlowLocator.getInstance().curObj.CONNO;
+					locObj.jusType="DNA";
+					locObj.wordType="委托书";
+					
+					CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.WORDWS_GetCaseWordList));
+				}
+			}
+			
+		]]>
+	</fx:Script>
+	<s:Panel width="953" height="598">
+		<s:HGroup id="menuGp" x="10" y="-27"/>	
+		<mx:Tree id="tree" x="10" y="10" width="112" height="547" change="tree_changeHandler(event)"
+				 dataProvider="{mtree.mtc}" iconField="@ico" labelField="@label" showRoot="true"></mx:Tree>
+		<mx:ViewStack id="vs" x="130" y="10" width="813" height="547"
+					  change="vs_changeHandler(event)">
+			<s:NavigatorContent width="100%" height="100%" label="基本信息">
+				<mpr:MprTool id="jbxx" creationComplete="jbxx.vs=vs;"/>
+			</s:NavigatorContent>
+			<s:NavigatorContent width="100%" height="100%" label="亲属一">
+				<mpr:Mpr1Tool id="r1" creationComplete="r1.vs=vs;"/>
+			</s:NavigatorContent>
+			<s:NavigatorContent width="100%" height="100%" label="亲属二">
+				<mpr:Mpr2Tool id="r2" creationComplete="r2.vs=vs;"/>
+			</s:NavigatorContent>
+			<s:NavigatorContent width="100%" height="100%" label="照片上传">
+				<upload:PicTool id="pic" creationComplete="pic.vs=vs;"/>
+			</s:NavigatorContent>
+			<s:NavigatorContent width="100%" height="100%" label="其他上传">
+				<upload:CaseFileTool id="caf" creationComplete="caf.vs=vs;"/>
+			</s:NavigatorContent>
+			<s:NavigatorContent width="100%" height="100%" label="打委托书">
+				<word:WordConsignTool/>
+			</s:NavigatorContent>
+		</mx:ViewStack>
+	</s:Panel>
+</s:Module>

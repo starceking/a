@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Module xmlns:fx="http://ns.adobe.com/mxml/2009"
+		  xmlns:s="library://ns.adobe.com/flex/spark"
+		  xmlns:mx="library://ns.adobe.com/flex/mx"
+		  xmlns:local="*"
+		  xmlns:tool="view.tool.*"
+		  width="953" height="598" fontSize="14"
+		  creationComplete="module1_creationCompleteHandler(event)" >
+	<fx:Declarations>
+		<!-- 将非可视元素（例如服务、值对象）放在此处 -->
+	</fx:Declarations>
+	<fx:Script>
+		<![CDATA[
+			import com.adobe.cairngorm.control.CairngormEventDispatcher;
+			
+			import control.*;
+			
+			import locator.MenuLocator;
+			import locator.NotificationLocator;
+			import locator.PsbLocator;
+			import locator.SysUserLocator;
+			
+			import mx.events.FlexEvent;
+			
+			import spark.events.GridSelectionEvent;
+			
+			import util.Helper;
+			import util.Server;
+			
+			import vo.NotificationVo;
+			
+			private var filter:FileFilter=new FileFilter("rar压缩包(*.rar)","*.rar");
+			private var psbId:String=PsbLocator.getInstance().idPsb.ID;
+			//Inner call
+			protected function module1_creationCompleteHandler(event:FlexEvent):void
+			{
+				MenuLocator.getInstance().changeMenu(menuGp);
+				NotificationLocator.getInstance().voObj=new NotificationVo();
+				CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.NOTIFICATIONWS_GET_ALL));
+				
+				bzy.selected=true;
+			}
+			
+			protected function searchClickHandler(evt:Event):void
+			{
+				NotificationLocator.getInstance().voObj=new NotificationVo("",XTITLE.text,"",xzy.selected?"1":"0");
+				NotificationLocator.getInstance().ctimes=occDate.text;
+				NotificationLocator.getInstance().ctimee=occDate0.text;
+				CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.NOTIFICATIONWS_GET_ALL));
+			}
+			private function NotificationEventHandler(type:String):void
+			{
+				var id:String;
+				if(type==IFSControl.NOTIFICATIONWS_INSERT)
+				{
+					id=Helper.getGUID();
+				}
+				else
+				{
+					id=dg.selectedItem.ID;
+				}
+				NotificationLocator.getInstance().voObj=new NotificationVo(id,TITLE.text,content_text.text,zy.selected?"1":"0",SysUserLocator.getInstance().loginUser.ID);
+				CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(type));
+			}
+			
+			private function uploadFile():void
+			{
+				if(dg.selectedItem!=null)
+				{
+					sfu.selectFile();
+				}
+			}
+			
+			protected function dg_selectionChangeHandler(event:GridSelectionEvent):void
+			{
+				if(dg.selectedItem!=null)
+				{
+					sfu.setuurl(Server.getNotiUpload(psbId,dg.selectedItem.ID));
+					sfu.setdurl(Server.getNotiDownload(psbId,dg.selectedItem.ID));
+				}
+			}
+
+			
+		]]>
+	</fx:Script>
+	<s:Panel width="953" height="598">
+		<s:HGroup id="menuGp" x="10" y="-27"/>	
+		<s:VGroup left="10" right="10" top="10" bottom="10">
+			<s:Label color="#1200FF" fontSize="16" text="查询条件："/>
+			<s:HGroup width="100%" verticalAlign="middle">
+				<s:Label text="标       题："/>
+				<s:TextInput id="XTITLE" width="380"/>
+				<s:RadioButton id="xzy" label="重要" groupName="xx"/>
+				<s:RadioButton id="xbzy" label="不重要" groupName="xx"/>
+				<s:Button id="xxBtn" label="查询" click="pager.pageIndex=1;searchClickHandler(event)"
+						  enabled="{PsbLocator.getInstance().npending}"/>
+			</s:HGroup>
+			<s:HGroup width="100%" verticalAlign="middle">
+				<s:Label text="发布日期："/>
+				<tool:DateZh id="occDate" width="180"/>
+				<s:Label text="到"/>
+				<tool:DateZh id="occDate0" width="180"/>
+			</s:HGroup>
+			<s:HGroup width="100%" height="100%">
+				<s:VGroup width="100%" height="100%" horizontalAlign="right">
+					<s:DataGrid id="dg" width="100%" height="100%"
+								dataProvider="{NotificationLocator.getInstance().listObj}"
+								selectionChange="dg_selectionChangeHandler(event)">
+						<s:columns>
+							<s:ArrayList>
+								<s:GridColumn dataField="TITLE" headerText="标题"></s:GridColumn>
+								<s:GridColumn width="140" dataField="CREATE_DATETIME"
+											  headerText="发布日期"></s:GridColumn>
+							</s:ArrayList>
+						</s:columns>
+					</s:DataGrid>
+					<local:ListPager id="pager"
+									 creationComplete="pager.addEventListener(ListPager.PAGE_INDEX_CHANGE_EVENT,searchClickHandler);NotificationLocator.getInstance().listPager=pager;"
+									 pageSize="16"/>
+				</s:VGroup>
+				<s:VGroup width="100%" height="100%">
+					<s:Spacer width="10" height="100%"/>
+					<s:Label color="#FF0000" text="提示：“重要”的通知会在系统首页自动弹出，如不想弹出请选择“不重要”"/>
+					<s:HGroup width="100%" verticalAlign="middle">
+						<s:Label text="标题："/>
+						<s:TextInput id="TITLE" width="100%" text="{dg.selectedItem.TITLE}"/>
+					</s:HGroup>
+					<s:HGroup width="100%">
+						<s:Spacer width="50" height="10"/>
+						<s:RadioButton id="zy" label="重要" groupName="IMPORTANT"
+									   selected="{dg.selectedItem.IMPORTANT=='1'}"/>
+						<s:RadioButton id="bzy" label="不重要" groupName="IMPORTANT"
+									   selected="{dg.selectedItem.IMPORTANT=='0'}"/>
+					</s:HGroup>
+					<s:HGroup width="100%">
+						<s:Label text="内容："/>
+						<s:TextArea id="content_text" width="100%" height="300"
+									text="{dg.selectedItem.CONTENT_TEXT}"/>
+					</s:HGroup>
+					<s:HGroup width="100%" horizontalAlign="right">
+						<mx:LinkButton label="上传" click="uploadFile()" textDecoration="underline"/>
+						<local:SingleFileUploader id="sfu" label="附件下载" filter="{filter}"/>
+					</s:HGroup>
+					<s:HGroup width="100%" horizontalAlign="right">
+						<s:Button label="增加" click="NotificationEventHandler(IFSControl.NOTIFICATIONWS_INSERT)"
+								  enabled="{PsbLocator.getInstance().npending}"/>
+						<s:Button id="saveBtn" visible="{dg.selectedIndex&gt;=0}" label="修改"
+								  click="NotificationEventHandler(IFSControl.NOTIFICATIONWS_UPDATE);saveBtn.visible=false;deleteBtn.visible=false;"
+								  enabled="{PsbLocator.getInstance().npending}"/>
+						<s:Button id="deleteBtn" visible="{dg.selectedIndex&gt;=0}" label="删除"
+								  click="NotificationEventHandler(IFSControl.NOTIFICATIONWS_DELETE);saveBtn.visible=false;deleteBtn.visible=false;"
+								  enabled="{PsbLocator.getInstance().npending}"/>
+					</s:HGroup>
+				</s:VGroup>
+			</s:HGroup>
+			
+		</s:VGroup>
+	</s:Panel>	
+</s:Module>

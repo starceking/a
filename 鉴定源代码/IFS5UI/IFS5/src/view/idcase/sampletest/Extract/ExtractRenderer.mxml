@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:ItemRenderer xmlns:fx="http://ns.adobe.com/mxml/2009"
+				xmlns:s="library://ns.adobe.com/flex/spark"
+				xmlns:mx="library://ns.adobe.com/flex/mx"
+				xmlns:tool="view.tool.*"
+				fontSize="14" height="30">
+	<fx:Declarations>
+		<!-- 将非可视元素（例如服务、值对象）放在此处 -->
+	</fx:Declarations>
+	<fx:Script>
+		<![CDATA[
+			import util.Helper;
+			private function ddlchange(evt:Event):void
+			{
+				if((evt.target as DictCbb).width==200)
+				{
+					data.TQ_METHOD=syff.getSelectedItem();
+				}
+				else
+				{
+					data.CH_METHOD=syjg.getSelectedItem();
+				}
+			}
+			
+		]]>
+	</fx:Script>
+	<s:HGroup verticalAlign="middle" verticalCenter="0">
+		<s:Label width="200" text="{data.SLN}" verticalAlign="middle" verticalCenter="0"/>
+		<s:Label width="230" text="{data.NAME}" verticalAlign="middle" verticalCenter="0"/>
+		<s:Label width="80" text="{data.SAMPLE_TYPE}" verticalAlign="middle" verticalCenter="0"/>
+		<tool:DictCbb id="syff" width="200" dictName="提取方法" selectedItem="{data.TQ_METHOD}" 
+					  creationComplete="syff.addEventListener(DictCbb.event_name,ddlchange)" verticalCenter="0"/>
+		<tool:DictCbb id="syjg" dictName="纯化方法" selectedItem="{data.CH_METHOD}" verticalCenter="0" width="201"
+					  creationComplete="syjg.addEventListener(DictCbb.event_name,ddlchange)"/>
+	</s:HGroup>
+</s:ItemRenderer>

@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009"
+		 xmlns:s="library://ns.adobe.com/flex/spark"
+		 xmlns:mx="library://ns.adobe.com/flex/mx"
+		 xmlns:tool="view.tool.*"
+		 xmlns:idcase="view.idcase.tool.idcase.*"
+		 width="813" height="556" fontSize="14">
+	<fx:Declarations>
+		<!-- 将非可视元素（例如服务、值对象）放在此处 -->
+	</fx:Declarations>
+	<fx:Script>
+		<![CDATA[
+			import com.adobe.cairngorm.control.CairngormEventDispatcher;
+			
+			import control.*;
+			
+			import locator.IdFlowLocator;
+			import locator.JusTypeLocator;
+			import locator.PsbLocator;
+			import locator.SysUserLocator;
+			
+			import mx.core.FlexGlobals;
+			import mx.containers.ViewStack;
+			
+			import spark.events.IndexChangeEvent;
+			import spark.events.TextOperationEvent;
+			
+			import util.Helper;
+			
+			import vo.IdFlowVo;
+			import vo.OfficeJusTypeVo;
+			
+			private var flowLoc:IdFlowLocator=IdFlowLocator.getInstance();
+			public var vs:ViewStack;
+			
+			private function save():Boolean
+			{
+				if(validateInput())
+				{
+					if(caseProperty.selectedData.length==0)
+					{
+						Helper.showAlert("请选择案件性质");
+						return false;
+					}
+					
+					flowLoc.wsObj.DFGKNO=dfgk.text;
+					flowLoc.wsObj.XCKYNO=xcky.text;
+					flowLoc.wsObj.CASE_NO=caseNo.text;
+					flowLoc.wsObj.CASE_NAME=caseName.text;
+					flowLoc.wsObj.CASE_TYPE=caseType.selectedData;
+					flowLoc.wsObj.CASE_TYPE2=caseType2.selectedData;
+					flowLoc.wsObj.SCENE_PLACE=scenePlace.text;
+					flowLoc.wsObj.RegionCode=regioncode.text;
+					flowLoc.wsObj.OCCURRENCE_DATE=occDate.text;
+					flowLoc.wsObj.CASE_SUMMARY=summary.text;
+					flowLoc.wsObj.CASE_PROPERTY=caseProperty.selectedData;				
+					
+					switch(flowLoc.wsObj.ID_STATUS)
+					{
+						case "信息录入":
+							CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.IDCASEWS_Insert));
+							break;
+						default:
+							CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.IDCASEWS_Update));break;
+					}					
+					return true;	
+				}
+				return false;
+			}		
+			
+			private function validateInput():Boolean
+			{
+				var result:Boolean=cit.save();
+				result=result && Helper.validateTextInput(caseName);
+				result=result && Helper.validateTextInput(regioncode);
+				result=result && Helper.validateTextArea(summary);
+				
+				result=result && Helper.validateTextInput(cit.conYear);
+				result=result && Helper.validateTextInput(cit.conNo);
+				result=result && Helper.validateTextInput(cit.coner1name);
+				result=result && Helper.validateTextInput(cit.coner1Pn);
+				result=result && Helper.validateTextInput(cit.coner1Phone);
+				result=result && Helper.validateTextInput(cit.coner2name);
+				result=result && Helper.validateTextInput(cit.coner2Pn);
+				result=result && Helper.validateTextInput(cit.coner2Phone);
+				return result;
+			}
+			protected function caseNoChange(event:TextOperationEvent):void				
+			{
+				var status:String=(event.target as TextInput).text;
+				if(status=="受理后自动生成")
+				{
+					event.preventDefault();
+				}
+			}
+			
+			protected function button1_clickHandler(event:MouseEvent):void
+			{
+				if(flowLoc.curObj.ID==flowLoc.curObj.SRCID)
+				{
+					if((flowLoc.curObj.ID_STATUS!="新的委托")&&(flowLoc.curObj.ID_STATUS!="不予受理"))
+					{
+						flowLoc.wholeCase=true;
+						Helper.setIndexContentNoMenu("view/idcase/info/casedoc/dna/DnaCaseModule.swf");
+					}
+					else
+					{
+						Helper.showAlert("该案件尚未受理");
+					}
+				}
+				else
+				{
+					Helper.showAlert("只有主案件可以进行跳转");
+				}
+			}	
+			
+			private function delCase():void
+			{
+				if(flowLoc.curObj.CONER1!=SysUserLocator.getInstance().loginUser.ID&&
+					SysUserLocator.getInstance().loginUser.AUTH.search("专业负责人")<0)
+				{
+					Helper.showAlert("删除案件失败，您没有足够的权限，请联系专业负责人！");
+					return;
+				}
+				
+				if(delBtn.label=="删除")
+				{
+					delBtn.label="确认删除？";
+				}
+				else if(delBtn.label=="确认删除？")
+				{
+					if(flowLoc.curObj.CONNO.search("C")>=0)
+					{
+						CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.IDCASEWS_DeleteC));
+					}
+					else if(flowLoc.curObj.CONNO.search("D")>=0)
+					{
+						CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.IDCASEWS_DeleteD));
+					}
+					else if(flowLoc.curObj.CONNO.search("R")>=0)
+					{
+						CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.MRELATIVEWS_DeleteR));
+					}
+					else if(flowLoc.curObj.CONNO.search("L")>=0)
+					{
+						CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.MISSINGPERSONWS_Delete));
+					}
+				}
+			}
+			
+			protected function regionSelect_clickHandler(event:MouseEvent):void
+			{
+				IdFlowLocator.getInstance().caseAFDD=scenePlace;
+				IdFlowLocator.getInstance().caseAFDDcode=regioncode;
+				
+				FlexGlobals.topLevelApplication.showRegionSelectModule();
+			}
+			
+		]]>
+	</fx:Script>
+	<s:VGroup left="10" right="10" top="10" bottom="10" gap="10">
+		<s:Label color="#0A37FA" fontSize="20" fontStyle="normal" fontWeight="normal" lineThrough="false"
+				 text="案件基本信息" textDecoration="none"/>
+		<s:HGroup width="100%" verticalAlign="middle">
+			<s:Label text="警综编号："/>
+			<s:TextInput id="dfgk" width="220" text="{flowLoc.curObj.DFGKNO}"/>
+			<s:Label text="现勘编号："/>
+			<s:TextInput id="xcky" width="220" text="{flowLoc.curObj.XCKYNO}"/>
+		</s:HGroup>
+		<s:HGroup width="100%" verticalAlign="middle">
+			<s:Label color="#FF0000" text="案件类型："/>
+			<tool:DictDdl id="caseType" width="185" dictName="案件类型" selectedData="{flowLoc.curObj.CASE_TYPE}"/>
+			<s:Label color="#FF0000" text="案件性质："/>
+			<tool:DictDdl id="caseProperty" width="185" dictName="案件性质" selectedData="{flowLoc.curObj.CASE_PROPERTY}"/>
+			<s:Label color="#FF0000" text="案 件 类 别："/>
+			<tool:DictDdl id="caseType2" width="163" dictName="案件类别" selectedData="{flowLoc.curObj.CASE_TYPE2}"/>
+		</s:HGroup>
+		<s:HGroup width="100%" verticalAlign="middle">
+			<s:Label color="#FA0303" text="案件名称："/>
+			<s:TextInput id="caseName" width="449" text="{flowLoc.curObj.CASE_NAME}"/>
+			<s:HGroup verticalAlign="middle" enabled="{caseNo.text!='受理后自动生成'}">
+				<s:Label color="#FC0505" text="受理登记号："/>
+				<s:TextInput id="caseNo" width="163" changing="caseNoChange(event)" prompt="受理后自动生成"
+							 text="{flowLoc.curObj.CASE_NO}"/>
+			</s:HGroup>
+		</s:HGroup>
+		<s:HGroup width="100%" verticalAlign="middle">
+			<s:Label color="#000000" text="发案地点："/>
+			<s:TextInput id="regioncode" width="60" restrict="0-9" maxChars="6" text="{flowLoc.curObj.RegionCode}"/>
+			<s:Button label="选择" click="regionSelect_clickHandler(event)" />
+			<s:TextInput id="scenePlace" width="309" text="{flowLoc.curObj.SCENE_PLACE}"/>
+			<s:Label color="#000000" text="发 案 时 间："/>
+			<tool:DateZh id="occDate" width="166" text="{flowLoc.curObj.OCCURRENCE_DATE}"/>
+		</s:HGroup>
+		<s:HGroup width="100%">
+			<s:Label color="#FD0101" text="简要案情："/>
+			<s:TextArea id="summary" width="710" height="60" text="{flowLoc.curObj.CASE_SUMMARY}" verticalScrollPolicy="off" />
+		</s:HGroup>
+		<idcase:ConInfoTool id="cit"/>
+		<s:HGroup width="100%" horizontalAlign="center">
+			<s:Button visible="{flowLoc.curObj.ID_STATUS=='信息录入'}"
+					  click="if(save())if(vs!=null)vs.selectedIndex++;" skinClass="assets.skins.Button_bc"/>
+			<s:Button visible="{flowLoc.curObj.ID_STATUS!='信息录入'}" click="save()"
+					  skinClass="assets.skins.Button_bc"/>
+			<s:Button id="delBtn" visible="{flowLoc.curObj.ID_STATUS=='新的委托'}" label="删除" click="delCase()"/>
+			<s:Button id="wBtn" visible="{SysUserLocator.getInstance().loginUser.CURRENT_ROLE=='DNA'}"
+					  label="查看主案件信息" click="button1_clickHandler(event)"/>
+		</s:HGroup>
+	</s:VGroup>
+</s:Group>

@@ -1,0 +1,199 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<s:Module xmlns:fx="http://ns.adobe.com/mxml/2009" 
+		  xmlns:s="library://ns.adobe.com/flex/spark" 
+		  xmlns:mx="library://ns.adobe.com/flex/mx" 
+		  xmlns:idcase="view.idcase.tool.sb.*"
+		  xmlns:tool="view.tool.*"
+		  width="953" height="598" fontSize="14"
+		  creationComplete="MenuLocator.getInstance().changeMenu(menuGp);module1_creationCompleteHandler(event)"
+		  >
+	
+	<fx:Script>
+		<![CDATA[
+			import com.adobe.cairngorm.control.CairngormEventDispatcher;
+			
+			import control.*;
+			
+			import locator.DictLocator;
+			import locator.EquipmentLocator;
+			import locator.MenuLocator;
+			
+			import mx.events.FlexEvent;
+			
+			import util.Helper;
+			
+			import vo.EquipmentVo;
+			import vo.MenuVo;
+			var sblblist:ArrayList=new ArrayList(["提取离心机","移液器","加热仪","恒温混匀仪","提取漩涡混合器","水浴","显微镜",
+				"提取工作站","扩增仪","扩增离心机","扩增漩涡混合器","超净台","扩增工作站","试剂盒",
+				"电泳仪","检测离心机","检测漩涡混合器","制冰机","电泳工作站","内标","变性溶剂","其他"]);
+			protected function module1_creationCompleteHandler(event:FlexEvent):void
+			{
+				// 页面加载
+				EquipmentLocator.getInstance().wsObj=new EquipmentVo("","","","","","","","","","","","", "DNA","","","","","","");
+				CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.EQUIPMENT_GetAll));
+			}
+			protected function gd_doubleClickHandler(event:MouseEvent):void
+			{
+				// 双击
+				if (gd.selectedItem!=null)
+				{
+					EquipmentLocator.getInstance().currObj =gd.selectedItem as EquipmentVo;
+					Helper.pushMenu("仪器设备信息","view/equipment/EquipmentSbModule.swf");
+				}
+			}
+			
+			protected function BtnAdd_clickHandler(event:MouseEvent):void
+			{
+				// 新增
+				if(sbtype.selectedItem==null)
+				{ 
+					Helper.showAlert("仪器类别不允许空");
+					return;
+				}
+				var TexrJszt :String;
+				TexrJszt=(a.selected?a.label+",":"")+(b.selected?b.label+",":"")+(c.selected?c.label+",":"");
+				var TextWhfs:String;
+				TextWhfs = (d.selected?d.label+",":"")+(e.selected?e.label+",":"");
+				var TextYzfs :String;
+				TextYzfs =(f.selected?f.label+",":"")+(g.selected?g.label+",":"");
+				EquipmentLocator.getInstance().wsObj=new EquipmentVo(Helper.getGUID(),TextSbmc.text,TextZzsmc.text,TextGg.text,TextCcbh.text,TextSbm.text,TextJsrq.text,TextQyrq.text,TextCfdd.text,TexrJszt,TextSzsj.text,TextXzzq.text,TextSyzy.office,TextGlr.text,TextWhfs,TextYzfs,"","",sbtype.selectedItem);
+				CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.EQUIPMENT_Insert));
+				
+			}
+			
+			protected function BtnDelet_clickHandler(event:MouseEvent):void
+			{
+				// 删除
+				EquipmentLocator.getInstance().wsObj=gd.selectedItem as EquipmentVo;
+				CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.EQUIPMENT_Delete));
+			}
+			
+			protected function BtnUpdate_clickHandler(event:MouseEvent):void
+			{
+				if(sbtype.selectedItem==null)
+				{ 
+					Helper.showAlert("仪器类别不允许空");
+					return;
+				}
+				// 修改
+				var TexrJszt :String;
+				TexrJszt=(a.selected?a.label+",":"")+(b.selected?b.label+",":"")+(c.selected?c.label+",":"");
+				var TextWhfs:String;
+				TextWhfs = (d.selected?d.label+",":"")+(e.selected?e.label+",":"");
+				var TextYzfs :String;
+				TextYzfs =(f.selected?f.label+",":"")+(g.selected?g.label+",":"");
+				EquipmentLocator.getInstance().wsObj=new EquipmentVo(gd.selectedItem.ID,TextSbmc.text,TextZzsmc.text,TextGg.text,TextCcbh.text,TextSbm.text,TextJsrq.text,TextQyrq.text,TextCfdd.text,TexrJszt,TextSzsj.text,TextXzzq.text,TextSyzy.office,TextGlr.text,TextWhfs,TextYzfs,"","",sbtype.selectedItem);
+				CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.EQUIPMENT_Update));
+				Helper.showAlert("修改成功！");
+			}	
+			
+			protected function button1_clickHandler(event:MouseEvent):void
+			{
+				// 打印
+				EquipmentLocator.getInstance().wordName="CSTCSG-500-022仪器设备登记表.doc";
+				EquipmentLocator.getInstance().num=gd.selectedItem.ID;
+				EquipmentLocator.getInstance().filename=Helper.getGUID();
+				CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.EQUIPMENT_MackAllFB));
+			}
+			
+			protected function TextSyzy0_clickHandler(event:MouseEvent):void
+			{
+				EquipmentLocator.getInstance().wsObj=new EquipmentVo("","","","","","","","","","","","",TextSyzy0.office,"","","","","","");
+				CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.EQUIPMENT_GetAll));
+				
+				if(TextSyzy0.office=="DNA")
+					sbtype.dataProvider=sblblist;
+				else
+					sbtype.dataProvider=DictLocator.getInstance().getItem("设备类别");
+			}
+			
+		]]>
+	</fx:Script>
+	
+	<fx:Declarations>
+		<!-- 将非可视元素（例如服务、值对象）放在此处 -->
+	</fx:Declarations>
+	<s:Panel width="953" height="598">
+		<s:HGroup id="menuGp" x="10" y="-27"/>
+		<s:VGroup left="10" right="10" top="10" bottom="10" gap="10">
+			<s:HGroup width="100%" verticalAlign="middle">
+				<tool:OfficeRgp id="TextSyzy0" width="100%" height="22" dnaEnable="0"
+								office="{gd.selectedItem.SYZY}" click="TextSyzy0_clickHandler(event)"/>
+				<mx:LinkButton x="795" y="7" label="打印仪器设备登记表" enabled="{gd.selectedItem!=null}" click="button1_clickHandler(event)" textDecoration="underline" color="blue"/>
+			</s:HGroup>
+			<s:DataGrid id="gd" width="100%" height="100%"
+						dataProvider="{EquipmentLocator.getInstance().listObj}"
+						doubleClick="gd_doubleClickHandler(event)" doubleClickEnabled="true">
+				<s:columns>
+					<s:ArrayList>
+						<s:GridColumn dataField="SBYQMC" headerText="设备名称"></s:GridColumn>
+						<s:GridColumn dataField="CZSMC" headerText="制造商"></s:GridColumn>
+						<s:GridColumn dataField="XHGG" headerText="规格"></s:GridColumn>
+					</s:ArrayList>
+				</s:columns>
+			</s:DataGrid>
+			<s:HGroup width="100%" verticalAlign="middle">
+				<s:Label color="#FF0000" text="设备名称 ："/>
+				<s:TextInput id="TextSbmc" width="100%" text="{gd.selectedItem.SBYQMC}"/>
+				<s:Label text="制造厂家："/>
+				<s:TextInput id="TextZzsmc" width="100%" text="{gd.selectedItem.CZSMC}"/>
+			</s:HGroup>
+			<s:HGroup width="100%" verticalAlign="middle">
+				<s:Label text="型号/规格："/>
+				<s:TextInput id="TextGg" width="100%" text="{gd.selectedItem.XHGG}"/>
+				<s:Label text="出厂编号："/>
+				<s:TextInput id="TextCcbh" width="100%" text="{gd.selectedItem.CCBH}"/>
+			</s:HGroup>
+			<s:HGroup width="100%" verticalAlign="middle">
+				<s:Label text="内部编码 ："/>
+				<s:TextInput id="TextSbm" width="100%" text="{gd.selectedItem.SBSBH}"/>
+				<s:Label text="购置日期："/>
+				<tool:DateZh id="TextJsrq" width="100%" text="{gd.selectedItem.JSRQ}"/>
+			</s:HGroup>
+			<s:HGroup width="100%" verticalAlign="middle">
+				<s:Label text="启用日期 ："/>
+				<tool:DateZh id="TextQyrq" width="100%" text="{gd.selectedItem.QYRQ}"/>
+				<s:Label text="存放地点："/>
+				<s:TextInput id="TextCfdd" width="100%" text="{gd.selectedItem.MQCFDD}"/>
+			</s:HGroup>
+			<s:HGroup width="100%" verticalAlign="middle">
+				<s:Label text="校准时间 ："/>
+				<tool:DateZh id="TextSzsj" width="100%" text="{gd.selectedItem.SZSJ}"/>
+				<s:Label text="校准周期："/>
+				<s:TextInput id="TextXzzq" width="100%" text="{gd.selectedItem.SZZQ}"/>
+			</s:HGroup>
+			<s:HGroup width="100%" verticalAlign="middle">
+				<s:Label color="#FF0000" text="仪器类别 ："/>
+				<s:DropDownList id="sbtype" width="100%" dataProvider="{sblblist}"
+								selectedItem="{gd.selectedItem.SBLB}"/>
+				<s:Label text="管  理  人："/>
+				<s:TextInput id="TextGlr" width="100%" text="{gd.selectedItem.GLR}"/>
+			</s:HGroup>
+			<s:HGroup width="100%" verticalAlign="middle">
+				<s:Label text="维护方式 ："/>
+				<s:CheckBox id="d" label="合同维护保养" selected="{gd.selectedItem.WHFS.search('合同维护保养,')&gt;=0}"/>
+				<s:CheckBox id="e" label="自行维护保养" selected="{gd.selectedItem.WHFS.search('自行维护保养,')&gt;=0}"/>
+				<s:Spacer width="170" height="10"/>
+				<s:Label text="验证方式："/>
+				<s:CheckBox id="f" label="合同校准" selected="{gd.selectedItem.YZFS.search('合同校准,')&gt;=0}"/>
+				<s:CheckBox id="g" label="自行校准" selected="{gd.selectedItem.YZFS.search('自行校准,')&gt;=0}"/>
+			</s:HGroup>
+			<s:HGroup width="100%" verticalAlign="middle">
+				<s:Label color="#FF0000" text="使用部门 ："/>
+				<tool:OfficeRgp id="TextSyzy" width="386" height="22" dnaEnable="0" office="{gd.selectedItem.SYZY}"/>
+				<s:Label text="接受状态："/>
+				<s:CheckBox id="a" label="全新" selected="{gd.selectedItem.JSZT.search('全新,')&gt;=0}"/>
+				<s:CheckBox id="b" label="陈旧" selected="{gd.selectedItem.JSZT.search('陈旧,')&gt;=0}"/>
+				<s:CheckBox id="c" label="经过改装" selected="{gd.selectedItem.JSZT.search('经过改装,')&gt;=0}"/>
+			</s:HGroup>
+			<s:HGroup width="100%" horizontalAlign="right">
+				<s:Button id="BtnAdd" label="新增" click="BtnAdd_clickHandler(event)"/>
+				<s:Button id="BtnUpdate" label="修改" click="BtnUpdate_clickHandler(event)"
+						  enabled="{gd.selectedItem!=null}"/>
+				<s:Button id="BtnDelet" label="删除" click="BtnDelet_clickHandler(event)"
+						  enabled="{gd.selectedItem!=null}"/>
+			</s:HGroup>
+		</s:VGroup>
+	</s:Panel>
+</s:Module>

@@ -1,0 +1,1243 @@
+﻿/***************************************************************************************/
+/******************************登录页面样式*********************************************/
+/***************************************************************************************/
+
+p.MsoNormal, li.MsoNormal, div.MsoNormal
+{
+	text-align: left;
+}
+
+a:link
+{
+	font-size: 12px;
+	color: #FFFFFF;
+	text-decoration: underline;
+}
+a:visited
+{
+	font-size: 12px;
+	color: #000000;
+	text-decoration: underline;
+}
+a:hover
+{
+	font-size: 12px;
+	color: #CC6600;
+	text-decoration: underline;
+}
+
+
+
+/*登录名等文字*/
+.login_text
+{
+	font-size: 9pt;
+	line-height: 25px;
+	color: #FFFFFF;
+	letter-spacing: 2px;
+}
+
+/*登录界面输入框样式*/
+.Input1
+{
+	border-right: #ffffff 1px solid;
+	border-top: #ffffff 1px solid;
+	border-left: #ffffff 1px solid;
+	border-bottom: #ffffff 0px solid;
+	font-size: 9pt;
+	font-family: "宋体" , "Tahoma";
+	background-color: #ffffff;
+}
+
+/***************************************************************************************/
+/******************************页面公用部分*********************************************/
+/***************************************************************************************/
+
+/* 页面主体样式，主要是字体的大小，颜色，间距，背景色，页边距，滚动条等。*/
+Body
+{
+	font-size: 9pt;
+	line-height: 12pt;
+	font-family: "宋体";
+	background-color: #FFFFFF;
+	margin-left: 0;
+	margin-top: 0;
+	margin-right: 0;
+	margin-bottom: 0;
+	border: 0;
+	margin: 0; /*SCROLLBAR-FACE-COLOR: rgb(10,236,209); //滚动条凸出部分的颜色 	SCROLLBAR-HIGHLIGHT-COLOR: rgb(23,255,155);//滚动条空白部分的颜色 	SCROLLBAR-SHADOW-COLOR: rgb(255,116,23);//立体滚动条阴影的颜色 	SCROLLBAR-3DLIGHT-COLOR: rgb(66,93,127);//滚动条亮边的颜色 	SCROLLBAR-ARROW-COLOR: rgb(93,232,255);//上下按钮上三角箭头的颜色 	SCROLLBAR-TRACK-COLOR: rgb(255,70,130);//滚动条的背景颜色 	SCROLLBAR-DARKSHADOW-COLOR: rgb(10,0,209);//滚动条强阴影的颜色 	SCROLLBAR-BASE-COLOR: rgb(66,93,128)；//滚动条的基本颜色*/
+}
+
+/***************************************************************************************/
+/******************************页面LOGO头部分*******************************************/
+/***************************************************************************************/
+
+/*Logo部分标志样式第一列*/
+.Logo1
+{
+	background-image: url(image/logo.jpg);
+	background-repeat: no-repeat;
+	height: 75px;
+	width: 432px;
+}
+/*Logo部分标志样式第二列*/
+.Logo2
+{
+	background-image: url(image/logo_bg.jpg);
+	background-repeat: repeat-x;
+	height: 75px;
+}
+/*Logo部分标志样式第三列*/
+.Logo3
+{
+	background-image: url(image/logo_bg1.jpg);
+	background-position: right;
+	height: 75px;
+	width: 282px;
+}
+
+
+/*Logo部分文字样式*/
+.Logo_text
+{
+	color: #FFFFFF;
+	font-family: "宋体";
+	font-size: 12px;
+	text-decoration: none;
+}
+
+
+/*Logo部分链接样式*/
+.Logo_link:link
+{
+	color: white;
+	font-family: "宋体";
+	font-size: 12px;
+	text-decoration: none;
+}
+.Logo_link:visited
+{
+	color: #FFFFFF;
+	font-family: "宋体";
+	font-size: 12px;
+	text-decoration: none;
+}
+.Logo_link:hover
+{
+	color: #FFFFFF;
+	font-family: "宋体";
+	font-size: 12px;
+	text-decoration: none;
+}
+
+/***************************************************************************************/
+/******************************页面顶部菜单*********************************************/
+/***************************************************************************************/
+
+
+/*顶部菜单背景样式*/
+.Topmenu_bg
+{
+	background-image: url(image/topmenu_dh2.jpg);
+}
+
+.Topmenu1
+{
+	background-image: url(image/topmenu_dh2.jpg);
+	height: 29px;
+	width: 23px;
+}
+
+
+/*顶部菜单文字样式*/
+.Topmenu_text
+{
+	color: #FFFFFF;
+	font-family: "宋体";
+	font-size: 12px;
+	text-align: right;
+	margin-right: 50px;
+}
+
+
+/*顶部菜单链接样式*/
+.Topmenu_button:link
+{
+	color: #FFFFFF;
+	font-family: "宋体";
+	font-size: 12px;
+	text-decoration: none;
+}
+.Topmenu_button:visited
+{
+	color: #FFFFFF;
+	font-family: "宋体";
+	font-size: 12px;
+	text-decoration: none;
+}
+.Topmenu_button:hover
+{
+	color: #FFFF66;
+	font-family: "宋体";
+	font-size: 12px;
+	text-decoration: none;
+}
+
+
+/*左边菜单链接样式*/
+.leftmenu_button:link
+{
+	color: #0C67B0;
+	font-family: "宋体";
+	font-size: 12px;
+	text-decoration: none;
+}
+.leftmenu_button:visited
+{
+	color: #0C67B0;
+	font-family: "宋体";
+	font-size: 12px;
+	text-decoration: none;
+}
+.leftmenu_button:hover
+{
+	color: #0C67B0;
+	font-family: "宋体";
+	font-size: 12px;
+	text-decoration: none;
+}
+
+
+
+
+/***************************************************************************************/
+/******************************页面主体部分样式***************************************/
+/***************************************************************************************/
+.Tablebg
+{
+	background-color: #4BACC6;
+	text-indent: 4pt;
+	word-break: break-all;
+}
+
+.Table-Title
+{
+	font-family: 宋体, Tahoma;
+	font-size: 9pt;
+	color: #31849B;
+	text-decoration: none;
+	letter-spacing: 1px;
+	text-align: left;
+	line-height: 25px;
+	cursor: default;
+	font-weight: normal;
+	background-color: #ADD4FF;
+}
+
+.tdblue-right
+{
+	font-family: "宋体" , "Tahoma";
+	color: #31849B;
+	font-size: 9pt;
+	line-height: 25px;
+	background-color: #E7F3FF;
+	text-align: right;
+}
+.tdwhite
+{
+	font-family: "宋体" , "Tahoma";
+	line-height: 25px;
+	font-size: 9pt;
+	color: #000000;
+	background-color: #ffffff;
+	background-position: left;
+	text-align: left;
+}
+.Input
+{
+	border-right: #BFE1F9 0px solid;
+	border-top: #BFE1F9 0px solid;
+	border-left: #BFE1F9 0px solid;
+	border-bottom: #FF6600 0px solid;
+	color: #000000;
+	font-size: 9pt;
+	font-family: "宋体" , "Tahoma";
+	background-color: #FFFFFF;
+}
+/*按钮风格*/
+.button-big
+{
+	font-family: "宋体" , "Tahoma";
+	color: #000000;
+	font-size: 9pt;
+	padding-top: 2px;
+	width: 74px;
+	border: 0px solid #3179BD;
+	background-image: url(   'image/mainbutton.jpg' );
+	cursor: pointer;
+}
+.qx_button
+{
+	font-size: 9pt;
+	color: #333333;
+	background-image: url(image/qx_button_bg.gif);
+	height: 20px;
+	width: 31px;
+	border: none;
+	background-color: #F5F5F5;
+}
+
+.Tablebg
+{
+	background-color: #247FC5;
+	text-indent: 4pt;
+	word-break: break-all;
+}
+
+
+
+/***************************************************************************************/
+/******************************显示当前位置字样*****************************************/
+/***************************************************************************************/
+
+
+/*提示位置字体样式*/
+.Place_text
+{
+	font-size: 9pt;
+	line-height: 20pt;
+	color: #333333;
+}
+/*提示位置字体链接样式*/
+.Place_link
+{
+}
+
+
+/***************************************************************************************/
+/******************************查询表单样式*********************************************/
+/***************************************************************************************/
+
+/*查询表单样式,主要定义背景,边框,滤镜等*/
+.Search
+{
+	font-size: 12px;
+	text-align: center;
+	text-indent: 2pt;
+	width: 100%;
+}
+.Search_table_bg
+{
+	width: 100%;
+	background-color: #FFFFFF;
+}
+
+/*查询表单中说明文字*/
+.Search_explain
+{
+	font-size: 12px;
+	text-align: left;
+	color: #CC6600;
+	background-color: E1ECFA;
+	padding-left: 10px;
+}
+
+/*查询表单中说明文字底白色*/
+.Search_explain_bgNull
+{
+	font-size: 12px;
+	text-align: left;
+	color: #CC6600;
+	padding-left: 10px;
+}
+
+/*查询表单表头样式*/
+.Search_title
+{
+	font-size: 12px;
+	line-height: 21px;
+	font-weight: normal;
+	color: #333333;
+	height: 21px;
+	background-image: url(image/search_title_bg1.jpg);
+	background-repeat: repeat-x;
+	background-position: left top;
+	padding-top: 4px;
+	border-top: 1px solid #9CCEEA;
+	border-right: 1px solid #9CCEEA;
+	border-bottom: 1px none #9CCEEA;
+	border-left: 1px solid #9CCEEA;
+	padding-left: 20px;
+}
+
+/*查询表单项目样式	*/
+.Search_item
+{
+	font-family: "宋体" , "Tahoma";
+	font-size: 9pt;
+	color: #000000;
+	text-decoration: none;
+	letter-spacing: 4px;
+	text-align: right;
+	line-height: 24px;
+	text-indent: 5pt;
+	background-color: #E0EFF7;
+}
+/*查询表单内容样式*/
+.Search_content
+{
+	font-family: 宋体, Tahoma;
+	font-size: 9pt;
+	color: #000000;
+	text-decoration: none;
+	letter-spacing: 1px;
+	text-align: left;
+	line-height: 24px;
+	text-indent: 1pt;
+	padding-left: 10px;
+	height: 15px;
+	background-color: #E0EFF7;
+}
+
+/*查询表单内容文字但有背景色*/
+.Search_text_color
+{
+	font-size: 12px;
+	text-align: left;
+	color: #000000;
+	background-color: #E0EFF7;
+	padding-left: 10px;
+}
+
+
+/*查询表单输入框样式*/
+.Search_input
+{
+	color: #000000;
+	font-size: 9pt;
+	font-family: "宋体" , "Tahoma";
+	border: 1px solid #80B2C6;
+}
+
+/*查询表单中按钮样式*/
+.Search_button
+{
+	border: none 1px;
+	background-image: url(image/button2.gif);
+	height: 21px;
+	width: 60px;
+	font-size: 12px;
+	text-align: center;
+	vertical-align: middle;
+	line-height: 19px;
+}
+
+/*查询表单中按钮背景样式*/
+.Search_button_bg
+{
+	text-align: center;
+	height: 28px;
+	vertical-align: middle;
+	background-color: #E0EFF7;
+}
+
+
+/*查询表单中多选层按钮背景样式*/
+.Search_button_bg1
+{
+	height: 19px;
+	text-align: center;
+	background-image: url(image/button_c.jpg);
+	width: 88px;
+	border: 1px none;
+	font-size: 12px;
+	line-height: 19px;
+	color: #000000;
+	text-decoration: none;
+}
+
+
+/*查询表单中下拉选择框样式*/
+.Search_select
+{
+	width: 145px;
+	font-size: 9pt;
+	color: #333333;
+	border: 1px solid #7297DB;
+}
+
+/*查询表单中多选层列表样式*/
+.Search_list_tr
+{
+	background-color: #FFFFFF;
+	font-family: 宋体, Tahoma;
+	font-size: 9pt;
+	color: #000000;
+	text-decoration: none;
+	letter-spacing: 1px;
+	text-align: left;
+	line-height: 20px;
+	height: 25px;
+	text-indent: 5pt;
+}
+
+
+
+/***************************************************************************************/
+/*****************************版权信息样式**********************************************/
+/***************************************************************************************/
+
+/*版权部分样式*/
+.bottom2
+{
+	background-image: url(image/bottom_bg.jpg);
+	font-family: "宋体";
+	font-size: 9pt;
+	color: #ffffff;
+	text-align: center;
+}
+
+
+/*********************Left.aspx**************************************/
+.accordionContent
+{
+	color: white;
+	background-color: #D3DEEF;
+	border: 1px dashed #2F4F4F;
+	border-top: none;
+	padding: 5px;
+	padding-top: 10px;
+	font-family: 宋体;
+	font-size: 9pt;
+}
+.accordionHeader2
+{
+	border: 1px solid #2F4F4F;
+	font-family: Arial, Sans-Serif;
+	font-size: 12px;
+	font-weight: bold;
+	margin-top: 0px;
+	cursor: pointer;
+	background: url(../../image/button.jpg) no-repeat left top;
+	color: #FFFFFF;
+	font-family: "宋体";
+	font-size: 12px;
+	padding-bottom: 5px;
+	height: 24px;
+	border: 0px;
+	padding-left: 56px;
+	padding-top: 10px;
+}
+.sidebar
+{
+	width: 100%;
+	margin-bottom: 10px;
+}
+
+
+.OwenMenu
+{
+	background-position: 50px center; /*text-align: center;*/
+	padding: 5px;
+}
+.OwenMenuText
+{
+	color: #ffffff;
+	margin-left: 10px;
+	padding-left: 5px;
+	font-family: "宋体";
+	font-size: 12px;
+	text-decoration: none;
+	cursor: pointer;
+}
+
+.OwenMenuImage
+{
+	padding-left: 28px;
+	vertical-align: middle;
+}
+
+/********************* **************************************/
+/********************* **************************************/
+/******************内容页面格式***********************/
+/********************* **************************************/
+/********************* **************************************/
+
+.TableStyle
+{
+	width: 820px;
+	word-break: break-all;
+}
+
+.TableStyle2
+{
+	width: 100%;
+	word-break: break-all;
+	border-left: 1pt solid #92CDDC;
+	border-right: 1pt solid #92CDDC;
+	border-top: 1pt solid #92CDDC;
+	border-bottom: 1pt solid #92CDDC;
+}
+
+.TableTitleLeft
+{
+	border-style: solid;
+	border-width: 1px 0px 1px 1px;
+	border-color: #4BACC6;
+	height: 20pt;
+	font-family: 宋体;
+	font-size: 9pt;
+	font-weight: bold;
+	background-color: #ADD4FF;
+	vertical-align: middle;
+}
+.TableTitleRight
+{
+	border-style: solid;
+	border-width: 1px 1px 1px 0px;
+	border-color: #4BACC6;
+	background-color: Transparent;
+	height: 20pt;
+	font-family: 宋体;
+	font-size: 9pt;
+	font-weight: bold;
+	background-color: #ADD4FF;
+	vertical-align: middle;
+	text-align: center;
+}
+.TableTitleMiddle
+{
+	border-width: 1px 0px 1px 1px;
+	border-style: solid;
+	border-color: #4BACC6;
+	height: 20pt;
+	font-family: 宋体;
+	font-size: 9pt;
+	font-weight: bold;
+	background-color: #ADD4FF;
+	vertical-align: middle;
+	text-align: center;
+}
+.TableTitle5CollumnLeft
+{
+	border-width: 1px 0px 1px 1px;
+	border-style: solid;
+	border-color: #4BACC6;
+	height: 20pt;
+	width: 70px;
+	font-family: 宋体;
+	font-size: 9pt;
+	font-weight: bold;
+	background-color: #ADD4FF;
+	vertical-align: middle;
+	text-align: center;
+}
+
+.TableTitle5CollumnLeft
+{
+	border-width: 1px 0px 1px 1px;
+	border-style: solid;
+	border-color: #4BACC6;
+	height: 20pt;
+	width: 70px;
+	font-family: 宋体;
+	font-size: 9pt;
+	font-weight: bold;
+	background-color: #ADD4FF;
+	vertical-align: middle;
+	text-align: center;
+}
+.TableTitle5CollumnMiddle
+{
+	border-width: 1px 0px 1px 1px;
+	border-style: solid;
+	border-color: #4BACC6;
+	height: 20pt;
+	width: 160px;
+	font-family: 宋体;
+	font-size: 9pt;
+	font-weight: bold;
+	background-color: #ADD4FF;
+	vertical-align: middle;
+	text-align: center;
+}
+.TableTitle5CollumnRight
+{
+	border-width: 1px;
+	border-style: solid;
+	border-color: #4BACC6;
+	height: 20pt;
+	width: 160px;
+	font-family: 宋体;
+	font-size: 9pt;
+	font-weight: bold;
+	background-color: #ADD4FF;
+	vertical-align: middle;
+	text-align: center;
+}
+
+.TableTitleForFirstCollumn
+{
+	border-width: 1px 0px 1px 1px;
+	border-style: solid;
+	border-color: #4BACC6;
+	height: 20pt;
+	width: 740px;
+	font-family: 宋体;
+	font-size: 9pt;
+	font-weight: bold;
+	background-color: #ADD4FF;
+	vertical-align: middle;
+	text-align: left;
+}
+.TableTitleForOneButton
+{
+	border-width: 1px 1px 1px 0px;
+	border-style: solid;
+	border-color: #4BACC6;
+	height: 20pt;
+	width: 60pt;
+	font-family: 宋体;
+	font-size: 9pt;
+	font-weight: bold;
+	background-color: #ADD4FF;
+	vertical-align: middle;
+	text-align: right;
+}
+
+.TableTitleForOneButton
+{
+	border-width: 1px;
+	border-style: solid;
+	border-color: #4BACC6;
+	height: 20pt;
+	font-family: 宋体;
+	font-size: 9pt;
+	font-weight: bold;
+	background-color: #ADD4FF;
+	vertical-align: middle;
+	text-align: right;
+}
+/************Descriptions***************/
+
+.DescriptionsStyleOneLineHeadLeft
+{
+	border-left: 1pt solid #92CDDC;
+	border-right: 0pt solid #92CDDC;
+	border-top: 1pt solid #92CDDC;
+	border-bottom: 1pt solid #92CDDC;
+	font-family: 宋体;
+	font-size: 9pt;
+	vertical-align: middle;
+	text-align: center;
+	height: 22pt;
+	white-space: normal;
+}
+.DescriptionsStyleOneLineHeadMiddle
+{
+	border-left: 1pt solid #92CDDC;
+	border-right: 0pt solid #92CDDC;
+	border-top: 1pt solid #92CDDC;
+	border-bottom: 1pt solid #92CDDC;
+	font-family: 宋体;
+	font-size: 9pt;
+	vertical-align: middle;
+	text-align: center;
+	height: 22pt;
+	white-space: normal;
+}
+.DescriptionsStyleOneLineHeadRight
+{
+	border-left: 1pt solid #92CDDC;
+	border-right: 1pt solid #92CDDC;
+	border-top: 1pt solid #92CDDC;
+	border-bottom: 1pt solid #92CDDC;
+	font-family: 宋体;
+	font-size: 9pt;
+	vertical-align: middle;
+	text-align: center;
+	height: 22pt;
+	white-space: normal;
+}
+
+.DescriptionsStyleOneLine
+{
+	border-left: 1pt solid #92CDDC;
+	border-right: 0pt solid #92CDDC;
+	border-top: 0pt solid #92CDDC;
+	border-bottom: 1pt solid #92CDDC;
+	font-family: 宋体;
+	font-size: 9pt;
+	vertical-align: middle;
+	text-align: center;
+	height: 22pt;
+	white-space: normal;
+}
+
+.DescriptionsStyleOneLine2
+{
+	border-left: 0pt solid #92CDDC;
+	border-right: 0pt solid #92CDDC;
+	border-top: 0pt solid #92CDDC;
+	border-bottom: 0pt solid #92CDDC;
+	font-family: 宋体;
+	font-size: 9pt;
+	vertical-align: middle;
+	text-align: center;
+	height: 22pt;
+	white-space: normal;
+}
+
+.DescriptionsStyleOneLine3
+{
+	border-left: 1pt solid #92CDDC;
+	border-right: 0pt solid #92CDDC;
+	border-top: 0pt solid #92CDDC;
+	border-bottom: 0pt solid #92CDDC;
+	font-family: 宋体;
+	font-size: 9pt;
+	vertical-align: middle;
+	text-align: center;
+	height: 22pt;
+	white-space: normal;
+}
+
+.Statement
+{
+	border: 1px solid #4BACC6;
+	height: 22pt;
+	font-family: 宋体;
+	font-size: 10pt;
+	font-weight: bold;
+	vertical-align: middle;
+	text-align: center;
+	width: 100%;
+}
+
+/************Descriptions***************/
+.VerticalFirstCollumn
+{
+	border-style: solid;
+	border-width: 0pt 0pt 1pt 1pt;
+	border-color: #92CDDC;
+	width: 25px;
+	font-family: 宋体;
+	font-size: 9pt;
+	vertical-align: middle;
+	text-align: center;
+}
+.VerticalSecondCollumn
+{
+	border-style: solid;
+	border-width: 0pt 0pt 1pt 1pt;
+	border-color: #92CDDC;
+	width: 55px;
+	font-family: 宋体;
+	font-size: 9pt;
+	vertical-align: middle;
+	text-align: center;
+	height: 22pt;
+	white-space: normal;
+}
+.VerticalSecondCollumnThreeLine
+{
+	border-style: solid;
+	border-width: 0pt 0pt 1pt 1pt;
+	border-color: #92CDDC;
+	width: 55px;
+	font-family: 宋体;
+	font-size: 9pt;
+	vertical-align: middle;
+	text-align: center;
+	height: 66pt;
+	white-space: normal;
+}
+.DescriptionsStyleOneLineRight
+{
+	border-style: solid;
+	border-width: 0pt 1pt 1pt 1pt;
+	border-color: #92CDDC;
+	font-family: 宋体;
+	font-size: 9pt;
+	text-align: left;
+	vertical-align: middle;
+	height: 22pt;
+	white-space: normal;
+}
+
+.DescriptionsStyleTwoLine
+{
+	border-style: solid;
+	border-width: 0pt 0pt 1pt 1pt;
+	border-color: #92CDDC;
+	width: 70px;
+	font-family: 宋体;
+	font-size: 9pt;
+	vertical-align: middle;
+	text-align: center;
+	height: 44pt;
+	white-space: normal;
+}
+.DescriptionsStyleThreeLine
+{
+	border-left: 1pt solid #92CDDC;
+	border-right: 0pt solid #92CDDC;
+	border-top: 0pt solid #92CDDC;
+	border-bottom: 1pt solid #92CDDC;
+	font-family: 宋体;
+	font-size: 9pt;
+	vertical-align: middle;
+	text-align: center;
+	height: 66pt;
+	width: 70px;
+	white-space: normal;
+}
+
+.DescriptionsStyleThreeLineWithNoneWidth
+{
+	border-left: 1pt solid #92CDDC;
+	border-right: 0pt solid #92CDDC;
+	border-top: 0pt solid #92CDDC;
+	border-bottom: 1pt solid #92CDDC;
+	font-family: 宋体;
+	font-size: 9pt;
+	width: 55px;
+	vertical-align: middle;
+	text-align: center;
+	height: 66pt;
+	white-space: normal;
+}
+.TableBottomRowNoneHightAndWidth
+{
+	border-style: solid;
+	border-width: 0pt 1pt 1pt 1pt;
+	border-color: #92CDDC;
+	font-family: 宋体;
+	font-size: 9pt;
+	vertical-align: middle;
+	text-align: center;
+	white-space: normal;
+}
+
+.TableBottomOneCollumn
+{
+	border-style: solid;
+	border-width: 0pt 1pt 1pt 1pt;
+	border-color: #92CDDC;
+	font-family: 宋体;
+	font-size: 9pt;
+	vertical-align: middle;
+	text-align: center;
+	white-space: normal;
+	height: 22pt;
+}
+/******TextBox********/
+.TextBoxStyleThreeLineOrg
+{
+	border: 0px solid rgb(126, 157, 185);
+	font-family: 宋体;
+	font-size: 9pt;
+	width: 98%;
+	height: 66pt;
+}
+.TextBoxStyleSingleLineOrg
+{
+	border: 0px solid rgb(126, 157, 185);
+	font-family: 宋体;
+	font-size: 9pt;
+	width: 98%;
+	background-color: Transparent;
+}
+/******TextBox********/
+.TextBoxStyleThreeLine
+{
+	border: 1px solid rgb(126, 157, 185);
+	font-family: 宋体;
+	font-size: 9pt;
+	width: 98%;
+	height: 66pt;
+}
+.TextBoxStyleSingleLine
+{
+	border: 1px solid rgb(126, 157, 185);
+	font-family: 宋体;
+	font-size: 9pt;
+	width: 98%;
+	background-color: Transparent;
+}
+.TextBoxCell2Left
+{
+	font-family: 宋体;
+	font-size: 9pt;
+	height: 20pt;
+	width: 200px;
+	border-style: solid;
+	border-width: 0pt 0pt 1pt 1pt;
+	border-color: #92CDDC;
+	padding-left: 5px;
+	vertical-align: middle;
+	text-align: right;
+}
+
+.TextBoxCell2Right
+{
+	font-family: 宋体;
+	font-size: 9pt;
+	height: 20pt;
+	width: 700px;
+	border-style: solid;
+	border-width: 0pt 1pt 1pt 1pt;
+	border-color: #92CDDC;
+	padding-left: 5px;
+	vertical-align: middle;
+	text-align: left;
+}
+.TextBoxCell5Left
+{
+	font-family: 宋体;
+	font-size: 9pt;
+	height: 20pt;
+	width: 295px;
+	border-style: solid;
+	border-width: 0pt 0pt 1pt 1pt;
+	border-color: #92CDDC;
+	padding-left: 5px;
+	vertical-align: middle;
+}
+.TextBoxCell5Right
+{
+	font-family: 宋体;
+	font-size: 9pt;
+	height: 20pt;
+	width: 295px;
+	border-style: solid;
+	border-width: 0pt 1pt 1pt 1pt;
+	border-color: #92CDDC;
+	padding-left: 5px;
+	vertical-align: middle;
+}
+
+.TextBoxOneCell
+{
+	font-family: 宋体;
+	font-size: 9pt;
+	border-style: solid;
+	border-width: 1pt;
+	border-color: #92CDDC;
+	padding-left: 5px;
+	vertical-align: middle;
+}
+
+.TextboxCell6Left
+{
+	border-left: 1pt solid #92CDDC;
+	border-right: 0pt solid #92CDDC;
+	border-top: 0pt solid #92CDDC;
+	border-bottom: 1pt solid #92CDDC;
+	font-family: 宋体;
+	font-size: 9pt;
+	padding-left: 5px;
+	width: 196px;
+	vertical-align: middle;
+}
+.TextboxCell6Right
+{
+	font-family: 宋体;
+	font-size: 9pt;
+	width: 197px;
+	border-style: solid;
+	border-width: 0pt 1pt 1pt 1pt;
+	border-color: #92CDDC;
+	padding-left: 5px;
+	vertical-align: middle;
+}
+.TextBoxCellNoneWidthLeft
+{
+	font-family: 宋体;
+	font-size: 9pt;
+	border-style: solid;
+	border-width: 0pt 0pt 1pt 1pt;
+	border-color: #92CDDC;
+	padding-left: 5px;
+	vertical-align: middle;
+}
+
+.TextBoxCellNoneWidthRight
+{
+	font-family: 宋体;
+	font-size: 9pt;
+	border-style: solid;
+	border-width: 0pt 1pt 1pt 1pt;
+	border-color: #92CDDC;
+	padding-left: 5px;
+	vertical-align: middle;
+}
+.TextBoxCell8Right
+{
+	font-family: 宋体;
+	font-size: 9pt;
+	height: 20pt;
+	width: 130px;
+	border-style: solid;
+	border-width: 0pt 1pt 1pt 1pt;
+	border-color: #92CDDC;
+	padding-left: 5px;
+	vertical-align: middle;
+}
+.TextBoxCell8Left
+{
+	border-left: 1pt solid #92CDDC;
+	border-right: 0pt solid #92CDDC;
+	border-top: 0pt solid #92CDDC;
+	border-bottom: 1pt solid #92CDDC;
+	font-family: 宋体;
+	font-size: 9pt;
+	height: 20pt;
+	width: 130px;
+	padding-left: 5px;
+	vertical-align: middle;
+}
+
+
+
+
+/*Popup Control*/
+.popupControl
+{
+	background-color: White;
+	position: absolute;
+	visibility: hidden;
+}
+
+/***********案件类别选择器样式。********************/
+a.ContextMenuItem
+{
+	margin: 1px 0 1px 0;
+	display: block;
+	color: #003399;
+	text-decoration: none;
+	cursor: pointer;
+	padding: 4px 19px 4px 33px;
+	white-space: nowrap;
+}
+
+a.ContextMenuItem-Selected
+{
+	font-weight: bold;
+}
+
+a.ContextMenuItem:hover
+{
+	background-color: #FFE6A0;
+	color: #003399;
+	border: 1px solid #D2B47A;
+	padding: 3px 18px 3px 32px;
+}
+.ContextMenuPanel
+{
+	border: 1px solid #868686;
+	z-index: 1000;
+	background: url(image/menu-bg.gif) repeat-y 0 0 #FAFAFA;
+	cursor: default;
+	padding: 1px 1px 0px 1px;
+	font-size: 11px;
+}
+
+/*******标题样式。*************/
+.TitleText
+{
+	font-family: 宋体;
+	font-size: 12pt;
+	width: 800px;
+	height: 20px;
+	padding-top: 5px;
+	padding-bottom: 5px;
+	vertical-align: middle;
+	text-align: center;
+	font-weight: bold;
+}
+
+
+.WordListStyle
+{
+	padding-left: 5px;
+	padding-right: 5px;
+	font-family: 宋体;
+	font-size: 9pt;
+	padding-left: 5px;
+	vertical-align: middle;
+	text-align: center;
+	height: 30pt;
+	font-size: 12pt;
+}
+/***红星号样式“＊”****/
+.style1
+{
+	color: #FF0066;
+}
+
+.BarCodeTableStyle
+{
+	width: 300px;
+	table-layout: fixed;
+	overflow: hidden;
+}
+/**************GridView Css***************************/
+.GVFixedHeader
+{
+	font-weight: bold;
+	background-color: Green;
+	position: relative;
+	top: expression(this.parentNode.parentNode.parentNode.scrollTop-1);
+}
+.GVFixedFooter
+{
+	font-weight: bold;
+	background-color: Green;
+	position: relative;
+	bottom: expression(getScrollBottom(this.parentNode.parentNode.parentNode.parentNode));
+}
+/****************用于等待div*************/
+#shadow
+{
+	position: absolute;
+	left: 0;
+	top: 0;
+	width: 100%;
+	height: 100%;
+	background-color: #0060C0;
+	filter: alpha(opacity=20);
+}
+#box
+{
+	position: absolute;
+	left: 50%;
+	top: 50%;
+	width: 400px;
+	height: 180px;
+	margin: -90px 0 0 -200px;
+	border: 1px solid #84A0C4;
+	background-color: #DFE8F6;
+	text-align: center;
+}
+/*****************calander*******************/
+.MyCalendar .ajax__calendar_container
+{
+	border: 1px solid #646464;
+	background-color: lemonchiffon;
+	color: red;
+}
+.MyCalendar .ajax__calendar_other .ajax__calendar_day, .MyCalendar .ajax__calendar_other .ajax__calendar_year
+{
+	color: black;
+}
+.MyCalendar .ajax__calendar_hover .ajax__calendar_day, .MyCalendar .ajax__calendar_hover .ajax__calendar_month, .MyCalendar .ajax__calendar_hover .ajax__calendar_year
+{
+	color: black;
+}
+.MyCalendar .ajax__calendar_active .ajax__calendar_day, .MyCalendar .ajax__calendar_active .ajax__calendar_month, .MyCalendar .ajax__calendar_active .ajax__calendar_year
+{
+	color: black;
+	font-weight: bold;
+}
+

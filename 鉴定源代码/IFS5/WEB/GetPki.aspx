@@ -1,0 +1,1 @@
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeFile="GetPki.aspx.cs" Inherits="GetPki" %>

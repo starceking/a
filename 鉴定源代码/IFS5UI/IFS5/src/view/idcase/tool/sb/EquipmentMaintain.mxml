@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
+		 xmlns:s="library://ns.adobe.com/flex/spark" 
+		 xmlns:mx="library://ns.adobe.com/flex/mx"
+		 xmlns:tool="view.tool.*"
+		 fontSize="14" width="813" height="553"
+		 creationComplete="module1_creationCompleteHandler(event)"
+		 >
+	<fx:Script>
+		<![CDATA[
+			import com.adobe.cairngorm.control.CairngormEventDispatcher;
+			
+			import control.*;
+			
+			import locator.EquipmentLocator;
+			import locator.EquipmentMaintainLocator;
+			import locator.MenuLocator;
+			
+			import mx.events.FlexEvent;
+			
+			import util.Helper;
+			
+			import vo.EquipmentMaintainVo;
+			import vo.MenuVo;	
+			var result:String="";
+			protected function module1_creationCompleteHandler(event:FlexEvent):void
+			{
+				// TODO Auto-generated method stub
+				if(yes.selected)
+				{
+					result="达到要求";
+				}
+				else
+				{
+					result="未达到要求";
+					
+				}
+				EquipmentMaintainLocator.getInstance().wsObj=new EquipmentMaintainVo(Helper.getGUID(),EquipmentLocator.getInstance().currObj.ID,TextWhr.text,TextWhsj.text,TextWhnr.text,result);
+				CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.EQUIPMENTMAINTAIN_GetOne));
+			}
+			protected function BtnAdd_clickHandler(event:MouseEvent):void
+			{
+				if(yes.selected)
+				{
+					result="达到要求";
+				}
+				else
+				{
+					result="未达到要求";
+					
+				}
+				// TODO Auto-generated method stub
+				EquipmentMaintainLocator.getInstance().wsObj=new EquipmentMaintainVo(Helper.getGUID(),EquipmentLocator.getInstance().currObj.ID,TextWhr.text,TextWhsj.text,TextWhnr.text,result);
+				CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.EQUIPMENTMAINTAIN_Insert));
+				Helper.showAlert("新增成功！");
+			}
+			
+			protected function BtnDelete_clickHandler(event:MouseEvent):void
+			{
+				// TODO Auto-generated method stub
+				if(yes.selected)
+				{
+					result="达到要求";
+				}
+				else
+				{
+					result="未达到要求";
+					
+				}
+				EquipmentMaintainLocator.getInstance().wsObj =gd.selectedItem as EquipmentMaintainVo ;
+				CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.EQUIPMENTMAINTAIN_Delete));
+				Helper.showAlert("删除成功！");
+				
+			}
+			
+			protected function BtnUpfate_clickHandler(event:MouseEvent):void
+			{
+				// TODO Auto-generated method stub
+				if(yes.selected)
+				{
+					result="达到要求";
+				}
+				else
+				{
+					result="未达到要求";
+					
+				}
+				EquipmentMaintainLocator.getInstance().wsObj=new EquipmentMaintainVo(gd.selectedItem.ID,EquipmentLocator.getInstance().currObj.ID,TextWhr.text,TextWhsj.text,TextWhnr.text,result);
+				CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.EQUIPMENTMAINTAIN_Update));
+				Helper.showAlert("修改成功！");
+			}
+			
+			
+			
+			protected function button2_clickHandler(event:MouseEvent):void
+			{
+				// TODO Auto-generated method stub
+				EquipmentLocator.getInstance().wordName="CSTCSG-500-023仪器设备维护保养记录.doc";
+				EquipmentLocator.getInstance().num=EquipmentLocator.getInstance().currObj.ID;
+				EquipmentLocator.getInstance().filename=Helper.getGUID();
+				CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.EQUIPMENT_MackAllFB));
+			}
+			
+		]]>
+	</fx:Script>
+	<fx:Declarations>
+		<!-- 将非可视元素（例如服务、值对象）放在此处 -->
+	</fx:Declarations>
+	<s:Label x="10" y="10" color="#0A37FA" fontSize="20" fontWeight="bold" text="维护记录"/>
+	<s:Label x="11" y="390" text="维  护  人："/>
+	<s:TextInput id="TextWhr" x="82" y="386" width="319" text="{gd.selectedItem.WFR}"/>
+	<s:Label x="410" y="392" text="维护时间："/>
+	<tool:DateZh  id="TextWhsj" x="479" y="387" width="324" text="{gd.selectedItem.WFSJ}"/>
+	<s:Label  x="13" y="419" text="维护内容："/>
+	<s:Label  x="13" y="486" text="维护结果："/>
+	<s:TextArea id="TextWhnr" x="83" y="417" width="720" height="57" text="{gd.selectedItem.WHNR}"/>
+	<s:Button id="BtnAdd" x="571" y="523" label="新增" click="BtnAdd_clickHandler(event)"/>
+	<s:Button id="BtnDelete" x="733" y="523" label="删除" click="BtnDelete_clickHandler(event)" enabled="{gd.selectedItem!=null}"/>
+	<s:Button id="BtnUpfate" x="654" y="523" label="修改" click="BtnUpfate_clickHandler(event)" enabled="{gd.selectedItem!=null}"/>
+	<s:DataGrid id="gd" x="10" y="38" width="793" height="340" dataProvider="{EquipmentMaintainLocator.getInstance().listObj}">
+		<s:columns>
+			<s:ArrayList>
+				<s:GridColumn dataField="WFR" headerText="维护人"></s:GridColumn>
+				<s:GridColumn dataField="WFSJ" headerText="维护时间"></s:GridColumn>
+				<s:GridColumn dataField="WHNR" headerText="维护内容"></s:GridColumn>
+			</s:ArrayList>
+		</s:columns>
+	</s:DataGrid>
+	<mx:LinkButton x="566" y="9" width="236" label="打印测量设备维护记录一览表" click="button2_clickHandler(event)" textDecoration="underline" color="blue"/>
+	<s:RadioButton id="yes" x="84" y="482" label="达到要求" groupName="jg" selected="{gd.selectedItem.RESULT=='达到要求'}"/>
+	<s:RadioButton id="no" x="165" y="482" label="未达到要求" groupName="jg" selected="{gd.selectedItem.RESULT=='未达到要求'}"/>
+	
+</s:Group>

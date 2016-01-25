@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009"
+		 xmlns:s="library://ns.adobe.com/flex/spark"
+		 xmlns:mx="library://ns.adobe.com/flex/mx"
+		 width="813" height="500" creationComplete="creationCompleteHandler(event)" fontSize="14">
+	<fx:Declarations>
+		<!-- 将非可视元素（例如服务、值对象）放在此处 -->
+	</fx:Declarations>
+	<fx:Script>
+		<![CDATA[
+			import com.adobe.cairngorm.control.CairngormEventDispatcher;
+			
+			import control.*;
+			
+			import locator.IdFlowLocator;
+			import locator.IdCtrLocator;
+			import mx.events.FlexEvent;
+			import locator.IdTestimonyLocator;
+			import vo.IdTestimonyVo;
+			
+			private var isCtr:String="1";
+			private var locObj:IdCtrLocator=IdCtrLocator.getInstance();			
+			
+			protected function creationCompleteHandler(event:FlexEvent):void
+			{
+				var conno:String=IdFlowLocator.getInstance().curObj.CONNO;
+				if(conno.length==19)
+				{
+					locObj.wsObj=new IdTestimonyVo("",isCtr,conno,"","","","","","","","",
+						"","","","");
+					CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.IDTESTIMONY_CTRWS_GetAll));
+				}
+			}		
+		]]>
+	</fx:Script>
+	<s:DataGrid id="dg" x="10" y="50" width="793" height="352"
+				dataProvider="{locObj.listObj}">
+		<s:columns>
+			<s:ArrayList>
+				<s:GridColumn dataField="SLN" headerText="编号"></s:GridColumn>
+				<s:GridColumn dataField="NAME" headerText="名称"></s:GridColumn>
+				<s:GridColumn dataField="WEIGHT" headerText="重量"></s:GridColumn>
+				<s:GridColumn dataField="AMOUNT" headerText="数量"></s:GridColumn>
+				<s:GridColumn dataField="PACKAGE" headerText="包装"></s:GridColumn>
+			</s:ArrayList>
+		</s:columns>
+	</s:DataGrid>
+	<s:Label x="10" y="10" color="#0A37FA" fontSize="20" fontWeight="bold" text="对照样本信息"/>
+	<s:Label x="267" y="410" text="名        称："/>
+	<s:Label id="pname" x="354" y="410" text="{dg.selectedItem.NAME}"/>
+	<s:Label x="10" y="432" text="数        量："/>
+	<s:Label id="amount" x="88" y="432" text="{dg.selectedItem.AMOUNT}"/>
+	<s:Label x="267" y="432" text="重        量："/>
+	<s:Label id="weight" x="354" y="432" text="{dg.selectedItem.WEIGHT}"/>
+	<s:Label x="535" y="432" text="重量单位："/>
+	<s:Label id="pack" x="614" y="432" text="{dg.selectedItem.UNIT}"/>
+	<s:Label x="535" y="410" text="性        质："/>
+	<s:Label id="property" x="614" y="410" text="{dg.selectedItem.PROPERTY}"/>
+	<s:Label x="10" y="454" text="提  取  人："/>
+	<s:Label id="exp" x="88" y="454" text="{dg.selectedItem.EX_PERSON}"/>
+	<s:Label x="267" y="454" text="提取位置："/>
+	<s:Label id="exposi" x="354" y="454" text="{dg.selectedItem.EX_POSITION}"/>
+	<s:Label x="10" y="476" text="提取方法："/>
+	<s:Label id="exmethod" x="88" y="476" text="{dg.selectedItem.EX_METHOD}"/>
+	<s:Label x="267" y="476" text="提取时间："/>
+	<s:Label id="extime" x="354" y="476" text="{dg.selectedItem.EX_DATE}"/>
+	<s:Label x="535" y="476" text="备        注："/>
+	<s:Label id="remark" x="614" y="476" text="{dg.selectedItem.REMARK}"/>
+	<s:Label x="10" y="410" text="编        号："/>
+	<s:Label id="pnum" x="88" y="410" text="{dg.selectedItem.SLN}"/>
+	<s:Label x="535" y="454" text="包        装："/>
+	<s:Label id="pack0" x="614" y="454" text="{dg.selectedItem.PACKAGE}"/>
+</s:Group>

@@ -1,0 +1,165 @@
+D:\IFS5\DLL\LIB.dll
+D:\IFS5\DLL\LIB.pdb
+D:\IFS5\LIB\obj\Debug\ResolveAssemblyReference.cache
+D:\IFS5\LIB\obj\Debug\LIB.dll
+D:\IFS5\LIB\obj\Debug\LIB.pdb
+D:\Soft\1115\IFS5\DLL\LIB.dll
+D:\Soft\1115\IFS5\DLL\LIB.pdb
+D:\Soft\1115\IFS5\LIB\obj\Debug\ResolveAssemblyReference.cache
+D:\Soft\1115\IFS5\LIB\obj\Debug\LIB.dll
+D:\Soft\1115\IFS5\LIB\obj\Debug\LIB.pdb
+D:\1115\IFS5\DLL\LIB.dll
+D:\1115\IFS5\DLL\LIB.pdb
+D:\1115\IFS5\LIB\obj\Debug\ResolveAssemblyReference.cache
+D:\1115\IFS5\LIB\obj\Debug\LIB.dll
+D:\1115\IFS5\LIB\obj\Debug\LIB.pdb
+D:\Soft\1115\NEW\IFS5\DLL\LIB.dll
+D:\Soft\1115\NEW\IFS5\DLL\LIB.pdb
+D:\Soft\1115\NEW\IFS5\LIB\obj\Debug\ResolveAssemblyReference.cache
+D:\Soft\1115\NEW\IFS5\LIB\obj\Debug\LIB.dll
+D:\Soft\1115\NEW\IFS5\LIB\obj\Debug\LIB.pdb
+D:\1115\NEW\IFS5\DLL\LIB.dll
+D:\1115\NEW\IFS5\DLL\LIB.pdb
+D:\1115\NEW\IFS5\LIB\obj\Debug\ResolveAssemblyReference.cache
+D:\1115\NEW\IFS5\LIB\obj\Debug\LIB.dll
+D:\1115\NEW\IFS5\LIB\obj\Debug\LIB.pdb
+C:\Documents and Settings\Administrator\桌面\ifs5 1201\NEW\IFS5\DLL\LIB.dll
+C:\Documents and Settings\Administrator\桌面\ifs5 1201\NEW\IFS5\DLL\LIB.pdb
+C:\Documents and Settings\Administrator\桌面\ifs5 1201\NEW\IFS5\LIB\obj\Debug\ResolveAssemblyReference.cache
+C:\Documents and Settings\Administrator\桌面\ifs5 1201\NEW\IFS5\LIB\obj\Debug\LIB.dll
+C:\Documents and Settings\Administrator\桌面\ifs5 1201\NEW\IFS5\LIB\obj\Debug\LIB.pdb
+E:\亿通软件\ifs5\IFS5\DLL\LIB.dll
+E:\亿通软件\ifs5\IFS5\DLL\LIB.pdb
+E:\亿通软件\ifs5\IFS5\LIB\obj\Debug\ResolveAssemblyReference.cache
+E:\亿通软件\ifs5\IFS5\LIB\obj\Debug\LIB.dll
+E:\亿通软件\ifs5\IFS5\LIB\obj\Debug\LIB.pdb
+F:\源码\宁波IFS5\2011-12-6\ifs5New\IFS5\DLL\LIB.dll
+F:\源码\宁波IFS5\2011-12-6\ifs5New\IFS5\DLL\LIB.pdb
+F:\源码\宁波IFS5\2011-12-6\ifs5New\IFS5\LIB\obj\Debug\ResolveAssemblyReference.cache
+F:\源码\宁波IFS5\2011-12-6\ifs5New\IFS5\LIB\obj\Debug\LIB.dll
+F:\源码\宁波IFS5\2011-12-6\ifs5New\IFS5\LIB\obj\Debug\LIB.pdb
+F:\源码\宁波IFS5\2011-12-6\IFS5\DLL\LIB.dll
+F:\源码\宁波IFS5\2011-12-6\IFS5\DLL\LIB.pdb
+F:\源码\宁波IFS5\2011-12-6\IFS5\LIB\obj\Debug\ResolveAssemblyReference.cache
+F:\源码\宁波IFS5\2011-12-6\IFS5\LIB\obj\Debug\LIB.dll
+F:\源码\宁波IFS5\2011-12-6\IFS5\LIB\obj\Debug\LIB.pdb
+F:\源码\金华IFS5\2011-12-14\IFS5\DLL\LIB.dll
+F:\源码\金华IFS5\2011-12-14\IFS5\DLL\LIB.pdb
+F:\源码\金华IFS5\2011-12-14\IFS5\LIB\obj\Debug\ResolveAssemblyReference.cache
+F:\源码\金华IFS5\2011-12-14\IFS5\LIB\obj\Debug\LIB.dll
+F:\源码\金华IFS5\2011-12-14\IFS5\LIB\obj\Debug\LIB.pdb
+D:\1216\IFS5\DLL\LIB.dll
+D:\1216\IFS5\DLL\LIB.pdb
+D:\1216\IFS5\LIB\obj\Debug\ResolveAssemblyReference.cache
+D:\1216\IFS5\LIB\obj\Debug\LIB.dll
+D:\1216\IFS5\LIB\obj\Debug\LIB.pdb
+D:\jh\IFS5\DLL\LIB.dll
+D:\jh\IFS5\DLL\LIB.pdb
+D:\jh\IFS5\LIB\obj\Debug\ResolveAssemblyReference.cache
+D:\jh\IFS5\LIB\obj\Debug\LIB.dll
+D:\jh\IFS5\LIB\obj\Debug\LIB.pdb
+D:\1227\IFS5\DLL\LIB.dll
+D:\1227\IFS5\DLL\LIB.pdb
+D:\1227\IFS5\LIB\obj\Debug\ResolveAssemblyReference.cache
+D:\1227\IFS5\LIB\obj\Debug\LIB.dll
+D:\1227\IFS5\LIB\obj\Debug\LIB.pdb
+D:\27x\IFS5\DLL\LIB.dll
+D:\27x\IFS5\DLL\LIB.pdb
+D:\27x\IFS5\LIB\obj\Debug\ResolveAssemblyReference.cache
+D:\27x\IFS5\LIB\obj\Debug\LIB.dll
+D:\27x\IFS5\LIB\obj\Debug\LIB.pdb
+E:\新建文件夹\IFS5\DLL\LIB.dll
+E:\新建文件夹\IFS5\DLL\LIB.pdb
+E:\新建文件夹\IFS5\LIB\obj\Debug\ResolveAssemblyReference.cache
+E:\新建文件夹\IFS5\LIB\obj\Debug\LIB.dll
+E:\新建文件夹\IFS5\LIB\obj\Debug\LIB.pdb
+D:\1.1\Source\IFS5\DLL\LIB.dll
+D:\1.1\Source\IFS5\DLL\LIB.pdb
+D:\1.1\Source\IFS5\LIB\obj\Debug\ResolveAssemblyReference.cache
+D:\1.1\Source\IFS5\LIB\obj\Debug\LIB.dll
+D:\1.1\Source\IFS5\LIB\obj\Debug\LIB.pdb
+F:\源码\金华IFS5\2012-1-6\Source0\IFS5\DLL\LIB.dll
+F:\源码\金华IFS5\2012-1-6\Source0\IFS5\DLL\LIB.pdb
+F:\源码\金华IFS5\2012-1-6\Source0\IFS5\LIB\obj\Debug\ResolveAssemblyReference.cache
+F:\源码\金华IFS5\2012-1-6\Source0\IFS5\LIB\obj\Debug\LIB.dll
+F:\源码\金华IFS5\2012-1-6\Source0\IFS5\LIB\obj\Debug\LIB.pdb
+D:\NEW\金华2012-1-7\Source0\IFS5\DLL\LIB.dll
+D:\NEW\金华2012-1-7\Source0\IFS5\DLL\LIB.pdb
+D:\NEW\金华2012-1-7\Source0\IFS5\LIB\obj\Debug\ResolveAssemblyReference.cache
+D:\NEW\金华2012-1-7\Source0\IFS5\LIB\obj\Debug\LIB.dll
+D:\NEW\金华2012-1-7\Source0\IFS5\LIB\obj\Debug\LIB.pdb
+F:\源码\金华IFS5\2012-1-9\金华2012-1-7\Source0\IFS5\DLL\LIB.dll
+F:\源码\金华IFS5\2012-1-9\金华2012-1-7\Source0\IFS5\DLL\LIB.pdb
+F:\源码\金华IFS5\2012-1-9\金华2012-1-7\Source0\IFS5\LIB\obj\Debug\ResolveAssemblyReference.cache
+F:\源码\金华IFS5\2012-1-9\金华2012-1-7\Source0\IFS5\LIB\obj\Debug\LIB.dll
+F:\源码\金华IFS5\2012-1-9\金华2012-1-7\Source0\IFS5\LIB\obj\Debug\LIB.pdb
+D:\NEW\2012-1-11\2012-1-11\IFS5\IFS5\DLL\LIB.dll
+D:\NEW\2012-1-11\2012-1-11\IFS5\IFS5\DLL\LIB.pdb
+D:\NEW\2012-1-11\2012-1-11\IFS5\IFS5\LIB\obj\Debug\ResolveAssemblyReference.cache
+D:\NEW\2012-1-11\2012-1-11\IFS5\IFS5\LIB\obj\Debug\LIB.dll
+D:\NEW\2012-1-11\2012-1-11\IFS5\IFS5\LIB\obj\Debug\LIB.pdb
+C:\Documents and Settings\Administrator\桌面\金华的\2012-1-12\IFS5\IFS5\DLL\LIB.dll
+C:\Documents and Settings\Administrator\桌面\金华的\2012-1-12\IFS5\IFS5\DLL\LIB.pdb
+C:\Documents and Settings\Administrator\桌面\金华的\2012-1-12\IFS5\IFS5\LIB\obj\Debug\ResolveAssemblyReference.cache
+C:\Documents and Settings\Administrator\桌面\金华的\2012-1-12\IFS5\IFS5\LIB\obj\Debug\LIB.dll
+C:\Documents and Settings\Administrator\桌面\金华的\2012-1-12\IFS5\IFS5\LIB\obj\Debug\LIB.pdb
+D:\NEW\2012-1-13\2012-1-12\IFS5\IFS5\DLL\LIB.dll
+D:\NEW\2012-1-13\2012-1-12\IFS5\IFS5\DLL\LIB.pdb
+D:\NEW\2012-1-13\2012-1-12\IFS5\IFS5\LIB\obj\Debug\ResolveAssemblyReference.cache
+D:\NEW\2012-1-13\2012-1-12\IFS5\IFS5\LIB\obj\Debug\LIB.dll
+D:\NEW\2012-1-13\2012-1-12\IFS5\IFS5\LIB\obj\Debug\LIB.pdb
+D:\JH\IFS5\IFS5\DLL\LIB.dll
+D:\JH\IFS5\IFS5\DLL\LIB.pdb
+D:\JH\IFS5\IFS5\LIB\obj\Debug\ResolveAssemblyReference.cache
+D:\JH\IFS5\IFS5\LIB\obj\Debug\LIB.dll
+D:\JH\IFS5\IFS5\LIB\obj\Debug\LIB.pdb
+C:\Documents and Settings\Administrator\桌面\金华的\2.29\IFS5\IFS5\DLL\LIB.dll
+C:\Documents and Settings\Administrator\桌面\金华的\2.29\IFS5\IFS5\DLL\LIB.pdb
+C:\Documents and Settings\Administrator\桌面\金华的\2.29\IFS5\IFS5\LIB\obj\Debug\ResolveAssemblyReference.cache
+C:\Documents and Settings\Administrator\桌面\金华的\2.29\IFS5\IFS5\LIB\obj\Debug\LIB.dll
+C:\Documents and Settings\Administrator\桌面\金华的\2.29\IFS5\IFS5\LIB\obj\Debug\LIB.pdb
+E:\HXC\项目\宁波\NBIFS5\NBIFS5\IFS5\IFS5\DLL\LIB.dll
+E:\HXC\项目\宁波\NBIFS5\NBIFS5\IFS5\IFS5\DLL\LIB.pdb
+E:\HXC\项目\宁波\NBIFS5\NBIFS5\IFS5\IFS5\LIB\obj\Debug\ResolveAssemblyReference.cache
+E:\HXC\项目\宁波\NBIFS5\NBIFS5\IFS5\IFS5\LIB\obj\Debug\LIB.dll
+E:\HXC\项目\宁波\NBIFS5\NBIFS5\IFS5\IFS5\LIB\obj\Debug\LIB.pdb
+D:\IFS5\code\IFS5\DLL\LIB.dll
+D:\IFS5\code\IFS5\DLL\LIB.pdb
+D:\IFS5\code\IFS5\LIB\obj\Debug\ResolveAssemblyReference.cache
+D:\IFS5\code\IFS5\LIB\obj\Debug\LIB.dll
+D:\IFS5\code\IFS5\LIB\obj\Debug\LIB.pdb
+E:\HXC\项目\舟山\IFS5\DLL\LIB.dll
+E:\HXC\项目\舟山\IFS5\DLL\LIB.pdb
+E:\HXC\项目\舟山\IFS5\LIB\obj\Debug\ResolveAssemblyReference.cache
+E:\HXC\项目\舟山\IFS5\LIB\obj\Debug\LIB.dll
+E:\HXC\项目\舟山\IFS5\LIB\obj\Debug\LIB.pdb
+E:\HXC\项目\绍兴\IFS5\DLL\LIB.dll
+E:\HXC\项目\绍兴\IFS5\DLL\LIB.pdb
+E:\HXC\项目\绍兴\IFS5\LIB\obj\Debug\ResolveAssemblyReference.cache
+E:\HXC\项目\绍兴\IFS5\LIB\obj\Debug\LIB.dll
+E:\HXC\项目\绍兴\IFS5\LIB\obj\Debug\LIB.pdb
+E:\HXC\项目\DNA平台\IFS5\DLL\LIB.dll
+E:\HXC\项目\DNA平台\IFS5\DLL\LIB.pdb
+E:\HXC\项目\DNA平台\IFS5\LIB\obj\Debug\ResolveAssemblyReference.cache
+E:\HXC\项目\DNA平台\IFS5\LIB\obj\Debug\LIB.dll
+E:\HXC\项目\DNA平台\IFS5\LIB\obj\Debug\LIB.pdb
+E:\HXC\项目\DNA平台\IFS5DNA\IFS5\DLL\LIB.dll
+E:\HXC\项目\DNA平台\IFS5DNA\IFS5\DLL\LIB.pdb
+E:\HXC\项目\DNA平台\IFS5DNA\IFS5\LIB\obj\Debug\ResolveAssemblyReference.cache
+E:\HXC\项目\DNA平台\IFS5DNA\IFS5\LIB\obj\Debug\LIB.dll
+E:\HXC\项目\DNA平台\IFS5DNA\IFS5\LIB\obj\Debug\LIB.pdb
+E:\HXC\项目\大连\DLIFS5DNA\IFS5\DLL\LIB.dll
+E:\HXC\项目\大连\DLIFS5DNA\IFS5\DLL\LIB.pdb
+E:\HXC\项目\大连\DLIFS5DNA\IFS5\LIB\obj\Debug\ResolveAssemblyReference.cache
+E:\HXC\项目\大连\DLIFS5DNA\IFS5\LIB\obj\Debug\LIB.dll
+E:\HXC\项目\大连\DLIFS5DNA\IFS5\LIB\obj\Debug\LIB.pdb
+E:\HXC\项目\辽宁\LNIFS5DNA\IFS5\DLL\LIB.dll
+E:\HXC\项目\辽宁\LNIFS5DNA\IFS5\DLL\LIB.pdb
+E:\HXC\项目\辽宁\LNIFS5DNA\IFS5\LIB\obj\Debug\ResolveAssemblyReference.cache
+E:\HXC\项目\辽宁\LNIFS5DNA\IFS5\LIB\obj\Debug\LIB.dll
+E:\HXC\项目\辽宁\LNIFS5DNA\IFS5\LIB\obj\Debug\LIB.pdb
+E:\HXC\Easytalk\LNIFS5DNA\IFS5\DLL\LIB.dll
+E:\HXC\Easytalk\LNIFS5DNA\IFS5\DLL\LIB.pdb
+E:\HXC\Easytalk\LNIFS5DNA\IFS5\LIB\obj\Debug\ResolveAssemblyReference.cache
+E:\HXC\Easytalk\LNIFS5DNA\IFS5\LIB\obj\Debug\LIB.dll
+E:\HXC\Easytalk\LNIFS5DNA\IFS5\LIB\obj\Debug\LIB.pdb

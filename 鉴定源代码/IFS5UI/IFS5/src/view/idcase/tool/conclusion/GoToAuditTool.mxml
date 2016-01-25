@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009"
+		 xmlns:s="library://ns.adobe.com/flex/spark"
+		 xmlns:mx="library://ns.adobe.com/flex/mx"
+		 width="813" height="323" fontSize="14" xmlns:tool="view.tool.*">
+	<fx:Declarations>
+		<!-- 将非可视元素（例如服务、值对象）放在此处 -->
+	</fx:Declarations>
+	<fx:Script>
+		<![CDATA[
+			import com.adobe.cairngorm.control.CairngormEventDispatcher;
+			
+			import control.*;
+			import locator.IdFlowLocator;
+			import locator.PsbLocator;
+			import locator.SysUserLocator;
+			import util.Helper;
+			import vo.IdFlowVo;
+			import mx.containers.ViewStack;
+			
+			public var vs:ViewStack;
+			public var curObj:IdFlowVo=IdFlowLocator.getInstance().curObj;
+			
+			protected function saveClickHandler(event:MouseEvent):void
+			{
+				curObj.TESTER_REMARK=msg.text;
+				curObj.TESTER2=tester2.selectedData;
+				curObj.TESTER2_NAME=SysUserLocator.getInstance().getUserName(tester2.selectedData);
+				curObj.TESTER3=tester3.selectedData;
+				curObj.TESTER4=tester4.selectedData;
+				curObj.CHECKER=checker.selectedData;
+				curObj.SIGNER=sign.selectedData;
+				curObj.TECHER=tech.selectedData;
+				curObj.LEADER=leader.selectedData;
+				IdFlowLocator.getInstance().wsObj=curObj;
+				
+				if(curObj.TESTER2.length==0)
+				{
+					Helper.showAlert("请必须选择二检人");return;
+				}
+				else if(curObj.CHECKER.length==0&&curObj.SIGNER.length==0&&PsbLocator.getInstance().ID_PSB_ID=="1")
+				{
+					Helper.showAlert("复核人或授权签字人至少选择一人");return;
+				}
+				else if(curObj.LEADER.length==0)
+				{
+					Helper.showAlert("请必须选择审批领导");return;
+				}
+				IdFlowLocator.getInstance().isSubmit="0";
+				CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.IDFLOWWS_UpdateTesterFinish));
+			}
+			
+			protected function FiniahClickHandler(event:MouseEvent):void
+			{
+				curObj.TESTER_REMARK=msg.text;
+				curObj.TESTER2=tester2.selectedData;
+				curObj.TESTER2_NAME=SysUserLocator.getInstance().getUserName(tester2.selectedData);
+				curObj.TESTER3=tester3.selectedData;
+				curObj.TESTER4=tester4.selectedData;
+				curObj.CHECKER=checker.selectedData;
+				curObj.SIGNER=sign.selectedData;
+				curObj.TECHER=tech.selectedData;
+				curObj.LEADER=leader.selectedData;
+				IdFlowLocator.getInstance().wsObj=curObj;
+				
+				if(curObj.TESTER2.length==0)
+				{
+					Helper.showAlert("请必须选择二检人");return;
+				}
+				else if(curObj.CHECKER.length==0&&curObj.SIGNER.length==0&&PsbLocator.getInstance().ID_PSB_ID=="1")
+				{
+					Helper.showAlert("复核人或授权签字人至少选择一人");return;
+				}
+				else if(curObj.LEADER.length==0)
+				{
+					Helper.showAlert("请必须选择审批领导");return;
+				}
+				IdFlowLocator.getInstance().isSubmit="1";
+				CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.IDFLOWWS_UpdateTesterFinish));
+			}
+		]]>
+	</fx:Script>
+	<s:Label x="10" y="10" color="#0A37FA" fontSize="20" text="文书底稿撰写完成，提交进入在线审核/审批"/>	
+	<s:Label x="10" y="60" text="请安排审核流程，并留言（如有）。"/>
+	<s:Label x="10" y="84" color="#FE0101" text="二  检  人："/>
+	<tool:OfficeUserDdl id="tester2" x="88" y="80" width="180"  requireSelection="true"
+				  auth="" selectedData="{curObj.TESTER2}"/>
+	<s:Label x="10" y="115" text="三  检  人："/>
+	<tool:OfficeUserDdl id="tester3" x="88" y="110" width="180" 
+				  allEnable="true" auth="" selectedData="{curObj.TESTER3}"/>
+	<s:Label x="10" y="145" text="四  检  人："/>
+	<tool:OfficeUserDdl id="tester4" x="88" y="140" width="180" 
+				  allEnable="true" auth="" selectedData="{curObj.TESTER4}"/>
+	<s:Label x="10" y="175" text="复  核  人："/>
+	<tool:OfficeUserDdl id="checker" x="88" y="170" width="180" 
+				  allEnable="true" auth="" selectedData="{curObj.CHECKER}"/>
+	<s:Label x="10" y="204" text="授权签字："/>
+	<tool:OfficeUserDdl id="sign" x="88" y="200" width="180" 
+				  allEnable="true" auth="授权签字" selectedData="{curObj.SIGNER}"/>
+	<s:Label x="10" y="235" text="技       管："/>
+	<tool:UserDdl id="tech" x="88" y="230" width="180"
+				  allEnable="true" role="Techer" auth="" selectedData="{curObj.TECHER}"/>
+	<s:Label x="10" y="263" color="#FD0505" text="审批领导："/>
+	<tool:UserDdl id="leader" x="88" y="260" width="180" requireSelection="true"
+				  role="Leader" auth="" selectedData="{curObj.LEADER}"/>
+	<s:Label id="accLbl0" x="278" y="84" text="一检留言："/>
+	<s:TextArea id="msg" x="354" y="80" width="449" height="201" text="{curObj.TESTER_REMARK}"/>	
+	<s:Button y="289" click="FiniahClickHandler(event)" enabled="{PsbLocator.getInstance().npending}"
+			  horizontalCenter="0" skinClass="assets.skins.Button_tjsh"/>
+	<s:Button x="198" y="289" click="saveClickHandler(event)" enabled="{PsbLocator.getInstance().npending}"
+			  skinClass="assets.skins.Button_bc"/>
+</s:Group>

@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009"
+		 xmlns:s="library://ns.adobe.com/flex/spark"
+		 xmlns:mx="library://ns.adobe.com/flex/mx"
+		 xmlns:tool="view.tool.*"
+		 xmlns:idcase="view.idcase.tool.idcase.*"
+		 width="813" height="291" fontSize="14">
+	<fx:Declarations>
+		<!-- 将非可视元素（例如服务、值对象）放在此处 -->
+	</fx:Declarations>
+	<fx:Script>
+		<![CDATA[
+			import com.adobe.cairngorm.control.CairngormEventDispatcher;
+			
+			import control.*;
+			
+			import locator.DictLocator;
+			import locator.IdFlowLocator;
+			import locator.JusTypeLocator;
+			import locator.MRelativeLocator;
+			import locator.PsbLocator;
+			import locator.SysUserLocator;
+			
+			import mx.containers.ViewStack;
+			
+			import spark.events.IndexChangeEvent;
+			import spark.events.TextOperationEvent;
+			
+			import util.Helper;
+			
+			import vo.IdFlowVo;
+			
+			private var locObj:MRelativeLocator=MRelativeLocator.getInstance();
+			private var flowObj:IdFlowVo=IdFlowLocator.getInstance().curObj;
+			public var vs:ViewStack;
+			
+			public function prepareSave():Boolean
+			{							
+				if((locObj.curObj.RELATION.length==0)&&flowObj.ID_STATUS=="信息录入")	
+				{
+					Helper.showAlert("请先填写基本信息");
+					return false;
+				}
+				if(validateInput())
+				{
+					locObj.curObj.R1_SLN=pnum.text;
+					locObj.curObj.R1_SAMPLE_TYPE=stype.selectedData;
+					locObj.curObj.R1_NAME=pname.text;
+					locObj.curObj.R1_GENDER=gender.selectedData;
+					locObj.curObj.R1_ID_CARD_NO=idcard.text;
+					locObj.curObj.R1_BIRTH_DATE=birthday.text;
+					locObj.curObj.R1_EDUCATION_LEVEL=edu.selectedData;
+					locObj.curObj.R1_IDENTITY=identity.selectedData;
+					locObj.curObj.R1_NATIONALITY=nation.selectedData;
+					locObj.curObj.R1_DISTRICT=district.selectedData;
+					locObj.curObj.R1_PERSONNEL_TYPE=ptype.selectedData;
+					locObj.curObj.R1_SAMPLE_PACKAGING=pack.getSelectedItem();
+					locObj.curObj.R1_NATIVE_PLACE_ADDR=nativeplace.text;
+					locObj.curObj.R1_RESIDENCE_ADDR=residenceplace.text;
+					locObj.curObj.R1_SAMPLE_DESCRIPTION=sdes.text;
+					locObj.curObj.R1_REMARK=remark.text;
+					locObj.curObj.R1_RELATION_WITH_TARGET=rwt.selectedData;
+					
+					if((locObj.curObj.RELATION=="单亲")&&flowObj.ID_STATUS=="信息录入")	
+					{
+						locObj.wsObj=locObj.curObj;
+						CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.MRELATIVEWS_NewConsign));
+					}
+					else if(flowObj.ID_STATUS!="信息录入")
+					{
+						locObj.wsObj=locObj.curObj;
+						CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.MRELATIVEWS_UpdateR));
+					}
+					return true;
+				}
+				return false;
+			}	
+			
+			public function validateInput():Boolean
+			{
+				var caseStatus:String=IdFlowLocator.getInstance().curObj.ID_STATUS;
+				if((caseStatus=="信息录入")||(caseStatus=="新的委托"))
+				{
+					pnum.text="受理后自动生成";
+				}
+				
+				var result:Boolean=true;
+				result=result && Helper.validateTextInput(pname);
+				return result;
+			}
+			
+			protected function caseNoChange(event:TextOperationEvent):void				
+			{
+				var status:String=(event.target as TextInput).text;
+				if(status=="受理后自动生成")
+				{
+					event.preventDefault();
+				}
+			}
+		]]>
+	</fx:Script>
+	<s:VGroup left="10" right="10" top="10" bottom="10" gap="8">
+		<s:HGroup width="100%" verticalAlign="middle">
+			<s:Label color="#0A37FA" fontSize="20" text="父母关系请在此填写“父信息”；配偶子女请在此填写“配偶信息”；祖孙请在此填写“祖信息”"/>
+		</s:HGroup>
+		<s:HGroup width="100%" verticalAlign="middle">
+			<s:Label width="72" color="#FC0404" text="样本编号："/>
+			<s:TextInput id="pnum" width="180" changing="caseNoChange(event)" text="{locObj.curObj.R1_SLN}" prompt="受理后自动生成"/>
+			<s:Label text="样本类型："/>
+			<tool:DictDdl id="stype" width="180" dictName="样本类型" requireSelection="true"
+						  selectedData="{locObj.curObj.R1_SAMPLE_TYPE}"/>
+			<s:Label width="72" text="样本包装："/>
+			<tool:DictCbb id="pack" width="180" dictName="检材包装"
+						  selectedItem="{locObj.curObj.R1_SAMPLE_PACKAGING}"/>
+		</s:HGroup>
+		<s:HGroup width="100%" verticalAlign="middle">
+			<s:Label width="72" color="#FC0404" text="姓       名："/>
+			<s:TextInput id="pname" width="180" text="{locObj.curObj.R1_NAME}"/>
+			<s:Label text="性       别："/>
+			<tool:DictDdl id="gender" width="180" dictName="性别" requireSelection="true"
+						  selectedData="{locObj.curObj.R1_GENDER}"/>
+			<s:Label width="72" color="#FF0000" text="身  份  证："/>
+			<s:TextInput id="idcard" width="180" text="{locObj.curObj.R1_ID_CARD_NO}" maxChars="18" restrict="0-9 \x \X"/>
+		</s:HGroup>
+		<s:HGroup width="100%" verticalAlign="middle">
+			<s:Label width="72" text="出生日期："/>
+			<tool:DateZh id="birthday" width="180" text="{locObj.curObj.R1_BIRTH_DATE}"/>
+			<s:Label text="学       历："/>
+			<tool:DictDdl id="edu" width="180" dictName="学历" requireSelection="true"
+						  selectedData="{locObj.curObj.R1_EDUCATION_LEVEL}"/>
+			<s:Label width="72" text="人员类型："/>
+			<tool:DictDdl id="ptype" width="180" dictName="人员类型" requireSelection="true"
+						  selectedData="{locObj.curObj.R1_PERSONNEL_TYPE}"/>
+		</s:HGroup>
+		<s:HGroup width="100%" verticalAlign="middle">
+			<s:Label width="72" text="国       籍："/>
+			<tool:DictDdl id="district" width="180" dictName="国籍" requireSelection="true"
+						  selectedData="{locObj.curObj.R1_DISTRICT}"/>
+			<s:Label text="民       族："/>
+			<tool:DictDdl id="nation" width="180" dictName="民族" requireSelection="true"
+						  selectedData="{locObj.curObj.R1_NATIONALITY}"/>
+			<s:Label width="72" text="身       份："/>
+			<tool:DictDdl id="identity" width="180" dictName="身份" requireSelection="true"
+						  selectedData="{locObj.curObj.R1_IDENTITY}"/>
+		</s:HGroup>
+		<s:HGroup width="100%" verticalAlign="middle">
+			<s:Label width="72" text="现  住  址："/>
+			<s:TextInput id="residenceplace" width="443"/>
+			<s:Label width="72" color="#FF0000" text="籍       贯："/>
+			<s:TextInput id="nativeplace" width="180" text="{locObj.curObj.R1_NATIVE_PLACE_ADDR}"/>
+		</s:HGroup>
+		<s:HGroup width="100%" verticalAlign="middle">
+			<s:Label width="72" text="样本描述："/>
+			<s:TextInput id="sdes" width="443"/>
+			<s:Label width="72" color="#FF0000" text="目标关系："/>
+			<tool:DictDdl id="rwt" width="180" dictName="目标关系" requireSelection="true"
+						  selectedData="{locObj.curObj.R1_RELATION_WITH_TARGET}"/>
+		</s:HGroup>
+		<s:HGroup width="100%" verticalAlign="middle">
+			<s:Label width="72" text="备       注："/>
+			<s:TextInput id="remark" width="715" text="{locObj.curObj.R1_REMARK}"/>
+		</s:HGroup>
+		<s:HGroup width="100%" horizontalAlign="center" verticalAlign="middle">
+			<s:Button visible="{IdFlowLocator.getInstance().curObj.ID_STATUS!='信息录入'}" click="prepareSave()"
+					  skinClass="assets.skins.Button_bc"/>
+			<s:Button visible="{IdFlowLocator.getInstance().curObj.ID_STATUS=='信息录入'}"
+					  click="if(prepareSave())if(vs!=null){if(locObj.curObj.RELATION=='单亲')vs.selectedIndex+=2;else vs.selectedIndex++;}"
+					  skinClass="assets.skins.Button_xyb"/>
+		</s:HGroup>
+	</s:VGroup>
+</s:Group>

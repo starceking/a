@@ -1,0 +1,34 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<s:Module xmlns:fx="http://ns.adobe.com/mxml/2009"
+		  xmlns:s="library://ns.adobe.com/flex/spark"
+		  xmlns:mx="library://ns.adobe.com/flex/mx"
+		  xmlns:tool="view.tool.*"
+		  width="953" height="598" creationComplete="MenuLocator.getInstance().changeMenu(menuGp);"
+		  fontSize="14">
+	<fx:Declarations>
+		<!-- 将非可视元素（例如服务、值对象）放在此处 -->		
+	</fx:Declarations>
+	<fx:Script>
+		<![CDATA[
+			import locator.MenuLocator;		
+			import locator.SysUserLocator;
+			import locator.PsbLocator;
+			import mx.events.FlexEvent;			
+			import util.Helper;			
+			import vo.MenuVo;		
+		]]>
+	</fx:Script>
+	<s:Panel width="953" height="598">
+		<s:HGroup id="menuGp" x="10" y="-27"/>		
+		<tool:MenuTool x="10" y="10" url="assets/images/main/预试验.png" label="预试验" />
+		<tool:MenuTool x="118" y="10" url="assets/images/main/确证试验.png" label="确证试验" />
+		<tool:MenuTool x="226" y="10" url="assets/images/main/提取.png" label="提取" />
+		<tool:MenuTool x="334" y="10" url="assets/images/main/扩增.png" label="扩增" />
+		<tool:MenuTool x="442" y="10" url="assets/images/main/电泳.png" label="电泳"/>
+		<tool:MenuTool x="10" y="266" url="assets/images/main/返回.png" label="返        回"
+					   visible="{MenuLocator.getInstance().menuList.length>1}"/>
+		<tool:MenuTool x="10" y="138" url="assets/images/main/导入Codies.png" label="导入Codis" clickUrl="view/idcase/str/ImportCodiesModule.swf" />
+		<tool:MenuTool x="118" y="138" url="assets/images/main/概率计算.png" label="概率计算" clickUrl="view/idcase/str/PrintStrRatModule.swf" />
+		<tool:MenuTool x="226" y="138" url="assets/images/main/记录查询.png" label="记录查询" clickUrl="view/idcase/sampletest/SampletestQueryModule.swf" />
+	</s:Panel>
+</s:Module>

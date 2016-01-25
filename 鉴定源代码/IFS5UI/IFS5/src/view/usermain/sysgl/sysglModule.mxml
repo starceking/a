@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Module xmlns:fx="http://ns.adobe.com/mxml/2009" 
+		  xmlns:s="library://ns.adobe.com/flex/spark" 
+		  xmlns:mx="library://ns.adobe.com/flex/mx"
+		  xmlns:tool="view.tool.*"
+		  width="953" height="598" creationComplete="MenuLocator.getInstance().changeMenu(menuGp);"
+		  fontSize="14">
+	<fx:Declarations>
+		<!-- 将非可视元素（例如服务、值对象）放在此处 -->
+	</fx:Declarations>
+	<fx:Script>
+		<![CDATA[
+			import locator.MenuLocator;		
+			import locator.SysUserLocator;
+			import locator.PsbLocator;
+			import mx.events.FlexEvent;			
+			import util.Helper;			
+			import vo.MenuVo;		
+		]]>
+	</fx:Script>
+	<s:Panel width="953" height="598">
+		<s:HGroup id="menuGp" x="10" y="-27"/>
+		<s:VGroup x="10" y="10">
+			<s:HGroup>
+				<tool:MenuTool url="assets/images/main/人员管理.png" label="人员管理" clickUrl="view/person/SysUserList.swf" />
+				<tool:MenuTool url="assets/images/main/设备档案.png" label="仪器设备" clickUrl="view/equipment/EquipmentModule.swf" />
+				<tool:MenuTool url="assets/images/main/试剂档案.png" label="试剂耗材" clickUrl="view/supplies/SuppliesModule.swf" />
+			</s:HGroup>
+			<s:HGroup>		
+				<tool:MenuTool url="assets/images/main/返回.png" label="返        回"
+							   visible="{MenuLocator.getInstance().menuList.length>1}"/>
+			</s:HGroup>
+		</s:VGroup>
+	</s:Panel>
+</s:Module>

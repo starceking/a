@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:HGroup xmlns:fx="http://ns.adobe.com/mxml/2009"
+		  xmlns:s="library://ns.adobe.com/flex/spark"
+		  xmlns:mx="library://ns.adobe.com/flex/mx"
+		  fontSize="14" creationComplete="hgroup1_creationCompleteHandler(event)">
+	<fx:Declarations>
+		<!-- 将非可视元素（例如服务、值对象）放在此处 -->
+	</fx:Declarations>
+	<fx:Script>
+		<![CDATA[		
+			import locator.SysUserLocator;
+			
+			import mx.events.FlexEvent;
+			
+			import spark.components.RadioButton;
+			
+			import util.Helper;
+			
+			public function roleChange1(xxxx:Object):void
+			{
+				SysUserLocator.getInstance().loginUser.CURRENT_ROLE="Leader";
+				Helper.changeTopState("Leader");
+			}
+			public function roleChange2(xxxx:Object):void
+			{
+				SysUserLocator.getInstance().loginUser.CURRENT_ROLE="Techer";
+				Helper.changeTopState("Techer");
+			}
+			public function roleChange3(xxxx:Object):void
+			{
+				SysUserLocator.getInstance().loginUser.CURRENT_ROLE="Office";
+				Helper.changeTopState("Office");
+			}
+			public function roleChange4(xxxx:Object):void
+			{
+				SysUserLocator.getInstance().loginUser.CURRENT_ROLE="DNA";
+				Helper.changeTopState("DNA");
+			}
+			public function roleChange5(xxxx:Object):void
+			{
+				SysUserLocator.getInstance().loginUser.CURRENT_ROLE="Insider";
+				Helper.changeTopState("Insider");
+			}
+			
+			public function setRole(roleArg:String):void
+			{
+				if(roleArg.search("，")==-1)
+				{
+					this.visible=false;
+					return;
+				}
+				else
+				{
+					initEle(roleArg);
+					this.visible=true;
+				}
+			}
+			
+			protected function hgroup1_creationCompleteHandler(event:FlexEvent):void
+			{
+				var roleArg:String=SysUserLocator.getInstance().loginUser.ROLES;				
+				setRole(roleArg);
+			}
+			
+			public function initEle(roleArg:String):void
+			{
+				this.removeAllElements();
+				
+				if(roleArg.search("Leader")>=0)
+				{
+					var rb:RadioButton=new RadioButton();rb.id="ld";rb.label="领导";
+					rb.groupName="xxxx";rb.addEventListener("change",roleChange1);this.addElement(rb);
+				}		
+				if(roleArg.search("Tech")>=0)
+				{
+					var rb:RadioButton=new RadioButton();rb.id="jg";rb.label="技管";
+					rb.groupName="xxxx";rb.addEventListener("change",roleChange2);this.addElement(rb);
+				}
+				if(roleArg.search("Office")>=0)
+				{
+					var rb:RadioButton=new RadioButton();rb.id="jdr";rb.label="鉴定人";
+					rb.groupName="xxxx";rb.addEventListener("change",roleChange3);this.addElement(rb);
+				}
+				if(roleArg.search("DNA")>=0)
+				{
+					var rb:RadioButton=new RadioButton();rb.id="dna";rb.label="DNA室";
+					rb.groupName="xxxx";rb.addEventListener("change",roleChange4);this.addElement(rb);
+				}
+				if(roleArg.search("Insider")>=0)
+				{
+					var rb:RadioButton=new RadioButton();rb.id="xzry";rb.label="行政人员";
+					rb.groupName="xxxx";rb.addEventListener("change",roleChange5);this.addElement(rb);
+				}
+			}
+			
+		]]>
+	</fx:Script>
+</s:HGroup>

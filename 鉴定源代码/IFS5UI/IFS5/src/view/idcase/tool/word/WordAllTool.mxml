@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009"
+		 xmlns:s="library://ns.adobe.com/flex/spark"
+		 xmlns:mx="library://ns.adobe.com/flex/mx"
+		 width="100%" height="100%" fontSize="14" creationComplete="group1_creationCompleteHandler(event)">
+	<fx:Declarations>
+		<!-- 将非可视元素（例如服务、值对象）放在此处 -->
+	</fx:Declarations>
+	<fx:Script>
+		<![CDATA[			
+			import com.adobe.cairngorm.control.CairngormEventDispatcher;
+			import locator.WordLocator;
+			import locator.PsbLocator;
+			import locator.IdFlowLocator;
+			import control.*;
+			
+			import mx.events.FlexEvent;
+			
+			protected function group1_creationCompleteHandler(event:FlexEvent):void
+			{
+				
+				WordLocator.getInstance().idPsb=PsbLocator.getInstance().idPsb.ID;
+				WordLocator.getInstance().conno=IdFlowLocator.getInstance().curObj.CONNO;
+				CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.WORDWS_GetAllCaseWord));				
+			}
+			
+		]]>
+	</fx:Script>
+	<s:VGroup left="10" right="10" top="10" bottom="10">
+		<s:HGroup width="100%" horizontalAlign="right" verticalAlign="middle">
+			<s:Label color="#0000FF" fontSize="20" text="历史文书档案"/>
+			<s:Spacer width="100%" height="10"/>
+			<s:HGroup verticalAlign="middle">
+				<s:Label text="打开word模式："/>
+				<s:RadioButton id="local" label="本地" groupName="mode" selected="{!WordLocator.getInstance().pageWord}"
+							   change="WordLocator.getInstance().pageWord=false;"/>
+				<s:RadioButton id="page" label="网页" groupName="mode" selected="{WordLocator.getInstance().pageWord}"
+							   change="WordLocator.getInstance().pageWord=true;"/>
+			</s:HGroup>
+		</s:HGroup>
+		<s:List width="100%" height="100%" dataProvider="{WordLocator.getInstance().listObj}"
+				itemRenderer="view.idcase.tool.renderer.CaseWordRenderer">
+			<s:layout>
+				<s:TileLayout requestedColumnCount="2"/>
+			</s:layout>
+		</s:List>
+	</s:VGroup>
+</s:Group>

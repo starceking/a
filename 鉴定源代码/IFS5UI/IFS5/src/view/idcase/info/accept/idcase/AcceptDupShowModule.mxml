@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Module xmlns:fx="http://ns.adobe.com/mxml/2009"
+		  xmlns:s="library://ns.adobe.com/flex/spark"
+		  xmlns:mx="library://ns.adobe.com/flex/mx"
+		  width="953" height="598" fontSize="14"
+		  creationComplete="module1_creationCompleteHandler(event)" xmlns:local="*">
+	<fx:Script>
+		<![CDATA[
+			import com.adobe.cairngorm.control.CairngormEventDispatcher;
+			
+			import locator.MenuLocator;	
+			import control.*;
+			import util.Helper;
+			import locator.IdFlowLocator;
+			import locator.SysUserLocator;
+			
+			public var locObj:IdFlowLocator=IdFlowLocator.getInstance();			
+			
+			protected function module1_creationCompleteHandler(event:Event):void
+			{
+				CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.IDCASEWS_GetAcceptDup));
+				
+				MenuLocator.getInstance().changeMenu(menuGp);
+			}
+			
+			protected function linkbutton1_clickHandler(event:MouseEvent):void
+			{
+				Helper.pushMenu("核对委托信息","view/idcase/info/accept/idcase/CheckConInfoModule.swf");
+			}
+			
+		]]>
+	</fx:Script>
+	<s:Panel width="953" height="598">
+		<s:HGroup id="menuGp" x="10" y="-27"/>	
+		<s:Button id="nextBtn" x="838" y="-27" click="linkbutton1_clickHandler(event)"
+				  skinClass="assets.skins.Button_xyb"/>
+		<s:DataGrid id="dg" x="10" y="32" width="933" height="493" dataProvider="{locObj.listObj}">
+			<s:columns>
+				<s:ArrayList>
+					<s:GridColumn dataField="CASE_NO" headerText="受理登记号"></s:GridColumn>
+					<s:GridColumn dataField="CASE_NAME" headerText="案件名称"></s:GridColumn>
+					<s:GridColumn dataField="TESTER_NAME" headerText="鉴定人"></s:GridColumn>
+				</s:ArrayList>
+			</s:columns>
+		</s:DataGrid>
+		<local:ListPager id="pager" x="542" y="533"
+						 creationComplete="pager.addEventListener(ListPager.PAGE_INDEX_CHANGE_EVENT,module1_creationCompleteHandler);IdFlowLocator.getInstance().listPager=pager;"
+						 pageSize="14">
+		</local:ListPager>
+		<s:Label x="10" y="10" color="#FA0C06" text="本受理查重最适用于“法医损伤程度鉴定”，下表中列举的案件找到了相同姓名或身份证的被鉴定人"/>
+	</s:Panel>
+</s:Module>

@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009"
+		 xmlns:s="library://ns.adobe.com/flex/spark"
+		 xmlns:mx="library://ns.adobe.com/flex/mx"
+		 width="813" height="547" creationComplete="creationCompleteHandler(event)" fontSize="14">
+	<fx:Declarations>
+		<!-- 将非可视元素（例如服务、值对象）放在此处 -->
+	</fx:Declarations>
+	<fx:Script>
+		<![CDATA[
+			import com.adobe.cairngorm.control.CairngormEventDispatcher;
+			
+			import control.*;
+			
+			import locator.CaseRelativeShrLocator;
+			import locator.IdFlowLocator;
+			
+			import mx.events.FlexEvent;
+			
+			import vo.CaseRelativeVo;
+			
+			public var sc:String="受害人亲属";
+			private var locObj:CaseRelativeShrLocator=CaseRelativeShrLocator.getInstance();
+			
+			protected function creationCompleteHandler(evt:FlexEvent):void
+			{
+				locObj.wsObj=new CaseRelativeVo("","",IdFlowLocator.getInstance().curObj.CONNO,sc,"","","","","","",
+					"","","","","","","","","","","","","","","");
+				CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.CASERELATIVE_SHRWS_GetAll));
+			}
+		]]>
+	</fx:Script>
+	<s:Label x="10" y="493" color="#000000" text="亲  属  二："/>
+	<s:Label id="pname2" x="88" y="493" color="#000000" text="{dg.selectedItem.R2_NAME}"/>
+	<s:Label x="276" y="493" color="#000000" text="性        别："/>
+	<s:Label id="gender2" x="354" y="493" color="#000000" text="{dg.selectedItem.R2_GENDER}"/>
+	<s:Label x="545" y="493" color="#000000" text="身  份  证："/>
+	<s:Label id="idcard2" x="623" y="493" color="#000000" text="{dg.selectedItem.R2_ID_CARD_NO}"/>	
+	<s:DataGrid id="dg" x="10" y="50" width="793" height="285" dataProvider="{locObj.listObj}">
+		<s:columns>
+			<s:ArrayList>
+				<s:GridColumn dataField="PERSONE_NAME" headerText="涉案人"></s:GridColumn>
+				<s:GridColumn dataField="RELATION" headerText="亲属关系"></s:GridColumn>
+				<s:GridColumn dataField="R1_NAME" headerText="亲属一"></s:GridColumn>
+				<s:GridColumn width="160" dataField="R1_SLN" headerText="编号"></s:GridColumn>
+				<s:GridColumn dataField="R2_NAME" headerText="亲属二"></s:GridColumn>
+				<s:GridColumn width="160" dataField="R2_SLN" headerText="编号"></s:GridColumn>
+			</s:ArrayList>
+		</s:columns>
+	</s:DataGrid>
+	<s:Label id="sdes2" x="88" y="523" color="#000000" text="{dg.selectedItem.R2_SAMPLE_DESCRIPTION}"/>
+	<s:Label x="10" y="523" color="#000000" text="样本描述："/>
+	<s:Label x="545" y="523" color="#000000" text="籍        贯："/>
+	<s:Label id="nplace2" x="623" y="523" color="#000000"
+			 text="{dg.selectedItem.R2_NATIVE_PLACE_ADDR}"/>
+	<s:Label x="10" y="463" color="#000000" text="样本编号"/>
+	<s:Label id="pnum2" x="88" y="463" color="#000000" text="{dg.selectedItem.R2_SLN}"/>
+	<s:Label x="276" y="463" color="#000000" text="样本类型："/>
+	<s:Label id="stype2" x="354" y="463" color="#000000" text="{dg.selectedItem.R2_SAMPLE_TYPE}"/>
+	<s:Label x="545" y="463" color="#000000" text="目标关系："/>
+	<s:Label id="rwt2" x="623" y="463" color="#000000"
+			 text="{dg.selectedItem.R2_RELATION_WITH_TARGET}"/>
+	<s:Label x="10" y="403" color="#000000" text="亲  属  一："/>
+	<s:Label id="pname1" x="88" y="403" color="#000000" text="{dg.selectedItem.R1_NAME}"/>
+	<s:Label x="276" y="403" color="#000000" text="性        别："/>
+	<s:Label id="gender1" x="354" y="403" color="#000000" text="{dg.selectedItem.R1_GENDER}"/>
+	<s:Label x="545" y="403" color="#000000" text="身  份  证："/>
+	<s:Label id="idcard1" x="623" y="403" color="#000000" text="{dg.selectedItem.R1_ID_CARD_NO}"/>
+	<s:Label id="sdes1" x="88" y="433" color="#000000" text="{dg.selectedItem.R1_SAMPLE_DESCRIPTION}"/>
+	<s:Label x="10" y="433" color="#000000" text="样本描述："/>
+	<s:Label x="545" y="433" color="#000000" text="籍        贯："/>
+	<s:Label id="nplace1" x="623" y="433" color="#000000"
+			 text="{dg.selectedItem.R1_NATIVE_PLACE_ADDR}"/>
+	<s:Label x="10" y="373" color="#000000" text="样本编号"/>
+	<s:Label id="pnum1" x="88" y="373" color="#000000" text="{dg.selectedItem.R1_SLN}"/>
+	<s:Label x="276" y="373" color="#000000" text="样本类型："/>
+	<s:Label id="stype1" x="354" y="373" color="#000000" text="{dg.selectedItem.R1_SAMPLE_TYPE}"/>
+	<s:Label x="545" y="373" color="#000000" text="目标关系："/>
+	<s:Label id="rwt1" x="623" y="373" color="#000000"
+			 text="{dg.selectedItem.R1_RELATION_WITH_TARGET}"/>
+	<s:Label x="10" y="343" color="#000000" text="涉  案  人："/>
+	<s:Label id="pname0" x="88" y="343" color="#000000" text="{dg.selectedItem.PERSONE_NAME}"/>
+	<s:Label x="276" y="343" color="#000000" text="亲属关系："/>
+	<s:Label id="relation" x="354" y="343" color="#000000" text="{dg.selectedItem.RELATION}"/>
+	<s:Label x="10" y="10" color="#0A37FA" fontSize="20" fontWeight="bold" text="受害人亲属样本信息"/>
+</s:Group>

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009"
+		 xmlns:s="library://ns.adobe.com/flex/spark"
+		 xmlns:mx="library://ns.adobe.com/flex/mx"
+		 width="813" height="162" fontSize="14">
+	<fx:Declarations>
+		<!-- 将非可视元素（例如服务、值对象）放在此处 -->
+	</fx:Declarations>
+	<fx:Script>
+		<![CDATA[
+			import com.adobe.cairngorm.control.CairngormEventDispatcher;
+			
+			import control.*;
+			
+			import locator.IdFlowLocator;
+			import locator.SysUserLocator;
+			
+			import vo.IdFlowVo;
+
+			public var curObj:IdFlowVo=IdFlowLocator.getInstance().curObj;
+			protected function saveClickHandler3(event:MouseEvent):void
+			{
+				if(cbcb.selected)
+				{
+				IdFlowLocator.getInstance().wsObj=curObj;				
+				IdFlowLocator.getInstance().oper=SysUserLocator.getInstance().loginUser.NAME;
+				IdFlowLocator.getInstance().operTimeCol="";
+				IdFlowLocator.getInstance().operReason=remark0.text;				
+				IdFlowLocator.getInstance().wsObj.ID_STATUS="激活";
+				CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.IDFLOWWS_UpdateAudit));
+				}
+			}
+			
+		]]>
+	</fx:Script>
+	<s:CheckBox id="cbcb" visible="{curObj.ID_STATUS=='已存档'}" x="93" y="50" label="激活该案件，重新制作鉴定书"/>
+	<s:Label id="accLbl0" visible="{cbcb.selected}" x="8" y="83" text="激活原因："/>
+	<s:TextArea id="remark0" visible="{cbcb.selected}" x="90" y="78" width="714" height="49"/>
+	<s:Label x="10" y="10" color="#0A37FA" fontSize="20" fontStyle="normal" fontWeight="normal"
+			 lineThrough="false" text="已存档或鉴定中止的案件可激活，重新制作鉴定书" textDecoration="none"/>
+	<s:Button visible="{curObj.ID_STATUS=='已存档'}" y="135" label="按钮" click="saveClickHandler3(event)"
+			  horizontalCenter="0" skinClass="assets.skins.Button_cdjh"/>
+</s:Group>

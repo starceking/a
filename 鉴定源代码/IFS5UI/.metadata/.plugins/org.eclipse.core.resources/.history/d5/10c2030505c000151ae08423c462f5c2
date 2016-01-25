@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009"
+		 xmlns:s="library://ns.adobe.com/flex/spark"
+		 xmlns:mx="library://ns.adobe.com/flex/mx"
+		 width="813" height="547" fontSize="14" xmlns:tool="view.tool.*">
+	<fx:Declarations>
+		<!-- 将非可视元素（例如服务、值对象）放在此处 -->
+	</fx:Declarations>
+	<fx:Script>
+		<![CDATA[
+			import com.adobe.cairngorm.control.CairngormEventDispatcher;
+			
+			import control.*;
+			import mx.containers.ViewStack;
+			import locator.ExCaseLocator;
+			import locator.IdFlowLocator;
+			import locator.PsbLocator;
+			import locator.SysUserLocator;
+			import util.Helper;
+			import vo.IdFlowVo;
+			public var curObj:IdFlowVo=IdFlowLocator.getInstance().curObj;
+			public var vs:ViewStack;
+			
+			protected function saveClickHandler(event:MouseEvent):void
+			{
+				curObj.CONCLUSION=conclusion.getSelectedItem();
+				curObj.CONCLUSION_REMARK=remark.text;
+				IdFlowLocator.getInstance().wsObj=curObj;
+				CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.IDFLOWWS_UpdateConclusion));
+			}
+			protected function saveClickHandler2(event:MouseEvent):void
+			{
+				ExCaseLocator.getInstance().sendNote(curObj.CONER1LPHONE,"2");
+			}
+			
+			protected function next_clickHandler(event:MouseEvent):void
+			{
+				if(vs!=null)vs.selectedIndex--;
+			}
+			
+		]]>
+	</fx:Script>
+	<s:Button x="489" y="516" click="next_clickHandler(event)" skinClass="assets.skins.Button_xyb" visible="false"/>
+	<s:VGroup left="10" right="10" top="10" bottom="10" gap="10">
+		<s:Label color="#0A37FA" fontSize="20" fontStyle="normal" fontWeight="normal" lineThrough="false"
+				 text="选择结论/意见" textDecoration="none"/>
+		<s:HGroup width="100%">
+			<s:Label text="结论意见："/>
+			<tool:Dictddl id="conclusion" dictName="结论意见" width="715" selectedItem="{curObj.CONCLUSION}">		
+			</tool:Dictddl>
+		</s:HGroup>
+		<s:HGroup width="100%">
+			<s:Label id="accLbl" text="结论概述："/>
+			<s:TextArea id="remark" width="715" height="428" text="{curObj.CONCLUSION_REMARK}"/>
+		</s:HGroup>
+		<s:HGroup width="100%" horizontalAlign="center">
+			<s:Button click="saveClickHandler(event)" enabled="{PsbLocator.getInstance().npending}"
+					  skinClass="assets.skins.Button_bc"/>
+			<s:Spacer width="10" height="10"/>
+			<s:Button click="saveClickHandler2(event)" enabled="{PsbLocator.getInstance().npending}"
+					  skinClass="assets.skins.Button_jlgz"/>
+		</s:HGroup>
+	</s:VGroup>
+</s:Group>

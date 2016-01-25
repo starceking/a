@@ -1,0 +1,248 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:TitleWindow xmlns:fx="http://ns.adobe.com/mxml/2009"
+			   xmlns:s="library://ns.adobe.com/flex/spark"
+			   xmlns:mx="library://ns.adobe.com/flex/mx"
+			   xmlns:ns1="*"
+			   xmlns:tool="view.tool.*"
+			   width="1200" height="100%" close="PopUpManager.removePopUp(this);IdFlowLocator.getInstance().wholeCase=false;button1_clickHandler(null);"
+			   creationComplete="button1_clickHandler(null);" fontSize="14" title="按住Ctrl或Shift进行多选">
+	<fx:Script>
+		<![CDATA[
+			import com.adobe.cairngorm.control.CairngormEventDispatcher;
+			
+			import control.*;
+			
+			import locator.CodiesLocator;
+			import locator.IdCaseLocator;
+			import locator.IdFlowLocator;
+			import locator.PsbLocator;
+			import util.Helper;
+			
+			import mx.controls.Alert;	
+			import mx.events.CloseEvent;
+			import mx.events.FlexEvent;
+			import mx.managers.PopUpManager;
+			import mx.utils.ObjectUtil;
+			
+			import util.Server;
+			
+			import vo.StrVo;
+			
+			private var locObj:CodiesLocator=CodiesLocator.getInstance();
+			
+			protected function button1_clickHandler(evt:Event):void
+			{
+				if(IdFlowLocator.getInstance().wholeCase)
+				{
+					locObj.wsObj=new StrVo("",IdFlowLocator.getInstance().curObj.SRCID,"","",sln.text,pname.text,sc.selectedData,"","","","","","","","","","","","","","","","","","","","","","","","","",
+						"","","","","","","","","","","","","","","","","","","","");
+					CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.CODIESWS_GetAllStr));
+				}
+				else
+				{					
+					var conno:String=IdFlowLocator.getInstance().curObj.CONNO;
+					locObj.wsObj=new StrVo("","",conno,"",sln.text,pname.text,sc.selectedData,"","","","","","","","","","","","","","","","","","","","","","","","","",
+						"","","","","","","","","","","","","","","","","","","","");
+					CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.CODIESWS_GetAllStr));
+				}
+			}
+			
+			protected function button3_clickHandler(event:MouseEvent):void
+			{
+				if(dg.selectedItems==null)
+					Helper.showAlert("请选择要打印的检材！");
+				else
+				{
+					var SLNids:String="";
+					for(var i:int=0;i<dg.selectedItems.length;i++)
+					{
+						SLNids+=dg.selectedItems[i].SLN+"，";
+					}
+					
+					locObj.wsObj=new StrVo("","",IdFlowLocator.getInstance().curObj.CONNO,"",SLNids,"",sc.selectedData,
+						"","","","","","","","","","","","","","","","","","","","","","","","","","","","",
+						"","","","","","","","","","","","","","","","","");
+					locObj.KIT=sjh.selectedData;
+					CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.CODIESWS_PrintStrTable));
+				}
+			}
+			
+			protected function button4_clickHandler(event:MouseEvent):void
+			{
+				CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.CODIESWS_SameCaseBzAna));
+			}
+			
+			private function jyts_sortCompareFunc(itemA:Object, itemB:Object):int 
+			{ 				
+				return ObjectUtil.numericCompare(itemA.BZ_NUM, itemB.BZ_NUM); 
+			} 
+			
+			private function importCase():void
+			{
+				if(IdFlowLocator.getInstance().curObj.CONNO.search("D")==0)
+				{
+					if(dg.selectedItems==null)
+					{
+						Helper.showAlert("请选择要导入的检材！");
+						return;
+					}
+					var sc:int=dg.selectedItems.length;
+					if(sc==0)
+					{
+						Helper.showAlert("请选择要导入的检材！");
+						return;
+					}				
+					
+					var ids:String="";
+					for(var i:int=0;i<sc;i++)
+					{
+						ids+=dg.selectedItems[i].ID+"，";
+					}
+					IdCaseLocator.getInstance().year=ids;
+					CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.IDCASEWS_ImportToOraCase));
+				}
+				else if(IdFlowLocator.getInstance().curObj.CONNO.search("R")==0)
+				{
+					CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.MRELATIVEWS_ImportToOraMpr));
+				}
+				else if(IdFlowLocator.getInstance().curObj.CONNO.search("L")==0)
+				{
+					CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.MISSINGPERSONWS_ImportToOraMp));
+				}
+			}
+			
+			protected function importStr():void
+			{
+				Alert.show("必须确保先点击“导入基本信息","温馨提示",Alert.YES|Alert.CANCEL,this,yeshandler,null,Alert.CANCEL); 
+			}
+			private function yeshandler(evt:CloseEvent):void
+			{
+				if(evt.detail==Alert.YES)
+				{
+					if(dg.selectedItems==null)return;
+					var sc:int=dg.selectedItems.length;
+					if(sc==0)return;
+					
+					var ids:String="";
+					for(var i:int=0;i<sc;i++)
+					{
+						var dat:StrVo= dg.selectedItems[i] as StrVo;
+						//检材STR为空
+						if(dat.AMEL.length==0&&dat.D8S1179.length==0&&dat.D21S11.length==0&&dat.D18S51.length==0&&dat.vWA.length==0&&
+							dat.D3S1358.length==0&&dat.FGA.length==0&&dat.TH01.length==0&&dat.D5S818.length==0&&dat.D13S317.length==0&&
+							dat.D7S820.length==0&&dat.CSF1PO.length==0&&dat.D16S539.length==0&&dat.TPOX.length==0&&dat.D2S1338.length==0&&
+							dat.D19S433.length==0&&dat.Penta_D.length==0&&dat.Penta_E.length==0&&dat.D6S1043.length==0&&dat.F13A01.length==0&&
+							dat.FESFPS.length==0&&dat.D1S80.length==0&&dat.D12S391.length==0&&dat.D1S1656.length==0&&
+							dat.B_DYS456.length==0&&dat.B_DYS389I.length==0&&dat.B_DYS390.length==0&&dat.B_DYS389II.length==0&&
+							dat.G_DYS458.length==0&&dat.G_DYS19.length==0&&dat.G_DYS385.length==0&&dat.Y_DYS393.length==0&&
+							dat.Y_DYS391.length==0&&dat.Y_DYS439.length==0&&dat.Y_DYS635.length==0&&dat.Y_DYS392.length==0&&
+							dat.R_Y_GATA_H4.length==0&&dat.R_DYS437.length==0&&dat.R_DYS438.length==0&&dat.R_DYS448.length==0)
+						{
+							Helper.showAlert("您所选择的检材中存在没有STR的检材，请核对后再上传！");
+							return;
+						}
+						var letters:Array = new Array(dat.AMEL,dat.D8S1179,dat.D21S11,dat.D18S51,dat.vWA,
+							dat.D3S1358,dat.FGA,dat.TH01,dat.D5S818,dat.D13S317,dat.D7S820,dat.CSF1PO,
+							dat.D16S539,dat.TPOX,dat.D2S1338,dat.D19S433,dat.Penta_D,dat.Penta_E,
+							dat.D6S1043,dat.F13A01,dat.FESFPS,dat.D1S80,dat.D12S391,dat.D1S1656,
+							dat.B_DYS456,dat.B_DYS389I,dat.B_DYS390,dat.B_DYS389II,dat.G_DYS458,
+							dat.G_DYS19,dat.G_DYS385,dat.Y_DYS393,dat.Y_DYS391,dat.Y_DYS439,dat.Y_DYS635,
+							dat.Y_DYS392,dat.R_Y_GATA_H4,dat.R_DYS437,dat.R_DYS438,dat.R_DYS448);
+						//“OL”判断
+						for(var j=0;j<letters.length;j++)
+						{
+							if(letters[j].toString().toLocaleUpperCase().search("OL")>=0)
+							{
+								Helper.showAlert("您所选择的检材数据中存在“OL”无法上传，请核对后再上传！");
+								return;
+							}
+						}
+						//数据错误 超过两个“/”
+						for(var k=0;k<letters.length;k++)
+						{
+							if(letters[k].toString().substring(letters[k].toString().search("/")+1,letters[k].toString().length).search("/")>=0)
+							{
+								Helper.showAlert("您所选择的检材中存错误数据无法上传，请核对后再上传！");
+								return;
+							}
+						}
+						
+						ids+=dg.selectedItems[i].ID+"，";
+					}
+					locObj.allStrList.removeAll();
+					CodiesLocator.getInstance().idsForImp=ids;
+					CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.CODIESWS_Import));
+					button1_clickHandler(null);
+				}
+			}
+			
+			protected function dg_clickHandler(event:MouseEvent):void
+			{
+				CodiesLocator.getInstance().orc_imp=false;
+			}
+			
+		]]>
+	</fx:Script>
+	<mx:DataGrid id="dg" width="100%" height="100%" top="40" bottom="40" dataProvider="{locObj.allStrList}" click="dg_clickHandler(event)"
+				 sortableColumns="true" horizontalScrollPolicy="auto" allowMultipleSelection="true">
+		<mx:columns>
+			<mx:DataGridColumn dataField="SLN" headerText="编号" width="140"></mx:DataGridColumn>
+			<mx:DataGridColumn dataField="NAME" headerText="名称" width="100"></mx:DataGridColumn>
+			<mx:DataGridColumn dataField="BZ_NUM" headerText="比中" width="100"
+							   sortCompareFunction="jyts_sortCompareFunc"></mx:DataGridColumn>
+			<mx:DataGridColumn dataField="IMP_FLAG" headerText="导入" width="100"></mx:DataGridColumn>
+			<mx:DataGridColumn dataField="D8S1179" headerText="D8S1179" width="100"></mx:DataGridColumn>
+			<mx:DataGridColumn dataField="D21S11" headerText="D21S11" width="100"></mx:DataGridColumn>
+			<mx:DataGridColumn dataField="D7S820" headerText="D7S820" width="100"></mx:DataGridColumn>
+			<mx:DataGridColumn dataField="CSF1PO" headerText="CSF1PO" width="100"></mx:DataGridColumn>
+			<mx:DataGridColumn dataField="D3S1358" headerText="D3S1358" width="100"></mx:DataGridColumn>
+			<mx:DataGridColumn dataField="TH01" headerText="TH01" width="100"></mx:DataGridColumn>
+			<mx:DataGridColumn dataField="D13S317" headerText="D13S317" width="100"></mx:DataGridColumn>
+			<mx:DataGridColumn dataField="D16S539" headerText="D16S539" width="100"></mx:DataGridColumn>
+			<mx:DataGridColumn dataField="D2S1338" headerText="D2S1338" width="100"></mx:DataGridColumn>
+			<mx:DataGridColumn dataField="D19S433" headerText="D19S433" width="100"></mx:DataGridColumn>
+			<mx:DataGridColumn dataField="vWA" headerText="vWA" width="100"></mx:DataGridColumn>
+			<mx:DataGridColumn dataField="TPOX" headerText="TPOX" width="100"></mx:DataGridColumn>
+			<mx:DataGridColumn dataField="D18S51" headerText="D18S51" width="100"></mx:DataGridColumn>
+			<mx:DataGridColumn dataField="AMEL" headerText="AMEL" width="100"></mx:DataGridColumn>
+			<mx:DataGridColumn dataField="D5S818" headerText="D5S818" width="100"></mx:DataGridColumn>
+			<mx:DataGridColumn dataField="FGA" headerText="FGA" width="100"></mx:DataGridColumn>
+			<mx:DataGridColumn dataField="Penta_D" headerText="Penta_D" width="100"></mx:DataGridColumn>
+			<mx:DataGridColumn dataField="Penta_E" headerText="Penta_E" width="100"></mx:DataGridColumn>
+			<mx:DataGridColumn dataField="D6S1043" headerText="D6S1043" width="100"></mx:DataGridColumn>
+			<mx:DataGridColumn dataField="F13A01" headerText="F13A01" width="100"></mx:DataGridColumn>
+			<mx:DataGridColumn dataField="FESFPS" headerText="FESFPS" width="100"></mx:DataGridColumn>
+			<mx:DataGridColumn dataField="D1S80" headerText="D1S80" width="100"></mx:DataGridColumn>
+			<mx:DataGridColumn dataField="D12S391" headerText="D12S391" width="100"></mx:DataGridColumn>
+			<mx:DataGridColumn dataField="D1S1656" headerText="D1S1656" width="100"></mx:DataGridColumn>
+		</mx:columns>
+	</mx:DataGrid>
+	<ns1:ListPager id="pager" right="10" bottom="10"
+				   creationComplete="pager.addEventListener(ListPager.PAGE_INDEX_CHANGE_EVENT,button1_clickHandler);locObj.allListPager=pager;"
+				   pageSize="27">
+	</ns1:ListPager>
+	<s:HGroup x="10" y="10" width="1190" verticalAlign="middle">
+		<s:Label text="编号："/>
+		<s:TextInput id="sln" width="100"/>
+		<s:Label text="名称："/>
+		<s:TextInput id="pname" width="100"/>
+		<s:Label text="类型："/>
+		<tool:DictDdl id="sc" width="100" allEnable="true" dictName="库类型"/>
+		<s:Button label="查询" click="button1_clickHandler(event)"
+				  enabled="{PsbLocator.getInstance().npending}"/>
+		<s:Button label="同案比对分析" click="button4_clickHandler(event)"
+				  enabled="{PsbLocator.getInstance().npending}"/>
+		<s:Label text="试剂盒："/>
+		<tool:DictDdl id="sjh" width="113" dictName="Codis文件" requireSelection="true"/>
+		<s:Button label="导出Codis" click="button3_clickHandler(event)"
+				  enabled="{PsbLocator.getInstance().npending}"/>
+		<s:Button label="导入基本信息" click="importCase()" enabled="{PsbLocator.getInstance().npending}"/>
+		<s:Button label="导入常规STR" click="importStr()" enabled="{PsbLocator.getInstance().npending}" 
+				  visible="{CodiesLocator.getInstance().orc_imp}"/>
+		<s:Label color="#FD1706" text="导入STR前请先导入基本信息"/>
+	</s:HGroup>
+	<s:HGroup x="312" y="-25" width="200" height="20">
+		<s:RadioButton label="本次送检" groupName="jc" selected="true" change="IdFlowLocator.getInstance().wholeCase=false;button1_clickHandler(null);"/>
+		<s:RadioButton label="本案检材" groupName="jc" change="IdFlowLocator.getInstance().wholeCase=true;button1_clickHandler(null);"/>
+	</s:HGroup>
+</s:TitleWindow>

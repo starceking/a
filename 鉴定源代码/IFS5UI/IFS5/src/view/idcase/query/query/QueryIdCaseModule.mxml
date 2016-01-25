@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Module xmlns:fx="http://ns.adobe.com/mxml/2009"
+		  xmlns:s="library://ns.adobe.com/flex/spark"
+		  xmlns:mx="library://ns.adobe.com/flex/mx"
+		  xmlns:tool="view.tool.*"
+		  xmlns:ns1="*"
+		  width="953" height="598" fontSize="14" fontFamily="宋体" defaultButton="{lgBtn}"
+		  creationComplete="MenuLocator.getInstance().changeMenu(menuGp);">
+	<fx:Declarations>
+		<!-- 将非可视元素（例如服务、值对象）放在此处 -->		
+	</fx:Declarations>
+	<fx:Script>
+		<![CDATA[
+			import com.adobe.cairngorm.control.CairngormEventDispatcher;
+			
+			import control.*;
+			import locator.MenuLocator;	
+			import locator.DictLocator;
+			import locator.IdFlowLocator;
+			import locator.JusTypeLocator;
+			import locator.PsbLocator;
+			import locator.SysUserLocator;
+			
+			import mx.core.FlexGlobals;
+			
+			import util.Helper;
+			
+			import vo.IdFlowVo;
+			protected function officeRgpChanged(evt:Event):void
+			{
+				jusType.office=office.office;
+			}
+			protected function jusTypeChanged(evt:Event):void
+			{
+				jusItem.officeName=office.office;
+				jusItem.jusType=jusType.jusType;
+			}
+			protected function queryClickHandler(evt:Event):void
+			{
+				var ofc:String=office.office;
+				var role:String=SysUserLocator.getInstance().loginUser.CURRENT_ROLE;
+				if((ofc.length==0)&&(role=="DNA"||role=="Office"))
+				{
+					ofc=SysUserLocator.getInstance().loginUser.OFFICE;
+				}
+				IdFlowLocator.getInstance().wsObj=new IdFlowVo("",SysUserLocator.getInstance().loginUser.PSBID,"",idStatus.status,"","","","","","",
+					"","","","","",ofc,jusType.jusType,jusItem.selectedItems,"","",accYear.text,accNo.text,"",docYear.text,docNo.text,"","","",
+					"","",conclusion.text,"",yjr.selectedData,"",erjr.selectedData,"",sjr.selectedData,"",sijr.selectedData,"",fhr.selectedData,"",sqqz.selectedData,"",
+					tech.selectedData,"",leader.selectedData,"","","","","","","","","","","","","","",sjr1.text,"","",
+					"","","","","","","","","","",dfgk.text,xcky.text,caseName.text,caseType.getSelectedItem(),"",
+					caseNo.text,"","","",caseProperty.getSelectedItem(),"","","","","","","","",bjdr.text,"","");
+				IdFlowLocator.getInstance().sOccDate=occDate.text;
+				IdFlowLocator.getInstance().eOccDate=occDate0.text;
+				IdFlowLocator.getInstance().sConDate=conDate.text;
+				IdFlowLocator.getInstance().eConDate=conDate0.text;
+				IdFlowLocator.getInstance().sAccDate=accDate.text;
+				IdFlowLocator.getInstance().eAccDate=accDate0.text;
+				IdFlowLocator.getInstance().sGpDate=gpDate.text;
+				IdFlowLocator.getInstance().eGpDate=gpDate0.text;
+				IdFlowLocator.getInstance().conPsbName=conPsbName.text;
+				
+				//控制 只能查询自己的案件
+				if(role=="DNA"||role=="Office")
+					IdFlowLocator.getInstance().wsObj.TESTER=SysUserLocator.getInstance().loginUser.ID;		
+				
+				FlexGlobals.topLevelApplication.showQueryModule();
+			}
+			
+		]]>
+	</fx:Script>
+	<s:Panel width="953" height="598">
+		<s:HGroup id="menuGp" x="10" y="-27"/>	
+		<s:VGroup left="10" right="10" top="10" bottom="10" gap="10">
+			<s:HGroup width="100%" height="22">
+				<mx:LinkButton label="打开上一次的查询"
+							   click="if(IdFlowLocator.getInstance().wsObj==null)return;FlexGlobals.topLevelApplication.showQueryModule();"
+							   color="#041BFA" textDecoration="underline"/>
+			</s:HGroup>
+			<s:HGroup width="100%" verticalAlign="middle">
+				<s:Label text="警综编号："/>
+				<s:TextInput id="dfgk" width="200"/>
+				<s:Label text="现勘编号："/>
+				<s:TextInput id="xcky" width="200"/>
+			</s:HGroup>
+			<s:HGroup width="100%" verticalAlign="middle">
+				<s:Label text="案件类型："/>
+				<tool:DictCbb id="caseType" width="200" dictName="案件类型"/>
+				<s:Label text="案件性质："/>
+				<tool:DictCbb id="caseProperty" width="200" dictName="案件性质"/>
+				<s:Label text="发案时间："/>
+				<tool:DateZh id="occDate" width="130"/>
+				<s:Label text="到"/>
+				<tool:DateZh id="occDate0" width="130"/>
+			</s:HGroup>
+			<s:HGroup width="100%" verticalAlign="middle">
+				<s:Label text="案件名称："/>
+				<s:TextInput id="caseName" width="483"/>
+				<s:Label text="受理登记号："/>
+				<s:TextInput id="caseNo" width="260"/>
+			</s:HGroup>
+			<s:HGroup width="100%" verticalAlign="middle">
+				<s:Label text="委托单位："/>
+				<s:TextInput id="conPsbName" width="483"/>
+				<s:Label text="委托时间："/>
+				<tool:DateZh id="conDate" width="130"/>
+				<s:Label text="到"/>
+				<tool:DateZh id="conDate0" width="130"/>
+			</s:HGroup>
+			<s:HGroup width="100%" verticalAlign="middle">
+				<s:Label text="专业科室："/>
+				<tool:OfficeRgp id="office" width="777"
+								creationComplete="office.addEventListener(OfficeRgp.event_name,officeRgpChanged)"
+								queryOfc="{SysUserLocator.getInstance().loginUser.OFFICE}">
+				</tool:OfficeRgp>
+			</s:HGroup>
+			<s:HGroup width="100%" verticalAlign="middle">
+				<s:Label text="鉴定类别："/>
+				<tool:JusTypeRgp id="jusType" width="777"
+								 creationComplete="jusType.addEventListener(JusTypeRgp.event_name,jusTypeChanged)">
+				</tool:JusTypeRgp>
+			</s:HGroup>
+			<s:HGroup width="100%" verticalAlign="middle">
+				<s:Label text="鉴定项目："/>
+				<tool:JusItemCgp id="jusItem" width="777">
+				</tool:JusItemCgp>
+			</s:HGroup>
+			<s:HGroup width="100%" verticalAlign="middle">
+				<s:Label text="受理年份："/>
+				<s:TextInput id="accYear" width="150"/>
+				<s:Label text="受理序号："/>
+				<s:TextInput id="accNo" width="150"/>
+				<s:Label text="受理时间："/>
+				<tool:DateZh id="accDate" width="150"/>
+				<s:Label width="70" text="    到"/>
+				<tool:DateZh id="accDate0" width="150"/>
+			</s:HGroup>
+			<s:HGroup width="100%" verticalAlign="middle">
+				<s:Label text="发文年份："/>
+				<s:TextInput id="docYear" width="150"/>
+				<s:Label text="发文序号："/>
+				<s:TextInput id="docNo" width="150"/>
+				<s:Label text="鉴定结论："/>
+				<s:TextInput id="conclusion" width="150"/>
+			</s:HGroup>
+			<s:HGroup width="100%" verticalAlign="middle">
+				<s:Label text="一 检 人："/>
+				<tool:QueryUserDdl id="yjr" width="150" auth=""/>
+				<s:Label text="二 检 人："/>
+				<tool:QueryUserDdl id="erjr" width="150" auth=""/>
+				<s:Label text="三 检 人："/>
+				<tool:QueryUserDdl id="sjr" width="150" auth=""/>
+				<s:Label text="四 检 人："/>
+				<tool:QueryUserDdl id="sijr" width="150" auth=""/>
+			</s:HGroup>
+			<s:HGroup width="100%" verticalAlign="middle">
+				<s:Label text="复 核 人："/>
+				<tool:QueryUserDdl id="fhr" width="150" auth=""/>
+				<s:Label text="授权签字："/>
+				<tool:QueryUserDdl id="sqqz" width="150" auth="授权签字"/>
+				<s:Label text="技管审核："/>
+				<tool:QueryUserDdl id="tech" width="150" auth="" role="Techer"/>
+				<s:Label text="审批领导："/>
+				<tool:QueryUserDdl id="leader" width="150" auth="" role="Leader"/>
+			</s:HGroup>
+			<s:HGroup width="100%" verticalAlign="middle">
+				<s:Label text="送检人一："/>
+				<s:TextInput id="sjr1" width="150"/>
+				<s:Label text="被鉴定人："/>
+				<s:TextInput id="bjdr" width="150"/>
+				<s:Label text="领取时间："/>
+				<tool:DateZh id="gpDate" width="150"/>
+				<s:Label width="70" text="    到"/>
+				<tool:DateZh id="gpDate0" width="150"/>
+			</s:HGroup>
+			<s:HGroup width="100%" verticalAlign="middle">
+				<s:Label text="鉴定状态："/>
+				<tool:IdStatusTool id="idStatus"/>
+				<s:Spacer width="100%" height="10"/>
+				<s:Button id="lgBtn" label="查询" click="queryClickHandler(event)"
+						  enabled="{PsbLocator.getInstance().npending}"/>
+			</s:HGroup>
+		</s:VGroup>
+	</s:Panel>
+</s:Module>

@@ -1,0 +1,48 @@
+/* CSS file */
+@namespace s "library://ns.adobe.com/flex/spark";
+@namespace mx "library://ns.adobe.com/flex/mx";
+@namespace tool "view.tool.*";
+
+s|Panel{
+	backgroundColor:#F3FBFF;
+	borderVisible:false;
+	chromeColor:#E1F1FE;
+	cornerRadius:10;
+	dropShadowVisible:false;
+}
+
+mx|TabNavigator{
+	backgroundAlpha:0.0;
+}
+
+.myButton{
+	chromeColor:#000000;
+	color:#FFFFFF;
+	cornerRadius:0;
+	fontSize:14;
+	fontFamliy:宋体;
+}
+mx|Tree{
+	contentBackgroundAlpha:0.0;
+}
+s|DataGrid{
+	contentBackgroundAlpha:0.0;
+}
+s|List{
+	contentBackgroundAlpha:0.0;
+}
+s|TextInput{
+	contentBackgroundAlpha:0.0;
+}
+s|TextArea{
+	contentBackgroundAlpha:0.0;
+}
+s|DropDownList{
+	contentBackgroundAlpha:1.0;
+}
+s|ComboBox{
+	contentBackgroundAlpha:1.0;
+}
+tool|DateZh{
+	contentBackgroundAlpha:0.0;
+}

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:ItemRenderer xmlns:fx="http://ns.adobe.com/mxml/2009"
+				xmlns:s="library://ns.adobe.com/flex/spark"
+				xmlns:mx="library://ns.adobe.com/flex/mx"
+				width="158" height="180" fontSize="14">
+	
+	<fx:Script>
+		<![CDATA[
+			protected function image1_doubleClickHandler(event:MouseEvent):void
+			{
+				var url:String=data.Url;
+				if(url.search("Tb.")>=0)url=url.replace("Tb.",".");
+				navigateToURL(new URLRequest(url));
+			}
+		]]>
+	</fx:Script>
+	
+	<fx:Declarations>
+		<!-- 将非可视元素（例如服务、值对象）放在此处 -->
+	</fx:Declarations>
+	<s:Group>		
+		<s:Image width="158" height="160" source="{data.Url}" fillMode="scale" doubleClickEnabled="true" doubleClick="image1_doubleClickHandler(event)"/>
+	</s:Group>
+	<s:Label x="23" y="162" text="{data.FileName}" horizontalCenter="0"/>
+</s:ItemRenderer>

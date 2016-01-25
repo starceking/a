@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Module xmlns:fx="http://ns.adobe.com/mxml/2009"
+		  xmlns:s="library://ns.adobe.com/flex/spark"
+		  xmlns:mx="library://ns.adobe.com/flex/mx"
+		  xmlns:tool="view.tool.*"
+		  width="953" height="598" fontSize="14"
+		  creationComplete="module1_creationCompleteHandler(event)" >
+	
+	<fx:Script>
+		<![CDATA[
+			import com.adobe.cairngorm.control.CairngormEventDispatcher;
+			
+			import control.*;
+			
+			import locator.MenuLocator;
+			import locator.PsbLocator;
+			
+			import mx.events.FlexEvent;
+			
+			import spark.events.IndexChangeEvent;
+			
+			import util.Helper;
+			
+			import vo.PsbVo;
+			import vo.SysUserVo;
+			
+			private var locObj:PsbLocator=PsbLocator.getInstance();
+			
+			protected function module1_creationCompleteHandler(event:FlexEvent):void
+			{
+				PsbLocator.getInstance().psbList11.removeAll();
+				PsbLocator.getInstance().psbList12.removeAll();
+				PsbLocator.getInstance().psbList13.removeAll();
+				PsbLocator.getInstance().psbList14.removeAll();
+				
+				PsbLocator.getInstance().wsObj=new PsbVo("","NULL","1","","","","","","","11");
+				CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.PSBWS_GetAll));
+				
+				MenuLocator.getInstance().changeMenu(menuGp);
+			}
+			
+			protected function button1_clickHandler(event:MouseEvent):void
+			{
+				if(!(validateInput()))return;
+				var psb="";
+				if(pPsb.selectedItem!=null&&mPsb.selectedItem==null&&nPsb.selectedItem==null)psb=pPsb.selectedItem.ID;
+				else if(pPsb.selectedItem!=null&&mPsb.selectedItem!=null&&nPsb.selectedItem==null)psb=mPsb.selectedItem.ID;
+				else if(pPsb.selectedItem!=null&&mPsb.selectedItem!=null&&nPsb.selectedItem!=null)psb=nPsb.selectedItem.ID;
+				
+				PsbLocator.getInstance().wsObj=new PsbVo(Helper.getGUID(),psb,"1",pn.text,pname.text,
+				addr.text,pc.text,nick.text,phone.text,"");
+				CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.PSBWS_Insert));
+			}
+			
+			protected function button2_clickHandler(event:MouseEvent):void
+			{
+				if(dg.selectedItem!=null)
+				{
+					if(!(validateInput()))return;
+					var psb="";
+					if(pPsb.selectedItem!=null&&mPsb.selectedItem==null&&nPsb.selectedItem==null)psb=pPsb.selectedItem.ID;
+					else if(pPsb.selectedItem!=null&&mPsb.selectedItem!=null&&nPsb.selectedItem==null)psb=mPsb.selectedItem.ID;
+					else if(pPsb.selectedItem!=null&&mPsb.selectedItem!=null&&nPsb.selectedItem!=null)psb=nPsb.selectedItem.ID;
+					
+					PsbLocator.getInstance().wsObj=new PsbVo(dg.selectedItem.ID,psb,"1",pn.text,pname.text,
+						addr.text,pc.text,nick.text,phone.text,"");
+					CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.PSBWS_Update));
+				}
+				else
+				{
+					Helper.showAlert("请选择对应的记录");
+				}
+			}
+			
+			protected function button3_clickHandler(event:MouseEvent):void
+			{
+				if(dg.selectedItem!=null)
+				{					
+					var psb="";
+					if(pPsb.selectedItem!=null&&mPsb.selectedItem==null&&nPsb.selectedItem==null)psb=pPsb.selectedItem.ID;
+					else if(pPsb.selectedItem!=null&&mPsb.selectedItem!=null&&nPsb.selectedItem==null)psb=mPsb.selectedItem.ID;
+					else if(pPsb.selectedItem!=null&&mPsb.selectedItem!=null&&nPsb.selectedItem!=null)psb=nPsb.selectedItem.ID;
+					
+					PsbLocator.getInstance().wsObj=new PsbVo(dg.selectedItem.ID,psb,"1",pn.text,pname.text,
+						addr.text,pc.text,nick.text,phone.text,"");
+					CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.PSBWS_Delete));
+				}
+				else
+				{
+					Helper.showAlert("请选择对应的记录");
+				}
+			}
+			
+			private function validateInput():Boolean
+			{					
+				var result:Boolean=true;
+				result=result && Helper.validateTextInput(pname);
+				
+				return result;
+			}
+			
+			protected function pPsb_changeHandler(event:IndexChangeEvent):void
+			{
+				PsbLocator.getInstance().psbList12.removeAll();
+				PsbLocator.getInstance().psbList13.removeAll();
+				PsbLocator.getInstance().psbList14.removeAll();
+				PsbLocator.getInstance().wsObj=new PsbVo("",pPsb.selectedItem.ID,"1","","","","","","","12");
+				CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.PSBWS_GetAll));
+				
+				
+				PsbLocator.getInstance().psbList=PsbLocator.getInstance().psbList12;
+			}
+			
+			protected function mPsb_changeHandler(event:IndexChangeEvent):void
+			{
+				PsbLocator.getInstance().psbList13.removeAll();
+				PsbLocator.getInstance().psbList14.removeAll();
+				PsbLocator.getInstance().wsObj=new PsbVo("",mPsb.selectedItem.ID,"1","","","","","","","13");
+				CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.PSBWS_GetAll));
+				
+				PsbLocator.getInstance().psbList=PsbLocator.getInstance().psbList13;
+			}
+			
+			protected function nPsb_changeHandler(event:IndexChangeEvent):void
+			{
+				PsbLocator.getInstance().psbList14.removeAll();
+				PsbLocator.getInstance().wsObj=new PsbVo("",nPsb.selectedItem.ID,"1","","","","","","","14");
+				CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.PSBWS_GetAll));
+				
+				PsbLocator.getInstance().psbList=PsbLocator.getInstance().psbList14;
+			}
+
+			
+		]]>
+	</fx:Script>
+	
+	<fx:Declarations>
+		<!-- 将非可视元素（例如服务、值对象）放在此处 -->
+	</fx:Declarations>
+	<s:Panel width="953" height="598">
+		<s:HGroup id="menuGp" x="10" y="-27"/>	
+		<s:HGroup left="10" right="10" top="10" bottom="10">
+			<s:VGroup height="100%" gap="14">
+				<s:HGroup verticalAlign="middle">
+					<s:Label text="一级："/>
+					<s:DropDownList id="pPsb" width="322" change="pPsb_changeHandler(event)"
+									dataProvider="{PsbLocator.getInstance().psbList11}" labelField="NAME"
+									></s:DropDownList>
+				</s:HGroup>
+				<s:HGroup verticalAlign="middle">
+					<s:Label text="二级："/>
+					<s:DropDownList id="mPsb" width="322" change="mPsb_changeHandler(event)"
+									dataProvider="{PsbLocator.getInstance().psbList12}"
+									labelField="NAME" ></s:DropDownList>
+				</s:HGroup>
+				<s:HGroup verticalAlign="middle">
+					<s:Label text="三级："/>
+					<s:DropDownList id="nPsb" width="322" change="nPsb_changeHandler(event)"
+									dataProvider="{PsbLocator.getInstance().psbList13}"
+									labelField="NAME" ></s:DropDownList>
+				</s:HGroup>
+				<s:Spacer width="10" height="100%"/>
+				<s:HGroup verticalAlign="middle">
+					<s:Label text="编号："/>
+					<s:TextInput id="pn" width="334" text="{dg.selectedItem.NUMBER}"/>
+				</s:HGroup>
+				<s:HGroup verticalAlign="middle">
+					<s:Label text="名称："/>
+					<s:TextInput id="pname" width="334" text="{dg.selectedItem.NAME}"/>
+				</s:HGroup>
+				<s:HGroup verticalAlign="middle">
+					<s:Label text="地址："/>
+					<s:TextInput id="addr" width="334" text="{dg.selectedItem.ADDRESS}"/>
+				</s:HGroup>
+				<s:HGroup verticalAlign="middle">
+					<s:Label text="邮编："/>
+					<s:TextInput id="pc" width="334" text="{dg.selectedItem.POSTCODE}"/>
+				</s:HGroup>
+				<s:HGroup verticalAlign="middle">
+					<s:Label text="简称："/>
+					<s:TextInput id="nick" width="334" text="{dg.selectedItem.NICKNAME}"/>
+				</s:HGroup>
+				<s:HGroup verticalAlign="middle">
+					<s:Label text="电话："/>
+					<s:TextInput id="phone" width="334" text="{dg.selectedItem.PHONE}"/>
+				</s:HGroup>
+				<s:HGroup width="100%" horizontalAlign="right" verticalAlign="middle">
+					<s:Button label="增加" click="button1_clickHandler(event)"
+							  enabled="{PsbLocator.getInstance().npending}"/>
+					<s:Button label="修改" click="button2_clickHandler(event)"
+							  enabled="{PsbLocator.getInstance().npending}"/>
+					<s:Button label="删除" click="button3_clickHandler(event)"
+							  enabled="{PsbLocator.getInstance().npending}"/>
+				</s:HGroup>
+			</s:VGroup>
+			<s:DataGrid id="dg" width="100%" height="100%"
+						dataProvider="{PsbLocator.getInstance().psbList}">
+				<s:columns>
+					<s:ArrayList>
+						<s:GridColumn width="120" dataField="NUMBER" headerText="编号"></s:GridColumn>
+						<s:GridColumn dataField="NAME" headerText="名称"></s:GridColumn>
+					</s:ArrayList>
+				</s:columns>
+			</s:DataGrid>
+		</s:HGroup>
+	</s:Panel>
+</s:Module>

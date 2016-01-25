@@ -1,0 +1,232 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Module xmlns:fx="http://ns.adobe.com/mxml/2009"
+		  xmlns:s="library://ns.adobe.com/flex/spark"
+		  xmlns:mx="library://ns.adobe.com/flex/mx"
+		  xmlns:mpr="view.idcase.tool.mpr.*"
+		  xmlns:accept="view.idcase.tool.accept.*"
+		  xmlns:upload="view.idcase.tool.upload.*"
+		  xmlns:word="view.idcase.tool.word.*"
+		  xmlns:conclusion="view.idcase.tool.conclusion.*"
+		  xmlns:audit="view.idcase.tool.audit.*"
+		  xmlns:str="view.idcase.str.*" 
+		  xmlns:testimony="view.idcase.testimony.*"
+		  xmlns:PreExam="view.idcase.sampletest.PreExam.*"
+		  xmlns:ConfirmExam="view.idcase.sampletest.ConfirmExam.*"
+		  xmlns:Extract="view.idcase.sampletest.Extract.*"
+		  xmlns:Amplify="view.idcase.sampletest.Amplify.*"
+		  xmlns:Electrophoresis="view.idcase.sampletest.Electrophoresis.*"
+		  width="953" height="598" fontSize="14"
+		  creationComplete="MenuLocator.getInstance().changeMenu(menuGp);">
+	<fx:Declarations>
+		<fx:XML id="mtree">
+			<root> 
+				<mtc label="基本信息" ico="ajxx"/>
+				<mtc label="亲  属  一" ico="szrqs"/>
+				<mtc label="亲  属  二" ico="szrqs"/>
+				<mtc label="受理信息" ico="slxx"/>
+				<mtc label="照片上传" ico="zpsc"/>
+				<mtc label="其他上传" ico="qtsc"/>
+				<mtc label="检材描述" ico="jcms"/>
+				<mtc label="预试验" ico="ybysy"/>
+				<mtc label="确证试验" ico="ybysy"/>
+				<mtc label="提取信息" ico="ybjcxx"/>
+				<mtc label="扩增信息" ico="ybjcxx"/>	
+				<mtc label="电泳信息" ico="ybjcxx"/>	
+				<mtc label="临时STR" ico="str"/>
+				<mtc label="STR" ico="strzs"/>
+				<mtc label="检验记录" ico="jyjl"/>
+				<mtc label="结论意见" ico="jlyj"/>
+				<mtc label="鉴定报告" ico="dyws"/>
+				<mtc label="提交审核" ico="tjsh"/>
+				<mtc label="直接存档" ico="zjcd"/>
+				<mtc label="鉴定记事" ico="jdjs"/>
+				<mtc label="历史档案" ico="lsda"/>
+				<mtc label="打委托书" ico="dyws"/>
+				<mtc label="打受理书" ico="dyws"/>
+			</root> 
+		</fx:XML>	
+	</fx:Declarations>
+	<fx:Script>
+		<![CDATA[
+			import locator.MenuLocator;	
+			import com.adobe.cairngorm.control.CairngormEventDispatcher;
+			import locator.WordLocator;
+			import locator.PsbLocator;
+			import locator.IdFlowLocator;
+			import control.*;
+			
+			import mx.events.IndexChangedEvent;
+			import mx.events.ListEvent;
+			// 嵌入图标文件
+			[Embed(source="assets/images/tree/zzwc.png")]
+			public var zzwc:Class;
+			[Embed(source="assets/images/tree/ajxx.png")]
+			public var ajxx:Class;
+			[Embed(source="assets/images/tree/slxx.png")]
+			public var slxx:Class;
+			[Embed(source="assets/images/tree/szrqs.png")]
+			public var szrqs:Class;
+			[Embed(source="assets/images/tree/zpsc.png")]
+			public var zpsc:Class;
+			[Embed(source="assets/images/tree/qtsc.png")]
+			public var qtsc:Class;
+			[Embed(source="assets/images/tree/jcms.png")]
+			public var jcms:Class;
+			[Embed(source="assets/images/tree/jyjl.png")]
+			public var jyjl:Class;
+			[Embed(source="assets/images/tree/jlyj.png")]
+			public var jlyj:Class;
+			[Embed(source="assets/images/tree/dyws.png")]
+			public var dyws:Class;
+			[Embed(source="assets/images/tree/jdjs.png")]
+			public var jdjs:Class;
+			[Embed(source="assets/images/tree/lsda.png")]
+			public var lsda:Class;
+			[Embed(source="assets/images/tree/tjsh.png")]
+			public var tjsh:Class;
+			[Embed(source="assets/images/tree/zjcd.png")]
+			public var zjcd:Class;
+			[Embed(source="assets/images/tree/str.png")]
+			public var str:Class;
+			[Embed(source="assets/images/tree/strzs.png")]
+			public var strzs:Class;
+			[Embed(source="assets/images/tree/ybjcxx.png")]
+			public var ybjcxx:Class;
+			[Embed(source="assets/images/tree/ybysy.png")]
+			public var ybysy:Class;
+			
+			protected function tree_changeHandler(event:ListEvent):void
+			{
+				vs.selectedIndex=tree.selectedIndex;
+			}
+			
+			protected function vs_changeHandler(event:IndexChangedEvent):void
+			{
+				if(vs.selectedIndex==14)
+				{
+					var locObj:WordLocator=WordLocator.getInstance();
+					locObj.idPsb=PsbLocator.getInstance().idPsb.ID;
+					locObj.conno=IdFlowLocator.getInstance().curObj.CONNO;
+					locObj.jusType="DNA";
+					locObj.wordType="检验检查记录";
+					
+					CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.WORDWS_GetCaseWordList));
+				}
+				else if(vs.selectedIndex==16)
+				{
+					var locObj:WordLocator=WordLocator.getInstance();
+					locObj.idPsb=PsbLocator.getInstance().idPsb.ID;
+					locObj.conno=IdFlowLocator.getInstance().curObj.CONNO;
+					locObj.jusType="DNA";
+					locObj.wordType="意见报告书";
+					
+					CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.WORDWS_GetCaseWordList));
+				}
+				else if(vs.selectedIndex==21)
+				{
+					var locObj:WordLocator=WordLocator.getInstance();
+					locObj.idPsb=PsbLocator.getInstance().idPsb.ID;
+					locObj.conno=IdFlowLocator.getInstance().curObj.CONNO;
+					locObj.jusType="DNA";
+					locObj.wordType="委托书";
+					
+					CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.WORDWS_GetCaseWordList));
+				}
+				else if(vs.selectedIndex==22)
+				{
+					var locObj:WordLocator=WordLocator.getInstance();
+					locObj.idPsb=PsbLocator.getInstance().idPsb.ID;
+					locObj.conno=IdFlowLocator.getInstance().curObj.CONNO;
+					locObj.jusType="DNA";
+					locObj.wordType="受理书";
+					
+					CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.WORDWS_GetCaseWordList));
+				}
+				else if(vs.selectedIndex==20)
+				{
+					WordLocator.getInstance().idPsb=PsbLocator.getInstance().idPsb.ID;
+					WordLocator.getInstance().conno=IdFlowLocator.getInstance().curObj.CONNO;
+					CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.WORDWS_GetAllCaseWord));
+				}
+			}
+			
+		]]>
+	</fx:Script>
+	<s:Panel width="953" height="598" >
+		<s:HGroup id="menuGp" x="10" y="-27"/>	
+		<mx:Tree id="tree" x="10" y="10" width="112" height="547" change="tree_changeHandler(event)"
+				 dataProvider="{mtree.mtc}" iconField="@ico" labelField="@label" showRoot="true"></mx:Tree>
+		<mx:ViewStack id="vs" x="130" y="10" width="813" height="547"
+					  change="vs_changeHandler(event)" selectedIndex="15">
+			<s:NavigatorContent width="100%" height="100%" label="基本信息">
+				<mpr:MprTool/>
+			</s:NavigatorContent>
+			<s:NavigatorContent width="100%" height="100%" label="亲属一">
+				<mpr:Mpr1Tool/>
+			</s:NavigatorContent>
+			<s:NavigatorContent width="100%" height="100%" label="亲属二">
+				<mpr:Mpr2Tool id="r2"/>
+			</s:NavigatorContent>
+			<s:NavigatorContent width="100%" height="100%" label="受理信息">
+				<accept:AcceptRoTool/>
+			</s:NavigatorContent>
+			<s:NavigatorContent width="100%" height="100%" label="照片上传">
+				<upload:PicTool/>
+			</s:NavigatorContent>
+			<s:NavigatorContent width="100%" height="100%" label="其他上传">
+				<upload:CaseFileTool/>
+			</s:NavigatorContent>
+			<s:NavigatorContent width="100%" height="100%" label="检材描述">
+				<testimony:WzmsTool/>
+			</s:NavigatorContent>
+			<s:NavigatorContent width="100%" height="100%" label="预试验">
+				<PreExam:PreExamTool/>
+			</s:NavigatorContent>
+			<s:NavigatorContent width="100%" height="100%" label="确证试验">
+				<ConfirmExam:ConfirmTool/>
+			</s:NavigatorContent>
+			<s:NavigatorContent width="100%" height="100%" label="提取信息">
+				<Extract:CaseExtractRoTool/>
+			</s:NavigatorContent>
+			<s:NavigatorContent width="100%" height="100%" label="扩增信息">
+				<Amplify:CaseAmplifyRoTool/>
+			</s:NavigatorContent>
+			<s:NavigatorContent width="100%" height="100%" label="电泳信息">
+				<Electrophoresis:CaseElectrophoresisRoTool/>
+			</s:NavigatorContent>
+			<s:NavigatorContent width="100%" height="100%" label="临时STR">
+				<str:TmpStrTool/>
+			</s:NavigatorContent>
+			<s:NavigatorContent width="100%" height="100%" label="STR">
+				<str:StrTool/>
+			</s:NavigatorContent>	
+			<s:NavigatorContent width="100%" height="100%" label="检验记录">
+				<word:WordTestTool id="WordTest" creationComplete="WordTest.vs=vs"/>
+			</s:NavigatorContent>
+			<s:NavigatorContent width="100%" height="100%" label="结论意见">
+				<conclusion:ConclusionTool id="Conclusion" creationComplete="Conclusion.vs=vs"/>
+			</s:NavigatorContent>
+			<s:NavigatorContent width="100%" height="100%" label="鉴定报告">
+				<word:WordReportTool/>
+			</s:NavigatorContent>
+			<s:NavigatorContent width="100%" height="100%" label="提交审核">
+				<conclusion:GoToAuditTool id="GoToAudit" creationComplete="GoToAudit.vs=vs"/>
+			</s:NavigatorContent>
+			<s:NavigatorContent width="100%" height="100%" label="直接存档">
+				<conclusion:SaveDocTool/>
+			</s:NavigatorContent>
+			<s:NavigatorContent width="100%" height="100%" label="鉴定记事">
+				<audit:IdRecordTool/>
+			</s:NavigatorContent>
+			<s:NavigatorContent width="100%" height="100%" label="历史档案">
+				<word:WordAllTool/>
+			</s:NavigatorContent>
+			<s:NavigatorContent width="100%" height="100%" label="打委托书">
+				<word:WordConsignTool/>
+			</s:NavigatorContent>
+			<s:NavigatorContent width="100%" height="100%" label="打受理书">
+				<word:WordAcceptTool/>
+			</s:NavigatorContent>
+		</mx:ViewStack>
+	</s:Panel>
+</s:Module>

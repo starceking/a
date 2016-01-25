@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:TitleWindow xmlns:fx="http://ns.adobe.com/mxml/2009"
+			   xmlns:s="library://ns.adobe.com/flex/spark"
+			   xmlns:mx="library://ns.adobe.com/flex/mx"
+			   width="953" height="598" fontSize="14" title="用户注册"
+			   contentCreationComplete="titlewindow1_contentCreationCompleteHandler(event)"
+			   close="PopUpManager.removePopUp(this);" >
+	<fx:Declarations>
+		<!-- 将非可视元素（例如服务、值对象）放在此处 -->
+	</fx:Declarations>
+	<fx:Script>
+		<![CDATA[
+			import com.adobe.cairngorm.control.CairngormEventDispatcher;
+			
+			import control.*;
+			
+			import locator.PsbLocator;
+			import locator.SysUserLocator;
+			
+			import mx.events.FlexEvent;
+			import mx.managers.PopUpManager;
+			
+			import spark.events.IndexChangeEvent;
+			
+			import util.Helper;
+			
+			import vo.PsbVo;
+			import vo.SysUserVo;
+
+			protected function titlewindow1_contentCreationCompleteHandler(event:FlexEvent):void
+			{
+				PsbLocator.getInstance().psbList11.removeAll();
+				PsbLocator.getInstance().psbList12.removeAll();
+				PsbLocator.getInstance().psbList13.removeAll();
+				PsbLocator.getInstance().psbList14.removeAll();
+				
+				PsbLocator.getInstance().wsObj=new PsbVo("","NULL","1","","","","","","","11");
+				CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.PSBWS_GetAll));
+			}
+			
+			protected function regClickHandler(event:MouseEvent):void
+			{
+				if(!(validateInput()))return;
+				var psbid="";
+				if(sPsb.selectedItem!=null)psbid=sPsb.selectedItem.ID;
+				else if(nPsb.selectedItem!=null)psbid=nPsb.selectedItem.ID;
+				else if(mPsb.selectedItem!=null)psbid=mPsb.selectedItem.ID;
+				else {
+					Helper.showAlert("请选择所属单位");
+					return;
+				}
+				
+				SysUserLocator.getInstance().wsObj=new SysUserVo(Helper.getGUID(),psbid,"",policeNo.text,
+					pwd.text,pName.text,'',idCard.text,
+					lphone.text,sphone.text,"","Consign","","","",policeNo0.text,"","","","","","","","","","","","","",
+					"","","","","","","","","","");
+				CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.SYSUSERWS_Insert));
+			}			
+			
+			private function validateInput():Boolean
+			{		
+				if(pwd.text!=pwdAg.text)
+				{
+					Helper.showAlert("两次密码不一致");
+					return false;
+				}
+				
+				//if(sPsb.selectedItem==null)
+				//{
+				//	Helper.showAlert("请选择所属单位");
+				//	return false;
+				//}
+				
+				var result:Boolean=true;
+				result=result && Helper.validateTextInput(pName);
+				result=result && Helper.validateTextInput(idCard);
+				result=result && Helper.validateTextInput(policeNo);
+				result=result && Helper.validateTextInput(pwd);
+				
+				return result;
+			}
+
+			
+			protected function pPsb_changeHandler(event:IndexChangeEvent):void
+			{
+				PsbLocator.getInstance().psbList12.removeAll();
+				PsbLocator.getInstance().psbList13.removeAll();
+				PsbLocator.getInstance().psbList14.removeAll();
+				PsbLocator.getInstance().wsObj=new PsbVo("",pPsb.selectedItem.ID,"1","","","","","","","12");
+				CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.PSBWS_GetAll));
+			}
+			
+			protected function mPsb_changeHandler(event:IndexChangeEvent):void
+			{
+				PsbLocator.getInstance().psbList13.removeAll();
+				PsbLocator.getInstance().psbList14.removeAll();
+				PsbLocator.getInstance().wsObj=new PsbVo("",mPsb.selectedItem.ID,"1","","","","","","","13");
+				CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.PSBWS_GetAll));
+			}
+			
+			protected function nPsb_changeHandler(event:IndexChangeEvent):void
+			{
+				PsbLocator.getInstance().psbList14.removeAll();
+				PsbLocator.getInstance().wsObj=new PsbVo("",nPsb.selectedItem.ID,"1","","","","","","","14");
+				CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.PSBWS_GetAll));
+			}
+			
+		]]>
+	</fx:Script>
+		<s:VGroup left="10" right="10" top="10" bottom="10" gap="14">
+			<s:Spacer width="10" height="20"/>
+			<s:HGroup width="100%" verticalAlign="middle">
+				<s:Spacer width="160" height="10"/>
+				<s:Label color="#0000FF" fontSize="16" text="请填写有效信息"/>
+			</s:HGroup>
+			<s:HGroup width="100%" verticalAlign="middle">
+				<s:Spacer width="160" height="10"/>
+				<s:Label width="72" color="#FB0505" text="姓       名："/>
+				<s:TextInput id="pName" width="200"/>
+				<s:Label width="72" color="#FB0505" text="身  份  证："/>
+				<s:TextInput id="idCard" width="200" maxChars="18" restrict="0-9 \x"/>
+			</s:HGroup>
+			<s:HGroup width="100%" verticalAlign="middle">
+				<s:Spacer width="160" height="10"/>
+				<s:Label width="72" color="#FB0505" text="警       号："/>
+				<s:TextInput id="policeNo" width="200" maxChars="8"/>
+				<s:Label width="72" text="职       务："/>
+				<s:TextInput id="policeNo0" width="200"/>
+			</s:HGroup>
+			<s:HGroup width="100%" verticalAlign="middle">
+				<s:Spacer width="160" height="10"/>
+				<s:Label width="72" color="#FB0505" text="登录密码："/>
+				<s:TextInput id="pwd" width="200" displayAsPassword="true"/>
+				<s:Label width="72" color="#FB0505" text="密码确认："/>
+				<s:TextInput id="pwdAg" width="200" displayAsPassword="true"/>
+			</s:HGroup>
+			<s:HGroup width="100%" verticalAlign="middle">
+				<s:Spacer width="160" height="10"/>
+				<s:Label width="72" color="#FD0404" text="手机号码："/>
+				<s:TextInput id="lphone" width="200" maxChars="11" restrict="0-9"/>
+				<s:Label width="72" color="#FD0404" text="虚  拟  号："/>
+				<s:TextInput id="sphone" width="200" maxChars="6" restrict="0-9"/>
+			</s:HGroup>
+			<s:HGroup width="100%" verticalAlign="middle">
+				<s:Spacer width="160" height="10"/>
+				<s:Label width="72" color="#FB0505" text="所属单位："/>
+				<s:RadioButton label="委托单位" enabled="false" selected="true"/>
+			</s:HGroup>
+			<s:HGroup width="100%" verticalAlign="middle">
+				<s:Spacer width="240" height="10"/>
+				<s:DropDownList id="pPsb" width="486"
+								dataProvider="{PsbLocator.getInstance().psbList11}" labelField="NAME"
+							    change="pPsb_changeHandler(event)"></s:DropDownList>
+			</s:HGroup>
+			
+			<s:HGroup width="100%" verticalAlign="middle">
+				<s:Spacer width="240" height="10"/>
+				<s:DropDownList id="mPsb" width="486"
+								dataProvider="{PsbLocator.getInstance().psbList12}" labelField="NAME"
+							    change="mPsb_changeHandler(event)"></s:DropDownList>
+			</s:HGroup>
+			
+			<s:HGroup width="100%" verticalAlign="middle">
+				<s:Spacer width="240" height="10"/>
+				<s:DropDownList id="nPsb" width="486"
+								dataProvider="{PsbLocator.getInstance().psbList13}" labelField="NAME"
+							    change="nPsb_changeHandler(event)"></s:DropDownList>
+			</s:HGroup>
+			
+			<s:HGroup width="100%" verticalAlign="middle">
+				<s:Spacer width="240" height="10"/>
+				<s:DropDownList id="sPsb" width="486"
+								dataProvider="{PsbLocator.getInstance().psbList14}"
+								labelField="NAME"></s:DropDownList>
+			</s:HGroup>
+			
+			<s:HGroup width="100%" verticalAlign="middle">
+				<s:Spacer width="582" height="10"/>
+				<s:Button label="注册" click="regClickHandler(event)"
+						  enabled="{PsbLocator.getInstance().npending}"/>
+				<s:Button label="返回" click="PopUpManager.removePopUp(this);"/>
+			</s:HGroup>
+		</s:VGroup>
+	
+</s:TitleWindow>

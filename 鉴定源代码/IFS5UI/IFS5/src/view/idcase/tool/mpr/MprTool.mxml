@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009"
+		 xmlns:s="library://ns.adobe.com/flex/spark"
+		 xmlns:mx="library://ns.adobe.com/flex/mx"
+		 xmlns:tool="view.tool.*"
+		 xmlns:idcase="view.idcase.tool.idcase.*"
+		 width="813" height="523" fontSize="14">
+	<fx:Declarations>
+		<!-- 将非可视元素（例如服务、值对象）放在此处 -->
+	</fx:Declarations>
+	<fx:Script>
+		<![CDATA[
+			import com.adobe.cairngorm.control.CairngormEventDispatcher;
+			
+			import control.*;
+			
+			import locator.DictLocator;
+			import locator.IdFlowLocator;
+			import locator.JusTypeLocator;
+			import locator.MRelativeLocator;
+			import locator.PsbLocator;
+			import locator.SysUserLocator;
+			
+			import mx.containers.ViewStack;
+			
+			import spark.events.IndexChangeEvent;
+			
+			import util.Helper;
+			import util.Server;
+			import vo.IdFlowVo;
+			
+			private var locObj:MRelativeLocator=MRelativeLocator.getInstance();
+			public var vs:ViewStack;
+			
+			public function prepareSave():Boolean
+			{			
+				if(validateInput())
+				{
+										
+					locObj.curObj.CASE_NAME=caseName.text;
+					locObj.curObj.RELATION=relation.Relation;
+					locObj.curObj.PERSON_NAME=lostName.text;
+					locObj.curObj.PERSON_GENDER=gender.selectedData;
+					locObj.curObj.PERSON_BIRTHDATE=birthday.text;
+					locObj.curObj.PERSON_SIGN=bodymark.text;
+					locObj.curObj.PERSON_SPEC=bodyspec.text;
+					locObj.curObj.CASE_SUMMARY=caseSummary.text;
+					
+					if(IdFlowLocator.getInstance().curObj.ID_STATUS!='信息录入')
+					{
+						locObj.wsObj=locObj.curObj;
+						CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.MRELATIVEWS_UpdateR));
+					}
+					return true;
+				}
+				return false;
+			}
+			
+			public function validateInput():Boolean
+			{				
+				if(relation.Relation.length==0)
+				{
+					Helper.showAlert("请选择亲属关系");
+					return false;
+				}
+				
+				var result:Boolean=cit.save();
+				result=result && Helper.validateTextInput(caseName);
+				result=result && Helper.validateTextInput(lostName);
+				result=result && Helper.validateTextArea(caseSummary);
+				result=result && Helper.validateTextInput(cit.conYear);
+				result=result && Helper.validateTextInput(cit.conNo);
+				result=result && Helper.validateTextInput(cit.coner1name);
+				result=result && Helper.validateTextInput(cit.coner1Pn);
+				result=result && Helper.validateTextInput(cit.coner1Phone);
+				result=result && Helper.validateTextInput(cit.coner2name);
+				result=result && Helper.validateTextInput(cit.coner2Pn);
+				result=result && Helper.validateTextInput(cit.coner2Phone);
+				return result;
+			}
+			
+			public function getRSpec(rtype:int):String
+			{
+				if(rtype==1)return relation.r1;
+				else return relation.r2;
+			}
+			
+			private function delCase():void
+			{
+				if(delBtn.label=="删除")
+				{
+					delBtn.label="确认删除？";
+				}
+				else if(delBtn.label=="确认删除？")
+				{
+					CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.MRELATIVEWS_DeleteR));
+				}
+			}
+			
+		]]>
+	</fx:Script>
+	<s:Button x="372" y="492" click="if(prepareSave())if(vs!=null)vs.selectedIndex++;" skinClass="assets.skins.Button_bc"
+			  visible="{IdFlowLocator.getInstance().curObj.ID_STATUS=='信息录入'}"/>
+	<s:Button x="372" y="492" click="prepareSave()" skinClass="assets.skins.Button_bc"
+			  visible="{IdFlowLocator.getInstance().curObj.ID_STATUS!='信息录入'}"/>
+	<s:Button x="450" y="492" label="删除" id="delBtn" click="delCase()" visible="{IdFlowLocator.getInstance().curObj.ID_STATUS=='新的委托'}"/>
+	<s:VGroup left="10" right="10" top="10" bottom="10" gap="8">
+		<s:HGroup width="100%" verticalAlign="middle">
+			<s:Label color="#0A37FA" fontSize="20" fontWeight="bold" text="失踪人员基本信息，其亲属信息见后两页"/>
+			<s:Spacer width="100%" height="10"/>
+			<s:Button click="Server.getSmallBcUrl(IdFlowLocator.getInstance().curObj.CONNO,'失踪人亲属')"
+					  skinClass="assets.skins.Button_dytm"/>
+		</s:HGroup>
+		<s:HGroup width="100%" verticalAlign="middle">
+			<s:Label color="#FD0808" text="案件名称："/>
+			<s:TextInput id="caseName" width="715" text="{locObj.curObj.CASE_NAME}"/>
+		</s:HGroup>
+		<s:HGroup width="100%" verticalAlign="middle">
+			<s:Label color="#FD0808" text="亲属关系："/>
+			<tool:RelationTool id="relation" Relation="{locObj.curObj.RELATION}">
+			</tool:RelationTool>
+			<s:Label color="#FC0606" text="（请务必准确选择，不能随意修改亲属关系）"/>
+		</s:HGroup>
+		<s:HGroup width="100%" verticalAlign="middle">
+			<s:Label color="#FD0808" text="失  踪  人："/>
+			<s:TextInput id="lostName" width="180" text="{locObj.curObj.PERSON_NAME}"/>
+			<s:Label text="性        别："/>
+			<tool:DictDdl id="gender" width="180" dictName="性别" requireSelection="true"
+						  selectedData="{locObj.curObj.PERSON_GENDER}"/>
+			<s:Label text="出生日期："/>
+			<tool:DateZh id="birthday" width="180" text="{locObj.curObj.PERSON_BIRTHDATE}"/>
+		</s:HGroup>
+		<s:HGroup width="100%" verticalAlign="middle">
+			<s:Label text="特殊特征："/>
+			<s:TextInput id="bodyspec" width="715" text="{locObj.curObj.PERSON_SPEC}"/>
+		</s:HGroup>
+		<s:HGroup width="100%" verticalAlign="middle">
+			<s:Label text="体表标记："/>
+			<s:TextInput id="bodymark" width="715" text="{locObj.curObj.PERSON_SIGN}"/>
+		</s:HGroup>
+		<s:HGroup width="100%">
+			<s:Label color="#FD0404" text="简要案情："/>
+			<s:TextArea id="caseSummary" width="715" height="50" text="{locObj.curObj.CASE_SUMMARY}" verticalScrollPolicy="off"/>
+		</s:HGroup>
+		<idcase:ConInfoTool id="cit">
+		</idcase:ConInfoTool>
+	</s:VGroup>
+</s:Group>

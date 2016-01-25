@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Module xmlns:fx="http://ns.adobe.com/mxml/2009"
+		  xmlns:s="library://ns.adobe.com/flex/spark"
+		  xmlns:mx="library://ns.adobe.com/flex/mx"
+		  width="942" height="590" defaultButton="{lgBtn}" fontSize="12">
+	<fx:Declarations>
+		<s:HTTPService id="lgSev" url="{Server.pkiUrl}" resultFormat="text" method="GET" result="lgSev_resultHandler(event)"
+					   fault="lgSev_faultHandler(event)">
+			
+		</s:HTTPService>
+	</fx:Declarations>
+	<fx:Script>
+		<![CDATA[
+			import com.adobe.cairngorm.control.CairngormEventDispatcher;
+			
+			import control.*;
+			
+			import locator.ExCaseLocator;
+			import locator.NotificationLocator;
+			import locator.PsbLocator;
+			import locator.SysUserLocator;
+			
+			import mx.core.FlexGlobals;
+			import mx.events.FlexEvent;
+			import mx.rpc.events.FaultEvent;
+			import mx.rpc.events.ResultEvent;
+					
+			import util.Helper;
+			import util.Server;
+			
+			import vo.ExCaseVo;
+			import vo.IdFlowVo;
+			import vo.SysUserVo;
+			private var soObj:SharedObject;
+			protected function loginClickHandler(event:MouseEvent):void
+			{
+				soObj=SharedObject.getLocal("IFS5");
+				soObj.data.loginName=policeNo.text;
+				soObj.flush();
+				
+				SysUserLocator.getInstance().wsObj=new SysUserVo("","","",policeNo.text,pwd.text,"","","","","","",
+					"","","","","","","","","","","","","","","","","","","","","","","","","","","","");
+				CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.SYSUSERWS_Login));
+			}
+			
+			protected function policeNocreationCompleteHandler(event:FlexEvent):void
+			{
+				soObj=SharedObject.getLocal("IFS5");
+				if(soObj!=null)
+					policeNo.text=soObj.data.loginName;
+			}
+			
+			protected function linkbutton1_clickHandler(event:MouseEvent):void
+			{
+				navigateToURL(new URLRequest(Server.helpDown));
+			}
+			
+			protected function lgSev_resultHandler(event:ResultEvent):void
+			{
+				if(event.result.toString().length>0)
+				{
+					SysUserLocator.getInstance().login(new XML(event.result));
+				}
+				else
+				{
+					Helper.showAlert("找不到该数字证书信息，请您先注册，或者是您的身份证号码填写有误。");
+				}
+				//szzsBtn.enabled=true;
+			}
+			
+			protected function lgSev_faultHandler(event:FaultEvent):void
+			{
+				Helper.showAlert(event.fault.faultString);
+				//szzsBtn.enabled=true;
+			}
+			
+			protected function button1_clickHandler(event:MouseEvent):void
+			{
+				lgSev.send();
+				//szzsBtn.enabled=false;
+			}
+			
+			public function queryGetReportCase():void
+			{
+				//				if(ExCaseLocator.getInstance().interval)
+				//				{
+				//					clearInterval(ExCaseLocator.getInstance().interval); 
+				//				}
+				//				
+				//				var locObj:ExCaseLocator=ExCaseLocator.getInstance();
+				//				locObj.wsObj=new ExCaseVo("","","","",cname.text,"","","","","","");
+				//				CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.EXCASEWS_QueryGetReportCase));
+			}
+			
+			
+			protected function searchpsb_clickHandler(event:MouseEvent):void
+			{
+				SysUserLocator.getInstance().UserNo=policeNo;
+				
+				FlexGlobals.topLevelApplication.showSearchCodeModule();
+			}
+			
+		]]>
+	</fx:Script>
+	<!--登录-->
+	<!--	<s:BitmapImage x="10" y="10" smooth="true" source="@Embed('/assets/images/index/outside.png')"/>	
+	<s:BitmapImage x="21" y="21" smooth="true" source="@Embed('/assets/images/index/ico.png')"/>
+	<s:BitmapImage x="37" y="18" smooth="true" source="@Embed('assets/images/index/用户登录.png')"/>
+	<s:BitmapImage x="10" y="36" alpha="0.36" smooth="true"
+	source="@Embed('/assets/images/index/shadow.png')"/>-->
+	<s:VGroup x="350" y="244" width="225" height="80">
+		<s:HGroup width="225" verticalAlign="middle">
+			<s:Label text="用户名："/>
+			<s:TextInput id="policeNo" width="100%" height="20" borderAlpha="0.5"
+						 creationComplete="policeNocreationCompleteHandler(event)" paddingBottom="2"
+						 paddingLeft="2" paddingRight="2" paddingTop="3"/>
+		</s:HGroup>
+		<s:HGroup width="225" verticalAlign="middle">
+			<s:Label text="密    码："/>
+			<s:TextInput id="pwd" width="100%" height="20" borderAlpha="0.5" displayAsPassword="true"
+						 paddingBottom="2" paddingLeft="2" paddingRight="2" paddingTop="3"/>
+		</s:HGroup>
+		<s:HGroup width="225" horizontalAlign="right">
+			<!--<s:Button width="45" height="20" label="注册" chromeColor="#000000"
+					  click="Helper.setIndexContentNoMenu('view/index/RegisterModule.swf')" color="#C5C7CA"
+					  cornerRadius="0" fontFamily="Arial"
+			          enabled="{PsbLocator.getInstance().npending}" fontSize="12"/>-->
+			<!--<s:Button width="45" height="20" label="注册" chromeColor="#000000"
+					  click="FlexGlobals.topLevelApplication.showRegisterModule();" color="#C5C7CA"
+					  cornerRadius="0" fontFamily="Arial"
+					  enabled="{PsbLocator.getInstance().npending}" fontSize="12"/>
+			<s:Button id="szzsBtn" width="68" height="20" label="数字证书" chromeColor="#000000"
+					  click="button1_clickHandler(event)" color="#C5C7CA" cornerRadius="0"
+					  enabled="{PsbLocator.getInstance().npending}" fontSize="12"/>-->
+			<s:Button id="searchpsb" x="77" width="70" height="20" label="单位代码"
+					  chromeColor="#000000" click="searchpsb_clickHandler(event)" color="#C5C7CA"
+					  cornerRadius="0" enabled="{PsbLocator.getInstance().npending}" fontSize="12"/>
+			<s:Button id="lgBtn" width="45" height="20" label="登录" chromeColor="#000000"
+					  click="loginClickHandler(event)" color="#C5C7CA" cornerRadius="0"
+					  enabled="{PsbLocator.getInstance().npending}" fontSize="12"/>
+		</s:HGroup>
+	</s:VGroup>
+	<!--	<mx:LinkButton x="18" y="155" width="170" label="第一次使用请下载并安装" color="#139BFB" fontSize="12"
+	textDecoration="underline" click="linkbutton1_clickHandler(event)"/>
+	<s:BitmapImage x="18" y="184" alpha="0.7" smooth="true"
+	source="@Embed('/assets/images/index/dotted.png')"/>-->
+	<!--友情链接-->
+	<!--	<s:BitmapImage x="18" y="193" smooth="true" source="@Embed('/assets/images/index/友情链接.png')"/>
+	<s:BitmapImage x="18" y="210" smooth="true" source="@Embed('/assets/images/index/友情链接阴影.png')"/>
+	<s:List x="18" y="226" width="175" height="345" borderAlpha="0" horizontalScrollPolicy="off"
+	itemRenderer="view.index.LinksRender" verticalScrollPolicy="off"
+	dataProvider="{PsbLocator.getInstance().idpsbList}"/>-->
+	<!--待领取-->
+	<!--	<s:BitmapImage x="214" y="-5" smooth="true" source="@Embed('/assets/images/index/book.png')"/>		
+	<s:BitmapImage x="238" y="20" smooth="true" source="@Embed('/assets/images/index/待领取.png')"/>
+	<s:BitmapImage x="236" y="42" smooth="true" source="@Embed('/assets/images/index/line.png')"/>
+	<s:VGroup x="247" y="60" width="432" height="493">
+	<s:HGroup width="432" height="24">
+	<s:Label width="110" height="20" color="#5f5e61" fontSize="14" fontWeight="bold"
+	text="受理登记号" textAlign="center" verticalAlign="middle"/>
+	<s:Label width="180" height="20" color="#5f5e61" fontSize="14" fontWeight="bold"
+	text="案件名称" textAlign="center" verticalAlign="middle"/>
+	<s:Label width="130" height="20" color="#5f5e61" fontSize="14" fontWeight="bold"
+	text="送检单位" textAlign="center" verticalAlign="middle"/>
+	</s:HGroup>
+	<s:HGroup width="432" height="463">
+	<s:List width="100%" height="463" borderAlpha="0" horizontalScrollPolicy="off" dataProvider="{ExCaseLocator.getInstance().getReportList}"
+	itemRenderer="view.index.ReadyReportRender" verticalScrollPolicy="off"/>				
+	</s:HGroup>
+	</s:VGroup>-->
+	<!--待批案件-->	
+	<!--	<mx:BarChart id="dpaj" x="734" y="10" width="199" height="160" fontSize="12" showDataTips="true"
+	dataProvider="{ExCaseLocator.getInstance().spTaskList}">
+	<mx:verticalAxis>
+	<mx:CategoryAxis categoryField="x"/>
+	</mx:verticalAxis>
+	<mx:series>
+	<mx:BarSeries displayName="待批案件" labelPosition="outside" xField="amount" yField="x"/>
+	</mx:series>
+	</mx:BarChart>
+	<s:BitmapImage x="744" y="184" alpha="0.7" smooth="true"
+	source="@Embed('/assets/images/index/dotted.png')"/>-->
+	<!--通知通告-->
+	<!--	<s:BitmapImage x="744" y="193" smooth="true" source="@Embed('/assets/images/index/通知通告.png')"/>
+	<s:BitmapImage x="744" y="210" smooth="true" source="@Embed('/assets/images/index/通知通告阴影.png')"/>
+	<s:List x="744" y="258" width="175" height="322" borderAlpha="0" horizontalScrollPolicy="off"
+	itemRenderer="view.index.NotiRender" verticalScrollPolicy="off" 
+	dataProvider="{NotificationLocator.getInstance().listObj}"/>
+	<s:TextInput id="cname" x="351" y="16" width="249" height="22" borderAlpha="0.5"
+	borderColor="#7F9DB9" borderVisible="true" paddingBottom="2" paddingLeft="2"
+	paddingRight="2" paddingTop="4"/>
+	<s:Button x="608" y="16" height="21" label="查  询" chromeColor="#000000" color="#C5C7CA"
+	cornerRadius="2" fontSize="13" enabled="{PsbLocator.getInstance().npending}" click="queryGetReportCase()"/>
+	<s:TextInput x="739" y="227" width="117" height="22" borderAlpha="0.5" borderColor="#7F9DB9"
+	paddingBottom="2" paddingLeft="2" paddingRight="2" paddingTop="4"/>
+	<s:Button x="863" y="227" width="60" height="21" label="查  询" chromeColor="#000000"
+	color="#C5C7CA" fontSize="13"/>-->
+</s:Module>

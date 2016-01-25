@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:HGroup xmlns:fx="http://ns.adobe.com/mxml/2009"
+		  xmlns:s="library://ns.adobe.com/flex/spark"
+		  xmlns:mx="library://ns.adobe.com/flex/mx"
+		  fontSize="14">
+	<fx:Declarations>
+		<!-- 将非可视元素（例如服务、值对象）放在此处 -->
+	</fx:Declarations>
+	<fx:Script>
+		<![CDATA[
+			public var status:String="";
+		]]>
+	</fx:Script>
+	<s:RadioButton label="全部" groupName="idstatus" selected="true" change="status=''"/>
+	<s:RadioButton label="新的委托" groupName="idstatus" change="status='新的委托'"/>
+	<s:RadioButton label="不予受理" groupName="idstatus" change="status='不予受理'"/>
+	<s:RadioButton label="检验中" groupName="idstatus" change="status='检验中'"/>
+	<s:RadioButton label="审核中" groupName="idstatus" change="status='审核中'"/>
+	<s:RadioButton label="文书制作" groupName="idstatus" change="status='文书制作'"/>
+	<s:RadioButton label="待领取" groupName="idstatus" change="status='待领取'"/>
+	<s:RadioButton label="已存档" groupName="idstatus" change="status='已存档'"/>
+	<s:RadioButton label="已发文" groupName="idstatus" change="status='已发文'"/>
+</s:HGroup>

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Module xmlns:fx="http://ns.adobe.com/mxml/2009"
+		  xmlns:s="library://ns.adobe.com/flex/spark"
+		  xmlns:mx="library://ns.adobe.com/flex/mx"
+		  xmlns:tool="view.tool.*"
+		  width="953" height="598" creationComplete="MenuLocator.getInstance().changeMenu(menuGp);"
+		  fontSize="14">
+	<fx:Declarations>
+		<!-- 将非可视元素（例如服务、值对象）放在此处 -->		
+	</fx:Declarations>
+	<fx:Script>
+		<![CDATA[
+			import locator.MenuLocator;		
+			import locator.SysUserLocator;
+			import locator.ExCaseLocator;
+			import locator.PsbLocator;
+			import mx.events.FlexEvent;			
+			import util.Helper;			
+			import vo.MenuVo;		
+		]]>
+	</fx:Script>
+	<s:Panel width="953" height="598">
+		<s:HGroup id="menuGp" x="10" y="-27"/>		
+		<tool:MenuTool x="10" y="10" url="assets/images/main/文书审核.png" label="{'文书审核'+ExCaseLocator.getInstance().shrw}" clickUrl="view/idcase/query/task/AuditTaskModule.swf" />
+		<tool:MenuTool x="10" y="138" url="assets/images/main/返回.png" label="返        回"
+					   visible="{MenuLocator.getInstance().menuList.length>1}"/>
+	</s:Panel>
+</s:Module>

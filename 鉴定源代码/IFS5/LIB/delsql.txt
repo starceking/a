@@ -1,0 +1,45 @@
+﻿declare @tbname varchar(50) 
+declare tbroy cursor for select name from sysobjects 
+where xtype= 'u '
+
+open tbroy 
+fetch next from tbroy into @tbname 
+while @@fetch_status=0 
+begin 
+if(
+@tbname <> '鉴定流程' and 
+@tbname <> '亲属信息' and 
+@tbname <> '单位信息' and 
+@tbname <> '系统用户' 
+)
+begin
+declare @sql nvarchar(100);
+set @sql = 'TRUNCATE table ['+@tbname+'];';
+exec sp_executesql @sql;
+end
+fetch next from tbroy into @tbname 
+end
+close tbroy 
+deallocate tbroy 
+
+delete from 鉴定流程;
+delete from 亲属信息;
+
+select * from gdna.consignment;
+select * from gdna.law_case;
+select * from gdna.scene_evidence;
+select * from gdna.CASE_PERSONNEL_SAMPLE;
+select * from gdna.RELATIVE;
+select * from gdna.relation_definition;
+select * from gdna.UNKNOWN_DECEASED;
+select * from gdna.SAMPLE_EXAMINATION;
+
+delete from gdna.consignment;
+delete from gdna.law_case;
+delete from gdna.scene_evidence;
+delete from gdna.CASE_PERSONNEL_SAMPLE;
+delete from gdna.RELATIVE;
+delete from gdna.relation_definition;
+delete from gdna.UNKNOWN_DECEASED;
+delete from gdna.SAMPLE_EXAMINATION;
+delete from gdna.MISSING_PERSON;

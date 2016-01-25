@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:TitleWindow xmlns:fx="http://ns.adobe.com/mxml/2009"
+			   xmlns:s="library://ns.adobe.com/flex/spark"
+			   xmlns:mx="library://ns.adobe.com/flex/mx"
+			   xmlns:ns1="*"
+			   width="1220" height="600" close="PopUpManager.removePopUp(this);" fontSize="14"
+			   title="{locObj.sln+'  '+locObj.sName}">
+	<fx:Script>
+		<![CDATA[
+			import com.adobe.cairngorm.control.CairngormEventDispatcher;
+			
+			import control.*;
+			import locator.IdTestimonyLocator;
+			import locator.PsbLocator;
+			import locator.IdFlowLocator;
+			import mx.managers.PopUpManager;			
+			import util.Server;
+			
+			private var locObj:IdTestimonyLocator=IdTestimonyLocator.getInstance();
+			private var conno:String=IdFlowLocator.getInstance().curObj.CONNO;
+			private var filter:FileFilter=new FileFilter("jpg图像(*.jpg)","*.jpg");
+			
+			protected function button1_clickHandler(event:MouseEvent):void
+			{
+				CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.WORDWS_GenerateWzms));
+			}
+			
+			protected function button2_clickHandler(event:MouseEvent):void
+			{
+				Server.getSmallBcUrl("","",locObj.sln);
+			}
+			
+		]]>
+	</fx:Script>
+	<ns1:PicTaker id="pict" x="0" y="10" DEFAULT_WEBSERVICE_URL="{Server.getWsUrl('鉴定材料WS')}"
+				  F1="{PsbLocator.getInstance().idPsb.ID}" F2="鉴定档案" F3="{conno}" F4="物证照片"
+				  FILE_NAME="{locObj.sln}">
+	</ns1:PicTaker>
+	<mx:Image id="ff" x="610" y="40" width="600" height="483" creationComplete="pict.outImg=ff;"
+			  source="{Server.getTesPicDownUrl(PsbLocator.getInstance().idPsb.ID,conno,locObj.sln)}"/>	
+	<ns1:SingleFileUploader id="sfu1" x="984" y="538" label="下载"
+							download_url="{Server.getTesPicDownUrl(PsbLocator.getInstance().idPsb.ID,conno,locObj.sln)}"
+							filter="{filter}"
+							upload_url="{Server.getCaseUploadUrl(PsbLocator.getInstance().idPsb.ID,conno,'2',locObj.sln)}"/>
+	<s:Button x="906" y="538" label="上传" click="sfu1.selectFile()"/>
+	<s:Button x="1097" y="538" label="生成物证描述表" click="button1_clickHandler(event)"/>
+	<s:Button x="803" y="539" label="打印条码" click="button2_clickHandler(event)"/>
+</s:TitleWindow>

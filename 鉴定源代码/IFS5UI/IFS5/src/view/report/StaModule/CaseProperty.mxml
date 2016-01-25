@@ -1,0 +1,136 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<s:Module xmlns:fx="http://ns.adobe.com/mxml/2009"
+		  xmlns:s="library://ns.adobe.com/flex/spark"
+		  xmlns:mx="library://ns.adobe.com/flex/mx"
+		  xmlns:tool="view.tool.*"
+		  width="953" height="598" fontSize="14"
+		  creationComplete="module1_creationCompleteHandler(event)" >
+	<fx:Declarations>
+		<!-- 将非可视元素（例如服务、值对象）放在此处 -->
+	</fx:Declarations>
+	<fx:Script>
+		<![CDATA[
+			import com.adobe.cairngorm.control.CairngormEventDispatcher;
+			
+			import control.*;
+			
+			import locator.DictLocator;
+			import locator.MenuLocator;
+			import locator.StatisticsLocator;
+			import locator.SysUserLocator;
+			
+			import mx.collections.ArrayList;
+			import mx.events.FlexEvent;
+			
+			import spark.events.IndexChangeEvent;
+			
+			import util.Helper;
+			
+			[Bindable]
+			private var propertyList:ArrayList;
+			protected function module1_creationCompleteHandler(event:FlexEvent):void
+			{
+				MenuLocator.getInstance().changeMenu(menuGp);
+				CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.STATISTICSWS_GetStation));
+				propertyList=DictLocator.getInstance().getItem("案件性质");
+				StatisticsLocator.getInstance().CasePropertyList.removeAll();	
+			}
+			
+			protected function query_clickHandler(event:MouseEvent):void
+			{		
+				if((Date1.text.length!=0&&Date2.text.length==0)||(Date1.text.length==0&&Date2.text.length!=0))
+				{
+					Helper.showAlert("请选择完整的时间区间！");
+				}
+				else
+				{
+					if(NameText.text.length>0)
+					{
+						StatisticsLocator.getInstance().CasePropertyList.removeAll();
+						AL.removeAll();
+						AL.addItem(GC0);
+					}
+					else
+					{
+						AL.removeAll();
+						AL.addItem(GC1);
+					}
+					if(propertytext.selectedItem!=null)
+					{
+						var GC:GridColumn=new GridColumn();
+						GC.dataField="num_1";
+						GC.headerText=propertytext.selectedItem.data;
+						GC.minWidth=55;
+						AL.addItem(GC);
+						
+						StatisticsLocator.getInstance().Property=propertytext.selectedItem.data;
+					}
+					else
+					{
+						for(var i:int=0;i<propertyList.length;i++)
+						{
+							var GC:GridColumn=new GridColumn();
+							GC.dataField="num_"+String(i+1);
+							GC.headerText=propertyList.getItemAt(i).label;
+							GC.minWidth=55;
+							AL.addItem(GC);
+						}
+						
+						StatisticsLocator.getInstance().Property="";
+					}
+					AL.addItem(GC8);
+					
+					if(ddl0.selectedItem==null)StatisticsLocator.getInstance().Station="";
+					else StatisticsLocator.getInstance().Station=ddl0.selectedItem.Name;
+					
+					
+					StatisticsLocator.getInstance().Office="DNA";
+					StatisticsLocator.getInstance().StationName=NameText.text;
+					StatisticsLocator.getInstance().DateTime1=Date1.text;
+					StatisticsLocator.getInstance().DateTime2=Date2.text;
+					CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.STATISTICSWS_CaseProperty));
+					
+				}
+			}
+			
+			protected function ddl0_changeHandler(event:IndexChangeEvent):void
+			{
+				//更换 单位简称
+				NameText.text="";
+			}
+			
+		]]>
+	</fx:Script>
+	<s:Panel width="953" height="598">
+		<s:HGroup id="menuGp" x="10" y="-27"/>
+		<s:VGroup left="10" right="10" top="10" bottom="10">
+			<s:HGroup width="100%" verticalAlign="middle">
+				<s:Label text="案件性质："/>
+				<s:DropDownList id="propertytext" width="210" dataProvider="{propertyList}"/>
+				<s:Label text="受理时间："/>
+				<tool:DateZh id="Date1" width="110"/>
+				<s:Label text="到"/>
+				<tool:DateZh id="Date2" width="110"/>
+				<s:Button id="query" label="查询" click="query_clickHandler(event)" />
+			</s:HGroup>
+			<s:HGroup width="100%" verticalAlign="middle">
+				<s:Label text="单位简称："/>
+				<s:DropDownList id="ddl0" width="210" change="ddl0_changeHandler(event)"
+								dataProvider="{StatisticsLocator.getInstance().GetStationList}" labelField="Name"/>
+				<s:Label text="单位名称："/>
+				<s:TextInput id="NameText" width="245"/>
+			</s:HGroup>
+			<s:DataGrid width="100%" height="100%" requestedRowCount="4"
+						dataProvider="{StatisticsLocator.getInstance().CasePropertyList}">
+				<s:columns>
+					<s:ArrayList id="AL">
+						<s:GridColumn id="GC1" minWidth="60" dataField="station" headerText="分县局"></s:GridColumn>
+						<s:GridColumn id="GC0" minWidth="80" dataField="stationName" headerText="单位名称"></s:GridColumn>
+						<s:GridColumn id="GC8" minWidth="80" dataField="AmountNum" headerText="案件总数"></s:GridColumn>
+					</s:ArrayList>
+				</s:columns>
+			</s:DataGrid>
+		</s:VGroup>
+	</s:Panel>
+	
+</s:Module>

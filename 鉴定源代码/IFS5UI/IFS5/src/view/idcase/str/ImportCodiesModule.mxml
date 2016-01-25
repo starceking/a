@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Module xmlns:fx="http://ns.adobe.com/mxml/2009"
+		  xmlns:s="library://ns.adobe.com/flex/spark"
+		  xmlns:mx="library://ns.adobe.com/flex/mx"
+		  xmlns:ns1="*"
+		  width="953" height="598" fontSize="14"
+		  creationComplete="MenuLocator.getInstance().changeMenu(menuGp);">
+	<fx:Declarations>
+		<!-- 将非可视元素（例如服务、值对象）放在此处 -->		
+	</fx:Declarations>
+	<fx:Script>
+		<![CDATA[
+			import com.adobe.cairngorm.control.CairngormEventDispatcher;
+			
+			import control.*;
+			import locator.MenuLocator;	
+			import locator.CodiesLocator;
+			import locator.PsbLocator;
+			
+			import util.Server;
+			protected function list1_doubleClickHandler(event:MouseEvent):void
+			{
+				if(list.selectedItem!=null)
+				navigateToURL(new URLRequest(list.selectedItem.Url));
+			}
+			private function getAll(today:String):void
+			{
+				CodiesLocator.getInstance().today=today;
+				CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.CODIESWS_GetAll));
+			}
+		]]>
+	</fx:Script>
+	<s:Panel width="953" height="598">
+		<s:HGroup id="menuGp" x="10" y="-27"/>	
+		<ns1:SingleFileUploader id="sfu" x="10" y="10" label="导入CODIS" textDecoration="none"
+								upload_url="{Server.getImportCodiesUrl(PsbLocator.getInstance().idPsb.ID)}"/>
+		<s:Label x="274" y="11" text="已成功导入的codis文件（通过查看此列表判断是否成功导入）"/>
+		<s:List id="list" x="274" y="47" width="669" height="510" dataProvider="{CodiesLocator.getInstance().listObj}" doubleClickEnabled="true"
+				doubleClick="list1_doubleClickHandler(event)"></s:List>
+		<s:Button x="772" y="10" label="查看今日" click="getAll('1');"/>
+		<s:Button x="867" y="10" label="查看全部" click="getAll('0');"/>
+		<s:Button x="118" y="10" label="选择文件" click="sfu.selectFile()"/>	
+	</s:Panel>
+</s:Module>

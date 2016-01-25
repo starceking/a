@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Module xmlns:fx="http://ns.adobe.com/mxml/2009"
+		  xmlns:s="library://ns.adobe.com/flex/spark"
+		  xmlns:mx="library://ns.adobe.com/flex/mx"
+		  width="953" height="598" fontSize="14"
+		  creationComplete="MenuLocator.getInstance().changeMenu(menuGp);">
+	<fx:Declarations>
+		<!-- 将非可视元素（例如服务、值对象）放在此处 -->		
+	</fx:Declarations>
+	<fx:Script>
+		<![CDATA[
+			import util.Server;	
+			import locator.MenuLocator;	
+		]]>
+	</fx:Script>
+	<s:Panel width="953" height="598">
+		<s:HGroup id="menuGp" x="10" y="-27"/>	
+		<mx:LinkButton x="33" y="75" label="似然比计算"
+					   click="navigateToURL(new URLRequest(Server.srbUrl));"
+					   textDecoration="underline"/>
+		<mx:LinkButton x="32" y="147" label="父权指数计算"
+					   click="navigateToURL(new URLRequest(Server.fqzsUrl));"
+					   textDecoration="underline"/>
+	</s:Panel>
+</s:Module>

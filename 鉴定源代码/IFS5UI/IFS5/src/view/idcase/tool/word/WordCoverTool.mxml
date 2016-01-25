@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009"
+		 xmlns:s="library://ns.adobe.com/flex/spark"
+		 xmlns:mx="library://ns.adobe.com/flex/mx"
+		 width="100%" height="100%" fontSize="14" >
+	<fx:Declarations>
+		<!-- 将非可视元素（例如服务、值对象）放在此处 -->
+	</fx:Declarations>
+	<fx:Script>
+		<![CDATA[			
+			import locator.WordLocator;
+		]]>
+	</fx:Script>
+	<s:VGroup left="10" right="10" top="10" bottom="10">
+		<s:HGroup width="100%" horizontalAlign="right" verticalAlign="middle">
+			<s:Label color="#0000FF" fontSize="20" text="文书封皮文档"/>
+			<s:Spacer width="100%" height="10"/>
+			<s:HGroup verticalAlign="middle">
+				<s:Label text="打开word模式："/>
+				<s:RadioButton id="local" label="本地" groupName="mode" selected="{!WordLocator.getInstance().pageWord}"
+							   change="WordLocator.getInstance().pageWord=false;"/>
+				<s:RadioButton id="page" label="网页" groupName="mode" selected="{WordLocator.getInstance().pageWord}"
+							   change="WordLocator.getInstance().pageWord=true;"/>
+			</s:HGroup>
+		</s:HGroup>
+		<s:List width="100%" height="100%" dataProvider="{WordLocator.getInstance().coverList}"
+				itemRenderer="view.idcase.tool.renderer.CaseWordCoverRenderer">
+			<s:layout>
+				<s:TileLayout requestedColumnCount="2"/>
+			</s:layout>
+		</s:List>
+	</s:VGroup>
+</s:Group>

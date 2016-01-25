@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009"
+		 xmlns:s="library://ns.adobe.com/flex/spark"
+		 xmlns:mx="library://ns.adobe.com/flex/mx"
+		 xmlns:tool="view.tool.*"
+		 width="813" height="547" fontSize="14" creationComplete="group1_creationCompleteHandler(event)">
+	<fx:Script>
+		<![CDATA[
+			import com.adobe.cairngorm.business.ServiceLocator;
+			import com.adobe.cairngorm.control.CairngormEventDispatcher;
+			
+			import control.*;
+			
+			import locator.AbiTestLocator;
+			import locator.PsbLocator;
+			import locator.ServiceTrainLocator;
+			import locator.SysUserLocator;
+			
+			import mx.containers.ViewStack;
+			import mx.events.FlexEvent;
+			
+			import spark.events.IndexChangeEvent;
+			
+			import util.Helper;
+			
+			import vo.AbiTestVo;
+			import vo.SysUserVo;
+			
+			private var locObj:AbiTestLocator=AbiTestLocator.getInstance();
+			private var sysuser:SysUserLocator=SysUserLocator.getInstance();
+			public var vs:ViewStack;
+			protected function userddl_changeHandler(event:IndexChangeEvent):void
+			{
+				// TODO Auto-generated method stub
+				var sysUser:SysUserVo=SysUserLocator.getInstance().getUserVo(userddl.selectedData);
+				if(sysUser!=null)
+				{
+					teacherName.text=sysUser.NAME;
+					office.text=sysUser.OFFICE;
+					zc.text=sysUser.JobTitle1.length>0?sysUser.JobTitle1:sysUser.JobTitle2;
+				}
+				
+			}
+			
+			protected function button2_clickHandler(event:MouseEvent):void
+			{
+				// TODO Auto-generated method stub
+				locObj.voObj=new AbiTestVo(Helper.getGUID(),sysuser.curObj.ID,teacherName.text,office.text,zc.text,khlb.text,khsj.text,khnr.text,khjg.text,khpj.text,zyfzr.text,kpsj.text,bz.text);
+				CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.AbiTest_Insert));		
+			}
+			
+			protected function button3_clickHandler(event:MouseEvent):void
+			{
+				// TODO Auto-generated method stub
+				if(dg.selectedItem!=null)
+				{
+					locObj.voObj=new AbiTestVo(dg.selectedItem.ID,"","","","","","","","","","","","");
+					CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.AbiTest_Delete));					}
+				else
+				{
+					Helper.showAlert("请先选中对应数据行");
+				}
+			}
+			
+			protected function button4_clickHandler(event:MouseEvent):void
+			{
+				// TODO Auto-generated method stub
+				if(dg.selectedItem!=null)
+				{
+					locObj.voObj=new AbiTestVo(dg.selectedItem.ID,"",teacherName.text,office.text,zc.text,khlb.text,khsj.text,khnr.text,khjg.text,khpj.text,zyfzr.text,kpsj.text,bz.text);
+					CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.AbiTest_Update));					}
+				else
+				{
+					Helper.showAlert("请先选中对应数据行");
+				}
+			}
+			
+			protected function button5_clickHandler(event:MouseEvent):void
+			{
+				// TODO Auto-generated method stub
+				if(dg.selectedItem!=null)
+				{
+					locObj.wordname="QR15-06专业技术人员能力考核表.doc";
+					locObj.filename=Helper.getGUID();
+					locObj.voObj=new AbiTestVo(dg.selectedItem.ID,"","","","","","","","","","","","");
+					CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.AbiTest_MackWord));
+				}
+				else
+				{
+					Helper.showAlert("请先选中对应数据行");
+				}
+			}
+			
+			protected function group1_creationCompleteHandler(event:FlexEvent):void
+			{
+				// TODO Auto-generated method stub
+				locObj.voObj=new AbiTestVo("",sysuser.curObj.ID,"","","","","","","","","","","");
+				CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.AbiTest_GetAll));
+			}
+			
+		]]>
+	</fx:Script>
+	<fx:Declarations>
+		<!-- 将非可视元素（例如服务、值对象）放在此处 -->
+	</fx:Declarations>
+	<s:Label x="10" y="10" color="#0A37FA" fontSize="20" fontWeight="bold" text="能力考评"/>
+	<s:Label x="19" y="368" text="考核类别："/>
+	<s:Label x="23" y="330" text="姓        名："/>
+	<s:Label x="360" y="330" text="科室："/>
+	<s:Button x="552" y="519" label="新增" click="button2_clickHandler(event)"/>
+	<s:Button x="712" y="519" label="删除" click="button3_clickHandler(event)"/>
+	<s:Button x="634" y="519" label="修改" click="button4_clickHandler(event)"/>
+	<s:Button x="714" y="11" label="打印" click="button5_clickHandler(event)"/>
+	<tool:UserDdl  x="98" auth="" allEnable="true" y="326" id="userddl" change="userddl_changeHandler(event)"/>
+	<s:TextInput id="teacherName" x="224" y="325" width="111" text="{dg.selectedItem.Name}"/>
+	<s:TextInput id="office" x="407" y="325" width="105" text="{dg.selectedItem.Office}"/>
+	<s:Label x="543" y="330" text="职      称："/>
+	<s:TextInput id="zc" x="620" y="325" width="168" text="{dg.selectedItem.ZC}"/>
+	<s:TextInput id="khlb" x="98" y="361" text="{dg.selectedItem.TestType}"/>
+	<s:TextInput id="zyfzr" x="338" y="360" width="174" text="{dg.selectedItem.TestPerson}"/>
+	<s:Label x="251" y="368" text="考评负责人："/>
+	<s:Label x="19" y="408" text="考核时间："/>
+	<tool:DateZh id="kpsj" x="619" y="362" width="149" text="{dg.selectedItem.KPTime}"/>
+	<s:Label x="264" y="408" text="考核结果："/>
+	<s:Label x="360" y="330" text="科室："/>
+	<s:Label x="543" y="330" text="职      称："/>
+	<s:TextInput id="khjg" x="338" y="402" width="174" text="{dg.selectedItem.TestJG}"/>
+	<s:Label x="537" y="368" text="考评时间："/>
+	<tool:DateZh id="khsj" x="97" y="398" width="149" text="{dg.selectedItem.TestTime}"/>
+	<s:TextInput id="khpj" x="620" y="402" width="165" text="{dg.selectedItem.TestPJ}" />
+	<s:Label x="542" y="408" text="考核评价："/>
+	<s:TextArea id="khnr" x="98" y="441" width="687" height="25" text="{dg.selectedItem.TestText}"/>
+	<s:TextArea id="bz" x="98" y="480" width="687" height="25" text="{dg.selectedItem.Remack}"/>
+	<s:Label x="19" y="487" text="备注："/>
+	<s:Label x="19" y="448" text="考核内容："/>
+	<s:DataGrid id="dg"  x="17" y="38" width="767" height="279" dataProvider="{locObj.listObj}" requestedRowCount="4">
+		<s:columns>
+			<s:ArrayList>
+				<s:GridColumn dataField="Name" headerText="姓名"></s:GridColumn>
+				<s:GridColumn dataField="TestType" headerText="考核类别"></s:GridColumn>
+				<s:GridColumn dataField="TestTime" headerText="考核时间"></s:GridColumn>
+				<s:GridColumn dataField="TestPerson" headerText="考评负责人"></s:GridColumn>
+				<s:GridColumn dataField="KPTime" headerText="考评时间"></s:GridColumn>
+			</s:ArrayList>
+		</s:columns>
+	</s:DataGrid>
+</s:Group>

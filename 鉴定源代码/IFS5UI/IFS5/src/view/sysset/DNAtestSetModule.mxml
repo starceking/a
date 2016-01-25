@@ -1,0 +1,606 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Module xmlns:fx="http://ns.adobe.com/mxml/2009"
+		  xmlns:s="library://ns.adobe.com/flex/spark"
+		  xmlns:mx="library://ns.adobe.com/flex/mx"
+		  xmlns:tool="view.tool.*"
+		  width="953" height="598" fontSize="14" creationComplete="module1_creationCompleteHandler(event)">
+	<fx:Declarations>
+		<!-- 将非可视元素（例如服务、值对象）放在此处 -->
+	</fx:Declarations>
+	<fx:Script>
+		<![CDATA[
+			import com.adobe.cairngorm.control.CairngormEventDispatcher;
+			
+			import control.*;
+			
+			import locator.DictLocator;
+			import locator.MenuLocator;
+			
+			import mx.collections.ArrayList;
+			import mx.events.FlexEvent;
+			
+			import spark.components.CheckBox;
+			import spark.events.IndexChangeEvent;
+			
+			private var dictName:String="";
+			
+			protected function module1_creationCompleteHandler(event:FlexEvent):void
+			{
+				//页面加载
+				MenuLocator.getInstance().changeMenu(menuGp);
+				HG00.removeElement(HG02);
+				tiqu_changeHandler(null);
+			}
+			
+			protected function dict_changeHandler(event:Event):void
+			{
+				//提取设置 方法选择
+				if((event.currentTarget as RadioButton).label=="提取方法")
+				{
+					HG00.removeElement(HG02);
+					HG00.addElement(HG01);
+					tiqu_changeHandler(null);	
+				}
+				else if((event.currentTarget as RadioButton).label=="纯化方法")
+				{
+					HG00.removeElement(HG01);
+					HG00.addElement(HG02);
+					chunhua_changeHandler(null);
+				}
+			}
+			
+			protected function addDictBtn_clickHandler(event:MouseEvent):void
+			{
+				//提取设置 保存
+				var locObj:DictLocator=DictLocator.getInstance();
+				if(rb01.selected==true)
+				{
+					locObj.dictdictName="提取方法默认设置";
+					locObj.itemitemName=(tiqu.selectedData+"@")+
+						(lxj.getSelectedItems()==""?"":"提取离心机|"+lxj.getSelectedItems()+"￥")+
+						(yyq.getSelectedItems()==""?"":"移液器|"+yyq.getSelectedItems()+"￥")+
+						(jry.getSelectedItems()==""?"":"加热仪|"+jry.getSelectedItems()+"￥")+
+						(hwhyy.getSelectedItems()==""?"":"恒温混匀仪|"+hwhyy.getSelectedItems()+"￥")+
+						(xwhhq.getSelectedItems()==""?"":"提取漩涡混合器|"+xwhhq.getSelectedItems()+"￥")+
+						(sy.getSelectedItems()==""?"":"水浴|"+sy.getSelectedItems()+"￥")+
+						(xwj.getSelectedItems()==""?"":"显微镜|"+xwj.getSelectedItems()+"￥")+
+						(gzz.getSelectedItems()==""?"":"提取工作站|"+gzz.getSelectedItems());
+				}
+				else if(rb02.selected==true)
+				{
+					locObj.dictdictName="纯化方法默认设置";
+					locObj.itemitemName=(chunhua.selectedData+"@")+
+						(lxj.getSelectedItems()==""?"":"提取离心机|"+lxj.getSelectedItems()+"￥")+
+						(yyq.getSelectedItems()==""?"":"移液器|"+yyq.getSelectedItems()+"￥")+
+						(jry.getSelectedItems()==""?"":"加热仪|"+jry.getSelectedItems()+"￥")+
+						(hwhyy.getSelectedItems()==""?"":"恒温混匀仪|"+hwhyy.getSelectedItems()+"￥")+
+						(xwhhq.getSelectedItems()==""?"":"提取漩涡混合器|"+xwhhq.getSelectedItems()+"￥")+
+						(sy.getSelectedItems()==""?"":"水浴|"+sy.getSelectedItems()+"￥")+
+						(xwj.getSelectedItems()==""?"":"显微镜|"+xwj.getSelectedItems()+"￥")+
+						(gzz.getSelectedItems()==""?"":"提取工作站|"+gzz.getSelectedItems());
+				}
+				
+				CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.DICTWS_SaveDNATestItem));
+			}
+			
+			protected function tiqu_changeHandler(event:IndexChangeEvent):void
+			{
+				//提取设置 提取方法 更换
+				TiquClear();		
+				
+				var list:ArrayList=DictLocator.getInstance().getItem("提取方法默认设置");
+				
+				for(var i:int=0;i<list.length;i++)
+				{
+					var Item:String=list.getItemAt(i).label;
+					var ff:Array=Item.split("@");
+					
+					if(ff[0]==tiqu.selectedData)
+					{
+						var yq:Array=ff[1].split("￥");
+						
+						for(var j:int=0;j<yq.length;j++)
+						{
+							var mc:Array=yq[j].split("|");
+							
+							if(mc[0]=="提取离心机")CheckBoxSet(lxj,"提取离心机",mc);
+							else if(mc[0]=="移液器")CheckBoxSet(yyq,"移液器",mc);
+							else if(mc[0]=="加热仪")CheckBoxSet(jry,"加热仪",mc);
+							else if(mc[0]=="恒温混匀仪")CheckBoxSet(hwhyy,"恒温混匀仪",mc);
+							else if(mc[0]=="提取漩涡混合器")CheckBoxSet(xwhhq,"提取漩涡混合器",mc);
+							else if(mc[0]=="水浴")CheckBoxSet(sy,"水浴",mc);
+							else if(mc[0]=="显微镜")CheckBoxSet(xwj,"显微镜",mc);
+							else if(mc[0]=="提取工作站")CheckBoxSet(gzz,"提取工作站",mc);							
+						}
+					}	
+				}
+			}
+			protected function chunhua_changeHandler(event:IndexChangeEvent):void
+			{
+				//提取设置 纯化方法 更换
+				TiquClear();		
+				
+				var list:ArrayList=DictLocator.getInstance().getItem("纯化方法默认设置");
+				
+				for(var i:int=0;i<list.length;i++)
+				{
+					var Item:String=list.getItemAt(i).label;
+					var ff:Array=Item.split("@");
+					
+					if(ff[0]==chunhua.selectedData)
+					{
+						var yq:Array=ff[1].split("￥");
+						
+						for(var j:int=0;j<yq.length;j++)
+						{
+							var mc:Array=yq[j].split("|");
+							
+							if(mc[0]=="提取离心机")CheckBoxSet(lxj,"提取离心机",mc);
+							else if(mc[0]=="移液器")CheckBoxSet(yyq,"移液器",mc);
+							else if(mc[0]=="加热仪")CheckBoxSet(jry,"加热仪",mc);
+							else if(mc[0]=="恒温混匀仪")CheckBoxSet(hwhyy,"恒温混匀仪",mc);
+							else if(mc[0]=="提取漩涡混合器")CheckBoxSet(xwhhq,"提取漩涡混合器",mc);
+							else if(mc[0]=="水浴")CheckBoxSet(sy,"水浴",mc);
+							else if(mc[0]=="显微镜")CheckBoxSet(xwj,"显微镜",mc);
+							else if(mc[0]=="提取工作站")CheckBoxSet(gzz,"提取工作站",mc);							
+						}
+					}
+				}
+			}
+			
+			protected function kzAdd_clickHandler(event:MouseEvent):void
+			{
+				//扩增设置 保存
+				var locObj:DictLocator=DictLocator.getInstance();
+				
+				locObj.dictdictName="扩增默认设置";
+				locObj.itemitemName=(shijihe1.selectedData+"@")+
+					(kzy.getSelectedItems()==""?"":"扩增仪|"+kzy.getSelectedItems()+"￥")+
+					(kzlxj.getSelectedItems()==""?"":"扩增离心机|"+kzlxj.getSelectedItems()+"￥")+
+					(kzxwhhq.getSelectedItems()==""?"":"扩增漩涡混合器|"+kzxwhhq.getSelectedItems()+"￥")+
+					(kzyyq.getSelectedItems()==""?"":"移液器|"+kzyyq.getSelectedItems()+"￥")+
+					(cjt.getSelectedItems()==""?"":"超净台|"+cjt.getSelectedItems()+"￥")+
+					(kzgzz.getSelectedItems()==""?"":"扩增工作站|"+kzgzz.getSelectedItems()+"￥")+
+					(zkyb.getSelectedItems()==""?"":"质控样本|"+zkyb.getSelectedItems()+"￥")+
+					(sjhph.text==""?"":"试剂盒批号|"+sjhph.text+"￥")+
+					(kztx.text==""?"":"扩增体系|"+kztx.text+"￥")+
+					(kzmb.text==""?"":"模板|"+kzmb.text+"￥")+
+					(xhs.text==""?"":"循环数|"+xhs.text+"￥")+
+					(hjwd.text==""?"":"环境温度|"+hjwd.text+"￥")+
+					(hjsd.text==""?"":"环境湿度|"+hjsd.text);
+				
+				CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.DICTWS_SaveDNATestItem));
+				
+			}
+			
+			protected function dyAdd_clickHandler(event:MouseEvent):void
+			{
+				//电泳设置 保存
+				var locObj:DictLocator=DictLocator.getInstance();
+				
+				locObj.dictdictName="电泳默认设置";
+				locObj.itemitemName=(shijihe2.selectedData+"@")+
+					(dyy.getSelectedItems()==""?"":"电泳仪|"+dyy.getSelectedItems()+"￥")+
+					(dylxj.getSelectedItems()==""?"":"检测离心机|"+dylxj.getSelectedItems()+"￥")+
+					(dyjry.getSelectedItems()==""?"":"加热仪|"+dyjry.getSelectedItems()+"￥")+
+					(dyxwhhq.getSelectedItems()==""?"":"检测漩涡混合器|"+dyxwhhq.getSelectedItems()+"￥")+
+					(dyyyq.getSelectedItems()==""?"":"移液器|"+dyyyq.getSelectedItems()+"￥")+
+					(zbj.getSelectedItems()==""?"":"制冰机|"+zbj.getSelectedItems()+"￥")+
+					(dycjt.getSelectedItems()==""?"":"超净台|"+dycjt.getSelectedItems()+"￥")+
+					(dygzz.getSelectedItems()==""?"":"电泳工作站|"+dygzz.getSelectedItems()+"￥")+
+					(nb.getSelectedItems()==""?"":"内标|"+nb.getSelectedItems()+"￥")+
+					(nbl.text==""?"":"内标量|"+nbl.text+"￥")+
+					(bxrj.getSelectedItems()==""?"":"变性溶剂|"+bxrj.getSelectedItems()+"￥")+
+					(cwl.text==""?"":"产物量|"+cwl.text+"￥")+
+					(rjl.text==""?"":"溶剂量|"+rjl.text+"￥")+
+					(jy.text==""?"":"胶液|"+jy.text+"￥")+
+					(jyph.text==""?"":"胶液批号|"+jyph.text+"￥")+
+					(ydydl.text==""?"":"预电泳电流|"+ydydl.text+"￥")+
+					(dydl.text==""?"":"电泳电流|"+dydl.text+"￥")+
+					(dywd.text==""?"":"环境温度|"+dywd.text+"￥")+
+					(dysd.text==""?"":"环境湿度|"+dysd.text);
+				
+				CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.DICTWS_SaveDNATestItem));
+			}
+			
+			protected function shijihe1_changeHandler(event:IndexChangeEvent):void
+			{
+				//扩增设置 试剂盒 更换	
+				KuoZengClear();		
+				
+				var list:ArrayList=DictLocator.getInstance().getItem("扩增默认设置");
+				
+				for(var i:int=0;i<list.length;i++)
+				{
+					var Item:String=list.getItemAt(i).label;
+					var ff:Array=Item.split("@");
+					
+					if(ff[0]==shijihe1.selectedData)
+					{
+						var yq:Array=ff[1].split("￥");
+						
+						for(var j:int=0;j<yq.length;j++)
+						{
+							var mc:Array=yq[j].split("|");
+							
+							if(mc[0]=="扩增仪")CheckBoxSet(kzy,"扩增仪",mc);
+							else if(mc[0]=="扩增离心机")CheckBoxSet(kzlxj,"扩增离心机",mc);
+							else if(mc[0]=="扩增漩涡混合器")CheckBoxSet(kzxwhhq,"扩增漩涡混合器",mc);
+							else if(mc[0]=="移液器")CheckBoxSet(kzyyq,"移液器",mc);
+							else if(mc[0]=="超净台")CheckBoxSet(cjt,"超净台",mc);
+							else if(mc[0]=="扩增工作站")CheckBoxSet(kzgzz,"扩增工作站",mc);
+							else if(mc[0]=="质控样本")CheckBoxSet(zkyb,"质控样本",mc);
+							else if(mc[0]=="试剂盒批号")sjhph.text=mc[1];
+							else if(mc[0]=="扩增体系")kztx.text=mc[1];
+							else if(mc[0]=="模板")kzmb.text=mc[1];
+							else if(mc[0]=="循环数")xhs.text=mc[1];
+							else if(mc[0]=="环境温度")hjwd.text=mc[1];
+							else if(mc[0]=="环境湿度")hjsd.text=mc[1];
+						}
+					}
+				}
+			}
+			
+			protected function shijihe2_changeHandler(event:IndexChangeEvent):void
+			{
+				//电泳设置 试剂盒 更换		
+				DianYongClear();		
+				
+				var list:ArrayList=DictLocator.getInstance().getItem("电泳默认设置");
+				
+				for(var i:int=0;i<list.length;i++)
+				{
+					var Item:String=list.getItemAt(i).label;
+					var ff:Array=Item.split("@");
+					
+					if(ff[0]==shijihe2.selectedData)
+					{
+						var yq:Array=ff[1].split("￥");
+						
+						for(var j:int=0;j<yq.length;j++)
+						{
+							var mc:Array=yq[j].split("|");
+							
+							if(mc[0]=="电泳仪")CheckBoxSet(dyy,"电泳仪",mc);
+							else if(mc[0]=="检测离心机")CheckBoxSet(dylxj,"检测离心机",mc);
+							else if(mc[0]=="加热仪")CheckBoxSet(dyjry,"加热仪",mc);
+							else if(mc[0]=="检测漩涡混合器")CheckBoxSet(dyxwhhq,"检测漩涡混合器",mc);
+							else if(mc[0]=="移液器")CheckBoxSet(dyyyq,"移液器",mc);
+							else if(mc[0]=="制冰机")CheckBoxSet(zbj,"制冰机",mc);
+							else if(mc[0]=="超净台")CheckBoxSet(dycjt,"超净台",mc);
+							else if(mc[0]=="电泳工作站")CheckBoxSet(dygzz,"电泳工作站",mc);
+							else if(mc[0]=="内标")CheckBoxSet(nb,"内标",mc);
+							else if(mc[0]=="变性溶剂")CheckBoxSet(bxrj,"变性溶剂",mc);
+							else if(mc[0]=="内标量")nbl.text=mc[1];
+							else if(mc[0]=="产物量")cwl.text=mc[1];
+							else if(mc[0]=="溶剂量")rjl.text=mc[1];
+							else if(mc[0]=="胶液")jy.text=mc[1];
+							else if(mc[0]=="胶液批号")jyph.text=mc[1];
+							else if(mc[0]=="预电泳电流")ydydl.text=mc[1];
+							else if(mc[0]=="电泳电流")dydl.text=mc[1];
+							else if(mc[0]=="环境温度")dywd.text=mc[1];
+							else if(mc[0]=="环境湿度")dysd.text=mc[1];
+						}
+					}
+				}
+			}
+
+			private function CheckBoxSet(id:DictCgp,Item:String,mc:Array):void
+			{
+				id.removeAllElements();
+				var yqlist:ArrayList=DictLocator.getInstance().getItem(Item);
+				
+				for(var k:int=0;k<yqlist.length;k++)
+				{
+					var cb:CheckBox=new CheckBox();
+					cb.label=yqlist.getItemAt(k).label;
+					if(cb.label=="")continue;
+					if(mc.length>1)cb.selected=(mc[1].search(cb.label+"，")>=0);
+					id.addElement(cb);
+				}
+			}
+			private function CheckBoxClear(id:DictCgp,Item:String):void
+			{
+				id.removeAllElements();
+				var yqlist:ArrayList=DictLocator.getInstance().getItem(Item);
+				
+				for(var k:int=0;k<yqlist.length;k++)
+				{
+					var cb:CheckBox=new CheckBox();
+					cb.label=yqlist.getItemAt(k).label;
+					if(cb.label=="")continue;
+					id.addElement(cb);
+				}
+			}
+			private function TiquClear():void
+			{
+				//提取设置 清空
+				CheckBoxClear(lxj,"提取离心机");
+				CheckBoxClear(yyq,"移液器");
+				CheckBoxClear(jry,"加热仪");
+				CheckBoxClear(hwhyy,"恒温混匀仪");
+				CheckBoxClear(xwhhq,"提取漩涡混合器");
+				CheckBoxClear(sy,"水浴");
+				CheckBoxClear(xwj,"显微镜");
+				CheckBoxClear(gzz,"提取工作站");	
+			}
+			
+			private function KuoZengClear():void
+			{
+				//扩增设置 清空
+				CheckBoxClear(kzy,"扩增仪");
+				CheckBoxClear(kzlxj,"扩增离心机");
+				CheckBoxClear(kzxwhhq,"扩增漩涡混合器");
+				CheckBoxClear(kzyyq,"移液器");
+				CheckBoxClear(cjt,"超净台");
+				CheckBoxClear(kzgzz,"扩增工作站");
+				CheckBoxClear(zkyb,"质控样本");
+				sjhph.text="";
+				kztx.text="";
+				kzmb.text="";
+				xhs.text="";
+				hjwd.text="";
+				hjsd.text="";
+			}
+			
+			private function DianYongClear():void
+			{
+				//电泳设置 清空
+				CheckBoxClear(dyy,"电泳仪");
+				CheckBoxClear(dylxj,"检测离心机");
+				CheckBoxClear(dyjry,"加热仪");
+				CheckBoxClear(dyxwhhq,"检测漩涡混合器");
+				CheckBoxClear(dyyyq,"移液器");
+				CheckBoxClear(zbj,"制冰机");
+				CheckBoxClear(dycjt,"超净台");
+				CheckBoxClear(dygzz,"电泳工作站");
+				CheckBoxClear(nb,"内标");
+				CheckBoxClear(bxrj,"变性溶剂");
+				nbl.text="";
+				cwl.text="";
+				rjl.text="";
+				jy.text="";
+				jyph.text="";
+				ydydl.text="";
+				dydl.text="";
+				dywd.text="";
+				dysd.text="";
+			}
+
+		]]>
+	</fx:Script>
+	
+	<s:Panel  width="953" height="598">
+		<s:HGroup id="menuGp" x="10" y="-27"/>	
+		<mx:TabNavigator id="tn" left="10" right="10" top="10" bottom="10">
+			<s:NavigatorContent width="100%" height="100%" label="提取设置">
+				<s:VGroup id="VG00" left="10" right="10" top="10" bottom="10" gap="10">
+					<s:HGroup width="100%" verticalAlign="middle">
+						<s:Label text="检验方法："/>
+						<s:RadioButton id="rb01" label="提取方法" change="dict_changeHandler(event)" selected="true"/>
+						<s:RadioButton id="rb02" label="纯化方法" change="dict_changeHandler(event)"/>
+					</s:HGroup>
+					<s:VGroup id="VG01" width="100%" height="100%" gap="10">	
+						<s:HGroup id="HG00" width="100%" gap="10">
+							<s:HGroup id="HG01" verticalAlign="middle">
+								<s:Label text="提取方法："/>
+								<tool:DictDdl id="tiqu" width="242" dictName="提取方法" change="tiqu_changeHandler(event)"/>	
+							</s:HGroup>
+							<s:HGroup id="HG02" verticalAlign="middle">
+								<s:Label text="纯化方法："/>
+								<tool:DictDdl id="chunhua" width="242" dictName="纯化方法" change="chunhua_changeHandler(event)" />
+							</s:HGroup>
+						</s:HGroup>
+						<s:VGroup width="406" height="246" gap="10">
+							<s:HGroup width="200" verticalAlign="middle">
+								<s:Label text="离   心   机 ："/>
+								<tool:DictCgp id="lxj" dictName="提取离心机">
+								</tool:DictCgp>
+							</s:HGroup>
+							<s:HGroup width="200" verticalAlign="middle">
+								<s:Label text="移   液   器 ："/>
+								<tool:DictCgp id="yyq" dictName="移液器">
+								</tool:DictCgp>
+							</s:HGroup>
+							<s:HGroup width="200" verticalAlign="middle">
+								<s:Label text="加   热   仪 ："/>
+								<tool:DictCgp id="jry" dictName="加热仪">
+								</tool:DictCgp>
+							</s:HGroup>
+							<s:HGroup width="200" verticalAlign="middle">
+								<s:Label text="恒温混匀仪："/>
+								<tool:DictCgp id="hwhyy" dictName="恒温混匀仪">
+								</tool:DictCgp>
+							</s:HGroup>
+							<s:HGroup width="200" verticalAlign="middle">
+								<s:Label text="漩涡混合器："/>
+								<tool:DictCgp id="xwhhq" dictName="提取漩涡混合器">
+								</tool:DictCgp>
+							</s:HGroup>
+							<s:HGroup width="200" verticalAlign="middle">
+								<s:Label text="水 浴/干 浴："/>
+								<tool:DictCgp id="sy" dictName="水浴">
+								</tool:DictCgp>
+							</s:HGroup>
+							<s:HGroup width="200" verticalAlign="middle">
+								<s:Label text="显   微   镜 ："/>
+								<tool:DictCgp id="xwj" dictName="显微镜">
+								</tool:DictCgp>
+							</s:HGroup>
+							<s:HGroup width="200" verticalAlign="middle">
+								<s:Label text="工   作    站："/>
+								<tool:DictCgp id="gzz" dictName="提取工作站">
+								</tool:DictCgp>
+							</s:HGroup>
+						</s:VGroup>
+						<s:HGroup width="322" horizontalAlign="right">
+							<s:Button label="保存设置" click="addDictBtn_clickHandler(event)"/>
+						</s:HGroup>
+					</s:VGroup>
+				</s:VGroup>
+			</s:NavigatorContent>
+			<s:NavigatorContent width="100%" height="100%" label="扩增设置" show="shijihe1_changeHandler(null)">
+				<s:VGroup left="10" right="10" top="10" bottom="10">
+					<s:HGroup width="100%" verticalAlign="middle">
+						<s:Label text="试剂盒："/>
+						<tool:DictDdl id="shijihe1" width="242" dictName="试剂盒" change="shijihe1_changeHandler(event)"/>
+					</s:HGroup>
+					<s:VGroup width="100%" height="100%">
+						<s:HGroup>
+							<s:Label width="85" paddingTop="6" text="扩   增   仪 ："/>
+							<tool:DictCgp id="kzy" dictName="扩增仪">
+							</tool:DictCgp>
+						</s:HGroup>
+						<s:HGroup>
+							<s:Label width="85" paddingTop="6" text="离   心   机 ："/>
+							<tool:DictCgp id="kzlxj" dictName="扩增离心机">
+							</tool:DictCgp>
+						</s:HGroup>
+						<s:HGroup>
+							<s:Label width="85" paddingTop="6" text="漩涡混合器："/>
+							<tool:DictCgp id="kzxwhhq" dictName="扩增漩涡混合器">
+							</tool:DictCgp>
+						</s:HGroup>
+						<s:HGroup>
+							<s:Label width="85" paddingTop="6" text="移   液   器 ："/>
+							<tool:DictCgp id="kzyyq" dictName="移液器">
+							</tool:DictCgp>
+						</s:HGroup>
+						<s:HGroup>
+							<s:Label width="85" paddingTop="6" text="超   净   台 ："/>
+							<tool:DictCgp id="cjt" dictName="超净台">
+							</tool:DictCgp>
+						</s:HGroup>
+						<s:HGroup>
+							<s:Label width="85" paddingTop="6" text="工   作   站 ："/>
+							<tool:DictCgp id="kzgzz" dictName="扩增工作站">
+							</tool:DictCgp>
+						</s:HGroup>
+						<s:HGroup>
+							<s:Label paddingTop="6" text="质 控 样 本："/>
+							<tool:DictCgp id="zkyb" dictName="质控样本">
+							</tool:DictCgp>
+						</s:HGroup>
+						<s:HGroup>
+							<s:Label width="85" paddingTop="6" text="试剂盒批号："/>
+							<s:TextInput id="sjhph"/>
+						</s:HGroup>
+						<s:HGroup>
+							<s:Label width="85" paddingTop="6" text="扩 增 体 系："/>
+							<s:TextInput id="kztx"/>
+						</s:HGroup>
+						<s:HGroup>
+							<s:Label width="85" paddingTop="6" text="模          板："/>
+							<s:TextInput id="kzmb"/>
+						</s:HGroup>
+						<s:HGroup>
+							<s:Label width="85" paddingTop="6" text="循   环   数："/>
+							<s:TextInput id="xhs"/>
+						</s:HGroup>
+						<s:HGroup>
+							<s:Label width="85" paddingTop="6" text="环 境 温 度："/>
+							<s:TextInput id="hjwd"/>
+						</s:HGroup>
+						<s:HGroup>
+							<s:Label width="85" paddingTop="6" text="环 境 湿 度："/>
+							<s:TextInput id="hjsd"/>
+						</s:HGroup>
+						<s:HGroup width="364" horizontalAlign="right">
+							<s:Button label="保存扩增设置" click="kzAdd_clickHandler(event)"/>
+						</s:HGroup>
+					</s:VGroup>
+				</s:VGroup>
+			</s:NavigatorContent>
+			<s:NavigatorContent width="100%" height="100%" label="电泳设置" show="shijihe2_changeHandler(null)">
+				<s:VGroup left="10" right="10" top="10" bottom="10">
+					<s:HGroup width="100%" verticalAlign="middle">
+						<s:Label text="试剂盒："/>
+						<tool:DictDdl id="shijihe2" width="242" dictName="试剂盒" change="shijihe2_changeHandler(event)"/>
+					</s:HGroup>
+					<s:VGroup width="100%" height="100%">
+						<s:HGroup>
+							<s:Label width="110" paddingTop="6" text="电      泳      仪："/>
+							<tool:DictCgp id="dyy" dictName="电泳仪">
+							</tool:DictCgp>
+						</s:HGroup>
+						<s:HGroup>
+							<s:Label width="110" paddingTop="6" text="离      心      机："/>
+							<tool:DictCgp id="dylxj" dictName="检测离心机">
+							</tool:DictCgp>
+						</s:HGroup>
+						<s:HGroup>
+							<s:Label width="110" paddingTop="6" text="加      热      仪："/>
+							<tool:DictCgp id="dyjry" dictName="加热仪">
+							</tool:DictCgp>
+						</s:HGroup>
+						<s:HGroup>
+							<s:Label width="110" paddingTop="6" text="漩 涡 混 合 器 ："/>
+							<tool:DictCgp id="dyxwhhq" dictName="检测漩涡混合器">
+							</tool:DictCgp>
+						</s:HGroup>
+						<s:HGroup>
+							<s:Label width="110" paddingTop="6" text="移      液      器："/>
+							<tool:DictCgp id="dyyyq" dictName="移液器">
+							</tool:DictCgp>
+						</s:HGroup>
+						<s:HGroup>
+							<s:Label width="110" paddingTop="6" text="制      冰      机："/>
+							<tool:DictCgp id="zbj" dictName="制冰机">
+							</tool:DictCgp>
+						</s:HGroup>
+						<s:HGroup>
+							<s:Label width="110" paddingTop="6" text="超      净      台："/>
+							<tool:DictCgp id="dycjt" dictName="超净台">
+							</tool:DictCgp>
+						</s:HGroup>
+						<s:HGroup>
+							<s:Label width="110" paddingTop="6" text="工      作      站："/>
+							<tool:DictCgp id="dygzz" dictName="电泳工作站">
+							</tool:DictCgp>
+						</s:HGroup>
+						<s:HGroup>
+							<s:Label width="110" paddingTop="6" text="内                标："/>
+							<tool:DictCgp id="nb" dictName="内标"/>
+						</s:HGroup>
+						<s:HGroup>
+							<s:Label width="110" paddingTop="6" text="内      标      量："/>
+							<s:TextInput id="nbl"/>	
+						</s:HGroup>
+						<s:HGroup>
+							<s:Label width="110" paddingTop="6" text="变   性   溶   剂："/>
+							<tool:DictCgp id="bxrj" dictName="变性溶剂">
+							</tool:DictCgp>
+						</s:HGroup>
+						<s:HGroup>
+							<s:Label width="110" paddingTop="6" text="产      物      量："/>
+							<s:TextInput id="cwl"/>
+							<s:Label paddingTop="6" text="溶    剂   量 ："/>
+							<s:TextInput id="rjl" />
+						</s:HGroup>
+						<s:HGroup>
+							<s:Label width="110" paddingTop="6" text="胶                液："/>
+							<s:TextInput id="jy" text="POP-4"/>
+							<s:Label paddingTop="6" text="胶 液 批 号 ："/>
+							<s:TextInput id="jyph" />
+						</s:HGroup>
+						<s:HGroup>
+							<s:Label width="110" paddingTop="6" text="预 电 泳 电 流 ："/>
+							<s:TextInput id="ydydl" />
+							<s:Label paddingTop="6" text="电 泳 电 流 ："/>
+							<s:TextInput id="dydl" />
+						</s:HGroup>
+						<s:HGroup>
+							<s:Label width="110" paddingTop="6" text="环  境  温  度  ："/>
+							<s:TextInput id="dywd"/>
+							<s:Label paddingTop="6" text="环 境 湿 度 ："/>
+							<s:TextInput id="dysd"/>
+						</s:HGroup>
+						<s:HGroup width="512" horizontalAlign="right">
+							<s:Button label="保存电泳设置" click="dyAdd_clickHandler(event)"/>
+						</s:HGroup>
+					</s:VGroup>
+				</s:VGroup>
+			</s:NavigatorContent>
+		</mx:TabNavigator>
+	</s:Panel>
+</s:Module>

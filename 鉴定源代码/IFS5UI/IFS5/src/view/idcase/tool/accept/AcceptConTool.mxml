@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009"
+		 xmlns:s="library://ns.adobe.com/flex/spark"
+		 xmlns:mx="library://ns.adobe.com/flex/mx"
+		 width="813" height="256" fontSize="14">
+	<fx:Declarations>
+		<!-- 将非可视元素（例如服务、值对象）放在此处 -->
+	</fx:Declarations>
+	<fx:Script>
+		<![CDATA[
+			import locator.IdFlowLocator;
+			
+			import vo.IdFlowVo;
+
+			public var curObj:IdFlowVo=IdFlowLocator.getInstance().curObj;
+		]]>
+	</fx:Script>
+	<s:Label x="10" y="90" color="#000000" text="受理人员：" textDecoration="none"/>
+	<s:Label id="accer" x="88" y="90" color="#000000" text="{curObj.ACCEPTER_NAME}"/>
+	<s:Label x="276" y="90" color="#000000" text="受理时间："/>
+	<s:Label x="10" y="120" color="#000000" text="鉴  定  人：" textDecoration="none"/>
+	<s:Label x="10" y="60" color="#000000" text="受理年份：" textDecoration="none"/>
+	<s:Label x="276" y="120" color="#000000" text="认证认可："/>
+	<s:Label id="accLbl" x="10" y="199" color="#000000"
+			 text="{curObj.ID_STATUS=='不予受理'?'拒绝原因：':'受理意见：'}" textDecoration="none"/>
+	<s:TextArea id="remark" x="88" y="194" width="715" height="50" color="#000000" editable="false"
+				text="{curObj.ACC_REMARK}"/>
+	<s:Label id="accYear" x="88" y="60" color="#000000" text="{curObj.ACC_YEAR}"/>
+	<s:Label x="276" y="60" color="#000000" text="案件序号："/>
+	<s:Label id="accNo" x="354" y="60" color="#000000" text="{curObj.ACC_CASE_NO}"/>
+	<s:Label x="545" y="60" color="#000000" text="受理序号："/>
+	<s:Label id="accNo0" x="623" y="60" color="#000000" text="{curObj.ACC_NO}"/>
+	<s:Label x="545" y="90" color="#000000" text="计划完成："/>
+	<s:Label x="10" y="170" color="#000000" text="鉴定状态：" textDecoration="none"/>
+	<s:Label x="88" y="170" color="#000000" text="{curObj.ID_STATUS}"/>
+	<s:Label x="10" y="10" color="#0A37FA" fontSize="20" fontStyle="normal" fontWeight="normal"
+			 lineThrough="false" text="受理信息" textDecoration="none"/>
+	<s:Label x="88" y="120" color="#000000" text="{curObj.TESTER_NAME}"/>
+	<s:Label x="354" y="120" color="#000000" text="{curObj.RZRK}"/>
+	<s:Label x="354" y="90" color="#000000" text="{curObj.ACC_TIME}"/>
+	<s:Label x="623" y="90" color="#000000" text="{curObj.PLAN_DATE}"/>
+	<s:Label x="10" y="145" text="鉴定方法："/>
+	<s:Label x="88" y="145" text="{curObj.ID_Method}"/>
+</s:Group>

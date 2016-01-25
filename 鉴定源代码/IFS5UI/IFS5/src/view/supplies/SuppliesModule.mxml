@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Module xmlns:fx="http://ns.adobe.com/mxml/2009" 
+		  xmlns:s="library://ns.adobe.com/flex/spark" 
+		  xmlns:mx="library://ns.adobe.com/flex/mx" 
+		  xmlns:tool="view.tool.*"
+		  width="953" height="598" fontSize="14"
+		  creationComplete="MenuLocator.getInstance().changeMenu(menuGp);selectALL_clickHandler(event)">
+	<fx:Script>
+		<![CDATA[
+			import com.adobe.cairngorm.control.CairngormEventDispatcher;
+			
+			import control.*;
+			
+			import locator.MenuLocator;
+			import locator.SuppliesLocator;
+			
+			import mx.events.FlexEvent;
+			import mx.rpc.events.FaultEvent;
+			
+			import util.Helper;
+			
+			import vo.MenuVo;
+			import vo.SuppliesVo;
+			
+			protected function selectALL_clickHandler(event:FlexEvent):void
+			{
+				// TODO Auto-generated method stub
+				
+				CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.SUPPLIES_GetAll));
+			}
+			
+			protected function gd_doubleClickHandler(event:MouseEvent):void
+			{
+				// TODO Auto-generated method stub
+				if(gd.selectedItem!=null)
+				{
+					SuppliesLocator.getInstance().currObj =gd.selectedItem as SuppliesVo;
+					Helper.pushMenu("耗材管理详情","view/supplies/SuppliesInfoModule.swf");
+				}
+				
+			}
+			
+			protected function BtnDlete_clickHandler(event:MouseEvent):void
+			{
+				// TODO Auto-generated method stub
+				SuppliesLocator.getInstance().wsObj =gd.selectedItem as SuppliesVo ;
+				CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.SUPPLIES_Delete));
+				Helper.showAlert("删除成功！");
+				
+			}
+			
+			protected function BtnUpdate_clickHandler(event:MouseEvent):void
+			{
+				// TODO Auto-generated method stub
+				SuppliesLocator.getInstance().wsObj=new SuppliesVo(gd.selectedItem.ID,TextCpmc.text,TextBm.text,TextGg.text,TextCj.text,"",TextYt.text,TextBctj.text,TextBz.text,kcl.text,cfdd.text,yxq.text,bgr.text);
+				CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.SUPPLIES_Update));
+				Helper.showAlert("修改成功！");
+				
+			}
+			
+			protected function BtnAdd_clickHandler(event:MouseEvent):void
+			{
+				// TODO Auto-generated method stub
+				SuppliesLocator.getInstance().wsObj=new SuppliesVo(Helper.getGUID(),TextCpmc.text,TextBm.text,TextGg.text,TextCj.text,"",TextYt.text,TextBctj.text,TextBz.text,kcl.text,cfdd.text,yxq.text,bgr.text);
+				CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.SUPPLIES_Insert));
+				Helper.showAlert("新增成功！");
+			}
+			
+			protected function button1_clickHandler(event:MouseEvent):void
+			{
+				// TODO Auto-generated method stub
+				SuppliesLocator.getInstance().wordName="重要消耗品一览表.doc";
+				SuppliesLocator.getInstance().filename=Helper.getGUID();
+				CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.SUPPLIES_MackAllHC));
+				
+			}
+			
+		]]>
+	</fx:Script>
+	<fx:Declarations>
+		<!-- 将非可视元素（例如服务、值对象）放在此处 -->
+	</fx:Declarations>
+	<s:Panel width="953" height="598">
+		<s:HGroup id="menuGp" x="10" y="-27"/>
+		<s:DataGrid id="gd" x="10" y="10" width="933" height="299" doubleClickEnabled="true" doubleClick="gd_doubleClickHandler(event)" dataProvider="{SuppliesLocator.getInstance().listObj}">
+			<s:columns>
+				<s:ArrayList>
+					<s:GridColumn dataField="CPMC" headerText="产品名称"></s:GridColumn>
+					<s:GridColumn dataField="GG" headerText="规格"></s:GridColumn>
+					<s:GridColumn dataField="SCCJ" headerText="生产厂家"></s:GridColumn>
+					<s:GridColumn dataField="YT" headerText="用途"></s:GridColumn>
+					<s:GridColumn dataField="KCL" headerText="库存量"></s:GridColumn>
+				</s:ArrayList>
+			</s:columns>
+		</s:DataGrid>
+		<s:Label x="10" y="328" text="产品名称："/>
+		<s:TextInput id="TextCpmc" x="101" y="318" width="382" text="{gd.selectedItem.CPMC}"/>
+		<s:Label x="10" y="355" text="编       码："/>
+		<s:TextInput id="TextBm" x="101" y="347" width="382" text="{gd.selectedItem.BM}"/>
+		<s:Label x="11" y="385" text="规       格："/>
+		<s:TextInput id="TextGg" x="102" y="377" width="381" text="{gd.selectedItem.GG}"/>
+		<s:Label x="11" y="417" text="生产厂家："/>
+		<s:TextInput id="TextCj" x="102" y="407" width="381" text="{gd.selectedItem.SCCJ}"/>
+		<s:Label x="11" y="447" text="用       途："/>
+		<s:TextInput id="TextYt" x="102" y="437" width="381" text="{gd.selectedItem.YT}"/>
+		<s:Label x="491" y="327" text="保存条件：" />
+		<s:TextInput id="TextBctj" x="580" y="318" width="364" text="{gd.selectedItem.BCTJ}"/>
+		<s:Label x="11" y="477" text="备       注："/>
+		<s:TextArea id="TextBz" x="102" y="467" width="841" height="58"  text="{gd.selectedItem.BZ}"/>
+		<s:Button id="BtnAdd" x="711" y="533" label="添加" click="BtnAdd_clickHandler(event)"/>
+		<s:Button id="BtnUpdate" x="797" y="533" label="修改" click="BtnUpdate_clickHandler(event)" enabled="{gd.selectedItem !=null}"/>
+		<mx:LinkButton x="762" y="-26" width="180" label="打印耗材一览表" click="button1_clickHandler(event)" textDecoration="underline" color="blue"/>
+		<s:Label x="491" y="354" text="库  存  量：" />
+		<s:Label x="491" y="384" text="存放地点：" />
+		<s:Label x="489" y="415" text="有  效  期：" />
+		<s:TextInput id="kcl" x="580" y="348" width="364" restrict="0123456789"
+					 text="{gd.selectedItem.KCL}"/>
+		<s:TextInput id="cfdd" x="580" y="378" width="363" text="{gd.selectedItem.CFDD}"/>
+		<tool:DateZh id="yxq" x="580" y="408" width="363" text="{gd.selectedItem.YXQ}"/>
+		<s:Label x="489" y="443" text="保  管  人：" />
+		<s:TextInput id="bgr" x="580" y="438" width="363" text="{gd.selectedItem.BGR}"/>
+		<s:Button id="BtnDlete" x="873" y="534" label="删除" click="BtnDlete_clickHandler(event)" enabled="{gd.selectedItem !=null}"/>
+		
+	</s:Panel>
+</s:Module>

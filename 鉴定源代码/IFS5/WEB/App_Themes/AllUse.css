@@ -1,0 +1,266 @@
+﻿body
+{
+	margin-left: 0px;
+	margin-top: 0px;
+	margin-right: 0px;
+	margin-bottom: 0px;
+}
+a
+{
+	font-size: 10pt;
+	text-decoration: none;
+}
+a:hover
+{
+	text-decoration: underline;
+}
+/****************************************** framepage/center.aspx ****************************************/
+.img1
+{
+	border: 0px;
+	margin-top: 0px;
+	margin-left: 0px;
+}
+
+.navPoint
+{
+	color: white;
+	cursor: hand;
+	font-family: Webdings;
+	font-size: 9pt;
+}
+body
+{
+	margin-left: 0px;
+	margin-top: 0px;
+	margin-right: 0px;
+	margin-bottom: 0px;
+}
+.STYLE1
+{
+	font-size: 12px;
+	color: #FFFFFF;
+}
+.STYLE2
+{
+	font-size: 16px;
+}
+.STYLE3
+{
+	font-size: 12px;
+	color: #033d61;
+}
+.menu_title SPAN
+{
+	font-weight: bold;
+	left: 3px;
+	color: #ffffff;
+	position: relative;
+	top: 2px;
+}
+.menu_title2 SPAN
+{
+	font-weight: bold;
+	left: 3px;
+	color: #FFCC00;
+	position: relative;
+	top: 2px;
+}
+/*********************************************************************************************************/
+.divFont
+{
+	font-size: 9pt;
+	font-family: 微软雅黑;
+}
+.rightDivTitle
+{
+	background-image: url(                          '../image/new_r.jpg' );
+	background-repeat: repeat-x;
+	height: 25px;
+	font-size: smaller;
+	font-weight: bold;
+	color: White;
+	padding-top: 5px;
+	padding-left: 12px;
+	text-align: left;
+}
+.rightDivContent
+{
+	background-image: url(                          '../image/bks.gif' );
+	background-repeat: repeat;
+	padding-bottom: 5px;
+	font-size: 9pt;
+}
+.borderDiv
+{
+	border: 1px;
+	border-style: solid;
+	border-color: Gray;
+}
+.borderDiv2
+{
+	border: 1px;
+	border-style: solid;
+	border-color: #d0d0d0;
+}
+.leftDivTitle
+{
+	border: 0px;
+	border-bottom: 1px;
+	border-style: solid;
+	border-color: #d0d0d0;
+	height: 26px;
+	font-family: 宋体;
+	font-size: 12px;
+	font-weight: bold;
+}
+.leftDivBottom
+{
+	background-color: #ACD6FF;
+	height: 25px;
+	font-size: 12px;
+	color: Teal;
+	text-align: right;
+	padding-right: 6px;
+}
+/****************************DataList通用**************************************/
+.STYLE4
+{
+	color: #03515d;
+	font-size: 9pt;
+}
+.STYLE5
+{
+	color: Black;
+	font-size: 12px;
+}
+.tdRightBorderStyle
+{
+	border-right: 1px;
+	border-right-style: solid;
+	border-right-color: #ACD6FF;
+	vertical-align: middle;
+}
+.datalistHearderTable
+{
+	height: 22px;
+	width: 100%;
+	background-image: url(                      'tab/bg.gif' );
+	background-repeat: repeat;
+	border: 1px;
+	border-color: #ACD6FF;
+	border-style: solid;
+}
+.datalistBodyTable
+{
+	width: 100%;
+	border: 1px;
+	border-top: 0px;
+	border-color: #ACD6FF;
+	border-style: solid;
+	font-size: 10pt;
+	border-color: #ACD6FF;
+	font-family: 宋体;
+}
+.datalistBodyTable2
+{
+	width: 100%;
+	border: 1px;
+	border-top: 1px;
+	border-color: #ACD6FF;
+	border-style: solid;
+	font-size: 10pt;
+	border-color: #ACD6FF;
+	font-family: 宋体;
+}
+.datalistTextBox
+{
+	border: 1px;
+	border-style: solid;
+	font-size: 10pt;
+	border-color: #CECEFF;
+	font-family: 宋体;
+	background-color: Transparent;
+}
+.UpButton
+{
+	border: 1px solid;
+	font-size: 9pt;
+	width: 50px;
+	height: 19px;
+}
+.TableCss2
+{
+	font-weight: lighter;
+	font-family: "宋体";
+	font-size: 12px;
+	color: Black;
+	background-color: #ECF5FF;
+}
+/*************************************************/
+.FileUploadCss
+{
+	border-top-width: 1px;
+	padding-right: 1px;
+	padding-left: 1px;
+	cursor: hand; /*鼠标放在input上时的形状：hand手型/crosshair十字型/text移动到文本上的那种效果(I形)/wait沙漏/default默认效果/help问号/e-size向右的箭头/ne-resize向右上的箭头/n-resize向上的箭头/nw-resize向左上的箭头/w-resize向左的箭头/sw-resize向左下的箭头/s-resize向下的箭头/se-resize向右下的箭头/auto由系统自动给出效果*/
+	border-left-width: 1px;
+	font-size: 9pt;
+	border-left-color: #000000;
+	border-bottom-width: 1px;
+	border-bottom-color: #000000;
+	padding-bottom: 1px;
+	border-top-color: #000000;
+	padding-top: 1px;
+	border-right-width: 1px;
+	border-right-color: #000000;
+}
+
+
+.content
+{
+	width: 100%;
+	font-size: 12pt;
+	margin-top: 5px;
+}
+ol
+{
+	font: italic 1em Georgia, Times, serif;
+	color: #999999;
+}
+ol span
+{
+	font: normal .8em Arial, Helvetica, sans-serif;
+	color: #000000;
+}
+
+ul
+{
+	font: italic 1em Georgia, Times, serif;
+	color: #999999;
+}
+ul span
+{
+	font: normal .8em Arial, Helvetica, sans-serif;
+	color: #000000;
+}
+a img
+{
+	border: none;
+}
+.t6
+{
+	border: #FF0000 solid;
+	height: 0px;
+	color: red;
+	border-width: 0px 0px 1px;
+}
+.legends
+{
+	color: #333333;
+	font-weight: 800;
+	font-size: small;
+	background: #fff;
+	border: solid 0px;
+	padding: 3px 6px;
+}

@@ -1,0 +1,714 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<workbench progressCount="29" version="2.0">
+<workbenchAdvisor/>
+<window height="760" maximized="true" width="1036" x="0" y="0">
+<fastViewData fastViewLocation="1024"/>
+<perspectiveBar>
+<itemSize x="359"/>
+</perspectiveBar>
+<coolbarLayout locked="0">
+<coolItem id="group.file" itemType="typeGroupMarker"/>
+<coolItem id="org.eclipse.ui.workbench.file" itemType="typeToolBarContribution" x="155" y="22"/>
+<coolItem id="additions" itemType="typeGroupMarker"/>
+<coolItem id="org.eclipse.debug.ui.launchActionSet" itemType="typeToolBarContribution" x="206" y="22"/>
+<coolItem id="org.eclipse.search.searchActionSet" itemType="typeToolBarContribution" x="78" y="22"/>
+<coolItem id="org.eclipse.ui.edit.text.actionSet.presentation" itemType="typeToolBarContribution" x="84" y="22"/>
+<coolItem id="org.eclipse.wst.xml.ui.perspective.NewFileToolBar" itemType="typeToolBarContribution" x="-1" y="-1"/>
+<coolItem id="org.eclipse.wst.xml.ui.design.DesignToolBar" itemType="typeToolBarContribution" x="-1" y="-1"/>
+<coolItem id="group.nav" itemType="typeGroupMarker"/>
+<coolItem id="org.eclipse.ui.workbench.navigate" itemType="typeToolBarContribution" x="198" y="22"/>
+<coolItem id="group.editor" itemType="typeGroupMarker"/>
+<coolItem id="com.adobe.flexbuilder.editors.css.editors.CSSEditor" itemType="typePlaceholder" x="-1" y="-1"/>
+<coolItem id="org.eclipse.ui.DefaultTextEditor" itemType="typePlaceholder" x="-1" y="-1"/>
+<coolItem id="com.adobe.flexbuilder.editors.mxml.MXMLEditor" itemType="typeToolBarContribution" x="-1" y="-1"/>
+<coolItem id="com.adobe.flexbuilder.editors.actionscript.ActionScriptEditor" itemType="typeToolBarContribution" x="-1" y="-1"/>
+<coolItem id="group.help" itemType="typeGroupMarker"/>
+<coolItem id="org.eclipse.ui.workbench.help" itemType="typeToolBarContribution" x="-1" y="-1"/>
+</coolbarLayout>
+<page aggregateWorkingSetId="Aggregate for window 1347587806703" focus="true" label="工作空间 - Flash">
+<editors>
+<editorArea activeWorkbook="DefaultEditorWorkbook">
+<info part="DefaultEditorWorkbook">
+<folder appearance="1" expanded="2">
+<presentation id="org.eclipse.ui.presentations.WorkbenchPresentationFactory">
+<part id="0"/>
+<part id="1"/>
+<part id="2"/>
+<part id="3"/>
+<part id="4"/>
+<part id="5"/>
+<part id="6"/>
+<part id="7"/>
+<part id="8"/>
+<part id="9"/>
+<part id="10"/>
+<part id="11"/>
+<part id="12"/>
+<part id="13"/>
+<part id="14"/>
+<part id="15"/>
+<part id="16"/>
+<part id="17"/>
+<part id="18"/>
+<part id="19"/>
+</presentation>
+</folder>
+</info>
+</editorArea>
+<editor id="com.adobe.flexbuilder.editors.actionscript.ActionScriptEditor" name="Server.as" partName="Server.as" path="E:/HXC/Easytalk/LNIFS5DNA/IFS5UI/IFS5/src/util/Server.as" title="Server.as" tooltip="IFS5/src/util/Server.as" workbook="DefaultEditorWorkbook">
+<input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/IFS5/src/util/Server.as"/>
+<editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="0" selectionTopPixel="117"/>
+</editor>
+<editor id="com.adobe.flexbuilder.editors.mxml.MXMLEditor" name="TestDnaModule.mxml" partName="TestDnaModule.mxml" path="E:/HXC/Easytalk/LNIFS5DNA/IFS5UI/IFS5/src/view/idcase/info/test/TestDnaModule.mxml" title="TestDnaModule.mxml" tooltip="IFS5/src/view/idcase/info/test/TestDnaModule.mxml" workbook="DefaultEditorWorkbook">
+<input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/IFS5/src/view/idcase/info/test/TestDnaModule.mxml"/>
+</editor>
+<editor id="com.adobe.flexbuilder.editors.mxml.MXMLEditor" name="ConclusionTool.mxml" partName="ConclusionTool.mxml" path="E:/HXC/Easytalk/LNIFS5DNA/IFS5UI/IFS5/src/view/idcase/tool/conclusion/ConclusionTool.mxml" title="ConclusionTool.mxml" tooltip="IFS5/src/view/idcase/tool/conclusion/ConclusionTool.mxml" workbook="DefaultEditorWorkbook">
+<input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/IFS5/src/view/idcase/tool/conclusion/ConclusionTool.mxml"/>
+</editor>
+<editor id="com.adobe.flexbuilder.editors.mxml.MXMLEditor" name="ConclCbb.mxml" partName="ConclCbb.mxml" path="E:/HXC/Easytalk/LNIFS5DNA/IFS5UI/IFS5/src/view/tool/ConclCbb.mxml" title="ConclCbb.mxml" tooltip="IFS5/src/view/tool/ConclCbb.mxml" workbook="DefaultEditorWorkbook">
+<input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/IFS5/src/view/tool/ConclCbb.mxml"/>
+</editor>
+<editor id="com.adobe.flexbuilder.editors.mxml.MXMLEditor" name="IFS5.mxml" partName="IFS5.mxml" path="E:/HXC/Easytalk/LNIFS5DNA/IFS5UI/IFS5/src/IFS5.mxml" title="IFS5.mxml" tooltip="IFS5/src/IFS5.mxml" workbook="DefaultEditorWorkbook">
+<input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/IFS5/src/IFS5.mxml"/>
+</editor>
+<editor id="com.adobe.flexbuilder.editors.mxml.MXMLEditor" name="IdCaseTool.mxml" partName="IdCaseTool.mxml" path="E:/HXC/Easytalk/LNIFS5DNA/IFS5UI/IFS5/src/view/idcase/tool/idcase/IdCaseTool.mxml" title="IdCaseTool.mxml" tooltip="IFS5/src/view/idcase/tool/idcase/IdCaseTool.mxml" workbook="DefaultEditorWorkbook">
+<input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/IFS5/src/view/idcase/tool/idcase/IdCaseTool.mxml"/>
+</editor>
+<editor id="com.adobe.flexbuilder.editors.mxml.MXMLEditor" name="DictSetModule.mxml" partName="DictSetModule.mxml" path="E:/HXC/Easytalk/LNIFS5DNA/IFS5UI/IFS5/src/view/sysset/DictSetModule.mxml" title="DictSetModule.mxml" tooltip="IFS5/src/view/sysset/DictSetModule.mxml" workbook="DefaultEditorWorkbook">
+<input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/IFS5/src/view/sysset/DictSetModule.mxml"/>
+</editor>
+<editor id="com.adobe.flexbuilder.editors.mxml.MXMLEditor" name="ConInfoTool.mxml" partName="ConInfoTool.mxml" path="E:/HXC/Easytalk/LNIFS5DNA/IFS5UI/IFS5/src/view/idcase/tool/idcase/ConInfoTool.mxml" title="ConInfoTool.mxml" tooltip="IFS5/src/view/idcase/tool/idcase/ConInfoTool.mxml" workbook="DefaultEditorWorkbook">
+<input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/IFS5/src/view/idcase/tool/idcase/ConInfoTool.mxml"/>
+</editor>
+<editor id="com.adobe.flexbuilder.editors.mxml.MXMLEditor" name="NewConsignModule.mxml" partName="NewConsignModule.mxml" path="E:/HXC/Easytalk/LNIFS5DNA/IFS5UI/IFS5/src/view/idcase/query/task/NewConsignModule.mxml" title="NewConsignModule.mxml" tooltip="IFS5/src/view/idcase/query/task/NewConsignModule.mxml" workbook="DefaultEditorWorkbook">
+<input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/IFS5/src/view/idcase/query/task/NewConsignModule.mxml"/>
+</editor>
+<editor id="com.adobe.flexbuilder.editors.mxml.MXMLEditor" name="StrWindow.mxml" partName="StrWindow.mxml" path="E:/HXC/Easytalk/LNIFS5DNA/IFS5UI/IFS5/src/view/idcase/str/StrWindow.mxml" title="StrWindow.mxml" tooltip="IFS5/src/view/idcase/str/StrWindow.mxml" workbook="DefaultEditorWorkbook">
+<input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/IFS5/src/view/idcase/str/StrWindow.mxml"/>
+</editor>
+<editor id="com.adobe.flexbuilder.editors.mxml.MXMLEditor" name="QueryIdCaseConsignModule.mxml" partName="QueryIdCaseConsignModule.mxml" path="E:/HXC/Easytalk/LNIFS5DNA/IFS5UI/IFS5/src/view/idcase/query/query/QueryIdCaseConsignModule.mxml" title="QueryIdCaseConsignModule.mxml" tooltip="IFS5/src/view/idcase/query/query/QueryIdCaseConsignModule.mxml" workbook="DefaultEditorWorkbook">
+<input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/IFS5/src/view/idcase/query/query/QueryIdCaseConsignModule.mxml"/>
+</editor>
+<editor id="com.adobe.flexbuilder.editors.mxml.MXMLEditor" name="IdCaseQueryWindow.mxml" partName="IdCaseQueryWindow.mxml" path="E:/HXC/Easytalk/LNIFS5DNA/IFS5UI/IFS5/src/view/idcase/query/query/IdCaseQueryWindow.mxml" title="IdCaseQueryWindow.mxml" tooltip="IFS5/src/view/idcase/query/query/IdCaseQueryWindow.mxml" workbook="DefaultEditorWorkbook">
+<input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/IFS5/src/view/idcase/query/query/IdCaseQueryWindow.mxml"/>
+</editor>
+<editor id="com.adobe.flexbuilder.editors.mxml.MXMLEditor" name="RoModuleWindow_DNA.mxml" partName="RoModuleWindow_DNA.mxml" path="E:/HXC/Easytalk/LNIFS5DNA/IFS5UI/IFS5/src/view/idcase/info/casedoc/dna/RoModuleWindow_DNA.mxml" title="RoModuleWindow_DNA.mxml" tooltip="IFS5/src/view/idcase/info/casedoc/dna/RoModuleWindow_DNA.mxml" workbook="DefaultEditorWorkbook">
+<input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/IFS5/src/view/idcase/info/casedoc/dna/RoModuleWindow_DNA.mxml"/>
+</editor>
+<editor activePart="true" focus="true" id="com.adobe.flexbuilder.editors.mxml.MXMLEditor" name="StrTool.mxml" partName="StrTool.mxml" path="E:/HXC/Easytalk/LNIFS5DNA/IFS5UI/IFS5/src/view/idcase/str/StrTool.mxml" title="StrTool.mxml" tooltip="IFS5/src/view/idcase/str/StrTool.mxml" workbook="DefaultEditorWorkbook">
+<input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/IFS5/src/view/idcase/str/StrTool.mxml"/>
+</editor>
+<editor id="com.adobe.flexbuilder.editors.mxml.MXMLEditor" name="RoModuleWindow_MPR.mxml" partName="RoModuleWindow_MPR.mxml" path="E:/HXC/Easytalk/LNIFS5DNA/IFS5UI/IFS5/src/view/idcase/info/casedoc/mpr/RoModuleWindow_MPR.mxml" title="RoModuleWindow_MPR.mxml" tooltip="IFS5/src/view/idcase/info/casedoc/mpr/RoModuleWindow_MPR.mxml" workbook="DefaultEditorWorkbook">
+<input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/IFS5/src/view/idcase/info/casedoc/mpr/RoModuleWindow_MPR.mxml"/>
+</editor>
+<editor id="com.adobe.flexbuilder.editors.mxml.MXMLEditor" name="DocModuleWindow_DNA.mxml" partName="DocModuleWindow_DNA.mxml" path="E:/HXC/Easytalk/LNIFS5DNA/IFS5UI/IFS5/src/view/idcase/info/casedoc/dna/DocModuleWindow_DNA.mxml" title="DocModuleWindow_DNA.mxml" tooltip="IFS5/src/view/idcase/info/casedoc/dna/DocModuleWindow_DNA.mxml" workbook="DefaultEditorWorkbook">
+<input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/IFS5/src/view/idcase/info/casedoc/dna/DocModuleWindow_DNA.mxml"/>
+</editor>
+<editor id="com.adobe.flexbuilder.editors.mxml.MXMLEditor" name="DocModuleWindow_MPR.mxml" partName="DocModuleWindow_MPR.mxml" path="E:/HXC/Easytalk/LNIFS5DNA/IFS5UI/IFS5/src/view/idcase/info/casedoc/mpr/DocModuleWindow_MPR.mxml" title="DocModuleWindow_MPR.mxml" tooltip="IFS5/src/view/idcase/info/casedoc/mpr/DocModuleWindow_MPR.mxml" workbook="DefaultEditorWorkbook">
+<input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/IFS5/src/view/idcase/info/casedoc/mpr/DocModuleWindow_MPR.mxml"/>
+</editor>
+<editor id="com.adobe.flexbuilder.editors.mxml.MXMLEditor" name="DocModuleWindow_MP.mxml" partName="DocModuleWindow_MP.mxml" path="E:/HXC/Easytalk/LNIFS5DNA/IFS5UI/IFS5/src/view/idcase/info/casedoc/mp/DocModuleWindow_MP.mxml" title="DocModuleWindow_MP.mxml" tooltip="IFS5/src/view/idcase/info/casedoc/mp/DocModuleWindow_MP.mxml" workbook="DefaultEditorWorkbook">
+<input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/IFS5/src/view/idcase/info/casedoc/mp/DocModuleWindow_MP.mxml"/>
+</editor>
+<editor id="com.adobe.flexbuilder.editors.mxml.MXMLEditor" name="RoModuleWindow_MP.mxml" partName="RoModuleWindow_MP.mxml" path="E:/HXC/Easytalk/LNIFS5DNA/IFS5UI/IFS5/src/view/idcase/info/casedoc/mp/RoModuleWindow_MP.mxml" title="RoModuleWindow_MP.mxml" tooltip="IFS5/src/view/idcase/info/casedoc/mp/RoModuleWindow_MP.mxml" workbook="DefaultEditorWorkbook">
+<input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/IFS5/src/view/idcase/info/casedoc/mp/RoModuleWindow_MP.mxml"/>
+</editor>
+<editor id="com.adobe.flexbuilder.editors.mxml.MXMLEditor" name="RoModuleWindow_IdCase.mxml" partName="RoModuleWindow_IdCase.mxml" path="E:/HXC/Easytalk/LNIFS5DNA/IFS5UI/IFS5/src/view/idcase/info/casedoc/idcase/RoModuleWindow_IdCase.mxml" title="RoModuleWindow_IdCase.mxml" tooltip="IFS5/src/view/idcase/info/casedoc/idcase/RoModuleWindow_IdCase.mxml" workbook="DefaultEditorWorkbook">
+<input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/IFS5/src/view/idcase/info/casedoc/idcase/RoModuleWindow_IdCase.mxml"/>
+</editor>
+</editors>
+<views>
+<view id="org.eclipse.ui.views.ProgressView" partName="进度">
+<viewState/>
+</view>
+<view id="org.eclipse.search.ui.views.SearchView" partName="搜索">
+<viewState isPinned="false">
+<view IMemento.internal.id="org.eclipse.search.text.FileSearchResultPage" org.eclipse.search.lastActivation="1" org.eclipse.search.resultpage.layout="2" org.eclipse.search.resultpage.limit="1000" org.eclipse.search.resultpage.sorting="2"/>
+<view IMemento.internal.id="" org.eclipse.search.lastActivation="0"/>
+</viewState>
+</view>
+<view id="org.eclipse.debug.ui.DebugView" partName="调试">
+<viewState/>
+</view>
+<view id="com.adobe.flexbuilder.packageexplorer" partName="包资源管理器">
+<viewState LINK_NAVIGATOR_TO_EDITOR="0" fpeIsFlat="0" fpeSortBy="1" sorter="1">
+<fpeExpanded>
+<fpeElement fpePath="/IFS5"/>
+<fpeElement fpePath="/IFS5/src"/>
+<fpeElement fpePath="/IFS5/src/%typeDefaultPackage"/>
+<fpeElement fpePath="/IFS5/src/util"/>
+<fpeElement fpePath="/IFS5/src/view"/>
+<fpeElement fpePath="/IFS5/src/view/idcase"/>
+<fpeElement fpePath="/IFS5/src/view/idcase/info"/>
+<fpeElement fpePath="/IFS5/src/view/idcase/info/accept"/>
+<fpeElement fpePath="/IFS5/src/view/idcase/info/accept/dna"/>
+<fpeElement fpePath="/IFS5/src/view/idcase/info/accept/idcase"/>
+<fpeElement fpePath="/IFS5/src/view/idcase/info/casedoc"/>
+<fpeElement fpePath="/IFS5/src/view/idcase/info/casedoc/dna"/>
+<fpeElement fpePath="/IFS5/src/view/idcase/info/test"/>
+<fpeElement fpePath="/IFS5/src/view/idcase/query"/>
+<fpeElement fpePath="/IFS5/src/view/idcase/query/query"/>
+<fpeElement fpePath="/IFS5/src/view/idcase/query/task"/>
+<fpeElement fpePath="/IFS5/src/view/idcase/sampletest"/>
+<fpeElement fpePath="/IFS5/src/view/idcase/sampletest/Amplify"/>
+<fpeElement fpePath="/IFS5/src/view/idcase/sampletest/ConfirmExam"/>
+<fpeElement fpePath="/IFS5/src/view/idcase/sampletest/Electrophoresis"/>
+<fpeElement fpePath="/IFS5/src/view/idcase/sampletest/Extract"/>
+<fpeElement fpePath="/IFS5/src/view/idcase/sampletest/PreExam"/>
+<fpeElement fpePath="/IFS5/src/view/idcase/str"/>
+<fpeElement fpePath="/IFS5/src/view/idcase/tool"/>
+<fpeElement fpePath="/IFS5/src/view/idcase/tool/accept"/>
+<fpeElement fpePath="/IFS5/src/view/idcase/tool/idcase"/>
+<fpeElement fpePath="/IFS5/src/view/idcase/tool/word"/>
+<fpeElement fpePath="/IFS5/src/view/index"/>
+<fpeElement fpePath="/IFS5/src/view/sysset"/>
+<fpeElement fpePath="/IFS5/src/view/tool"/>
+<fpeElement fpePath="/IFS5/src/vo"/>
+</fpeExpanded>
+<fpeSelection>
+<fpeElement fpePath="/IFS5/src/view/idcase/str/StrTool.mxml"/>
+</fpeSelection>
+<filters>
+<filter element=".flexProperties" isEnabled="true"/>
+<filter element=".actionScriptProperties" isEnabled="true"/>
+<filter element=".project" isEnabled="true"/>
+<filter element=".settings" isEnabled="true"/>
+<filter element=".flexLibProperties" isEnabled="true"/>
+<filter element=".DS_Store" isEnabled="true"/>
+<filter element=".model" isEnabled="true"/>
+<filter element="*.class" isEnabled="false"/>
+<filter element=".*" isEnabled="false"/>
+<filter element=".flexProperties" isEnabled="true"/>
+<filter element=".actionScriptProperties" isEnabled="true"/>
+<filter element=".project" isEnabled="true"/>
+<filter element=".settings" isEnabled="true"/>
+<filter element=".flexLibProperties" isEnabled="true"/>
+<filter element=".DS_Store" isEnabled="true"/>
+<filter element=".model" isEnabled="true"/>
+<filter element="*.class" isEnabled="false"/>
+<filter element=".*" isEnabled="false"/>
+</filters>
+<expanded>
+<element path="/IFS5"/>
+</expanded>
+<selection>
+<element path="/IFS5/src/view/idcase/str/StrTool.mxml"/>
+</selection>
+</viewState>
+</view>
+<view id="org.eclipse.debug.ui.VariableView" partName="变量">
+<viewState/>
+</view>
+<view id="org.eclipse.debug.ui.BreakpointView" partName="断点">
+<viewState/>
+</view>
+<view id="com.adobe.flexbuilder.monitors.network.view.NetworkMonitorView" partName="网络监视器"/>
+<view id="org.eclipse.ui.views.ContentOutline" partName="大纲">
+<viewState/>
+</view>
+<view id="org.eclipse.debug.ui.ExpressionView" partName="表达式">
+<viewState/>
+</view>
+<view id="org.eclipse.ui.views.ProblemView" partName="问题">
+<viewState PRIMARY_SORT_FIELD="org.eclipse.ui.ide.severityAndDescriptionField" categoryGroup="org.eclipse.ui.ide.severity" markerContentGenerator="org.eclipse.ui.ide.problemsGenerator" partName="问题">
+<expanded>
+<category IMemento.internal.id="警告（第 100 项，共 8267 项）"/>
+</expanded>
+<columnWidths org.eclipse.ui.ide.locationField="64" org.eclipse.ui.ide.markerType="94" org.eclipse.ui.ide.pathField="124" org.eclipse.ui.ide.resourceField="94" org.eclipse.ui.ide.severityAndDescriptionField="300"/>
+<visible IMemento.internal.id="org.eclipse.ui.ide.severityAndDescriptionField"/>
+<visible IMemento.internal.id="org.eclipse.ui.ide.resourceField"/>
+<visible IMemento.internal.id="org.eclipse.ui.ide.pathField"/>
+<visible IMemento.internal.id="org.eclipse.ui.ide.locationField"/>
+<visible IMemento.internal.id="org.eclipse.ui.ide.markerType"/>
+</viewState>
+</view>
+<view id="org.eclipse.ui.console.ConsoleView" partName="控制台">
+<viewState/>
+</view>
+<view id="com.adobe.flexbuilder.dcrad.views.DataServicesView" partName="数据/服务">
+<viewState/>
+</view>
+<view id="com.adobe.flexbuilder.as.editor.asdocviewer" partName="ASDoc">
+<viewState/>
+</view>
+</views>
+<perspectives activePart="com.adobe.flexbuilder.editors.mxml.MXMLEditor" activePerspective="com.adobe.flexbuilder.editors.mxml.ui.perspectives.development">
+<perspective editorAreaTrimState="2" editorAreaVisible="1" fixed="0" version="0.016">
+<descriptor class="com.adobe.flexbuilder.mxml.editor.ui.perspectives.DevelopmentPerspectiveFactory" id="com.adobe.flexbuilder.editors.mxml.ui.perspectives.development" label="Flash"/>
+<alwaysOnActionSet id="com.adobe.flexbuilder.editorcore.modeswitch"/>
+<alwaysOnActionSet id="com.adobe.flexbuilder.flashbridge.flashproject.actionSet"/>
+<alwaysOnActionSet id="com.adobe.flexbuilder.designview.activationcontrol"/>
+<alwaysOnActionSet id="org.eclipse.mylyn.context.ui.actionSet"/>
+<alwaysOnActionSet id="org.eclipse.mylyn.doc.actionSet"/>
+<alwaysOnActionSet id="org.eclipse.mylyn.tasks.ui.navigation"/>
+<alwaysOnActionSet id="org.eclipse.ui.cheatsheets.actionSet"/>
+<alwaysOnActionSet id="org.eclipse.search.searchActionSet"/>
+<alwaysOnActionSet id="org.eclipse.ui.edit.text.actionSet.annotationNavigation"/>
+<alwaysOnActionSet id="org.eclipse.ui.edit.text.actionSet.navigation"/>
+<alwaysOnActionSet id="org.eclipse.ui.edit.text.actionSet.convertLineDelimitersTo"/>
+<alwaysOnActionSet id="org.eclipse.ui.externaltools.ExternalToolsSet"/>
+<alwaysOnActionSet id="org.eclipse.ui.actionSet.keyBindings"/>
+<alwaysOnActionSet id="org.eclipse.ui.actionSet.openFiles"/>
+<alwaysOnActionSet id="org.eclipse.debug.ui.launchActionSet"/>
+<alwaysOnActionSet id="org.eclipse.debug.ui.profileActionSet"/>
+<alwaysOnActionSet id="org.eclipse.ui.NavigateActionSet"/>
+<alwaysOnActionSet id="org.eclipse.debug.ui.debugActionSet"/>
+<alwaysOnActionSet id="org.eclipse.debug.ui.breakpointActionSet"/>
+<alwaysOnActionSet id="com.adobe.flexbuilder.debug.ui.flexDebuggingActionSet"/>
+<alwaysOnActionSet id="com.adobe.flexbuilder.zzz.editors.common.ui.project.publish"/>
+<alwaysOnActionSet id="com.adobe.flexbuilder.exportimport.actionSet1"/>
+<alwaysOnActionSet id="com.adobe.flexbuilder.dcrad.actionSet"/>
+<alwaysOnActionSet id="com.adobe.flexbuilder.as.editor.ui.NavigationActions"/>
+<show_view_action id="com.adobe.flexbuilder.mxml.editor.AppearanceView"/>
+<show_view_action id="com.adobe.flexbuilder.mxml.editor.components.ComponentsView"/>
+<show_view_action id="com.adobe.flexbuilder.packageexplorer"/>
+<show_view_action id="org.eclipse.ui.views.ContentOutline"/>
+<show_view_action id="org.eclipse.ui.views.ProblemView"/>
+<show_view_action id="com.adobe.flexbuilder.mxml.editor.inspector.view.PropertiesView"/>
+<show_view_action id="com.adobe.flexbuilder.mxml.editor.states.StatesViewer"/>
+<show_view_action id="com.adobe.flexbuilder.dcrad.views.DataServicesView"/>
+<new_wizard_action id="com.adobe.flexbuilder.editorcore.ui.project.wizards.newproject"/>
+<new_wizard_action id="com.adobe.flexbuilder.project.ui.wizards.FlexLibraryProjectWizard"/>
+<new_wizard_action id="com.adobe.flashbuilder.project.multiplatform.ui.MultiPlatformProjectWizard"/>
+<new_wizard_action id="com.adobe.flexbuilder.project.ui.wizards.NewActionScriptProjectWizard"/>
+<new_wizard_action id="com.adobe.flashbuilder.project.multiplatform.ui.MultiPlatformActionScriptProjectWizard"/>
+<new_wizard_action id="com.adobe.flexbuilder.flashbridge.NewFlashProProjectWizard"/>
+<new_wizard_action id="com.adobe.flexbuilder.editorcore.ui.project.wizards.newflashcatalystproject"/>
+<new_wizard_action id="com.adobe.flexbuilder.mxml.editor.ui.wizards.NewMXMLApplication"/>
+<new_wizard_action id="com.adobe.flexbuilder.mxml.editor.ui.wizards.NewMXMLComponent"/>
+<new_wizard_action id="com.adobe.flexbuilder.mxml.editor.ui.wizards.NewMXMLItemRenderer"/>
+<new_wizard_action id="com.adobe.flexbuilder.mxml.editor.ui.wizards.NewMXMLModule"/>
+<new_wizard_action id="com.adobe.flexbuilder.mxml.editor.ui.wizards.NewMXMLSkin"/>
+<new_wizard_action id="com.adobe.flexbuilder.as.editor.wizards.NewActionScriptFile.flex"/>
+<new_wizard_action id="com.adobe.flexbuilder.as.editor.classWizard.flex"/>
+<new_wizard_action id="com.adobe.flexbuilder.as.editor.interfaceWizard.flex"/>
+<new_wizard_action id="com.adobe.flexbuilder.as.editor.skinnableComponentWizard.flex"/>
+<new_wizard_action id="com.adobe.flexbuilder.css.editor.wizards.NewCSSFile"/>
+<new_wizard_action id="com.adobe.flexbuilder.as.editor.flexUnitClassWizard.flex"/>
+<new_wizard_action id="com.adobe.flexbuilder.as.editor.flexUnitTestSuiteClassWizard.flex"/>
+<new_wizard_action id="com.adobe.flexbuilder.as.editor.packageWizard.flex"/>
+<new_wizard_action id="org.eclipse.ui.wizards.new.folder"/>
+<new_wizard_action id="org.eclipse.ui.wizards.new.file"/>
+<perspective_action id="com.adobe.flexbuilder.editors.mxml.ui.perspectives.development"/>
+<perspective_action id="com.adobe.flexbuilder.debug.ui.perspectives.debug"/>
+<perspective_action id="com.adobe.flash.profiler.ui.ProfilingPerspective"/>
+<hide_toolbar_item_id id="org.eclipse.jdt.ui.actions.OpenProjectWizard"/>
+<hide_toolbar_item_id id="org.eclipse.ui.edit.text.toggleShowSelectedElementOnly"/>
+<view id="com.adobe.flexbuilder.packageexplorer"/>
+<view id="org.eclipse.ui.views.ContentOutline"/>
+<fastViewBars>
+<fastViewBar fastViewLocation="1024" id="bottomLayout" orientation="256" selectedTabId="org.eclipse.ui.views.ProblemView" style="0">
+<fastViews>
+<view id="org.eclipse.ui.views.ProblemView" ratio="0.3022508"/>
+<view id="com.adobe.flexbuilder.dcrad.views.DataServicesView" ratio="0.29903537"/>
+<view id="com.adobe.flexbuilder.monitors.network.view.NetworkMonitorView" ratio="0.3"/>
+<view id="org.eclipse.ui.views.ProgressView" ratio="0.29903537"/>
+<view id="org.eclipse.ui.console.ConsoleView" ratio="0.29903537"/>
+<view id="com.adobe.flexbuilder.as.editor.asdocviewer" ratio="0.3"/>
+</fastViews>
+</fastViewBar>
+<fastViewBar fastViewLocation="1024" id="org.eclipse.ui.internal.ViewStack@fdb919" orientation="256" selectedTabId="org.eclipse.search.ui.views.SearchView" style="0">
+<fastViews>
+<view id="org.eclipse.search.ui.views.SearchView" ratio="0.5"/>
+</fastViews>
+</fastViewBar>
+</fastViewBars>
+<layout>
+<mainWindow>
+<info folder="true" part="org.eclipse.ui.internal.ViewStack@108c1b7">
+<folder activePageID="com.adobe.flexbuilder.packageexplorer" appearance="2" expanded="2">
+<page content="com.adobe.flexbuilder.packageexplorer" label="包资源管理器"/>
+<presentation id="org.eclipse.ui.presentations.WorkbenchPresentationFactory">
+<part id="0"/>
+</presentation>
+</folder>
+</info>
+<info folder="true" part="stickyFolderRight" ratio="0.75" ratioLeft="756" ratioRight="252" relationship="2" relative="org.eclipse.ui.internal.ViewStack@108c1b7">
+<folder appearance="2" expanded="2">
+<page content="org.eclipse.help.ui.HelpView" label="LabelNotFound"/>
+<page content="org.eclipse.ui.internal.introview" label="LabelNotFound"/>
+<page content="org.eclipse.ui.cheatsheets.views.CheatSheetView" label="LabelNotFound"/>
+</folder>
+</info>
+<info part="org.eclipse.ui.editorss" ratio="0.25" ratioLeft="332" ratioRight="996" relationship="2" relative="org.eclipse.ui.internal.ViewStack@108c1b7"/>
+<info folder="true" part="org.eclipse.ui.internal.ViewStack@8e2fb5" ratio="0.7069813" ratioLeft="719" ratioRight="298" relationship="2" relative="org.eclipse.ui.editorss">
+<folder appearance="2" expanded="2">
+<page content="com.adobe.flexbuilder.mxml.editor.states.StatesViewer" label="LabelNotFound"/>
+<presentation id="org.eclipse.ui.presentations.WorkbenchPresentationFactory"/>
+</folder>
+</info>
+<info folder="true" part="propertiesHolder" ratio="0.24886191" ratioLeft="164" ratioRight="495" relationship="4" relative="org.eclipse.ui.internal.ViewStack@8e2fb5">
+<folder appearance="2" expanded="2">
+<page content="com.adobe.flexbuilder.mxml.editor.inspector.view.PropertiesView" label="LabelNotFound"/>
+<page content="com.adobe.flexbuilder.mxml.editor.AppearanceView" label="LabelNotFound"/>
+<presentation id="org.eclipse.ui.presentations.WorkbenchPresentationFactory"/>
+</folder>
+</info>
+<info folder="true" part="bottomLayout" ratio="0.8011236" ratioLeft="713" ratioRight="177" relationship="4" relative="org.eclipse.ui.editorss">
+<folder appearance="2" expanded="2">
+<page content="org.eclipse.ui.views.ProblemView" label="LabelNotFound"/>
+<page content="com.adobe.flexbuilder.dcrad.views.DataServicesView" label="LabelNotFound"/>
+<page content="com.adobe.flexbuilder.monitors.network.view.NetworkMonitorView" label="LabelNotFound"/>
+<page content="org.eclipse.ui.views.ProgressView" label="LabelNotFound"/>
+<page content="org.eclipse.ui.console.ConsoleView" label="LabelNotFound"/>
+<page content="com.adobe.flexbuilder.as.editor.asdocviewer" label="LabelNotFound"/>
+<page content="com.adobe.flexbuilder.mxml.editor.design.internal.errors.view.DesignModeProblemsView" label="LabelNotFound"/>
+<presentation id="org.eclipse.ui.presentations.WorkbenchPresentationFactory"/>
+</folder>
+</info>
+<info folder="true" part="org.eclipse.ui.internal.ViewStack@fdb919" ratio="0.33441034" ratioLeft="207" ratioRight="412" relationship="4" relative="org.eclipse.ui.editorss">
+<folder appearance="2" expanded="2">
+<page content="org.eclipse.search.ui.views.SearchView" label="LabelNotFound"/>
+<presentation id="org.eclipse.ui.presentations.WorkbenchPresentationFactory"/>
+</folder>
+</info>
+<info folder="true" part="outlineHolder" ratio="0.49924126" ratioLeft="329" ratioRight="330" relationship="4" relative="org.eclipse.ui.internal.ViewStack@108c1b7">
+<folder activePageID="org.eclipse.ui.views.ContentOutline" appearance="2" expanded="2">
+<page content="org.eclipse.ui.views.ContentOutline" label="大纲"/>
+<page content="com.adobe.flexbuilder.mxml.editor.components.ComponentsView" label="LabelNotFound"/>
+<presentation id="org.eclipse.ui.presentations.WorkbenchPresentationFactory">
+<part id="0"/>
+</presentation>
+</folder>
+</info>
+</mainWindow>
+</layout>
+</perspective>
+<perspective editorAreaTrimState="2" editorAreaVisible="1" fixed="0" version="0.016">
+<descriptor class="com.adobe.flexbuilder.debug.ui.perspectives.FlexDebugPerspectiveFactory" id="com.adobe.flexbuilder.debug.ui.perspectives.debug" label="Flash 调试"/>
+<alwaysOnActionSet id="com.adobe.flexbuilder.editorcore.modeswitch"/>
+<alwaysOnActionSet id="com.adobe.flexbuilder.flashbridge.flashproject.actionSet"/>
+<alwaysOnActionSet id="com.adobe.flexbuilder.designview.activationcontrol"/>
+<alwaysOnActionSet id="org.eclipse.mylyn.context.ui.actionSet"/>
+<alwaysOnActionSet id="org.eclipse.mylyn.doc.actionSet"/>
+<alwaysOnActionSet id="org.eclipse.mylyn.tasks.ui.navigation"/>
+<alwaysOnActionSet id="org.eclipse.ui.cheatsheets.actionSet"/>
+<alwaysOnActionSet id="org.eclipse.search.searchActionSet"/>
+<alwaysOnActionSet id="org.eclipse.ui.edit.text.actionSet.annotationNavigation"/>
+<alwaysOnActionSet id="org.eclipse.ui.edit.text.actionSet.navigation"/>
+<alwaysOnActionSet id="org.eclipse.ui.edit.text.actionSet.convertLineDelimitersTo"/>
+<alwaysOnActionSet id="org.eclipse.ui.externaltools.ExternalToolsSet"/>
+<alwaysOnActionSet id="org.eclipse.ui.actionSet.keyBindings"/>
+<alwaysOnActionSet id="org.eclipse.ui.actionSet.openFiles"/>
+<alwaysOnActionSet id="org.eclipse.debug.ui.launchActionSet"/>
+<alwaysOnActionSet id="org.eclipse.debug.ui.profileActionSet"/>
+<alwaysOnActionSet id="org.eclipse.ui.NavigateActionSet"/>
+<alwaysOnActionSet id="org.eclipse.debug.ui.breakpointActionSet"/>
+<alwaysOnActionSet id="com.adobe.flexbuilder.debug.ui.flexDebuggingActionSet"/>
+<alwaysOnActionSet id="com.adobe.flexbuilder.zzz.editors.common.ui.project.publish"/>
+<alwaysOnActionSet id="com.adobe.flexbuilder.exportimport.actionSet1"/>
+<alwaysOnActionSet id="org.eclipse.debug.ui.debugActionSet"/>
+<alwaysOnActionSet id="com.adobe.flexbuilder.dcrad.actionSet"/>
+<show_view_action id="org.eclipse.debug.ui.VariableView"/>
+<show_view_action id="org.eclipse.debug.ui.BreakpointView"/>
+<show_view_action id="org.eclipse.debug.ui.ExpressionView"/>
+<show_view_action id="org.eclipse.ui.console.ConsoleView"/>
+<show_view_action id="org.eclipse.debug.ui.DebugView"/>
+<show_view_action id="org.eclipse.ui.views.ProblemView"/>
+<show_view_action id="com.adobe.flexbuilder.mxml.editor.AppearanceView"/>
+<show_view_action id="com.adobe.flexbuilder.mxml.editor.components.ComponentsView"/>
+<show_view_action id="com.adobe.flexbuilder.packageexplorer"/>
+<show_view_action id="org.eclipse.ui.views.ContentOutline"/>
+<show_view_action id="com.adobe.flexbuilder.mxml.editor.inspector.view.PropertiesView"/>
+<show_view_action id="com.adobe.flexbuilder.mxml.editor.states.StatesViewer"/>
+<new_wizard_action id="com.adobe.flexbuilder.editorcore.ui.project.wizards.newproject"/>
+<new_wizard_action id="com.adobe.flexbuilder.project.ui.wizards.FlexLibraryProjectWizard"/>
+<new_wizard_action id="com.adobe.flashbuilder.project.multiplatform.ui.MultiPlatformProjectWizard"/>
+<new_wizard_action id="com.adobe.flexbuilder.project.ui.wizards.NewActionScriptProjectWizard"/>
+<new_wizard_action id="com.adobe.flashbuilder.project.multiplatform.ui.MultiPlatformActionScriptProjectWizard"/>
+<new_wizard_action id="com.adobe.flexbuilder.flashbridge.NewFlashProProjectWizard"/>
+<new_wizard_action id="com.adobe.flexbuilder.editorcore.ui.project.wizards.newflashcatalystproject"/>
+<new_wizard_action id="com.adobe.flexbuilder.mxml.editor.ui.wizards.NewMXMLApplication"/>
+<new_wizard_action id="com.adobe.flexbuilder.mxml.editor.ui.wizards.NewMXMLComponent"/>
+<new_wizard_action id="com.adobe.flexbuilder.mxml.editor.ui.wizards.NewMXMLItemRenderer"/>
+<new_wizard_action id="com.adobe.flexbuilder.mxml.editor.ui.wizards.NewMXMLModule"/>
+<new_wizard_action id="com.adobe.flexbuilder.mxml.editor.ui.wizards.NewMXMLSkin"/>
+<new_wizard_action id="com.adobe.flexbuilder.as.editor.wizards.NewActionScriptFile.flex"/>
+<new_wizard_action id="com.adobe.flexbuilder.as.editor.classWizard.flex"/>
+<new_wizard_action id="com.adobe.flexbuilder.as.editor.interfaceWizard.flex"/>
+<new_wizard_action id="com.adobe.flexbuilder.as.editor.skinnableComponentWizard.flex"/>
+<new_wizard_action id="com.adobe.flexbuilder.css.editor.wizards.NewCSSFile"/>
+<new_wizard_action id="com.adobe.flexbuilder.as.editor.flexUnitClassWizard.flex"/>
+<new_wizard_action id="com.adobe.flexbuilder.as.editor.flexUnitTestSuiteClassWizard.flex"/>
+<new_wizard_action id="com.adobe.flexbuilder.as.editor.packageWizard.flex"/>
+<new_wizard_action id="org.eclipse.ui.wizards.new.folder"/>
+<new_wizard_action id="org.eclipse.ui.wizards.new.file"/>
+<perspective_action id="com.adobe.flexbuilder.editors.mxml.ui.perspectives.development"/>
+<perspective_action id="com.adobe.flexbuilder.debug.ui.perspectives.debug"/>
+<perspective_action id="com.adobe.flash.profiler.ui.ProfilingPerspective"/>
+<hide_toolbar_item_id id="org.eclipse.jdt.ui.actions.OpenProjectWizard"/>
+<hide_toolbar_item_id id="org.eclipse.ui.edit.text.toggleShowSelectedElementOnly"/>
+<view id="org.eclipse.debug.ui.VariableView"/>
+<view id="org.eclipse.debug.ui.BreakpointView"/>
+<view id="org.eclipse.debug.ui.ExpressionView"/>
+<view id="org.eclipse.ui.console.ConsoleView"/>
+<view id="com.adobe.flexbuilder.dcrad.views.DataServicesView"/>
+<view id="com.adobe.flexbuilder.monitors.network.view.NetworkMonitorView"/>
+<view id="org.eclipse.debug.ui.DebugView"/>
+<fastViewBars/>
+<layout>&#x0A;<mainWindow>&#x0A;<info folder="true" part="org.eclipse.debug.internal.ui.NavigatorFolderView">&#x0A;<folder activePageID="org.eclipse.debug.ui.DebugView" appearance="2" expanded="2">&#x0A;<page content="org.eclipse.debug.ui.DebugView" label="调试"/>
+<presentation id="org.eclipse.ui.presentations.WorkbenchPresentationFactory">&#x0A;<part id="0"/>
+</presentation>
+</folder>
+</info>
+<info folder="true" part="stickyFolderRight" ratio="0.7493976" ratioLeft="933" ratioRight="312" relationship="2" relative="org.eclipse.debug.internal.ui.NavigatorFolderView">&#x0A;<folder appearance="2" expanded="2">&#x0A;<page content="org.eclipse.help.ui.HelpView" label="LabelNotFound"/>
+<page content="org.eclipse.ui.internal.introview" label="LabelNotFound"/>
+<page content="org.eclipse.ui.cheatsheets.views.CheatSheetView" label="LabelNotFound"/>
+</folder>
+</info>
+<info folder="true" part="org.eclipse.debug.internal.ui.ConsoleFolderView" ratio="0.7431341" ratioLeft="460" ratioRight="159" relationship="4" relative="org.eclipse.debug.internal.ui.NavigatorFolderView">&#x0A;<folder activePageID="org.eclipse.ui.console.ConsoleView" appearance="2" expanded="2">&#x0A;<page content="org.eclipse.ui.console.ConsoleView" label="控制台"/>
+<page content="com.adobe.flexbuilder.dcrad.views.DataServicesView" label="数据/服务"/>
+<page content="com.adobe.flexbuilder.monitors.network.view.NetworkMonitorView" label="网络监视器"/>
+<presentation id="org.eclipse.ui.presentations.WorkbenchPresentationFactory">&#x0A;<part id="0"/>
+<part id="1"/>
+<part id="2"/>
+</presentation>
+</folder>
+</info>
+<info part="org.eclipse.ui.editorss" ratio="0.37199125" ratioLeft="170" ratioRight="287" relationship="4" relative="org.eclipse.debug.internal.ui.NavigatorFolderView"/>
+<info folder="true" part="org.eclipse.debug.internal.ui.ToolsFolderView" ratio="0.49959838" ratioLeft="622" ratioRight="623" relationship="2" relative="org.eclipse.debug.internal.ui.NavigatorFolderView">&#x0A;<folder activePageID="org.eclipse.debug.ui.ExpressionView" appearance="2" expanded="2">&#x0A;<page content="org.eclipse.debug.ui.VariableView" label="变量"/>
+<page content="org.eclipse.debug.ui.BreakpointView" label="断点"/>
+<page content="org.eclipse.debug.ui.ExpressionView" label="表达式"/>
+<presentation id="org.eclipse.ui.presentations.WorkbenchPresentationFactory">&#x0A;<part id="0"/>
+<part id="1"/>
+<part id="2"/>
+</presentation>
+</folder>
+</info>
+</mainWindow>
+</layout>
+</perspective>
+</perspectives>
+<workingSets/>
+<navigationHistory>
+<editors>
+<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="com.adobe.flexbuilder.editors.mxml.MXMLEditor" path="/IFS5/src/view/idcase/query/query/IdCaseQueryWindow.mxml"/>
+<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="com.adobe.flexbuilder.editors.mxml.MXMLEditor" path="/IFS5/src/view/idcase/info/casedoc/dna/RoModuleWindow_DNA.mxml"/>
+<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="com.adobe.flexbuilder.editors.mxml.MXMLEditor" path="/IFS5/src/view/idcase/str/StrTool.mxml"/>
+<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="com.adobe.flexbuilder.editors.mxml.MXMLEditor" path="/IFS5/src/view/idcase/info/casedoc/mpr/RoModuleWindow_MPR.mxml"/>
+<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="com.adobe.flexbuilder.editors.mxml.MXMLEditor" path="/IFS5/src/view/idcase/info/casedoc/dna/DocModuleWindow_DNA.mxml"/>
+<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="com.adobe.flexbuilder.editors.mxml.MXMLEditor" path="/IFS5/src/view/idcase/info/casedoc/mpr/DocModuleWindow_MPR.mxml"/>
+<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="com.adobe.flexbuilder.editors.mxml.MXMLEditor" path="/IFS5/src/view/idcase/info/casedoc/mp/DocModuleWindow_MP.mxml"/>
+<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="com.adobe.flexbuilder.editors.mxml.MXMLEditor" path="/IFS5/src/view/idcase/info/casedoc/mp/RoModuleWindow_MP.mxml"/>
+<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="com.adobe.flexbuilder.editors.mxml.MXMLEditor" path="/IFS5/src/view/idcase/info/casedoc/idcase/RoModuleWindow_IdCase.mxml"/>
+<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="com.adobe.flexbuilder.mxml.editor.MXMLCodeEditor" path="/IFS5/src/view/idcase/str/StrTool.mxml"/>
+</editors>
+<item historyLabel="DocModuleWindow_DNA.mxml" index="4">
+<position info="not_deleted" x="8442" y="0"/>
+</item>
+<item historyLabel="RoModuleWindow_MPR.mxml" index="3">
+<position info="not_deleted" x="2067" y="0"/>
+</item>
+<item historyLabel="DocModuleWindow_DNA.mxml" index="4">
+<position info="not_deleted" x="8325" y="229"/>
+</item>
+<item historyLabel="IdCaseQueryWindow.mxml" index="0">
+<position info="not_deleted" x="7799" y="0"/>
+</item>
+<item historyLabel="DocModuleWindow_DNA.mxml" index="4">
+<position info="not_deleted" x="0" y="0"/>
+</item>
+<item historyLabel="IdCaseQueryWindow.mxml" index="0">
+<position info="not_deleted" x="8114" y="0"/>
+</item>
+<item historyLabel="DocModuleWindow_MPR.mxml" index="5">
+<position info="not_deleted" x="0" y="0"/>
+</item>
+<item historyLabel="IdCaseQueryWindow.mxml" index="0">
+<position info="not_deleted" x="8426" y="0"/>
+</item>
+<item historyLabel="DocModuleWindow_MP.mxml" index="6">
+<position info="not_deleted" x="0" y="0"/>
+</item>
+<item historyLabel="IdCaseQueryWindow.mxml" index="0">
+<position info="not_deleted" x="6553" y="0"/>
+</item>
+<item historyLabel="RoModuleWindow_DNA.mxml" index="1">
+<position info="not_deleted" x="0" y="0"/>
+</item>
+<item historyLabel="IdCaseQueryWindow.mxml" index="0">
+<position info="not_deleted" x="6861" y="0"/>
+</item>
+<item historyLabel="RoModuleWindow_MPR.mxml" index="3">
+<position info="not_deleted" x="0" y="0"/>
+</item>
+<item historyLabel="IdCaseQueryWindow.mxml" index="0">
+<position info="not_deleted" x="7171" y="0"/>
+</item>
+<item historyLabel="RoModuleWindow_MP.mxml" index="7">
+<position info="not_deleted" x="0" y="0"/>
+</item>
+<item historyLabel="IdCaseQueryWindow.mxml" index="0">
+<position info="not_deleted" x="6242" y="0"/>
+</item>
+<item historyLabel="RoModuleWindow_IdCase.mxml" index="8">
+<position info="not_deleted" x="4155" y="0"/>
+</item>
+<item historyLabel="IdCaseQueryWindow.mxml" index="0">
+<position info="not_deleted" x="7797" y="0"/>
+</item>
+<item historyLabel="DocModuleWindow_DNA.mxml" index="4">
+<position info="not_deleted" x="2142" y="66"/>
+</item>
+<item historyLabel="RoModuleWindow_MP.mxml" index="7">
+<position info="not_deleted" x="986" y="0"/>
+</item>
+<item historyLabel="RoModuleWindow_IdCase.mxml" index="8">
+<position info="not_deleted" x="1212" y="0"/>
+</item>
+<item historyLabel="RoModuleWindow_DNA.mxml" index="1">
+<position info="not_deleted" x="1460" y="0"/>
+</item>
+<item historyLabel="RoModuleWindow_MPR.mxml" index="3">
+<position info="not_deleted" x="3609" y="0"/>
+</item>
+<item historyLabel="RoModuleWindow_IdCase.mxml" index="8">
+<position info="not_deleted" x="301" y="52"/>
+</item>
+<item historyLabel="RoModuleWindow_MP.mxml" index="7">
+<position info="not_deleted" x="3225" y="0"/>
+</item>
+<item historyLabel="RoModuleWindow_IdCase.mxml" index="8">
+<position info="not_deleted" x="301" y="52"/>
+</item>
+<item historyLabel="RoModuleWindow_MP.mxml" index="7">
+<position info="not_deleted" x="3225" y="0"/>
+</item>
+<item historyLabel="RoModuleWindow_IdCase.mxml" index="8">
+<position info="not_deleted" x="301" y="52"/>
+</item>
+<item historyLabel="RoModuleWindow_MP.mxml" index="7">
+<position info="not_deleted" x="301" y="0"/>
+</item>
+<item historyLabel="RoModuleWindow_MPR.mxml" index="3">
+<position info="not_deleted" x="301" y="0"/>
+</item>
+<item historyLabel="RoModuleWindow_DNA.mxml" index="1">
+<position info="not_deleted" x="349" y="0"/>
+</item>
+<item historyLabel="RoModuleWindow_IdCase.mxml" index="8">
+<position info="not_deleted" x="1145" y="31"/>
+</item>
+<item historyLabel="DocModuleWindow_DNA.mxml" index="4">
+<position info="not_deleted" x="3678" y="150"/>
+</item>
+<item historyLabel="RoModuleWindow_IdCase.mxml" index="8">
+<position info="not_deleted" x="2443" y="0"/>
+</item>
+<item historyLabel="RoModuleWindow_MPR.mxml" index="3">
+<position info="not_deleted" x="2201" y="0"/>
+</item>
+<item historyLabel="RoModuleWindow_DNA.mxml" index="1">
+<position info="not_deleted" x="3282" y="0"/>
+</item>
+<item historyLabel="RoModuleWindow_MP.mxml" index="7">
+<position info="not_deleted" x="1858" y="0"/>
+</item>
+<item historyLabel="StrTool.mxml" index="2">
+<position info="not_deleted" x="6110" y="0"/>
+</item>
+<item historyLabel="StrTool.mxml" index="9">
+<position/>
+</item>
+<item historyLabel="StrTool.mxml" index="9">
+<position/>
+</item>
+<item historyLabel="StrTool.mxml" index="9">
+<position/>
+</item>
+<item historyLabel="StrTool.mxml" index="9">
+<position/>
+</item>
+<item historyLabel="StrTool.mxml" index="9">
+<position/>
+</item>
+<item historyLabel="StrTool.mxml" index="9">
+<position info="not_deleted" x="15594" y="65"/>
+</item>
+<item historyLabel="StrTool.mxml" index="9">
+<position info="not_deleted" x="18239" y="72"/>
+</item>
+<item historyLabel="StrTool.mxml" index="9">
+<position info="not_deleted" x="16759" y="46"/>
+</item>
+<item historyLabel="StrTool.mxml" index="9">
+<position info="not_deleted" x="18239" y="72"/>
+</item>
+<item historyLabel="StrTool.mxml" index="9">
+<position info="not_deleted" x="14972" y="71"/>
+</item>
+<item historyLabel="StrTool.mxml" index="9">
+<position info="not_deleted" x="18357" y="104"/>
+</item>
+<item active="true" historyLabel="StrTool.mxml" index="9">
+<position info="not_deleted" x="16665" y="71"/>
+</item>
+</navigationHistory>
+<input factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/" type="8"/>
+</page>
+<workbenchWindowAdvisor/>
+<actionBarAdvisor/>
+<trimLayout>
+<trimArea IMemento.internal.id="16384">
+<trimItem IMemento.internal.id="outlineHolder"/>
+</trimArea>
+<trimArea IMemento.internal.id="128">
+<trimItem IMemento.internal.id="org.eclipse.ui.internal.WorkbenchWindow.topBar"/>
+</trimArea>
+<trimArea IMemento.internal.id="1024">
+<trimItem IMemento.internal.id="org.eclise.ui.internal.FastViewBar"/>
+<trimItem IMemento.internal.id="org.eclipse.jface.action.StatusLineManager"/>
+<trimItem IMemento.internal.id="org.eclipse.ui.internal.progress.ProgressRegion"/>
+<trimItem IMemento.internal.id="bottomLayout"/>
+<trimItem IMemento.internal.id="org.eclipse.ui.internal.ViewStack@fdb919"/>
+</trimArea>
+</trimLayout>
+</window>
+<mruList>
+<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="com.adobe.flexbuilder.editors.mxml.MXMLEditor" name="RoModuleWindow_IdCase.mxml" tooltip="IFS5/src/view/idcase/info/casedoc/idcase/RoModuleWindow_IdCase.mxml">
+<persistable path="/IFS5/src/view/idcase/info/casedoc/idcase/RoModuleWindow_IdCase.mxml"/>
+</file>
+<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="com.adobe.flexbuilder.editors.mxml.MXMLEditor" name="RoModuleWindow_MP.mxml" tooltip="IFS5/src/view/idcase/info/casedoc/mp/RoModuleWindow_MP.mxml">
+<persistable path="/IFS5/src/view/idcase/info/casedoc/mp/RoModuleWindow_MP.mxml"/>
+</file>
+<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="com.adobe.flexbuilder.editors.mxml.MXMLEditor" name="DocModuleWindow_MP.mxml" tooltip="IFS5/src/view/idcase/info/casedoc/mp/DocModuleWindow_MP.mxml">
+<persistable path="/IFS5/src/view/idcase/info/casedoc/mp/DocModuleWindow_MP.mxml"/>
+</file>
+<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="com.adobe.flexbuilder.editors.mxml.MXMLEditor" name="DocModuleWindow_MPR.mxml" tooltip="IFS5/src/view/idcase/info/casedoc/mpr/DocModuleWindow_MPR.mxml">
+<persistable path="/IFS5/src/view/idcase/info/casedoc/mpr/DocModuleWindow_MPR.mxml"/>
+</file>
+<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="com.adobe.flexbuilder.editors.mxml.MXMLEditor" name="DocModuleWindow_DNA.mxml" tooltip="IFS5/src/view/idcase/info/casedoc/dna/DocModuleWindow_DNA.mxml">
+<persistable path="/IFS5/src/view/idcase/info/casedoc/dna/DocModuleWindow_DNA.mxml"/>
+</file>
+<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="com.adobe.flexbuilder.editors.mxml.MXMLEditor" name="RoModuleWindow_MPR.mxml" tooltip="IFS5/src/view/idcase/info/casedoc/mpr/RoModuleWindow_MPR.mxml">
+<persistable path="/IFS5/src/view/idcase/info/casedoc/mpr/RoModuleWindow_MPR.mxml"/>
+</file>
+<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="com.adobe.flexbuilder.editors.mxml.MXMLEditor" name="StrTool.mxml" tooltip="IFS5/src/view/idcase/str/StrTool.mxml">
+<persistable path="/IFS5/src/view/idcase/str/StrTool.mxml"/>
+</file>
+<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="com.adobe.flexbuilder.editors.mxml.MXMLEditor" name="RoModuleWindow_DNA.mxml" tooltip="IFS5/src/view/idcase/info/casedoc/dna/RoModuleWindow_DNA.mxml">
+<persistable path="/IFS5/src/view/idcase/info/casedoc/dna/RoModuleWindow_DNA.mxml"/>
+</file>
+<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="com.adobe.flexbuilder.editors.mxml.MXMLEditor" name="IdCaseQueryWindow.mxml" tooltip="IFS5/src/view/idcase/query/query/IdCaseQueryWindow.mxml">
+<persistable path="/IFS5/src/view/idcase/query/query/IdCaseQueryWindow.mxml"/>
+</file>
+<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="com.adobe.flexbuilder.editors.mxml.MXMLEditor" name="QueryIdCaseConsignModule.mxml" tooltip="IFS5/src/view/idcase/query/query/QueryIdCaseConsignModule.mxml">
+<persistable path="/IFS5/src/view/idcase/query/query/QueryIdCaseConsignModule.mxml"/>
+</file>
+<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="com.adobe.flexbuilder.editors.mxml.MXMLEditor" name="StrWindow.mxml" tooltip="IFS5/src/view/idcase/str/StrWindow.mxml">
+<persistable path="/IFS5/src/view/idcase/str/StrWindow.mxml"/>
+</file>
+<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="com.adobe.flexbuilder.editors.mxml.MXMLEditor" name="NewConsignModule.mxml" tooltip="IFS5/src/view/idcase/query/task/NewConsignModule.mxml">
+<persistable path="/IFS5/src/view/idcase/query/task/NewConsignModule.mxml"/>
+</file>
+<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="com.adobe.flexbuilder.editors.mxml.MXMLEditor" name="DictCbb.mxml" tooltip="IFS5/src/view/tool/DictCbb.mxml">
+<persistable path="/IFS5/src/view/tool/DictCbb.mxml"/>
+</file>
+<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="com.adobe.flexbuilder.editors.mxml.MXMLEditor" name="ConInfoTool.mxml" tooltip="IFS5/src/view/idcase/tool/idcase/ConInfoTool.mxml">
+<persistable path="/IFS5/src/view/idcase/tool/idcase/ConInfoTool.mxml"/>
+</file>
+<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="com.adobe.flexbuilder.editors.mxml.MXMLEditor" name="DictSetModule.mxml" tooltip="IFS5/src/view/sysset/DictSetModule.mxml">
+<persistable path="/IFS5/src/view/sysset/DictSetModule.mxml"/>
+</file>
+</mruList>
+</workbench>

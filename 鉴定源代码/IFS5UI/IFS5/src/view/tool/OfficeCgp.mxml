@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:HGroup xmlns:fx="http://ns.adobe.com/mxml/2009" 
+		  xmlns:s="library://ns.adobe.com/flex/spark" 
+		  xmlns:mx="library://ns.adobe.com/flex/mx" >
+	<fx:Script>
+		<![CDATA[			
+			import mx.collections.ArrayList;
+			import locator.JusTypeLocator;
+			import spark.components.CheckBox;
+			
+			private var list:ArrayList=new ArrayList();
+			
+			public function set dnaEnable(ofcType:String):void
+			{
+				if(ofcType=="0")//全部
+				{
+					list=JusTypeLocator.getInstance().getAllOffice();
+					if(JusTypeLocator.getInstance().jusTypeVo.Enabled=="1")list.addItem({label:"DNA"});
+				}
+				else if(ofcType=="1")//非dna
+				{
+					list=JusTypeLocator.getInstance().getAllOffice();
+				}
+				else if(ofcType=="2")//dna
+				{
+					list.addItem({label:"DNA"})	
+				}
+				
+				this.removeAllElements();
+				for(var i:int=0;i<list.length;i++)
+				{
+					var lbl:String=list.getItemAt(i).label;
+					var rb:CheckBox=new CheckBox();
+					rb.label=lbl;
+					rb.selected=(selectedItems.search(rb.label+"，")>=0);
+					this.addElement(rb);
+				}
+			}
+			
+			private var selectedItems:String="";
+			public function get SelectedItems():String
+			{
+				var items:String="";
+				for(var i:int=0;i<this.numElements;i++)
+				{
+					var rb:CheckBox=this.getElementAt(i) as CheckBox;
+					if(rb.selected)
+					{
+						items+=list.getItemAt(i).label+"，";
+					}
+				}
+				return items;
+			}
+			public function set SelectedItems(items:String):void
+			{
+				selectedItems=items;
+			}
+		]]>
+	</fx:Script>
+</s:HGroup>

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:ComboBox xmlns:fx="http://ns.adobe.com/mxml/2009"
+				xmlns:s="library://ns.adobe.com/flex/spark"
+				xmlns:mx="library://ns.adobe.com/flex/mx" change="combobox1_changeHandler(event)">
+	<fx:Script>
+		<![CDATA[			
+			import mx.collections.ArrayList;
+			import locator.DictLocator;
+			import spark.events.IndexChangeEvent;
+			
+			public static const event_name:String="DictCbb_Event";
+			private var list:ArrayList=new ArrayList();
+			
+			public function set dictName(dn:String):void
+			{
+				this.dataProvider=DictLocator.getInstance().getItem(dn);
+			}			
+			//External call			
+			public function getSelectedItem():String
+			{			
+				return this.selectedIndex>=0?this.selectedItem.label:this.textInput.text;
+			}			
+			
+			protected function combobox1_changeHandler(event:IndexChangeEvent):void
+			{
+				dispatchEvent(new Event(event_name));
+			}
+			
+		]]>
+	</fx:Script>
+</s:ComboBox>

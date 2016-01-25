@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009"
+		 xmlns:s="library://ns.adobe.com/flex/spark"
+		 xmlns:mx="library://ns.adobe.com/flex/mx"
+		 xmlns:ns1="*"
+		 width="813" height="547" creationComplete="refreshFile()" fontSize="14">
+	<fx:Script>
+		<![CDATA[
+			import com.adobe.cairngorm.control.CairngormEventDispatcher;
+			
+			import control.*;
+			
+			import locator.CaseFileLocator;
+			import locator.IdFlowLocator;
+			import locator.PsbLocator;
+			
+			import mx.containers.ViewStack;
+			import mx.events.FlexEvent;
+			
+			import util.Helper;
+			import util.Server;
+			
+			import vo.CaseFileVo;
+			
+			public var vs:ViewStack;
+			
+			protected function button1_clickHandler(event:MouseEvent):void
+			{
+				if(IdFlowLocator.getInstance().curObj.CONNO.length==1)
+				{
+					Helper.showAlert("请先保存案件信息。");
+					return;
+				}
+				
+				mfu.upload_url=Server.getCaseUploadUrl(PsbLocator.getInstance().idPsb.ID,
+					IdFlowLocator.getInstance().curObj.CONNO,"1");
+				mfu.uploadAll();
+			}
+			
+			protected function refreshFile():void
+			{
+				CaseFileLocator.getInstance().fileType="电子材料";
+				CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.CASEFILEWS_GetAll));
+			}
+			
+			protected function button2_clickHandler(event:MouseEvent):void
+			{
+				if(list.selectedItem!=null)
+				{
+					CaseFileLocator.getInstance().wsObj=list.selectedItem as CaseFileVo;
+					CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.CASEFILEWS_Delete));
+				}
+			}
+			
+			protected function list_doubleClickHandler(event:MouseEvent):void
+			{
+				if(list.selectedItem!=null)
+				{
+					navigateToURL(new URLRequest(list.selectedItem.Url));
+				}
+			}
+			
+		]]>
+	</fx:Script>
+	<fx:Declarations>
+		<!-- 将非可视元素（例如服务、值对象）放在此处 -->
+	</fx:Declarations>
+	<ns1:MultiFileUploader id="mfu" x="10" y="50" height="436" backgroundAlpha="0.0"
+						   contentBackgroundAlpha="0.0">
+	</ns1:MultiFileUploader>
+	<s:List id="list" x="630" y="79" width="175" height="458"
+			dataProvider="{CaseFileLocator.getInstance().edataList}"
+			doubleClick="list_doubleClickHandler(event)" doubleClickEnabled="true"
+			labelField="FileName"></s:List>
+	<s:Button x="733" y="50" click="button2_clickHandler(event)"
+			  enabled="{PsbLocator.getInstance().npending}" skinClass="assets.skins.Button_sc"/>
+	<s:Button x="243" y="516" label="上传" click="button1_clickHandler(event)"
+			  skinClass="assets.skins.Button_upload"/>
+	<s:Button x="628" y="50" click="refreshFile()" enabled="{PsbLocator.getInstance().npending}"
+			  skinClass="assets.skins.Button_refresh"/>
+	<s:Button x="321" y="516" click="if(vs!=null)vs.selectedIndex++;"
+			  skinClass="assets.skins.Button_xyb"/>
+	<s:Label x="10" y="10" color="#0A37FA" fontSize="20" fontWeight="bold" text="相关电子材料"/>
+</s:Group>

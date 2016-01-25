@@ -1,0 +1,4 @@
+#Thu Jan 14 18:06:15 CST 2016
+prefWatchExpressions=<?xml version\="1.0" encoding\="UTF-8" standalone\="no"?>\r\n<watchExpressions>\r\n<expression enabled\="true" text\="PsbLocator.getInstance().psbList11.length"/>\r\n<expression enabled\="true" text\="this.dataProvide"/>\r\n<expression enabled\="true" text\="this.dataProvider.length"/>\r\n</watchExpressions>\r\n
+eclipse.preferences.version=1
+org.eclipse.debug.core.USE_STEP_FILTERS=false

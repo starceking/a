@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009"
+		 xmlns:s="library://ns.adobe.com/flex/spark"
+		 xmlns:mx="library://ns.adobe.com/flex/mx"
+		 width="813" height="547" fontSize="14" xmlns:ns1="*" creationComplete="refreshFile()">
+	<fx:Script>
+		<![CDATA[
+			import com.adobe.cairngorm.control.CairngormEventDispatcher;			
+			import control.*;			
+			import locator.CaseFileLocator;			
+			
+			protected function refreshFile():void
+			{
+				CaseFileLocator.getInstance().fileType="电子材料";
+				CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.CASEFILEWS_GetAll));
+			}
+			
+			protected function list_doubleClickHandler(event:MouseEvent):void
+			{
+				if(list.selectedItem!=null)
+				{
+					navigateToURL(new URLRequest(list.selectedItem.Url));
+				}
+			}
+			
+		]]>
+	</fx:Script>
+	<fx:Declarations>
+		<!-- 将非可视元素（例如服务、值对象）放在此处 -->
+	</fx:Declarations>
+	<s:List id="list" dataProvider="{CaseFileLocator.getInstance().edataList}" 
+			x="10" y="50" width="793" height="487" labelField="FileName" doubleClickEnabled="true"
+			doubleClick="list_doubleClickHandler(event)"></s:List>
+	<s:Label x="10" y="10" color="#0A37FA" fontSize="20" fontWeight="bold" text="相关电子材料"/>
+</s:Group>

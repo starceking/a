@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009"
+		 xmlns:s="library://ns.adobe.com/flex/spark"
+		 xmlns:mx="library://ns.adobe.com/flex/mx"
+		 xmlns:accept="view.idcase.tool.accept.*"
+		 width="813" height="560" fontSize="14">
+	<fx:Declarations>
+		<!-- 将非可视元素（例如服务、值对象）放在此处 -->
+	</fx:Declarations>
+	<fx:Script>
+		<![CDATA[
+			import com.adobe.cairngorm.control.CairngormEventDispatcher;
+			
+			import control.*;
+			import mx.containers.ViewStack;
+			import locator.IdFlowLocator;
+			import locator.JusTypeLocator;
+			import locator.MRelativeLocator;
+			import locator.PsbLocator;
+			
+			import util.Helper;
+			
+			public var locObj:IdFlowLocator=IdFlowLocator.getInstance();
+			public var mprLoc:MRelativeLocator=MRelativeLocator.getInstance();
+			public var vs:ViewStack;
+			
+			protected function getNextMpNoClickHandler(event:MouseEvent):void
+			{
+				var year:String=ait.accYear.text;
+				var no:String=ait.accCaseNo.text;
+				if(year.length>0&&no.length>0)
+				{
+					locObj.mpnotxt=null;
+					locObj.mpr1notxt=mpr1No;
+					locObj.mpr2notxt=mpr2No;
+					
+					locObj.preFixSe=Helper.getSlnStr(JusTypeLocator.getInstance().jusTypeVo.LRSLN,year,no,"");
+					locObj.tableName=JusTypeLocator.getInstance().jusTypeVo.WholeNo=="1"?"样本视图":"亲属信息";	
+					
+					locObj.wsObj=locObj.curObj;
+					locObj.wsObj.ACC_YEAR=year;
+					locObj.wsObj.ACC_NO=no;
+					
+					CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.IDFLOWWS_GetNextSLN));
+				}
+			}
+			
+			protected function saveClickHandler(event:MouseEvent):void
+			{
+				if(mprLoc.curObj.ORA_FLAG=="0")
+				{
+					if(validateInput()) 
+					{
+						mprLoc.wsObj=mprLoc.curObj;
+						mprLoc.wsObj.R1_SLN=mpr1No.text;
+						mprLoc.wsObj.R2_SLN=mpr2No.text;
+						CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.IDFLOWWS_UpdateAcceptMpr));
+						if(vs!=null)vs.selectedIndex++;
+					}
+				}
+				else
+				{
+					Helper.showAlert("不能重复受理!");
+				}	
+			}
+			
+			private function validateInput():Boolean
+			{								
+				var result:Boolean=ait.save();
+				if(result)
+				{
+					if(locObj.wsObj.ID_STATUS=="不予受理")return true;
+					if(mpr1No.text=="受理后自动生成")
+					{
+						Helper.showAlert("请先获取样本编号");
+						return false;
+					}
+					if(mpr2No.text=="受理后自动生成")
+					{
+						Helper.showAlert("请先获取样本编号");
+						return false;
+					}
+					result=result && Helper.validateTextInput(mpr1No);
+					result=result && Helper.validateTextInput(mpr2No);
+				}				
+				return result;
+			}
+			
+		]]>
+	</fx:Script>	
+	<accept:AcceptInfoTool id="ait" x="10" y="10">
+	</accept:AcceptInfoTool>
+	<s:VGroup x="10" y="268">
+		<s:HGroup verticalAlign="middle">
+			<s:Label color="#FD0606" text="亲属一号："/>
+			<s:TextInput id="mpr1No" width="180" text="{mprLoc.curObj.R1_SLN}"/>
+			<s:Label color="#FD0606" text="亲属二号："/>
+			<s:TextInput id="mpr2No" width="180" text="{mprLoc.curObj.R2_SLN}"/>
+			<mx:LinkButton label="获取最新的失踪人员亲属样本编号" click="getNextMpNoClickHandler(event)"
+						   enabled="{PsbLocator.getInstance().npending}" textDecoration="underline"/>
+		</s:HGroup>
+		<s:HGroup verticalAlign="middle">
+			<s:Spacer width="178" height="10"/>
+			<s:Button click="saveClickHandler(event)" enabled="{PsbLocator.getInstance().npending}"
+					  skinClass="assets.skins.Button_bc"/>
+			<s:Label color="#FF0000" text="注意：案件若未自动同步到DNA系统。请立即让鉴定人先取消受理后，再重新受理一次"/>
+		</s:HGroup>
+	</s:VGroup>
+</s:Group>

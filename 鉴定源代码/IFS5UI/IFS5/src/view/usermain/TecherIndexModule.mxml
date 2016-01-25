@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Module xmlns:fx="http://ns.adobe.com/mxml/2009"
+		  xmlns:s="library://ns.adobe.com/flex/spark"
+		  xmlns:mx="library://ns.adobe.com/flex/mx"
+		  xmlns:tool="view.tool.*"
+		  width="953" height="598" creationComplete="MenuLocator.getInstance().changeMenu(menuGp);"
+		  fontSize="14">
+	<fx:Declarations>
+		<!-- 将非可视元素（例如服务、值对象）放在此处 -->		
+	</fx:Declarations>
+	<fx:Script>
+		<![CDATA[
+			import locator.MenuLocator;		
+			import locator.SysUserLocator;
+			import locator.PsbLocator;
+			import locator.ExCaseLocator;
+			import mx.events.FlexEvent;			
+			import util.Helper;			
+			import vo.MenuVo;	
+			import util.Server;
+		]]>
+	</fx:Script>
+	<s:Panel width="953" height="598">
+		<s:HGroup id="menuGp" x="10" y="-27"/>	
+		<s:VGroup x="10">
+			<s:HGroup height="24" verticalAlign="middle">
+				<s:Label fontWeight="bold"
+						 text="{'这里是'+PsbLocator.getInstance().idPsb.NAME+'！    欢迎您：'+SysUserLocator.getInstance().loginUser.NAME+'（'+SysUserLocator.getInstance().loginUser.PNAME+'）'}"/>
+			</s:HGroup>
+			<s:HGroup height="130" verticalAlign="middle">
+				<tool:MenuTool url="assets/images/main/文书审核.png" label="{'文书审核'+ExCaseLocator.getInstance().shrw}" clickUrl="view/idcase/query/task/AuditTaskModule.swf" />
+			</s:HGroup>
+			<s:HGroup height="130" verticalAlign="middle">
+				<tool:MenuTool url="assets/images/main/案件查询.png" label="案件查询" clickUrl="view/idcase/query/query/QueryIdCaseModule.swf" />
+				<tool:MenuTool url="assets/images/main/统计报表.png" label="统计报表" clickUrl="view/report/StatisticsView.swf" />
+			</s:HGroup>
+			<s:HGroup height="130" verticalAlign="middle">
+				<tool:MenuTool url="assets/images/main/人员档案.png" label="人员档案" clickUrl="view/usermain/ryda/RydaModule.swf" />
+			</s:HGroup>
+		</s:VGroup>
+	</s:Panel>
+</s:Module>

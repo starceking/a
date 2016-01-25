@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
+		 xmlns:s="library://ns.adobe.com/flex/spark" 
+		 xmlns:mx="library://ns.adobe.com/flex/mx" 
+		 xmlns:tool="view.tool.*"
+		 fontSize="14" width="813" height="553"
+		 creationComplete="module1_creationCompleteHandler(event)"
+		 >
+	<fx:Script>
+		<![CDATA[
+			import com.adobe.cairngorm.control.CairngormEventDispatcher;
+			import control.*;
+			
+			import locator.EquipmentLocator;
+			import locator.MenuLocator;
+			import locator.EquipmentCheckLocator;
+			import mx.events.FlexEvent;
+			import util.Helper;
+			import vo.EquipmentCheckVo;
+			import vo.MenuVo;	
+			
+			protected function module1_creationCompleteHandler(event:FlexEvent):void
+			{
+				// TODO Auto-generated method stub
+				EquipmentCheckLocator.getInstance().wsObj=new EquipmentCheckVo(Helper.getGUID(),EquipmentLocator.getInstance().currObj.ID,TextHcr.text,TextJdr.text,TextHcjg.text,TxetHcrq.text,TextHcnr.text);
+				CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.EQUIPMENTCHECK_GetOne)); 
+			}
+			protected function BtnAdd_clickHandler(event:MouseEvent):void
+			{
+				// TODO Auto-generated method stub
+				EquipmentCheckLocator.getInstance().wsObj=new EquipmentCheckVo(Helper.getGUID(),EquipmentLocator.getInstance().currObj.ID,TextHcr.text,TextJdr.text,TextHcjg.text,TxetHcrq.text,TextHcnr.text);
+				CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.EQUIPMENTCHECK_Insert));
+				Helper.showAlert("新增成功！");
+			}
+			
+			protected function BtnDelete_clickHandler(event:MouseEvent):void
+			{
+				// TODO Auto-generated method stub
+				
+				EquipmentCheckLocator.getInstance().wsObj =gd.selectedItem as EquipmentCheckVo ;
+				CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.EQUIPMENTCHECK_Delete));
+				Helper.showAlert("删除成功！");
+				
+			}
+			
+			protected function BtnUpfate_clickHandler(event:MouseEvent):void
+			{
+				// TODO Auto-generated method stub
+				
+				EquipmentCheckLocator.getInstance().wsObj=new EquipmentCheckVo(gd.selectedItem.ID,EquipmentLocator.getInstance().currObj.ID,TextHcr.text,TextJdr.text,TextHcjg.text,TxetHcrq.text,TextHcnr.text);
+				CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.EQUIPMENTCHECK_Update));
+				Helper.showAlert("修改成功！");
+				
+			}
+			
+			protected function button1_clickHandler(event:MouseEvent):void
+			{
+				// TODO Auto-generated method stub
+				EquipmentLocator.getInstance().wordName="CX23-09仪器设备期间核查记录表.doc";
+				EquipmentLocator.getInstance().num1=gd.selectedItem.ID;
+				EquipmentLocator.getInstance().num=EquipmentLocator.getInstance().currObj.ID;
+				EquipmentLocator.getInstance().filename=Helper.getGUID();
+				CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.EQUIPMENT_MackAllFB));
+			}
+			
+		]]>
+	</fx:Script>
+	<fx:Declarations>
+		<!-- 将非可视元素（例如服务、值对象）放在此处 -->
+	</fx:Declarations>
+	<s:Label x="10" y="10" color="#0A37FA" fontSize="20" fontWeight="bold" text="期间核查"/>
+	<s:DataGrid id="gd" x="8" y="34" width="796" height="252" dataProvider="{EquipmentCheckLocator.getInstance().listObj}">
+		<s:columns>
+			<s:ArrayList>
+				<s:GridColumn dataField="HCR" headerText="核查人"></s:GridColumn>
+				<s:GridColumn dataField="JDR" headerText="监督人"></s:GridColumn>
+				<s:GridColumn dataField="HCJG" headerText="核查结果"></s:GridColumn>
+				<s:GridColumn dataField="HCRQ" headerText="核查日期"></s:GridColumn>
+				<s:GridColumn dataField="HCNR" headerText="核查内容"></s:GridColumn>
+			</s:ArrayList>
+		</s:columns>
+	</s:DataGrid>
+	<s:Label x="10" y="294" text="核  查  人："/>
+	<s:TextInput id="TextHcr" x="81" y="291" width="315" text="{gd.selectedItem.HCR}"/>
+	<s:Label x="12" y="440" text="核查结果："/>
+	<s:TextArea id="TextHcjg" x="82" y="440" width="721" height="81" text="{gd.selectedItem.HCJG}"/>
+	<s:Label x="12" y="332" text="核查日期："/>
+	<tool:DateZh  id="TxetHcrq" x="82" y="322" width="314" text="{gd.selectedItem.HCRQ}"/>
+	<s:Label x="11" y="366" text="核查内容："/>
+	<s:TextArea id="TextHcnr" x="82" y="352" width="721" height="80" text="{gd.selectedItem.HCNR}"/>
+	<s:Button id="BtnAdd" x="582" y="529" label="增加" click="BtnAdd_clickHandler(event)"/>
+	<s:Button id="BtnDelete" x="659" y="529" label="删除" click="BtnDelete_clickHandler(event)" enabled="{gd.selectedItem!=null}"/>
+	<s:Button id="BtnUpfate" x="733" y="529" label="修改" click="BtnUpfate_clickHandler(event)" enabled="{gd.selectedItem!=null}"/>
+	<s:Label x="404" y="300" text="监  督  人："/>
+	<s:TextInput id="TextJdr" x="473" y="292" width="330" text="{gd.selectedItem.JDR}"/>
+	<mx:LinkButton x="579" y="8" width="223" label="打印仪器设备期间核查记录表" click="button1_clickHandler(event)" enabled="{gd.selectedItem!=null}" textDecoration="underline" color="blue"/>
+	
+	
+</s:Group>

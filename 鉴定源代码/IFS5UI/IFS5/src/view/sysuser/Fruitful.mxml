@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009"
+		 xmlns:s="library://ns.adobe.com/flex/spark"
+		 xmlns:mx="library://ns.adobe.com/flex/mx"
+		 xmlns:tool="view.tool.*"
+		 width="813" height="547" fontSize="14" creationComplete="creationCompleteHandler(event)">
+	<fx:Script>
+		<![CDATA[
+			import com.adobe.cairngorm.control.CairngormEventDispatcher;
+			
+			import control.*;
+			
+			import locator.FruitfulLocator;
+			import locator.PsbLocator;
+			import locator.SysUserLocator;
+			
+			import mx.containers.ViewStack;
+			import mx.events.FlexEvent;
+			
+			import util.Helper;
+			
+			import vo.FruitfulVo;
+			
+			private var locObj:FruitfulLocator=FruitfulLocator.getInstance();
+			private var sysuser:SysUserLocator=SysUserLocator.getInstance();
+			public var vs:ViewStack;
+			
+			protected function creationCompleteHandler(event:FlexEvent):void
+			{
+				locObj.wsObj=new FruitfulVo("",sysuser.curObj.ID,"","","","","","");
+				CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.FRUITFULWS_GetAll));
+			}
+			
+			private function getOperVo():FruitfulVo
+			{
+				return new FruitfulVo(Helper.getGUID(),sysuser.curObj.ID,projectName.text,awardDate.text,
+					awardUnit.text,rewardName.text,awardRank.text,remark.text);
+			}
+			protected function insertClickHandler(event:MouseEvent):void
+			{
+				locObj.wsObj=getOperVo();
+				CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.FRUITFULWS_Insert));			
+			}
+			protected function updateClickHandler(event:MouseEvent):void
+			{				
+				if(dg.selectedItem!=null)
+				{
+					locObj.wsObj=getOperVo();
+					locObj.wsObj.ID=dg.selectedItem.ID;
+					CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.FRUITFULWS_Update));
+				}
+				else
+				{
+					Helper.showAlert("请先选中对应数据行");
+				}
+			}
+			protected function deleteClickHandler(event:MouseEvent):void
+			{
+				if(dg.selectedItem!=null)
+				{
+					locObj.wsObj=getOperVo();
+					locObj.wsObj.ID=dg.selectedItem.ID;
+					CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.FRUITFULWS_Delete));
+				}
+				else
+				{
+					Helper.showAlert("请先选中对应数据行");
+				}
+			}
+			
+		]]>
+	</fx:Script>
+	<fx:Declarations>
+		<!-- 将非可视元素（例如服务、值对象）放在此处 -->
+	</fx:Declarations>
+	<s:Label x="10" y="10" color="#0A37FA" fontSize="20" fontWeight="bold" text="专业成果"/>
+	<s:DataGrid id="dg" x="14" y="44" width="764" height="245" dataProvider="{locObj.listObj}">
+		<s:columns>
+			<s:ArrayList>
+				<s:GridColumn dataField="ProjectName" headerText="项目名称"></s:GridColumn>
+				<s:GridColumn dataField="AwardDate" headerText="颁发日期"></s:GridColumn>
+				<s:GridColumn dataField="AwardUnit" headerText="颁奖单位"></s:GridColumn>
+				<s:GridColumn dataField="RewardName" headerText="奖励名称"></s:GridColumn>
+				<s:GridColumn dataField="AwardRank" headerText="奖励等级"></s:GridColumn>
+			</s:ArrayList>
+		</s:columns>
+	</s:DataGrid>
+	<s:Label x="22" y="413" text="备       注："/>
+	<s:Label x="21" y="387" text="颁奖单位："/>
+	<s:TextInput id="rewardName" x="503" y="347" width="275" text="{dg.selectedItem.RewardName}"/>
+	<s:TextInput id="awardRank" x="503" y="385" width="273" text="{dg.selectedItem.AwardRank}"/>
+	<s:Label x="417" y="390" text="奖励等级："/>
+	<s:Label x="417" y="356" text="奖励名称："/>
+	<s:TextInput id="awardUnit" x="107" y="378" width="280" text="{dg.selectedItem.AwardUnit}"/>
+	<s:TextInput id="projectName" x="107" y="307" width="671" text="{dg.selectedItem.ProjectName}"/>
+	<s:Label x="20" y="315" text="项目名称："/>
+	<s:Label x="22" y="351" text="颁发日期："/>
+	<s:Button x="548" y="502" label="新增" click="insertClickHandler(event)"/>
+	<s:Button x="708" y="502" label="删除" click="deleteClickHandler(event)"  visible="{dg.selectedItem!=null}"/>
+	<s:Button x="630" y="502" label="保存" click="updateClickHandler(event)" visible="{dg.selectedItem!=null}"/>
+	<tool:DateZh id="awardDate" x="107" y="345" width="280" text="{dg.selectedItem.AwardDate}"/>
+	<s:TextArea id="remark" x="107" y="413" width="669" height="72" text="{dg.selectedItem.Remark}"/>
+</s:Group>

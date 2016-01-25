@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
+		 xmlns:s="library://ns.adobe.com/flex/spark" 
+		 xmlns:mx="library://ns.adobe.com/flex/mx" fontSize="14" width="813" height="529"
+		 creationComplete="select_sfUpdate_clickHandler(event)"
+		 xmlns:tool="view.tool.*"
+		 >
+	<fx:Declarations>
+		<!-- 将非可视元素（例如服务、值对象）放在此处 -->
+	</fx:Declarations>
+	<fx:Script>
+		<![CDATA[
+			import com.adobe.cairngorm.control.CairngormEventDispatcher;
+			
+			import control.*;
+			
+			import locator.MenuLocator;
+			import locator.SuppliesLocator;
+			import locator.SuppliesProcurementLocator;
+			
+			import mx.events.FlexEvent;
+			
+			import util.Helper;
+			
+			import vo.MenuVo;
+			import vo.SuppliesVo;
+			import vo.SuppliesProcurementVo;
+			
+			
+			protected function select_sfUpdate_clickHandler(event:FlexEvent):void
+			{
+				// TODO Auto-generated method stub
+				SuppliesProcurementLocator.getInstance().wsObj =new SuppliesProcurementVo("",SuppliesLocator.getInstance().currObj.ID,"","","","","");
+				CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.SUPPLIESPROCUREMENT_GetOne)); 
+				
+			}
+			protected function BtnAdd_clickHandler(event:MouseEvent):void
+			{
+				// TODO Auto-generated method stub
+				SuppliesProcurementLocator.getInstance().wsObj = new SuppliesProcurementVo(Helper.getGUID(),SuppliesLocator.getInstance().currObj.ID,TextCgr.text,TextSl.text,TextPh.text,TextRq.text,TextJg.text);
+				CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.SUPPLIESPROCUREMENT_Insert));
+			}
+			
+			protected function BtnDelete_clickHandler(event:MouseEvent):void
+			{
+				// TODO Auto-generated method stub
+				SuppliesProcurementLocator.getInstance().wsObj =gd.selectedItem as SuppliesProcurementVo ;
+				CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.SUPPLIESPROCUREMENT_Delete));
+				
+			}
+			
+			protected function BrnUpdate_clickHandler(event:MouseEvent):void
+			{
+				// TODO Auto-generated method stub
+				SuppliesProcurementLocator.getInstance().wsObj = new SuppliesProcurementVo(gd.selectedItem.ID,SuppliesLocator.getInstance().currObj.ID,TextCgr.text,TextSl.text,TextPh.text,TextRq.text,TextJg.text);
+				CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.SUPPLIESPROCUREMENT_Update));
+				
+			}
+			
+			protected function button1_clickHandler(event:MouseEvent):void
+			{
+				// TODO Auto-generated method stub
+				SuppliesProcurementLocator.getInstance().wordName="BG-JSGL-005标准物质采购记录.doc";
+				SuppliesProcurementLocator.getInstance().num=SuppliesLocator.getInstance().currObj.ID;
+				SuppliesProcurementLocator.getInstance().filename=Helper.getGUID();
+				CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.SUPPLIESPROCUREMENT_MackAllHCCG));
+			}
+			
+		]]>
+	</fx:Script>
+	<s:Label x="10" y="10" color="#0A37FA" fontSize="20" fontWeight="bold" text="采购记录"/>
+	<s:DataGrid id="gd" x="10" y="38" width="543" height="481" dataProvider="{SuppliesProcurementLocator.getInstance().listObj}">
+		<s:columns>
+			<s:ArrayList>
+				<s:GridColumn dataField="CGR" headerText="采购人"></s:GridColumn>
+				<s:GridColumn dataField="CGSL" headerText="数量"></s:GridColumn>
+				<s:GridColumn dataField="PH" headerText="批号"></s:GridColumn>
+				<s:GridColumn dataField="CGRQ" headerText="采购日期"></s:GridColumn>
+				<s:GridColumn dataField="YSJG" headerText="采购价格"></s:GridColumn>
+			</s:ArrayList>
+		</s:columns>
+	</s:DataGrid>
+	<s:Label x="561" y="76" text="采  购  人："/>
+	<s:TextInput id="TextCgr" x="656" y="67" text="{gd.selectedItem.CGR}"/>
+	<s:Label x="562" y="109" text="采购数量："/>
+	<s:TextInput id="TextSl" x="656" y="101"  text="{gd.selectedItem.CGSL}" restrict="0123456789"/>
+	<s:Label x="562" y="145" height="13" text="批       号："/>
+	<s:TextInput id="TextPh" x="655" y="134"  text="{gd.selectedItem.PH}"/>
+	<s:Label x="562" y="178" text="采购日期："/>
+	<tool:DateZh id="TextRq" x="656" y="167" width="148" text="{gd.selectedItem.CGRQ}"/>
+	<s:Label x="562" y="210" text="采购价格："/>
+	<s:TextInput id="TextJg" x="656" y="200"  text="{gd.selectedItem.YSJG}"/>
+	<s:Button id="BtnAdd" x="576" y="498" label="增加" click="BtnAdd_clickHandler(event)"/>
+	<s:Button id="BtnDelete" x="732" y="498" label="删除" click="BtnDelete_clickHandler(event)" enabled="{gd.selectedItem!=null}"/>
+	<s:Button id="BrnUpdate" x="654" y="498" label="修改" click="BrnUpdate_clickHandler(event)" enabled="{gd.selectedItem!=null}"/>
+	<mx:LinkButton x="682" y="10" label="打印采购一览表" click="button1_clickHandler(event)" color="blue"
+				   textDecoration="underline" visible="false"/>
+</s:Group>

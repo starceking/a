@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Module xmlns:fx="http://ns.adobe.com/mxml/2009"
+		  xmlns:s="library://ns.adobe.com/flex/spark"
+		  xmlns:mx="library://ns.adobe.com/flex/mx"
+		  xmlns:local="*"
+		  width="953" height="598" fontSize="14"
+		  creationComplete="MenuLocator.getInstance().changeMenu(menuGp);">
+	<fx:Declarations>
+		<!-- 将非可视元素（例如服务、值对象）放在此处 -->		
+	</fx:Declarations>
+	<fx:Script>
+		<![CDATA[
+			import com.adobe.cairngorm.control.CairngormEventDispatcher;
+			
+			import control.*;
+			import locator.MenuLocator;	
+			import locator.CasePersonnelSampleQtrLocator;
+			import locator.CasePersonnelSampleShrLocator;
+			import locator.CasePersonnelSampleXyrLocator;
+			import locator.CaseRelativeShrLocator;
+			import locator.CaseRelativeXyrLocator;
+			import locator.DnaSeLocator;
+			import locator.IdFlowLocator;
+			import locator.PsbLocator;
+			import locator.UnknownDeceasedLocator;
+			import locator.JusTypeLocator;
+			import locator.SysUserLocator;
+			import util.Helper;
+			
+			import vo.IdFlowVo;
+			
+			protected function queryClickHandler(event:Event):void
+			{
+				IdFlowLocator.getInstance().wsObj=new IdFlowVo("",PsbLocator.getInstance().idPsb.ID,"","","","","","","","","",
+					"","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","",
+					"","","","","","","","","","","","","","","","","","","","","","","",caseName.text,"",caseNo.text,"","","","","",
+					"","","","","","","","","");				
+				CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.IDCASEWS_GetAllD));
+			}			
+			
+			protected function dg_doubleClickHandler(event:MouseEvent):void
+			{
+				IdFlowLocator.getInstance().wholeCase=false;
+				if(dg.selectedItem!=null)
+				{
+					var voObj:IdFlowVo=dg.selectedItem as IdFlowVo;					
+					var caseId:String=Helper.getGUID();				
+					IdFlowLocator.getInstance().curObj=new IdFlowVo("D",PsbLocator.getInstance().idPsb.ID,caseId,"信息录入",
+						PsbLocator.getInstance().loginPsb.ID,SysUserLocator.getInstance().loginUser.ID,
+						voObj.CONER2NAME,voObj.CONER2POLICENO,
+						JusTypeLocator.getInstance().jusTypeVo.YEAR,"",Helper.getStrByDate(new Date()),"DNA",
+						"DNA案件","",JusTypeLocator.getInstance().jusTypeVo.IDREQ,JusTypeLocator.getInstance().jusTypeVo.DocName,
+						"","",voObj.ACC_CASE_NO,"","","","","","","","","","","","","","","","","","","","","","","","","","","","","","",
+						"","","","","",SysUserLocator.getInstance().loginUser.NAME,"","","","","","","","","","","",caseId,
+						voObj.DFGKNO,voObj.XCKYNO,voObj.CASE_NAME,voObj.CASE_TYPE,voObj.CASE_NO,voObj.SCENE_PLACE,voObj.OCCURRENCE_DATE,
+						voObj.CASE_PROPERTY,voObj.CASE_SUMMARY,voObj.ID,"","","","","","","","","");
+					Helper.pushMenu("案件委托","view/idcase/info/consign/ConsignDnaModule.swf");
+					PsbLocator.getInstance().clearData();
+				}
+				else
+				{
+					Helper.showAlert("请选择要补送的案件。");
+				}
+			}
+			
+		]]>
+	</fx:Script>
+	<s:Panel width="953" height="598">
+		<s:HGroup id="menuGp" x="10" y="-27"/>	
+		<s:VGroup left="10" right="10" top="10" bottom="10">
+			<s:HGroup width="100%" verticalAlign="middle">
+				<s:Label text="案件名称："/>
+				<s:TextInput id="caseName" width="100%"/>
+				<s:Label text="案件编号："/>
+				<s:TextInput id="caseNo" width="185"/>
+				<s:Button label="查询" click="pager.pageIndex=1;queryClickHandler(event)"
+						  enabled="{PsbLocator.getInstance().npending}"/>
+			</s:HGroup>
+			<s:DataGrid id="dg" width="100%" height="100%"
+						dataProvider="{IdFlowLocator.getInstance().listObj}"
+						doubleClick="dg_doubleClickHandler(event)" doubleClickEnabled="true">
+				<s:columns>
+					<s:ArrayList>
+						<s:GridColumn dataField="CASE_NO" headerText="案件编号" width="160"></s:GridColumn>
+						<s:GridColumn dataField="CASE_NAME" headerText="案件名称"></s:GridColumn>				
+						<s:GridColumn dataField="CON_DATE" headerText="第一次委托时间" width="140"></s:GridColumn>
+						<s:GridColumn dataField="CONER1NAME" headerText="第一次送检人" width="120"></s:GridColumn>
+					</s:ArrayList>
+				</s:columns>
+			</s:DataGrid>
+			<s:HGroup width="100%" horizontalAlign="right">
+				<local:ListPager id="pager"
+								 creationComplete="pager.addEventListener(ListPager.PAGE_INDEX_CHANGE_EVENT,queryClickHandler);IdFlowLocator.getInstance().listPager=pager;"
+								 pageSize="17">
+				</local:ListPager>
+			</s:HGroup>
+		</s:VGroup>
+	</s:Panel>
+</s:Module>

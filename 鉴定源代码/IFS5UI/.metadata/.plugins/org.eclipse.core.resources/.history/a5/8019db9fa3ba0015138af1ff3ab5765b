@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:TitleWindow xmlns:fx="http://ns.adobe.com/mxml/2009"
+			   xmlns:s="library://ns.adobe.com/flex/spark"
+			   xmlns:mx="library://ns.adobe.com/flex/mx"
+			   xmlns:tool="view.tool.*"
+			   width="500" height="600" close="PopUpManager.removePopUp(this);"
+			   creationComplete="module1_creationCompleteHandler(event)" fontSize="14"
+			   title="请选择委托单位">
+	<fx:Declarations>
+		<!-- 将非可视元素（例如服务、值对象）放在此处 -->
+	</fx:Declarations>
+	<fx:Script>
+		<![CDATA[
+			import com.adobe.cairngorm.control.CairngormEventDispatcher;
+			
+			import control.*;
+			
+			import locator.IdFlowLocator;
+			import locator.PsbLocator;
+			import locator.SysUserLocator;
+			
+			import mx.events.CloseEvent;
+			import mx.events.FlexEvent;
+			import mx.managers.PopUpManager;
+			
+			import spark.events.IndexChangeEvent;
+			
+			import util.Helper;
+			
+			import vo.PsbVo;
+			
+			protected function module1_creationCompleteHandler(event:FlexEvent):void
+			{
+				PsbLocator.getInstance().psbList11.removeAll();
+				PsbLocator.getInstance().psbList12.removeAll();
+				PsbLocator.getInstance().psbList13.removeAll();
+				PsbLocator.getInstance().psbList14.removeAll();
+				
+				PsbLocator.getInstance().wsObj=new PsbVo("","000000000000000000000000000000","1","","","","","","","11");
+				CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.PSBWS_GetAll));
+				pPsb.selectedIndex=0;
+				//默认绑定辽宁省
+				PsbLocator.getInstance().wsObj=new PsbVo("","21000000000000000000000000000000","1","","","","","","","12");
+				CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.PSBWS_GetAll));
+				
+				PsbLocator.getInstance().psbList=PsbLocator.getInstance().psbList12;
+				
+				setTimeout(setpPsb,2000);
+			}
+			protected function setpPsb():void
+			{
+				pPsb.selectedIndex=0;
+			}
+			
+			protected function pPsb_changeHandler(event:IndexChangeEvent):void
+			{
+				PsbLocator.getInstance().psbList12.removeAll();
+				PsbLocator.getInstance().psbList13.removeAll();
+				PsbLocator.getInstance().psbList14.removeAll();
+				PsbLocator.getInstance().wsObj=new PsbVo("",pPsb.selectedItem.ID,"1","","","","","","","12");
+				CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.PSBWS_GetAll));
+				
+				
+				PsbLocator.getInstance().psbList=PsbLocator.getInstance().psbList12;
+			}
+			
+			protected function mPsb_changeHandler(event:IndexChangeEvent):void
+			{
+				PsbLocator.getInstance().psbList13.removeAll();
+				PsbLocator.getInstance().psbList14.removeAll();
+				PsbLocator.getInstance().wsObj=new PsbVo("",mPsb.selectedItem.ID,"1","","","","","","","13");
+				CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.PSBWS_GetAll));
+				
+				PsbLocator.getInstance().psbList=PsbLocator.getInstance().psbList13;
+			}
+			
+			protected function nPsb_changeHandler(event:IndexChangeEvent):void
+			{
+				PsbLocator.getInstance().psbList14.removeAll();
+				PsbLocator.getInstance().wsObj=new PsbVo("",nPsb.selectedItem.ID,"1","","","","","","","14");
+				CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.PSBWS_GetAll));
+				
+				PsbLocator.getInstance().psbList=PsbLocator.getInstance().psbList14;
+			}
+			
+			protected function ok_clickHandler(event:MouseEvent):void
+			{
+				if(dg.selectedItem!=null)
+				{
+					SysUserLocator.getInstance().UserNo.text=dg.selectedItem.NUMBER;
+					
+					PopUpManager.removePopUp(this);
+				}
+				else
+				{
+					Helper.showAlert("请选择委托单位");
+				}
+			}
+			
+			protected function dg_doubleClickHandler(event:MouseEvent):void
+			{
+				if(dg.selectedItem.PSBTYPE=="12")
+				{
+					PsbLocator.getInstance().psbList13.removeAll();
+					PsbLocator.getInstance().psbList14.removeAll();
+					PsbLocator.getInstance().wsObj=new PsbVo("",dg.selectedItem.ID,"1","","","","","","","13");
+					CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.PSBWS_GetAll));
+					
+					PsbLocator.getInstance().psbList=PsbLocator.getInstance().psbList13;
+					mPsb.selectedIndex=dg.selectedIndex;
+				}
+				else if(dg.selectedItem.PSBTYPE=="13")
+				{
+					PsbLocator.getInstance().psbList14.removeAll();
+					PsbLocator.getInstance().wsObj=new PsbVo("",dg.selectedItem.ID,"1","","","","","","","14");
+					CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.PSBWS_GetAll));
+					
+					PsbLocator.getInstance().psbList=PsbLocator.getInstance().psbList14;
+					nPsb.selectedIndex=dg.selectedIndex;
+				}
+			}
+			
+		]]>
+	</fx:Script>
+	<s:VGroup left="10" right="10" top="10" bottom="10" gap="14">
+		<s:HGroup verticalAlign="middle">
+			<s:Label text="一级："/>
+			<tool:PSBDdl id="pPsb" width="322" auth="" selectedLabel="辽宁省" change="pPsb_changeHandler(event)" requireSelection="true" 
+						 dataProvider="{PsbLocator.getInstance().psbList11}" labelField="NAME"/>
+		</s:HGroup>
+		<s:HGroup verticalAlign="middle">
+			<s:Label text="二级："/>
+			<s:DropDownList id="mPsb" width="322" change="mPsb_changeHandler(event)"
+							dataProvider="{PsbLocator.getInstance().psbList12}"
+							labelField="NAME" ></s:DropDownList>
+		</s:HGroup>
+		<s:HGroup verticalAlign="middle">
+			<s:Label text="三级："/>
+			<s:DropDownList id="nPsb" width="322" change="nPsb_changeHandler(event)"
+							dataProvider="{PsbLocator.getInstance().psbList13}"
+							labelField="NAME" ></s:DropDownList>
+		</s:HGroup>
+		<s:DataGrid id="dg" width="100%" height="100%" doubleClick="dg_doubleClickHandler(event)" doubleClickEnabled="true"
+					dataProvider="{PsbLocator.getInstance().psbList}">
+			<s:columns>
+				<s:ArrayList>
+					<s:GridColumn width="120" dataField="NUMBER" headerText="单位编号"></s:GridColumn>
+					<s:GridColumn dataField="NAME" headerText="单位名称"></s:GridColumn>
+				</s:ArrayList>
+			</s:columns>
+		</s:DataGrid>
+		<s:HGroup width="100%" horizontalAlign="right" verticalAlign="middle">
+			<s:Label color="#FF0000" text="选中点击确定按钮"/>
+			<s:Button label="确定" click="ok_clickHandler(event)" />
+		</s:HGroup>
+	</s:VGroup>
+	
+</s:TitleWindow>

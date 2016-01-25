@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:DropDownList xmlns:fx="http://ns.adobe.com/mxml/2009"
+				xmlns:s="library://ns.adobe.com/flex/spark"
+				xmlns:mx="library://ns.adobe.com/flex/mx" 
+				change="changeHandler(event)" requireSelection="true">
+	<fx:Script>
+		<![CDATA[			
+			import mx.collections.ArrayList;
+			import locator.DictLocator;
+			import spark.events.IndexChangeEvent;
+			
+			public static const event_name:String="DictDdl_Event";
+			
+			private var list:ArrayList=new ArrayList();
+			
+			private var ae:Boolean=false;
+			public function set allEnable(ae:Boolean):void
+			{
+				this.ae=ae;
+			}
+			
+			public function set dictName(dn:String):void
+			{
+				list=DictLocator.getInstance().getItem(dn);
+				if(ae)
+				{
+					if((list.length>0)&&list.getItemAt(0).data.toString().length>0)
+					list.addItemAt({label:"",data:""},0);
+				}
+				this.dataProvider=list;
+			}			
+			//External call			
+			public function get selectedData():String
+			{			
+				return this.selectedIndex>=0?this.selectedItem.data:"";
+			}
+			
+			public function set selectedData(sdata:String):void
+			{
+				for(var i:int=0;i<list.length;i++)
+				{
+					if(list.getItemAt(i).data==sdata)
+					{
+						this.selectedIndex=i;
+						return;
+					}
+				}
+			}
+			
+			protected function changeHandler(event:IndexChangeEvent):void
+			{
+				dispatchEvent(new Event(event_name));
+			}
+			
+		]]>
+	</fx:Script>
+</s:DropDownList>

@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:HGroup xmlns:fx="http://ns.adobe.com/mxml/2009" 
+		  xmlns:s="library://ns.adobe.com/flex/spark" 
+		  xmlns:mx="library://ns.adobe.com/flex/mx">
+	<fx:Script>
+		<![CDATA[			
+			import locator.DictLocator;
+			
+			import mx.collections.ArrayList;
+			
+			import spark.components.CheckBox;
+			
+			public static var event_name:String="DictCgp_Event";
+			
+			private var ae:Boolean=false;
+			public function set allEnable(ae:Boolean):void
+			{
+				this.ae=ae;
+			}
+			
+			public function getSelectedItems():String
+			{
+				var items:String="";
+				for(var i:int=0;i<this.numElements;i++)
+				{
+					var rb:CheckBox=this.getElementAt(i) as CheckBox;
+					if(rb.selected)
+					{
+						items+=rb.label+"，";
+					}
+				}
+				return items;
+			}
+			
+			public function set dictName(dn:String):void
+			{
+				var arr:Array=dn.split("￥");
+				var list:ArrayList=DictLocator.getInstance().getItem(arr[0]);
+
+				this.removeAllElements();
+				
+				if(ae)
+				{
+					list.addItemAt({label:"全部",data:""},0);
+				}
+				
+				for(var i:int=0;i<list.length;i++)
+				{
+					var rb:CheckBox=new CheckBox();
+					rb.label=list.getItemAt(i).label;
+					if(rb.label=="")continue;
+					if(arr.length>1)rb.selected=(arr[1].search(rb.label)>=0);
+					this.addElement(rb);
+				}
+			}
+		]]>
+	</fx:Script>
+</s:HGroup>

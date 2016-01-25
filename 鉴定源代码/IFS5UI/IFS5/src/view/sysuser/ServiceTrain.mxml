@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009"
+		 xmlns:s="library://ns.adobe.com/flex/spark"
+		 xmlns:mx="library://ns.adobe.com/flex/mx"
+		 xmlns:tool="view.tool.*"
+		 width="813" height="547" fontSize="14" creationComplete="group1_creationCompleteHandler(event)">
+	<fx:Script>
+		<![CDATA[
+			import com.adobe.cairngorm.business.ServiceLocator;
+			import com.adobe.cairngorm.control.CairngormEventDispatcher;
+			
+			import control.*;
+			
+			import locator.PsbLocator;
+			import locator.ServiceTrainLocator;
+			import locator.SysUserLocator;
+			
+			import mx.containers.ViewStack;
+			import mx.events.FlexEvent;
+			
+			import spark.events.IndexChangeEvent;
+			
+			import util.Helper;
+			
+			import vo.ServiceTrainVo;
+			import vo.SysUserVo;
+			
+			private var locObj:ServiceTrainLocator=ServiceTrainLocator.getInstance();
+			private var sysuser:SysUserLocator=SysUserLocator.getInstance();
+			public var vs:ViewStack;
+			protected function userddl_changeHandler(event:IndexChangeEvent):void
+			{
+				// TODO Auto-generated method stub
+				var sysUser:SysUserVo=SysUserLocator.getInstance().getUserVo(userddl.selectedData);
+				if(sysUser!=null)
+				{
+					teacherName.text=sysUser.NAME;
+					office.text=sysUser.OFFICE;
+					zc.text=sysUser.JobTitle1.length>0?sysUser.JobTitle1:sysUser.JobTitle2;
+				}
+				
+			}
+			
+			protected function button2_clickHandler(event:MouseEvent):void
+			{
+				// TODO Auto-generated method stub
+				locObj.voObj=new ServiceTrainVo(Helper.getGUID(),sysuser.curObj.ID,teacherName.text,office.text,zc.text,stuname.text,dw.text
+				,xl.text,xxsj.text,xxmd.text,jsnr.text,kpjg.text,kpyj.text,SysUserLocator.getInstance().loginUser.NAME,"");
+				CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.ServiceTrain_Insert));		
+			}
+			
+			protected function button3_clickHandler(event:MouseEvent):void
+			{
+				// TODO Auto-generated method stub
+				if(dg.selectedItem!=null)
+				{
+					locObj.voObj=new ServiceTrainVo(dg.selectedItem.ID,"","","","","","","","","","","","","","");
+					CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.ServiceTrain_Delete));					}
+				else
+				{
+					Helper.showAlert("请先选中对应数据行");
+				}
+			}
+			
+			protected function button4_clickHandler(event:MouseEvent):void
+			{
+				// TODO Auto-generated method stub
+				if(dg.selectedItem!=null)
+				{
+					locObj.voObj=new ServiceTrainVo(dg.selectedItem.ID,"",teacherName.text,office.text,zc.text,stuname.text,dw.text
+						,xl.text,xxsj.text,xxmd.text,jsnr.text,kpjg.text,kpyj.text,SysUserLocator.getInstance().loginUser.NAME,"");
+					CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.ServiceTrain_Update));					}
+				else
+				{
+					Helper.showAlert("请先选中对应数据行");
+				}
+			}
+			
+			protected function button5_clickHandler(event:MouseEvent):void
+			{
+				// TODO Auto-generated method stub
+				if(dg.selectedItem!=null)
+				{
+					locObj.wordname="QR15-09上岗前培训考评记录表.doc";
+					locObj.filename=Helper.getGUID();
+					locObj.voObj=new ServiceTrainVo(dg.selectedItem.ID,"","","","","","","","","","","","","","");
+					CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.ServiceTrain_MackWord));
+				}
+				else
+				{
+					Helper.showAlert("请先选中对应数据行");
+				}
+			}
+			
+			protected function group1_creationCompleteHandler(event:FlexEvent):void
+			{
+				// TODO Auto-generated method stub
+				locObj.voObj=new ServiceTrainVo("",sysuser.curObj.ID,"","","","","","","","","","","","","");
+				CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.ServiceTrain_GetAll));
+			}
+			
+		]]>
+	</fx:Script>
+	<fx:Declarations>
+		<!-- 将非可视元素（例如服务、值对象）放在此处 -->
+	</fx:Declarations>
+	<s:Label x="10" y="10" color="#0A37FA" fontSize="20" fontWeight="bold" text="岗前培训"/>
+	<s:Label x="19" y="368" text="学员姓名："/>
+	<s:Label x="23" y="330" text="教师姓名："/>
+	<s:Label x="360" y="330" text="科室："/>
+	<s:Button x="552" y="519" label="新增" click="button2_clickHandler(event)"/>
+	<s:Button x="712" y="519" label="删除" click="button3_clickHandler(event)"/>
+	<s:Button x="634" y="519" label="修改" click="button4_clickHandler(event)"/>
+	<s:Button x="714" y="11" label="打印" click="button5_clickHandler(event)"/>
+	<tool:UserDdl  x="98" auth="" allEnable="true" y="326" id="userddl" change="userddl_changeHandler(event)"/>
+	<s:TextInput id="teacherName" x="224" y="325" width="111" text="{dg.selectedItem.TeacherName}"/>
+	<s:TextInput id="office" x="407" y="325" width="105" text="{dg.selectedItem.Office}"/>
+	<s:Label x="543" y="330" text="职      称："/>
+	<s:TextInput id="zc" x="620" y="325" width="168" text="{dg.selectedItem.ZC}"/>
+	<s:TextInput id="stuname" x="98" y="361" text="{dg.selectedItem.StuName}"/>
+	<s:TextInput id="dw" x="338" y="360" width="174" text="{dg.selectedItem.PSB}"/>
+	<s:Label x="261" y="368" text="单        位："/>
+	<s:TextInput id="xl" x="620" y="360" width="165" text="{dg.selectedItem.Degree}"/>
+	<s:Label x="543" y="367" text="学      历："/>
+	<s:Label x="19" y="408" text="学习时间："/>
+	<tool:DateZh id="stuTime" x="98" y="401" width="149"/>
+	<s:Label x="264" y="408" text="学习目的："/>
+		<s:Label x="360" y="330" text="科室："/>
+		<s:Label x="543" y="330" text="职      称："/>
+		<s:TextInput id="xxmd" x="338" y="402" width="174" text="{dg.selectedItem.StuAim}"/>
+		<s:Label x="543" y="367" text="学      历："/>
+		<tool:DateZh id="xxsj" x="98" y="401" width="149" text="{dg.selectedItem.StuTime}"/>
+		<s:TextInput id="kpjg" x="620" y="402" width="165" text="{dg.selectedItem.StuPGJG}" />
+		<s:Label x="542" y="408" text="考评结果："/>
+		<s:TextArea id="jsnr" x="98" y="441" width="687" height="25" text="{dg.selectedItem.TeachText}"/>
+		<s:TextArea id="kpyj" x="98" y="480" width="687" height="25" text="{dg.selectedItem.KPYJ}"/>
+		<s:Label x="19" y="487" text="考评意见："/>
+	<s:Label x="19" y="448" text="教授内容："/>
+	<s:DataGrid id="dg"  x="17" y="38" width="767" height="279" dataProvider="{locObj.listObj}" requestedRowCount="4">
+		<s:columns>
+			<s:ArrayList>
+				<s:GridColumn dataField="TeacherName" headerText="教师姓名"></s:GridColumn>
+				<s:GridColumn dataField="StuName" headerText="学员姓名"></s:GridColumn>
+				<s:GridColumn dataField="StuAim" headerText="学习目的"></s:GridColumn>
+				<s:GridColumn dataField="StuTime" headerText="学习时间"></s:GridColumn>
+				<s:GridColumn dataField="StuPGJG" headerText="考评结果"></s:GridColumn>
+				<s:GridColumn dataField="ZYPerson" headerText="专业负责人"></s:GridColumn>
+			</s:ArrayList>
+		</s:columns>
+	</s:DataGrid>
+</s:Group>

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Module xmlns:fx="http://ns.adobe.com/mxml/2009" 
+		  xmlns:s="library://ns.adobe.com/flex/spark" 
+		  xmlns:mx="library://ns.adobe.com/flex/mx"
+		  xmlns:tool="view.tool.*"
+		  width="953" height="598" fontSize="14"
+		  creationComplete="MenuLocator.getInstance().changeMenu(menuGp);">
+	<fx:Declarations>
+		<!-- 将非可视元素（例如服务、值对象）放在此处 -->
+	</fx:Declarations>
+	<fx:Script>
+		<![CDATA[
+			import locator.MenuLocator;
+			import locator.SysUserLocator;
+			
+			import util.Helper;
+		]]>
+	</fx:Script>
+	<s:Panel width="953" height="598">
+		<s:HGroup id="menuGp" x="10" y="-27"/>
+		<s:HGroup left="10" right="10" top="20" bottom="10" gap="14">
+			<tool:MenuTool url="assets/images/main/统计报表.png" label="实验员工作量" clickUrl="view/report/StaModule/PersonWork.swf" />
+			<tool:MenuTool url="assets/images/main/统计报表.png" label="分县局送检量" clickUrl="view/report/StaModule/StationWork.swf" />
+			<tool:MenuTool url="assets/images/main/统计报表.png" label="案件性质统计" clickUrl="view/report/StaModule/CaseProperty.swf" />
+			<tool:MenuTool url="assets/images/main/统计报表.png" label="案件结论统计" clickUrl="view/report/StaModule/CaseConclusion.swf"
+						   visible="{SysUserLocator.getInstance().loginUser.OFFICE!='DNA'}"/>
+		</s:HGroup>
+
+	</s:Panel>
+</s:Module>

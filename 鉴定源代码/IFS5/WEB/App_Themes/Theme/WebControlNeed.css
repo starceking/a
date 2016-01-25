@@ -1,0 +1,811 @@
+﻿body
+{
+	margin-top: 0px;
+}
+a
+{
+	color: blue;
+	text-decoration: none;
+	font-size: 12px;
+}
+/***********************************************************************************************************/
+/****************************************--首页--**************************************************************/
+/***********************************************************************************************************/
+/*.style1
+{
+	width: 1024px;
+	height: 768px;
+	padding-top: 0px;
+	background-image:url('~/Images/background.jpg') no-repeat center middle;
+}
+.login_text
+{
+	font-size: 9pt;
+	line-height: 25px;
+	color: #FFFFFF;
+	letter-spacing: 2px;
+}
+.Input1
+{
+	border-right: #ffffff 1px solid; 
+	border-top: #ffffff 1px solid;
+	border-left: #ffffff 1px solid;
+	border-bottom: #ffffff 0px solid;
+	font-size: 9pt;
+	font-family: "宋体" , "Tahoma";
+	background-color: #ffffff;
+}
+/***********************************************************************************************************/
+/*****************************************--Master样式--****************************************************/
+/***********************************************************************************************************/
+.TBstyle
+{
+	width: 1005px;
+}
+.Shou
+{
+	font-family: "宋体";
+	font-size: 14px;
+	color: Blue;
+}
+.Topmenu_text2
+{
+	color: #FFFFFF;
+	font-family: "宋体";
+	font-size: 12px;
+}
+.accordionContent
+{
+	color: white;
+	background-color: #D3DEEF;
+	border: 1px dashed #2F4F4F;
+	border-top: none;
+	padding: 5px;
+	padding-top: 10px;
+	font-family: 宋体;
+	font-size: 9pt;
+}
+.accordionHeader
+{
+	border: 1px solid #2F4F4F;
+	font-family: Arial, Sans-Serif;
+	font-size: 12px;
+	font-weight: bold;
+	margin-top: 0px;
+	cursor: pointer;
+	background: url(../../image/button.jpg) no-repeat left top;
+	color: #FFFFFF;
+	font-family: "宋体";
+	font-size: 12px;
+	padding-bottom: 5px;
+	height: 24px;
+	border: 0px;
+	padding-left: 56px;
+	padding-top: 10px;
+}
+.sidebar
+{
+	width: 100%;
+	margin-bottom: 10px;
+}
+.OwenMenu
+{
+	background-position: 50px center; /*text-align: center;*/
+	padding: 5px;
+}
+.OwenMenuText
+{
+	color: #ffffff;
+	margin-left: 10px;
+	padding-left: 5px;
+	font-family: "宋体";
+	font-size: 12px;
+	text-decoration: none;
+	cursor: pointer;
+}
+
+.OwenMenuImage
+{
+	padding-left: 28px;
+	vertical-align: middle;
+}
+
+/***********************************************************************************************************/
+/**********************************************--WebControl--***********************************************/
+/***********************************************************************************************************/
+/*输入框样式*/
+.inpus_css
+{
+	color: #000000;
+	font-size: 10pt;
+	font-family: "宋体" , "Tahoma";
+	border: 1px solid #80B2C6;
+	height: 18px;
+	line-height: 20px;
+}
+.time_css
+{
+	color: #000000;
+	font-size: 10pt;
+	font-family: "宋体" , "Tahoma";
+	border: 1px solid #80B2C6;
+	height: 18px;
+	line-height: 20px;
+}
+/*输入框样式2*/
+.inpus_css2
+{
+	color: #000000;
+	font-size: 10pt;
+	font-family: "宋体" , "Tahoma";
+	border: 1px solid #80B2C6;
+	height: 50px;
+}
+/*外表格样式*/
+.TableStyle
+{
+	word-break: break-all;
+	border-left: 0pt solid #99CCFF;
+	border-right: 1pt solid #99CCFF;
+	border-top: 1pt solid #99CCFF;
+	border-bottom: 1pt solid #99CCFF;
+}
+
+.TableStyle2
+{
+	width: 100%;
+	word-break: break-all;
+	border-left: 1pt solid #99CCFF;
+	border-right: 1pt solid #99CCFF;
+	border-top: 1pt solid #99CCFF;
+	border-bottom: 1pt solid #99CCFF;
+}
+
+.TableStyle3
+{
+	width: 96%;
+	word-break: break-all;
+	border-left: 1pt solid #99CCFF;
+	border-right: 1pt solid #99CCFF;
+	border-top: 1pt solid #99CCFF;
+	border-bottom: 1pt solid #99CCFF;
+	font-family: 宋体;
+	font-size: 9pt;
+	color: Black;
+	vertical-align: middle;
+	height: 22pt;
+	white-space: normal;
+}
+/*按钮风格*/
+.button-big
+{
+	font-family: "宋体" , "Tahoma";
+	color: #000000;
+	font-size: 9pt;
+	padding-top: 2px;
+	width: 74px;
+	border: 0px solid #3179BD;
+	background-image: url('../../image/mainbutton.jpg');
+	cursor: pointer;
+	}
+.MyCalendar
+{
+	background-color: #99CCFF;
+}
+/*表格头部单元格1风格*/
+.TableTitleOneCell
+{
+	border: 1px solid #4BACC6;
+	border-right: 0px;
+	border-left: 0px;
+	height: 20pt;
+	font-family: 宋体;
+	font-size: 9pt;
+	font-weight: bold;
+	background-color: #ADD4FF;
+	vertical-align: middle;
+}
+/*表格头部单元格2风格*/
+.TableTitleOneCell2
+{
+	border: 1px solid #4BACC6;
+	border-left: 0px;
+	height: 20pt;
+	font-family: 宋体;
+	font-size: 9pt;
+	font-weight: bold;
+	background-color: #ADD4FF;
+	vertical-align: middle;
+}
+/*td*/
+.DescriptionsStyleOneLine
+{
+	border-left: 1pt solid #92CDDC;
+	border-right: 0pt solid #92CDDC;
+	border-top: 0pt solid #92CDDC;
+	border-bottom: 1pt solid #92CDDC;
+	font-family: 宋体;
+	font-size: 9pt;
+	color: Black;
+	vertical-align: middle;
+	text-align: left;
+	height: 22pt;
+	white-space: normal;
+}
+.CenterOneLine
+{
+	border-left: 1pt solid #92CDDC;
+	border-right: 0pt solid #92CDDC;
+	border-top: 0pt solid #92CDDC;
+	border-bottom: 1pt solid #92CDDC;
+	font-family: 宋体;
+	font-size: 9pt;
+	color: Black;
+	vertical-align: middle;
+	height: 22pt;
+	white-space: normal;
+}
+.CenterOneLine2
+{
+	border-left: 1pt solid #92CDDC;
+	border-right: 0pt solid #92CDDC;
+	border-top: 0pt solid #92CDDC;
+	border-bottom: 0pt solid #92CDDC;
+	font-family: 宋体;
+	font-size: 9pt;
+	color: Black;
+	vertical-align: middle;
+	height: 22pt;
+	white-space: normal;
+}
+.CenterOneLine3
+{
+	border-left: 0pt solid #92CDDC;
+	border-right: 0pt solid #92CDDC;
+	border-top: 0pt solid #92CDDC;
+	border-bottom: 0pt solid #92CDDC;
+	font-family: 宋体;
+	font-size: 9pt;
+	color: Black;
+	vertical-align: middle;
+	height: 22pt;
+	white-space: normal;
+}
+.CenterOneLine4
+{
+	border-left: 0pt solid #92CDDC;
+	border-right: 0pt solid #92CDDC;
+	border-top: 0pt solid #92CDDC;
+	border-bottom: 1pt solid #92CDDC;
+	font-family: 宋体;
+	font-size: 9pt;
+	color: Black;
+	vertical-align: middle;
+	height: 22pt;
+	white-space: normal;
+}
+.CenterOneLine5
+{
+	border-left: 0pt solid #92CDDC;
+	border-right: 1pt solid #92CDDC;
+	border-top: 0pt solid #92CDDC;
+	border-bottom: 0pt solid #92CDDC;
+	font-family: 宋体;
+	font-size: 9pt;
+	color: Black;
+	vertical-align: middle;
+	height: 22pt;
+	white-space: normal;
+}
+/*td2*/
+.DescriptionsStyleOneLine2
+{
+	border-left: 0pt solid #92CDDC;
+	border-right: 0pt solid #92CDDC;
+	border-top: 1pt solid #92CDDC;
+	border-bottom: 0pt solid #92CDDC;
+	font-family: 宋体;
+	font-size: 9pt;
+	color: Black;
+	vertical-align: middle;
+	text-align: left;
+	height: 22pt;
+	white-space: normal;
+}
+/*td3*/
+.DescriptionsStyleOneLine3
+{
+	border-left: 1pt solid #92CDDC;
+	border-right: 0pt solid #92CDDC;
+	border-top: 0pt solid #92CDDC;
+	border-bottom: 0pt solid #92CDDC;
+	font-family: 宋体;
+	font-size: 9pt;
+	color: Black;
+	vertical-align: middle;
+	text-align: left;
+	height: 22pt;
+	white-space: normal;
+}
+/*td4*/
+.DescriptionsStyleOneLine4
+{
+	border-left: 0pt solid #92CDDC;
+	border-right: 0pt solid #92CDDC;
+	border-top: 0pt solid #92CDDC;
+	border-bottom: 0pt solid #92CDDC;
+	font-family: 宋体;
+	font-size: 9pt;
+	color: Black;
+	vertical-align: middle;
+	text-align: left;
+	height: 22pt;
+	white-space: normal;
+}
+/*td5*/
+.DescriptionsStyleOneLine5
+{
+	border-left: 0pt solid #92CDDC;
+	border-right: 0pt solid #92CDDC;
+	border-top: 0pt solid #92CDDC;
+	border-bottom: 1pt solid #92CDDC;
+	font-family: 宋体;
+	font-size: 9pt;
+	color: Black;
+	vertical-align: middle;
+	text-align: left;
+	height: 22pt;
+	white-space: normal;
+}
+
+.DescriptionsStyleOneLine6
+{
+	border-left: 0pt solid #92CDDC;
+	border-right: 1pt solid #92CDDC;
+	border-top: 0pt solid #92CDDC;
+	border-bottom: 1pt solid #92CDDC;
+	font-family: 宋体;
+	font-size: 9pt;
+	color: Black;
+	vertical-align: middle;
+	text-align: left;
+	height: 22pt;
+	white-space: normal;
+}
+
+.TableTitleOneCell3
+{
+	border: 1px solid #4BACC6;
+	height: 20pt;
+	font-family: 宋体;
+	font-size: 9pt;
+	font-weight: bold;
+	background-color: #ADD4FF;
+	vertical-align: middle;
+}
+/*****************************************************************************************************/
+/*******************************--------马杰附加样式---------*****************************************/
+/*****************************************************************************************************/
+.table_css
+{
+	width: 100%;
+	font-family: 宋体;
+	font-size: 9pt;
+	color: black;
+	text-decoration: none;
+	letter-spacing: 1px;
+	text-align: left;
+	line-height: 25px;
+	cursor: default;
+	font-weight: normal;
+	border-style: double;
+	border-left: 1px solid #99CCFF;
+	border-top: 1px solid #99CCFF;
+	border-right: 0px solid #99CCFF;
+	border-bottom: 0px solid #99CCFF;
+}
+.Table_Title
+{
+	border: 1px solid #4BACC6;
+	border-right: 0px;
+	height: 20pt;
+	font-family: 宋体;
+	font-size: 9pt;
+	font-weight: bold;
+	background-color: #ADD4FF;
+	vertical-align: middle;
+	border-right: 1px solid #99CCFF;
+	border-bottom: 1px solid #99CCFF;
+	border-top: 0px solid;
+	border-left: 0px solid;
+	vertical-align: middle;
+}
+.tableDown_css
+{
+	width: 100%;
+	font-family: 宋体, Tahoma;
+	font-size: 9pt;
+	color: #31849B;
+	text-decoration: none;
+	letter-spacing: 1px;
+	text-align: left;
+	line-height: 25px;
+	cursor: default;
+	font-weight: normal;
+	border-style: double;
+	border-left: 5px solid #99CCFF;
+	border-top: 5px solid #99CCFF;
+	border-right: 4px solid #99CCFF;
+	border-bottom: 4px solid #99CCFF;
+	background-color: White;
+}
+
+.td_algin_center_css
+{
+	border-right: 1px solid #99CCFF;
+	border-bottom: 1px solid #99CCFF;
+	border-top: 0px solid;
+	border-left: 0px solid;
+	vertical-align: middle;
+	text-align: center;
+	font-family: 宋体;
+	font-size: 9pt;
+}
+.td_css
+{
+	border-right: 1px solid #99CCFF;
+	border-bottom: 1px solid #99CCFF;
+	border-top: 0px solid;
+	border-left: 0px solid;
+	vertical-align: middle;
+	font-family: 宋体;
+	font-size: 9pt;
+}
+
+.td_css2
+{
+	border-right: 0px solid #99CCFF;
+	border-bottom: 1px solid #99CCFF;
+	border-top: 0px solid;
+	border-left: 0px solid;
+	vertical-align: middle;
+}
+.DropDown_css
+{
+	color: #000000;
+	font-size: 10pt;
+	font-family: "宋体" , "Tahoma";
+	border: 1px solid #80B2C6;
+	height: 19px;
+	width: 50%;
+	line-height: 19px;
+}
+.DropDown_css2
+{
+	color: #000000;
+	font-size: 10pt;
+	font-family: "宋体" , "Tahoma";
+	border: 1px solid #80B2C6;
+	height: 19px;
+	line-height: 19px;
+}
+.modalBackground
+{
+	background-color: Gray;
+	filter: alpha(opacity=20);
+	opacity: 0.2;
+}
+.modalBackground2
+{
+	background-color: White;
+	filter: alpha(opacity=20);
+	opacity: 0.2;
+}
+/*按钮风格*/
+.button-css
+{
+	font-family: "宋体" , "Tahoma";
+	color: #000000;
+	font-size: 9pt;
+	padding-top: 2px;
+	width: 95px;
+	border: 0px solid #3179BD;
+	background-image: url(           '../../image/mainbutton2.jpg' );
+	cursor: pointer;
+}
+.td17_css
+{
+	border-right: 1px solid #99CCFF;
+	border-bottom: 1px solid #99CCFF;
+	border-top: 0px solid;
+	border-left: 0px solid;
+	vertical-align: middle;
+	width: 17%;
+}
+.AjaxTabStrip .ajax__tab_header
+{
+	font-size: 10pt;
+	padding-left: 0px;
+	padding-top: 2px;
+	border-bottom: 0;
+	border-top: 1px solid #cccccc;
+	border-left: 1px solid #cccccc;
+	border-right: 1px solid #cccccc;
+}
+
+/* 默认tab设置 */
+.AjaxTabStrip .ajax__tab_header
+{
+	font-size: 8pt;
+	height: 40px;
+	padding-top: 2px;
+	border-bottom: 1px solid #cccccc;
+	border-top: 1px solid #cccccc;
+	border-left: 1px solid #cccccc;
+	border-right: 1px solid #cccccc;
+}
+
+/* 默认tab设置 */
+.AjaxTabStrip .ajax__tab_tab
+{
+	border-right: #99CCFF 1px solid;
+	border-top: #99CCFF 1px solid;
+	border-left: #99CCFF 1px solid;
+	border-bottom: #99CCFF 1px solid;
+	filter: progid:DXImageTransform.Microsoft.Gradient(GradientType=0, StartColorStr=#ffffff, EndColorStr=#99ccff);
+	cursor: pointer;
+	padding-top: 2px;
+	font-size: 8pt;
+	height: 15px;
+	width: 69px;
+	border-bottom: 1px;
+	cursor: pointer;
+	text-align: center;
+	vertical-align: middle;
+	color: #3781D2;
+}
+
+/* 鼠标经过设置*/
+.AjaxTabStrip .ajax__tab_hover .ajax__tab_tab
+{
+	border-right: #99CCFF 1px solid;
+	border-top: #99CCFF 1px solid;
+	border-left: #99CCFF 1px solid;
+	border-bottom: #99CCFF 1px solid;
+	font-size: 8pt;
+	color: #ffffff;
+	filter: progid:DXImageTransform.Microsoft.Gradient(GradientType=0, StartColorStr=#ffffff, EndColorStr=#3781D2);
+}
+/* 当前激活选项卡设置*/
+.AjaxTabStrip .ajax__tab_active .ajax__tab_tab
+{
+	border-right: #999999 1px solid;
+	border-top: #999999 1px solid;
+	border-left: #999999 1px solid;
+	border-bottom: #99ccff 1px solid;
+	cursor: pointer; /*color:Fuchsia;*/
+	color: #000000;
+	font-size: 11px; /* font-weight: bold;*/
+}
+
+
+/*Body设置*/
+
+.AjaxTabStrip .ajax__tab_body
+{
+}
+/****************************************************************************************************/
+/****************************************************菜单选项卡**************************************/
+/****************************************************************************************************/
+
+.mune_td_css
+{
+	filter: progid:DXImageTransform.Microsoft.Gradient(GradientType=0, StartColorStr=#ffffff, EndColorStr=#BEBEBE);
+	border-right: 1px solid #8E8E8E;
+	border-bottom: 1px solid #8E8E8E;
+	border-top: 1px solid;
+	border-left: 0px solid;
+	text-align: center;
+	color: #6C6C6C;
+	cursor: pointer;
+	float: left;
+	font-weight: bold;
+	width: 78px;
+	height: 26px;
+}
+.mune_click_css
+{
+	filter: progid:DXImageTransform.Microsoft.Gradient(GradientType=0, StartColorStr=#99ccff, EndColorStr=#ffffff);
+	border-right: 1px solid #8E8E8E;
+	border-bottom: 1px solid #8E8E8E;
+	border-top: 1px solid;
+	border-left: 0px solid;
+	text-align: center;
+	color: #3871d2;
+	cursor: pointer;
+	float: left;
+	font-weight: bold;
+	width: 78px;
+	height: 26px;
+}
+.mune_hover_css
+{
+	filter: progid:DXImageTransform.Microsoft.Gradient(GradientType=0, StartColorStr=#ffffff, EndColorStr=#9D9D9D);
+	border-right: 1px solid #8E8E8E;
+	border-bottom: 1px solid #8E8E8E;
+	border-top: 1px solid #8E8E8E;
+	border-left: 0px solid #5B5B5B;
+	text-align: center;
+	color: Red;
+	cursor: pointer;
+	width: 78px;
+	height: 26px;
+	font-weight: bold;
+}
+.mune_table_css
+{
+	width: 100%;
+	font-family: 宋体;
+	font-size: 9pt;
+	color: black;
+	text-decoration: none;
+	letter-spacing: 1px;
+	text-align: left;
+	line-height: 25px;
+	cursor: pointer;
+	font-weight: normal;
+	border-style: double;
+	border-left: 0px solid #ADADAD;
+	border-top: 0px solid #ADADAD;
+	border-right: 1px solid #ADADAD;
+	border-bottom: 1px solid #ADADAD;
+	cursor: pointer;
+}
+.topDiv
+{
+	border-bottom: solid 0px #ADADAD;
+	border-left: solid 1px #ADADAD;
+	border-right: solid 1px #ADADAD;
+	border-top: solid 1px #ADADAD;
+	text-align: center;
+	width: 100%;
+	display: block;
+	left: 1px;
+}
+.solideDivaa
+{
+	border-bottom: solid 1px #ADADAD;
+	border-left: solid 0px #ADADAD;
+	border-right: solid 0px #ADADAD;
+	border-top: solid 1px #ADADAD;
+	text-align: center;
+	width: 100%;
+	display: block;
+	left: 1px;
+}
+.solideDiv
+{
+	border-bottom: solid 1px #ADADAD;
+	border-left: solid 0px #ADADAD;
+	border-right: solid 0px #ADADAD;
+	border-top: solid 1px #ADADAD;
+	text-align: center;
+	width: 100%;
+}
+.bodyDiv
+{
+	background-color: #ffffff;
+	border-bottom: solid 1px #ADADAD;
+	border-left: solid 1px #ADADAD;
+	border-right: solid 1px #ADADAD;
+	border-top: solid 1px #ADADAD;
+	width: 100%;
+	height: 600px;
+	display: block;
+	left: 1px;
+}
+.divContorl
+{
+	background-color: #ffffff;
+	border-bottom: solid 0px #ADADAD;
+	border-left: solid 0px #ADADAD;
+	border-right: solid 0px #ADADAD;
+	border-top: solid 0px #ADADAD;
+	width: 100%;
+	height: 100%;
+}
+/****************************************************************************************************/
+/****************************************************************************************************/
+/****************************************************************************************************/
+/***********************/
+.fontStyle
+{
+	font-size: 10pt;
+	font-family: 宋体;
+	color: #021a72;
+	font-weight: bold;
+}
+.legendStyle
+{
+	font-weight: bold;
+	font-family: 黑体;
+	color: #224B88;
+}
+.bigDivStyle
+{
+	border: 3px;
+	border-style: Double;
+	border-color: #336666;
+	width: 773px;
+}
+.btnLogin
+{
+	background-image: url( '../../image/botton3.gif ');
+	background-repeat: no-repeat;
+	width: 83px;
+	height: 23px;
+	border: 0px;
+}
+.btnRegister
+{
+	background-image: url('../../image/botton4.gif');
+	background-repeat: no-repeat;
+	width: 83px;
+	height: 23px;
+	border: 0px;
+}
+.btnForget
+{
+	background-image: url('../../image/botton5.gif');
+	background-repeat: no-repeat;
+	width: 83px;
+	height: 23px;
+	border: 0px;
+}
+.btnNum
+{
+	border: 0px;
+	background-color: Transparent;
+	width: 37px;
+	height: 39px;
+}
+.font1
+{
+	font-family: 宋体;
+	font-size: 12px;
+	color: #033f64;
+}
+.font2
+{
+	font-family: 宋体;
+	font-size: 12px;
+	color: #033f64;
+}
+.textBox
+{
+	border: 1px;
+	border-style: solid;
+	width: 120px;
+	margin-left: 5px;
+	line-height: 15px;
+}
+/*****************calander*******************/
+.MyCalendar .ajax__calendar_container
+{
+	border: 1px solid #646464;
+	background-color: lemonchiffon;
+	color: red;
+}
+.MyCalendar .ajax__calendar_other .ajax__calendar_day, .MyCalendar .ajax__calendar_other .ajax__calendar_year
+{
+	color: black;
+}
+.MyCalendar .ajax__calendar_hover .ajax__calendar_day, .MyCalendar .ajax__calendar_hover .ajax__calendar_month, .MyCalendar .ajax__calendar_hover .ajax__calendar_year
+{
+	color: black;
+}
+.MyCalendar .ajax__calendar_active .ajax__calendar_day, .MyCalendar .ajax__calendar_active .ajax__calendar_month, .MyCalendar .ajax__calendar_active .ajax__calendar_year
+{
+	color: black;
+	font-weight: bold;
+}

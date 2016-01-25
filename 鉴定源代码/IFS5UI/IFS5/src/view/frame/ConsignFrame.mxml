@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Module xmlns:fx="http://ns.adobe.com/mxml/2009"
+		  xmlns:s="library://ns.adobe.com/flex/spark"
+		  xmlns:mx="library://ns.adobe.com/flex/mx">
+	<fx:Script>
+		<![CDATA[
+			import util.Helper;		
+			import locator.MenuLocator;
+		]]>		
+	</fx:Script>
+	<!--委托菜单-->
+	<s:BitmapImage x="0" y="154" smooth="true" source="@Embed('/assets/images/menu/block1.png')"/>
+	<s:Button x="900" y="165" click="Helper.changeTopState('Login');"
+			  skinClass="assets.skins.Button_tcdl"/>
+	<s:Button x="250" y="165" skinClass="assets.skins.Button_xtsz" click="MenuLocator.getInstance().initMenu('XTSZ')"/>
+	<s:Button x="150" y="165" skinClass="assets.skins.Button_jdda" click="MenuLocator.getInstance().initMenu('consign_jdda')"/>
+	<s:Button x="50" y="165" skinClass="assets.skins.Button_jdlc" click="MenuLocator.getInstance().initMenu('consign_jdlc')"/>
+</s:Module>

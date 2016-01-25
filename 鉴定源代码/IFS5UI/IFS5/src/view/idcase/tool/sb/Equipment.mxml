@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
+		 xmlns:s="library://ns.adobe.com/flex/spark" 
+		 xmlns:mx="library://ns.adobe.com/flex/mx"
+		 xmlns:local="*"
+		 xmlns:tool="view.tool.*"
+		 fontSize="14" width="813" height="559">
+	<fx:Script>
+		<![CDATA[
+			import com.adobe.cairngorm.control.CairngormEventDispatcher;
+			
+			import control.*;
+			
+			import locator.EquipmentLocator;
+			import locator.MenuLocator;
+			
+			import mx.events.FlexEvent; 
+			private var docFilter:FileFilter=new FileFilter("word文档(*.doc)","*.doc");
+			private var docFilter1:FileFilter=new FileFilter("Images","*.jpg");
+			import util.Helper;
+			import util.Server
+				import util.Helper;
+			
+			import vo.EquipmentVo;
+			import vo.MenuVo;	
+			
+			
+			
+			protected function button1_clickHandler(event:MouseEvent):void
+			{
+				// TODO Auto-generated method stub
+				EquipmentLocator.getInstance().wordName="CSTCSG-500-022仪器设备登记表.doc";
+				EquipmentLocator.getInstance().num=EquipmentLocator.getInstance().currObj.ID;
+				EquipmentLocator.getInstance().filename=Helper.getGUID();
+				EquipmentLocator.getInstance().num1=EquipmentLocator.getInstance().currObj.ID;
+				CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.EQUIPMENT_MackAllFB));
+			}
+			
+		]]>
+	</fx:Script>
+	<fx:Declarations>
+		<!-- 将非可视元素（例如服务、值对象）放在此处 -->
+	</fx:Declarations>
+	<s:Label x="10" y="10" color="#0A37FA" fontSize="20" fontWeight="bold" text="基本信息"/>
+	<s:Label x="12" y="48" text="设备 名称："/>
+	<s:TextInput id="TextSbmc" x="87" y="39" width="382" enabled="false"
+				 text="{EquipmentLocator.getInstance().currObj.SBYQMC}"/>
+	<s:Label x="14" y="78" text="制造厂家："/>
+	<s:TextInput id="TextZzsmc" x="87" y="68" width="382" enabled="false"
+				 text="{EquipmentLocator.getInstance().currObj.CZSMC}"/>
+	<s:Label x="12" y="107" text="型号/规格："/>
+	<s:TextInput id="TextGg" x="87" y="97" width="382" enabled="false"
+				 text="{EquipmentLocator.getInstance().currObj.XHGG}"/>
+	<s:Label x="11" y="135" text="出厂 编号："/>
+	<s:TextInput id="TextCcbh" x="87" y="126" width="382" enabled="false"
+				 text="{EquipmentLocator.getInstance().currObj.CCBH}"/>
+	<s:Label x="12" y="166" text="内部编码："/>
+	<s:TextInput id="TextSbm" x="87" y="156" width="383" enabled="false"
+				 text="{EquipmentLocator.getInstance().currObj.SBSBH}"/>
+	<s:Label x="11" y="195" text="购置日期："/>
+	<s:TextInput id="TextJsrq" x="86" y="185" width="384" enabled="false"
+				 text="{EquipmentLocator.getInstance().currObj.JSRQ}"/>
+	<s:Label x="10" y="222" text="启用日期："/>
+	<s:TextInput id="TextQyrq" x="87" y="214" width="383" enabled="false"
+				 text="{EquipmentLocator.getInstance().currObj.QYRQ}"/>
+	<s:Label x="10" y="251" text="存放地点："/>
+	<s:TextInput id="TextCfdd" x="87" y="243" width="383" enabled="false"
+				 text="{EquipmentLocator.getInstance().currObj.MQCFDD}"/>
+	<s:Label x="6" y="448" text="接受状态："/>
+	<s:CheckBox id="a" x="85" y="441" label="全新" selected="{EquipmentLocator.getInstance().currObj.JSZT.search('全新,')>=0}" enabled="false"/>
+	<s:CheckBox id="b" x="194" y="441" label="陈旧" selected="{EquipmentLocator.getInstance().currObj.JSZT.search('陈旧,')>=0}" enabled="false"/>
+	<s:CheckBox id="c" x="295" y="442" label="经过改装" selected="{EquipmentLocator.getInstance().currObj.JSZT.search('经过改装,')>=0}" enabled="false"/>
+	<s:Label x="9" y="280" text="校准时间："/>
+	<s:TextInput id="TextSzsj" x="87" y="273" width="383" enabled="false"
+				 text="{EquipmentLocator.getInstance().currObj.SZSJ}"/>
+	<s:Label x="8" y="312" text="校准周期："/>
+	<s:TextInput id="TextXzzq" x="87" y="302" width="383" enabled="false"
+				 text="{EquipmentLocator.getInstance().currObj.SZZQ}"/>
+	<s:Label x="7" y="470" text="使用部门："/>
+	<tool:OfficeRgp id="TextSyzy"  x="85" y="466" enabled="false" dnaEnable="0"   office="{EquipmentLocator.getInstance().currObj.SYZY}">
+		
+	</tool:OfficeRgp>
+	<s:Label x="8" y="369" text="管  理 人："/>
+	<s:TextInput id="TextGlr" x="86" y="361" width="384" enabled="false"
+				 text="{EquipmentLocator.getInstance().currObj.GLR}"/>
+	<s:Label x="7" y="398" text="维护方式："/>
+	<s:CheckBox id="d" x="85" y="392" label="合同维护保养" selected="{EquipmentLocator.getInstance().currObj.WHFS.search('合同维护保养,')>=0}"  enabled="false"/>
+	<s:CheckBox id="e" x="195" y="392" label="自行维护保养" selected="{EquipmentLocator.getInstance().currObj.WHFS.search('自行维护保养,')>=0}" enabled="false"/>
+	<s:Label x="7" y="423" text="验证方式："/>
+	<s:CheckBox id="f" x="85" y="417" label="合同校准" selected="{EquipmentLocator.getInstance().currObj.YZFS.search('合同校准,')>=0}" enabled="false"/>
+	<s:CheckBox id="g" x="194" y="417" label="自行校准" selected="{EquipmentLocator.getInstance().currObj.YZFS.search('自行校准,')>=0}" enabled="false"/>
+	<s:Label x="509" y="38" text="照片：" />
+	<s:Image id="img" x="509" y="69" width="294" height="249" backgroundColor="#DDC6C6"
+			 source="{sfu2.download_url}"/>
+	<local:SingleFileUploader id="sfu2"  x="685" y="32" 
+							  download_url="{Server.getPICDownUrl(EquipmentLocator.getInstance().currObj.ID+'.jpg')}"
+							  filter="{docFilter1}"
+							  upload_url="{Server.getPICDownUploadUrl(EquipmentLocator.getInstance().currObj.ID)}"/>
+	<s:Button x="559" y="30" width="119" label="照片上传" click="sfu2.selectFile();"  />
+	<local:SingleFileUploader id="sfu1" x="631" y="390" width="58" label="查看"
+							  download_url="{Server.getWJTXDownUrl(EquipmentLocator.getInstance().currObj.ID+'.doc')}"
+							  filter="{docFilter}"
+							  upload_url="{Server.getWJTXDownUploadUrl(EquipmentLocator.getInstance().currObj.ID)}"/>
+	<s:Button x="507" y="387" width="116" label="相关附件上传" click="sfu1.selectFile()"/>
+	<s:Label x="507" y="328" width="182" text="*照片上传后请刷新页面查看"/>
+	<s:Button x="656" y="498" width="147" label="打印仪器设备登记表" click="button1_clickHandler(event)"/>
+	<s:Label x="7" y="340" text="仪器类别："/>
+	<s:TextInput id="sbtype" x="86" y="332" width="384" enabled="false"
+				 text="{EquipmentLocator.getInstance().currObj.SBLB}"/>
+	
+</s:Group>

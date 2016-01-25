@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:HGroup xmlns:fx="http://ns.adobe.com/mxml/2009" 
+		  xmlns:s="library://ns.adobe.com/flex/spark" 
+		  xmlns:mx="library://ns.adobe.com/flex/mx">
+	<fx:Script>
+		<![CDATA[			
+			import locator.DictLocator;
+			
+			import mx.collections.ArrayList;
+			import mx.utils.UIDUtil;
+			
+			import spark.components.RadioButton;
+			
+			public static var event_name:String="DictRgp_Event";
+			
+			private var ae:Boolean=false;
+			public function set allEnable(ae:Boolean):void
+			{
+				this.ae=ae;
+			}
+					
+			public var currentItem:String="";
+			
+			public function set dictName(dn:String):void
+			{
+				var arr:Array=dn.split("￥");
+				var list:ArrayList=DictLocator.getInstance().getItem(arr[0]);
+				var guid:String=UIDUtil.createUID();				
+				this.removeAllElements();
+				
+				if(ae)
+				{
+					list.addItemAt({label:"全部",data:""},0);
+				}
+				
+				for(var i:int=0;i<list.length;i++)
+				{
+					var rb:RadioButton=new RadioButton();
+					rb.groupName=guid;
+					rb.label=list.getItemAt(i).label;
+					rb.selected=(arr[1]==rb.label);
+					rb.addEventListener(Event.CHANGE,changeEvt);
+					this.addElement(rb);
+				}
+			}
+			
+			private function changeEvt(evt:Event):void
+			{
+				currentItem=(evt.target as RadioButton).label;
+				currentItem=(currentItem=="全部")?"":currentItem;
+				dispatchEvent(new Event(event_name));
+			}
+		]]>
+	</fx:Script>
+</s:HGroup>

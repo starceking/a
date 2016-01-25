@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009"
+		 xmlns:s="library://ns.adobe.com/flex/spark"
+		 xmlns:mx="library://ns.adobe.com/flex/mx"
+		 xmlns:tool="view.tool.*"
+		 xmlns:ns1="*"
+		 width="813" height="547" creationComplete="creationCompleteHandler(event)" fontSize="14">
+	<fx:Declarations>
+		<!-- 将非可视元素（例如服务、值对象）放在此处 -->
+	</fx:Declarations>
+	<fx:Script>
+		<![CDATA[
+			import com.adobe.cairngorm.control.CairngormEventDispatcher;
+			
+			import control.*;
+			
+			import locator.IdFlowLocator;
+			import locator.ConfirmLocator;
+			import locator.PsbLocator;
+			import locator.WordLocator;
+			
+			import mx.events.FlexEvent;
+			
+			import util.Helper;
+			import util.Server;
+			
+			import vo.PreExamVo;
+			
+			private var locObj:ConfirmLocator=ConfirmLocator.getInstance();
+			
+			protected function creationCompleteHandler(evt:Event):void
+			{
+				if(IdFlowLocator.getInstance().wholeCase)
+				{
+					locObj.wsObj=new PreExamVo("",IdFlowLocator.getInstance().curObj.SRCID,"","","","","","","","","");
+				}
+				else
+				{
+					locObj.wsObj=new PreExamVo("","",IdFlowLocator.getInstance().curObj.CONNO,"","","","","","","","");
+				}
+				CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.CONFIRMWS_QueryCaseConfirm));
+			}
+			
+			protected function updateClickHandler(event:MouseEvent):void
+			{				
+				if(dg.selectedItem!=null)
+				{
+					locObj.wsObj=dg.selectedItem as PreExamVo;
+					locObj.wsObj.TEST_METHOD=stype.getSelectedItem();
+					locObj.wsObj.RESULT=carrier.selectedData;
+					locObj.wsObj.TEST_DATE=rq.text;
+					CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.CONFIRMWS_UpdateCaseConfirm));
+				}
+				else
+				{
+					Helper.showAlert("请先选中对应数据行");
+				}
+			}
+			
+			protected function deleteClickHandler(event:MouseEvent):void
+			{
+				if(dg.selectedItem!=null)
+				{
+					locObj.wsObj=dg.selectedItem as PreExamVo;
+					CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.CONFIRMWS_DeleteCaseConfirm));
+					
+				}
+				else
+				{
+					Helper.showAlert("请先选中对应数据行");
+				}
+			}
+			
+			protected function PrintCaseSYRecord_clickHandler(event:MouseEvent):void
+			{
+				// 打印预试验确证试验记录表
+				WordLocator.getInstance().FileName="预试验确证试验记录表.doc";
+				WordLocator.getInstance().wordType="doc";
+				WordLocator.getInstance().RecordType="预试验确证试验记录";
+				WordLocator.getInstance().RecordID="";
+				WordLocator.getInstance().conno=IdFlowLocator.getInstance().curObj.CONNO;
+				CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.WORDWS_PrintCaseTestRecord));
+			}
+			
+		]]>
+	</fx:Script>
+
+	<s:VGroup left="10" right="10" top="10" bottom="10" gap="10">
+		<s:HGroup width="100%" verticalAlign="middle">
+			<s:Label color="#0A37FA" fontSize="20" fontWeight="bold" text="确证试验信息"/>
+			<s:Spacer width="100%" height="10"/>
+			<s:Button label="预试验确证试验记录表" click="PrintCaseSYRecord_clickHandler(event)"
+					  enabled="{PsbLocator.getInstance().npending}" />
+			<!--<s:Label color="#0000FF" fontSize="16" text="请在&quot;检验记录&quot;中生成文书"/>-->
+		</s:HGroup>
+		<s:DataGrid id="dg" width="100%" height="100%" dataProvider="{locObj.ConfirmListObj}">
+			<s:columns>
+				<s:ArrayList>
+					<s:GridColumn width="160" dataField="SLN" headerText="编号"></s:GridColumn>
+					<s:GridColumn dataField="NAME" headerText="名称"></s:GridColumn>
+					<s:GridColumn dataField="SAMPLE_TYPE" headerText="样本类型"></s:GridColumn>
+					<s:GridColumn dataField="TEST_METHOD" headerText="试验方法"></s:GridColumn>
+					<s:GridColumn dataField="RESULT" headerText="试验结果"></s:GridColumn>
+					<s:GridColumn dataField="TEST_DATE" headerText="日期"></s:GridColumn>
+				</s:ArrayList>
+			</s:columns>
+		</s:DataGrid>
+		<s:HGroup width="100%" horizontalAlign="right">
+			<ns1:ListPager id="pager"
+						   creationComplete="pager.addEventListener(ListPager.PAGE_INDEX_CHANGE_EVENT,creationCompleteHandler);locObj.ConfirmListPager=pager;"
+						   pageSize="14">
+			</ns1:ListPager>
+		</s:HGroup>
+		<s:HGroup width="100%" verticalAlign="middle">
+			<s:Label text="试验方法："/>
+			<tool:DictCbb id="stype" width="120" dictName="确证试验方法" requireSelection="true"
+						  selectedItem="{dg.selectedItem.TEST_METHOD}"/>
+			<s:Label text="试验结果："/>
+			<tool:DictDdl id="carrier" width="80" dictName="试验结果" requireSelection="true"
+						  selectedData="{dg.selectedItem.RESULT}"/>
+			<s:Label text="日期："/>
+			<tool:DateZh id="rq" width="191" text="{dg.selectedItem.TEST_DATE}"/>
+			<s:Button label="修改" click="updateClickHandler(event)"
+					  enabled="{PsbLocator.getInstance().npending}" skinClass="assets.skins.Button_xg"/>
+			<s:Button label="删除" click="deleteClickHandler(event)"
+					  enabled="{PsbLocator.getInstance().npending}" skinClass="assets.skins.Button_sc"/>
+		</s:HGroup>
+	</s:VGroup>
+</s:Group>

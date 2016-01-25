@@ -1,0 +1,151 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<s:Module xmlns:fx="http://ns.adobe.com/mxml/2009"
+		  xmlns:s="library://ns.adobe.com/flex/spark"
+		  xmlns:mx="library://ns.adobe.com/flex/mx"
+		  xmlns:tool="view.tool.*"
+		  width="953" height="598" fontSize="14"
+		  creationComplete="module1_creationCompleteHandler(event)" >
+	<fx:Declarations>
+		<!-- 将非可视元素（例如服务、值对象）放在此处 -->
+	</fx:Declarations>
+	<fx:Script>
+		<![CDATA[
+			import com.adobe.cairngorm.control.CairngormEventDispatcher;
+			
+			import control.*;
+			
+			import locator.JusTypeLocator;
+			import locator.MenuLocator;
+			import locator.StatisticsLocator;
+			import locator.SysUserLocator;
+			
+			import mx.collections.ArrayList;
+			import mx.events.FlexEvent;
+			
+			import spark.events.IndexChangeEvent;
+			
+			import util.Helper;
+			
+			[Bindable]
+			private var officelist:ArrayList;
+			protected function module1_creationCompleteHandler(event:FlexEvent):void
+			{
+				StatisticsLocator.getInstance().PersonWorkList.removeAll();
+				
+				MenuLocator.getInstance().changeMenu(menuGp);
+				
+//				if(SysUserLocator.getInstance().loginUser.CURRENT_ROLE=="Techer"||
+//					SysUserLocator.getInstance().loginUser.CURRENT_ROLE=="Leader")
+//				{
+//					officelist=JusTypeLocator.getInstance().getAllOffice();
+//					officelist.addItem({label:"DNA"});
+//				}
+//				else
+//				{
+					HG.removeElement(offtext);HG.removeElement(officeText);
+					SysUserLocator.getInstance().wsObj.PSBID=SysUserLocator.getInstance().loginUser.PSBID;
+					SysUserLocator.getInstance().wsObj.OFFICE=SysUserLocator.getInstance().loginUser.OFFICE;
+					CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.SYSUSERWS_GetAll));
+					
+					StatisticsLocator.getInstance().PersonWorkList.removeAll();
+					var list:ArrayList=JusTypeLocator.getInstance().getAllJusType(SysUserLocator.getInstance().loginUser.OFFICE);
+					
+					AL.removeAll();
+					AL.addItem(GC1);
+					for(var i:int=0;i<list.length;i++)
+					{
+						var GC:GridColumn=new GridColumn();
+						GC.dataField="num_"+String(i+1);
+						GC.headerText=list.getItemAt(i).label;
+						AL.addItem(GC);
+					}
+					AL.addItem(GC8);
+//				}
+			}
+			
+			protected function query_clickHandler(event:MouseEvent):void
+			{
+				if((Date1.text.length!=0&&Date2.text.length==0)||(Date1.text.length==0&&Date2.text.length!=0))
+				{
+					Helper.showAlert("请选择完整的时间区间！");
+				}
+				else
+				{
+//					if(SysUserLocator.getInstance().loginUser.CURRENT_ROLE=="Techer"||
+//						SysUserLocator.getInstance().loginUser.CURRENT_ROLE=="Leader")
+//					{
+//						if(officeText.selectedItem==null)
+//						{
+//							Helper.showAlert("请选择鉴定专业！");
+//							return;
+//						}
+//						else
+//							StatisticsLocator.getInstance().Office=officeText.selectedItem.label;
+//					}
+//					else
+//					{
+//						StatisticsLocator.getInstance().Office=SysUserLocator.getInstance().loginUser.OFFICE;
+//					}
+					
+					StatisticsLocator.getInstance().Office="DNA";
+					
+					if(persontext.selectedItem==null)StatisticsLocator.getInstance().Person="";
+					else StatisticsLocator.getInstance().Person=persontext.selectedItem.NAME;
+					StatisticsLocator.getInstance().DateTime1=Date1.text;
+					StatisticsLocator.getInstance().DateTime2=Date2.text;
+					CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.STATISTICSWS_PersonWork));
+				}
+			}
+			
+			
+			protected function officeText_changeHandler(event:IndexChangeEvent):void
+			{
+				//更换 鉴定专业
+				SysUserLocator.getInstance().wsObj.PSBID=SysUserLocator.getInstance().loginUser.PSBID;
+				SysUserLocator.getInstance().wsObj.OFFICE=officeText.selectedItem.label;
+				CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.SYSUSERWS_GetAll));
+				
+				StatisticsLocator.getInstance().PersonWorkList.removeAll();
+				var list:ArrayList=JusTypeLocator.getInstance().getAllJusType(officeText.selectedItem.label);
+				
+				AL.removeAll();
+				AL.addItem(GC1);
+				for(var i:int=0;i<list.length;i++)
+				{
+					var GC:GridColumn=new GridColumn();
+					GC.dataField="num_"+String(i+1);
+					GC.headerText=list.getItemAt(i).label;
+					AL.addItem(GC);
+				}
+				AL.addItem(GC8);
+			}
+			
+		]]>
+	</fx:Script>
+	<s:Panel width="953" height="598">
+		<s:HGroup id="menuGp" x="10" y="-27"/>
+		<s:VGroup left="10" right="10" top="10" bottom="10">
+			<s:HGroup id="HG" width="100%" verticalAlign="middle">
+				<s:Label id="offtext" text="鉴定专业："/>
+				<s:DropDownList id="officeText" dataProvider="{officelist}" labelField="label" change="officeText_changeHandler(event)"/>
+				<s:Label text="实验员："/>
+				<s:DropDownList id="persontext" dataProvider="{SysUserLocator.getInstance().userList}" labelField="NAME"/>
+				<s:Label text="受理时间："/>
+				<tool:DateZh id="Date1" width="110"/>
+				<s:Label text="到"/>
+				<tool:DateZh id="Date2" width="110"/>
+				<s:Button id="query" label="查询" click="query_clickHandler(event)"/>
+			</s:HGroup>
+			<s:DataGrid width="100%" height="100%"
+						dataProvider="{StatisticsLocator.getInstance().PersonWorkList}"
+						requestedRowCount="4">
+				<s:columns>
+					<s:ArrayList id="AL">
+						<s:GridColumn id="GC1" dataField="person" headerText="实验员"></s:GridColumn>
+						<s:GridColumn id="GC8" dataField="AmountNum" headerText="案件总数"></s:GridColumn>
+					</s:ArrayList>
+				</s:columns>
+			</s:DataGrid>
+		</s:VGroup>
+	</s:Panel>
+</s:Module>

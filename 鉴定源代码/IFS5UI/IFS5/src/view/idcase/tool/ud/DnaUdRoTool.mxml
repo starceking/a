@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009"
+		 xmlns:s="library://ns.adobe.com/flex/spark"
+		 xmlns:mx="library://ns.adobe.com/flex/mx"
+		 width="813" height="547" creationComplete="creationCompleteHandler(event)" fontSize="14">
+	<fx:Declarations>
+		<!-- 将非可视元素（例如服务、值对象）放在此处 -->
+	</fx:Declarations>
+	<fx:Script>
+		<![CDATA[
+			import com.adobe.cairngorm.control.CairngormEventDispatcher;
+			
+			import control.*;
+			
+			import locator.IdFlowLocator;
+			import locator.UnknownDeceasedLocator;
+			
+			import mx.events.FlexEvent;
+			
+			import vo.UnknownDeceasedVo;
+			
+			private var locObj:UnknownDeceasedLocator=UnknownDeceasedLocator.getInstance();
+			
+			protected function creationCompleteHandler(event:FlexEvent):void
+			{
+				var conno:String=IdFlowLocator.getInstance().curObj.CONNO;
+				if(conno.length==19)
+				{
+					locObj.wsObj=new UnknownDeceasedVo("","",conno,"","","","","","","","","","");
+					CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.UNKNOWNDECEASEDWS_GetAll));
+				}
+			}
+		]]>
+	</fx:Script>
+	<s:Label x="545" y="403" text="包装情况："/>
+	<s:Label id="pack" x="623" y="403" text="{dg.selectedItem.PACKAGE}"/>
+	<s:Label x="10" y="463" text="样本描述："/>
+	<s:Label id="sdes" x="88" y="463" text="{dg.selectedItem.SAMPLE_DESCRIPTION}"/>
+	<s:Label x="10" y="493" text="尸体特征："/>
+	<s:Label x="545" y="433" text="大致年龄："/>
+	<s:Label x="10" y="523" text="备        注："/>
+	<s:DataGrid id="dg" x="10" y="50" width="794" height="345" dataProvider="{locObj.listObj}">
+		<s:columns>
+			<s:ArrayList>
+				<s:GridColumn width="160" dataField="SLN" headerText="样本编号"></s:GridColumn>
+				<s:GridColumn dataField="SAMPLE_TYPE" headerText="样本类型"></s:GridColumn>
+				<s:GridColumn dataField="NAME" headerText="姓名"></s:GridColumn>
+				<s:GridColumn dataField="GENDER" headerText="性别"></s:GridColumn>
+			</s:ArrayList>
+		</s:columns>
+	</s:DataGrid>
+	<s:Label id="remark" x="88" y="523" text="{dg.selectedItem.REMARK}"/>
+	<s:Label id="spec" x="88" y="493" text="{dg.selectedItem.SPECIFICATION}"/>
+	<s:Label x="10" y="433" text="姓        名："/>
+	<s:Label id="pname" x="88" y="433" text="{dg.selectedItem.NAME}"/>
+	<s:Label x="276" y="433" text="性        别："/>
+	<s:Label id="gender" x="354" y="433" text="{dg.selectedItem.GENDER}"/>
+	<s:Label x="10" y="403" text="样本编号："/>
+	<s:Label id="pnum" x="88" y="403" text="{dg.selectedItem.SLN}"/>
+	<s:Label x="276" y="403" text="样本类型："/>
+	<s:Label id="stype" x="354" y="403" text="{dg.selectedItem.SAMPLE_TYPE}"/>
+	<s:Label id="age" x="623" y="433" text="{dg.selectedItem.AGE}"/>
+	<s:Label x="10" y="10" color="#0A37FA" fontSize="20" fontWeight="bold" text="未知名尸体样本信息"/>
+</s:Group>

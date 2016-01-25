@@ -1,0 +1,237 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Module xmlns:fx="http://ns.adobe.com/mxml/2009"
+		  xmlns:s="library://ns.adobe.com/flex/spark"
+		  xmlns:mx="library://ns.adobe.com/flex/mx"
+		  xmlns:tool="view.tool.*"
+		  width="953" height="598" fontSize="14" creationComplete="module1_creationCompleteHandler(event)">
+	
+	<fx:Script>
+		<![CDATA[
+			import com.adobe.cairngorm.control.CairngormEventDispatcher;
+			
+			import control.*;
+			
+			import locator.DictLocator;
+			import locator.MenuLocator;
+			import locator.PsbLocator;
+			import locator.SysUserLocator;
+			import locator.Userlocator;
+			
+			import mx.events.FlexEvent;
+			
+			import util.Helper;
+			
+			import vo.MenuVo;
+			import vo.SysUserVo;
+			import vo.UserVo;
+			
+			private var locObj:SysUserLocator=SysUserLocator.getInstance();
+			protected function datagrid1_doubleClickHandler(event:MouseEvent):void
+			{
+				if(dg.selectedItem!=null)
+				{
+					Userlocator.getInstance().userVO=dg.selectedItem as UserVo;
+					//Helper.showAlert(locObj.wsObj.NAME);
+					Helper.setIndexContent("view/usermain/UserLL/RyllModule.swf");
+				}
+			}
+			
+			protected function button1_clickHandler(event:MouseEvent):void
+			{
+				if(!(validateInput()))return;
+				
+				SysUserLocator.getInstance().wsObj=new SysUserVo(
+					Helper.getGUID(),
+					PsbLocator.getInstance().idPsb.ID,
+					office.office,
+					pn.text,
+					"888",
+					pname.text,
+					gender.selectedData,
+					idcard.text,
+					lphone.text,
+					sphone.text,
+					techtitle.text,
+					roles.role,
+					auth.authority,
+					"0",
+					idx.text,
+					"","","","","","","","","","","","","","","","","","","","","","","","");
+				CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.SYSUSERWS_Insert));
+			}
+			
+			protected function button2_clickHandler(event:MouseEvent):void
+			{
+				if(dg.selectedItem!=null)
+				{
+					if(!(validateInput()))return;
+					
+					SysUserLocator.getInstance().wsObj=new SysUserVo(
+						dg.selectedItem.ID,
+						PsbLocator.getInstance().idPsb.ID,
+						office.office,
+						pn.text,
+						dg.selectedItem.PASSWORD,
+						pname.text,
+						gender.selectedData,
+						idcard.text,
+						lphone.text,
+						sphone.text,
+						techtitle.text,
+						roles.role,
+						auth.authority,
+						"0",
+						idx.text,
+						"","","","","","","","","","","","","","","","","","","","","","","","");
+					CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.SYSUSERWS_Update));
+				}
+				else
+				{
+					Helper.showAlert("请选择对应的记录");
+				}
+			}
+			
+			protected function button3_clickHandler(event:MouseEvent):void
+			{
+				if(dg.selectedItem!=null)
+				{					
+					SysUserLocator.getInstance().wsObj=new SysUserVo(
+						dg.selectedItem.ID,
+						PsbLocator.getInstance().idPsb.ID,
+						office.office,
+						pn.text,
+						dg.selectedItem.PASSWORD,
+						pname.text,
+						gender.selectedData,
+						idcard.text,
+						lphone.text,
+						sphone.text,
+						techtitle.text,
+						roles.role,
+						auth.authority,
+						"1",
+						idx.text,
+						"","","","","","","","","","","","","","","","","","","","","","","","");
+					CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.SYSUSERWS_Update));
+				}
+				else
+				{
+					Helper.showAlert("请选择对应的记录");
+				}
+			}
+			
+			protected function button4_clickHandler(event:MouseEvent):void
+			{
+				if(dg.selectedItem!=null)
+				{
+					if(!(validateInput()))return;
+					
+					SysUserLocator.getInstance().wsObj=new SysUserVo(
+						dg.selectedItem.ID,
+						PsbLocator.getInstance().idPsb.ID,
+						office.office,
+						pn.text,
+						"888",
+						pname.text,
+						gender.selectedData,
+						idcard.text,
+						lphone.text,
+						sphone.text,
+						techtitle.text,
+						roles.role,
+						auth.authority,
+						"0",
+						idx.text,
+						"","","","","","","","","","","","","","","","","","","","","","","","");
+					CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.SYSUSERWS_Update));
+				}
+				else
+				{
+					Helper.showAlert("请选择对应的记录");
+				}
+			}
+			
+			private function validateInput():Boolean
+			{		
+				if(roles.role.length==0)
+				{
+					Helper.showAlert("必须至少选择一个用户身份");
+					return false;
+				}
+				
+				var result:Boolean=true;
+				result=result && Helper.validateTextInput(pn);
+				result=result && Helper.validateTextInput(pname);
+				result=result && Helper.validateTextInput(idcard);
+				
+				return result;
+			}
+			
+			protected function module1_creationCompleteHandler(event:FlexEvent):void
+			{
+				// TODO Auto-generated method stub
+				SysUserLocator.getInstance().wsObj=new SysUserVo("",SysUserLocator.getInstance().loginUser.PSBID,
+					"","","","","","","","","","","","","","","","","","","","","","","","","","","",
+					"","","","","","","","","","")
+				CairngormEventDispatcher.getInstance().dispatchEvent(new IFSEvent(IFSControl.SYSUSERWS_GetAll));
+			}
+			
+		]]>
+	</fx:Script>
+	
+	<fx:Declarations>
+		<!-- 将非可视元素（例如服务、值对象）放在此处 -->
+	</fx:Declarations>
+	<s:Panel width="953" height="598" title="系统用户管理">
+		<s:DataGrid id="dg" x="10" y="10" width="513" height="547" dataProvider="{locObj.userList}"
+					doubleClick="datagrid1_doubleClickHandler(event)" doubleClickEnabled="true">
+			<s:columns>
+				<s:ArrayList>
+					<s:GridColumn dataField="INDEX" headerText="序号"></s:GridColumn>
+					<s:GridColumn dataField="POLICENO" headerText="警号"></s:GridColumn>
+					<s:GridColumn dataField="NAME" headerText="姓名"></s:GridColumn>
+					<s:GridColumn dataField="OFFICE" headerText="专业"></s:GridColumn>
+					<s:GridColumn dataField="AUTHORITY" headerText="身份"></s:GridColumn>
+				</s:ArrayList>
+			</s:columns>
+		</s:DataGrid>
+		<s:Label x="531" y="330" text="性        别："/>
+		<s:Label x="531" y="514" text="身        份："/>
+		<s:Label x="531" y="485" text="用户角色："/>
+		<s:Label x="531" y="458" text="技术职称："/>
+		<s:Button x="639" y="536" label="增加" click="button1_clickHandler(event)"
+				  enabled="{PsbLocator.getInstance().npending}"/>
+		<s:Button x="717" y="536" label="修改" click="button2_clickHandler(event)"
+				  enabled="{PsbLocator.getInstance().npending}"/>
+		<s:Button x="795" y="536" label="删除" click="button3_clickHandler(event)"
+				  enabled="{PsbLocator.getInstance().npending}"/>
+		<s:Label x="531" y="426" text="虚  拟  号："/>
+		<s:TextInput id="sphone" x="610" y="416" width="334" text="{dg.selectedItem.SHORTPHONE}"/>
+		<s:TextInput id="techtitle" x="610" y="448" width="334" text="{dg.selectedItem.TECHTITLE}"/>
+		<s:Label x="531" y="394" text="手机号码："/>
+		<s:TextInput id="lphone" x="610" y="384" width="334" text="{dg.selectedItem.LONGPHONE}"/>
+		<s:Label x="531" y="362" text="身  份  证："/>
+		<s:TextInput id="idcard" x="610" y="352" width="334" text="{dg.selectedItem.IDCARDNO}"/>
+		<s:Button x="873" y="536" label="重置密码" click="button4_clickHandler(event)"
+				  enabled="{PsbLocator.getInstance().npending}"/>
+		<tool:DictDdl id="gender" x="610" y="323" width="334" dictName="性别" requireSelection="true"
+					  selectedData="{dg.selectedItem.GENDER}"/>
+		<s:Label x="531" y="301" text="姓        名："/>
+		<s:TextInput id="pname" x="610" y="291" width="334" text="{dg.selectedItem.NAME}"/>
+		<s:Label x="531" y="269" text="密        码："/>
+		<s:Label x="531" y="237" text="警        号："/>
+		<s:TextInput id="pn" x="610" y="227" width="334" text="{dg.selectedItem.POLICENO}"/>
+		<s:Label x="531" y="140" text="专业科室："/>
+		<tool:AuthorityTool id="auth" x="610" y="508" authority="{dg.selectedItem.AUTH}">
+		</tool:AuthorityTool>
+		<tool:RoleTool id="roles" x="610" y="480" role="{dg.selectedItem.ROLES}">
+		</tool:RoleTool>
+		<tool:OfficeRgp id="office" x="610" y="135" width="334" dnaEnable="0"
+						office="{dg.selectedItem.OFFICE}">
+		</tool:OfficeRgp>
+		<s:Label x="610" y="269" text="新用户或重置默认密码为：888"/>
+		<s:Label x="531" y="205" text="序        号："/>
+		<s:TextInput id="idx" x="610" y="195" width="334" restrict="1234567890"
+					 text="{dg.selectedItem.INDEX}"/>
+	</s:Panel>
+</s:Module>

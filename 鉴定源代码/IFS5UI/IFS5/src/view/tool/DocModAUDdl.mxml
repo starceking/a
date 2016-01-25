@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:DropDownList xmlns:fx="http://ns.adobe.com/mxml/2009"
+				xmlns:s="library://ns.adobe.com/flex/spark"
+				xmlns:mx="library://ns.adobe.com/flex/mx">
+	<fx:Declarations>
+		<!-- 将非可视元素（例如服务、值对象）放在此处 -->
+	</fx:Declarations>
+	<fx:Script>
+		<![CDATA[
+			import locator.IdFlowLocator;
+			import locator.SysUserLocator;
+			
+			import mx.collections.ArrayList;
+			
+			import vo.SysUserVo;
+			
+			private var list:ArrayList=new ArrayList();
+			
+			private var office:String=IdFlowLocator.getInstance().curObj.ID_OFFICE;
+			
+			public function set auth(ath:String):void
+			{				
+				var list1:ArrayList=SysUserLocator.getInstance().userList;
+				for(var i:int=0;i<list1.length;i++)
+				{
+					var voObj:SysUserVo=list1.getItemAt(i) as SysUserVo;
+					if(((voObj.ROLES.search("Leader")>=0)||(voObj.ROLES.search("Techer")>=0))||
+						((voObj.OFFICE==office)&&(voObj.AUTH.search("专业负责人")>=0)))
+					{
+						list.addItem({label:voObj.NAME,data:voObj.ID});
+					}
+				}
+				this.dataProvider=list;
+			}
+			
+			public function get selectedData():String
+			{			
+				return this.selectedIndex>=0?this.selectedItem.data:"";
+			}
+			
+			public function set selectedData(ID:String):void
+			{
+				for(var i:int=0;i<list.length;i++)
+				{
+					if(list.getItemAt(i).data==ID)
+					{
+						this.selectedIndex=i;
+						return;
+					}
+				}
+			}
+		]]>
+	</fx:Script>
+</s:DropDownList>
