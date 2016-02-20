@@ -216,7 +216,7 @@ namespace WS
                             DataSet strds = DBHelperSQL.Select("样本视图", "委托编号='" + 委托编号 + "'", "样本编号", "*");
                             foreach (DataRow dr in strds.Tables[0].Rows)
                             {
-                                dr["样本编号"] = dr["样本编号"].ToString().Substring(dr["样本编号"].ToString().Length - 3, 3);
+                                dr["样本编号"] = dr["样本编号"].ToString().Substring(dr["样本编号"].ToString().Length - 5, 5);
                             }
                             IDictionary<string, string> dict = new Dictionary<string, string>();
                             dict.Add("样本编号", "1-1-1");
@@ -243,7 +243,7 @@ namespace WS
                             DataSet strds = DBHelperSQL.Select("样本视图", "委托编号='" + 委托编号 + "'", "样本编号", "*");
                             foreach (DataRow dr in strds.Tables[0].Rows)
                             {
-                                dr["样本编号"] = dr["样本编号"].ToString().Substring(dr["样本编号"].ToString().Length - 3, 3);
+                                dr["样本编号"] = dr["样本编号"].ToString().Substring(dr["样本编号"].ToString().Length - 5, 5);
                             }
                             IDictionary<string, string> dict = new Dictionary<string, string>();
                             dict.Add("样本编号", "1-1-1");
@@ -275,7 +275,7 @@ namespace WS
                             DataSet strds = DBHelperSQL.Select("样本视图", "委托编号='" + 委托编号 + "'", "样本编号", "*");
                             foreach (DataRow dr in strds.Tables[0].Rows)
                             {
-                                dr["样本编号"] = dr["样本编号"].ToString().Substring(dr["样本编号"].ToString().Length - 3, 3);
+                                dr["样本编号"] = dr["样本编号"].ToString().Substring(dr["样本编号"].ToString().Length - 5, 5);
                             }
                             IDictionary<string, string> dict = new Dictionary<string, string>();
                             dict.Add("样本编号", "1-1-1");
@@ -302,7 +302,7 @@ namespace WS
                             DataSet strds = DBHelperSQL.Select("样本视图", "委托编号='" + 委托编号 + "'", "样本编号", "*");
                             foreach (DataRow dr in strds.Tables[0].Rows)
                             {
-                                dr["样本编号"] = dr["样本编号"].ToString().Substring(dr["样本编号"].ToString().Length - 3, 3);
+                                dr["样本编号"] = dr["样本编号"].ToString().Substring(dr["样本编号"].ToString().Length - 5, 5);
                             }
                             IDictionary<string, string> dict = new Dictionary<string, string>();
                             dict.Add("样本编号", "1-1-1");
@@ -329,7 +329,7 @@ namespace WS
                             DataSet strds = DBHelperSQL.Select("样本视图", "委托编号='" + 委托编号 + "'", "样本编号", "*");
                             foreach (DataRow dr in strds.Tables[0].Rows)
                             {
-                                dr["样本编号"] = dr["样本编号"].ToString().Substring(dr["样本编号"].ToString().Length - 3, 3);
+                                dr["样本编号"] = dr["样本编号"].ToString().Substring(dr["样本编号"].ToString().Length - 5, 5);
                             }
                             IDictionary<string, string> dict = new Dictionary<string, string>();
                             dict.Add("样本编号", "1-1-1");
@@ -364,7 +364,7 @@ namespace WS
                             DataSet strds = DBHelperSQL.Select("样本视图", "委托编号='" + 委托编号 + "'", "样本编号", "*");
                             foreach (DataRow dr in strds.Tables[0].Rows)
                             {
-                                dr["样本编号"] = dr["样本编号"].ToString().Substring(dr["样本编号"].ToString().Length - 3, 3);
+                                dr["样本编号"] = dr["样本编号"].ToString().Substring(dr["样本编号"].ToString().Length - 5, 5);
                             }
                             IDictionary<string, string> dict = new Dictionary<string, string>();
                             dict.Add("样本编号", "1-1-1");

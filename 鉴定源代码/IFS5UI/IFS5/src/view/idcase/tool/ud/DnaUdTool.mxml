@@ -158,7 +158,7 @@
 					<s:GridColumn dataField="SAMPLE_TYPE" headerText="样本类型"></s:GridColumn>
 					<s:GridColumn dataField="NAME" headerText="姓名"></s:GridColumn>
 					<s:GridColumn dataField="GENDER" headerText="性别"></s:GridColumn>
-					<s:GridColumn dataField="SAMPLE_PACKAGING" headerText="包装"></s:GridColumn>
+					<s:GridColumn dataField="PACKAGE" headerText="包装"></s:GridColumn>
 				</s:ArrayList>
 			</s:columns>
 		</s:DataGrid>

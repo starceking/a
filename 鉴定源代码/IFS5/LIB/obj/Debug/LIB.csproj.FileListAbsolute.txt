@@ -163,3 +163,8 @@ E:\HXC\Easytalk\LNIFS5DNA\IFS5\DLL\LIB.pdb
 E:\HXC\Easytalk\LNIFS5DNA\IFS5\LIB\obj\Debug\ResolveAssemblyReference.cache
 E:\HXC\Easytalk\LNIFS5DNA\IFS5\LIB\obj\Debug\LIB.dll
 E:\HXC\Easytalk\LNIFS5DNA\IFS5\LIB\obj\Debug\LIB.pdb
+E:\项目\辽宁\LNIFS5DNA\IFS5\DLL\LIB.dll
+E:\项目\辽宁\LNIFS5DNA\IFS5\DLL\LIB.pdb
+E:\项目\辽宁\LNIFS5DNA\IFS5\LIB\obj\Debug\ResolveAssemblyReference.cache
+E:\项目\辽宁\LNIFS5DNA\IFS5\LIB\obj\Debug\LIB.dll
+E:\项目\辽宁\LNIFS5DNA\IFS5\LIB\obj\Debug\LIB.pdb

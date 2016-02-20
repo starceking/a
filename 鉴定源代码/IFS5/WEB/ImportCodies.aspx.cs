@@ -21,7 +21,7 @@ public partial class ImportCodies : System.Web.UI.Page
     protected void Page_Load(object sender, EventArgs e)
     {
         //存储文件
-        string dir = AppDomain.CurrentDomain.BaseDirectory + "\\" + Request.QueryString["psb"] + "\\Codies\\";
+        string dir = ConfigurationManager.AppSettings["WebPath"] + "\\" + Request.QueryString["psb"] + "\\Codies\\";
         Helper.CheckDir(dir);
 
         string fileName = string.Empty;

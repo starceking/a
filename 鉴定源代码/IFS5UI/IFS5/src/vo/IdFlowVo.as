@@ -155,7 +155,7 @@ package vo
 		public var DOC_NAME:String;//文书名称
 		public var ACC_YEAR:String;//受理年份
 		public var ACC_NO:String;//受理序号
-		public var ACC_CASE_NO:String;//受理序号
+		public var ACC_CASE_NO:String;//案件序号
 		public var DOC_YEAR:String;//发文年份
 		public var DOC_NO:String;//发文序号
 		public var ACCER:String;//受理人员

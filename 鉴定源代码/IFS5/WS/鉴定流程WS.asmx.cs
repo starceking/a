@@ -649,7 +649,7 @@ namespace WS
             if (案件名称.Length > 0) filter += "案件名称 like '%" + 案件名称 + "%' and ";
             if (案件序号.Length > 0) filter += "案件序号 = '" + 案件序号 + "' and ";
 
-            return DBHelperSQL.SelectRowCount("鉴定流程视图", Helper.CutFilter(filter), "鉴定专业,受理年份 DESC,受理序号 desc,鉴定类别", "*",
+            return DBHelperSQL.SelectRowCount("鉴定流程视图", Helper.CutFilter(filter), "鉴定专业,受理年份 DESC,案件序号 desc,受理序号 desc,鉴定类别", "*",
                 Convert.ToInt32(pageSize), Convert.ToInt32(pageIndex)).GetXml();
         }
         [WebMethod]
@@ -664,7 +664,7 @@ namespace WS
 (技管='{1}' and 技管完成 is null and 二检完成 is not null and (三检人 is null or 三检完成 is not null) and (四检人 is null or 四检完成 is not null) and (复核人 is null or 复核完成 is not null) and (授权签字 is null or 签字完成 is not null)) or 
 (领导='{1}' and 审批完成 is null and 二检完成 is not null and (三检人 is null or 三检完成 is not null) and (四检人 is null or 四检完成 is not null) and (复核人 is null or 复核完成 is not null) and (授权签字 is null or 签字完成 is not null) and (技管 is null or 技管完成 is not null))) and ", 鉴定单位, 审核人);
 
-            return DBHelperSQL.SelectRowCount("鉴定流程视图", Helper.CutFilter(filter), "鉴定专业,受理年份 DESC,受理序号 desc,鉴定类别", "*",
+            return DBHelperSQL.SelectRowCount("鉴定流程视图", Helper.CutFilter(filter), "鉴定专业,受理年份 DESC,案件序号 desc,受理序号 desc,鉴定类别", "*",
                 Convert.ToInt32(pageSize), Convert.ToInt32(pageIndex)).GetXml();
         }
         [WebMethod]
@@ -684,7 +684,7 @@ namespace WS
             if (委托编号.Length > 0) filter += "委托编号='" + 委托编号 + "' and ";
             if (案件名称.Length > 0) filter += "案件名称 like '%" + 案件名称 + "%' and ";
 
-            return DBHelperSQL.SelectRowCount("鉴定流程视图", Helper.CutFilter(filter), "鉴定专业,受理年份 DESC,受理序号 desc,鉴定类别", "*",
+            return DBHelperSQL.SelectRowCount("鉴定流程视图", Helper.CutFilter(filter), "鉴定专业,受理年份 DESC,案件序号 desc,受理序号 desc,鉴定类别", "*",
                 Convert.ToInt32(pageSize), Convert.ToInt32(pageIndex)).GetXml();
         }
         #endregion
@@ -832,7 +832,7 @@ namespace WS
             if (被鉴定人.Length > 0) filter += "被鉴定人 like '%" + 被鉴定人 + "%' and ";
             //if (被鉴定人姓名.Length > 0) filter += "被鉴定人姓名 like '%" + 被鉴定人姓名 + "%' and ";
 
-            return DBHelperSQL.SelectRowCount("鉴定流程视图", Helper.CutFilter(filter), "受理年份 DESC,受理序号 desc,鉴定专业,鉴定类别,受理时间 desc", "*",
+            return DBHelperSQL.SelectRowCount("鉴定流程视图", Helper.CutFilter(filter), "受理年份 DESC,案件序号 desc,受理序号 desc,鉴定专业,鉴定类别,受理时间 desc", "*",
                  Convert.ToInt32(pageSize), Convert.ToInt32(pageIndex)).GetXml();
         }
         [WebMethod]
@@ -891,7 +891,7 @@ namespace WS
             if (被鉴定人.Length > 0) filter += "被鉴定人 like '%" + 被鉴定人 + "%' and ";
             //if (被鉴定人姓名.Length > 0) filter += "被鉴定人姓名 like '%" + 被鉴定人姓名 + "%' and ";
 
-            DataSet ds = DBHelperSQL.Select("鉴定流程视图", Helper.CutFilter(filter), "受理年份 DESC,受理序号 desc,鉴定专业,鉴定类别,受理时间 desc", "*");
+            DataSet ds = DBHelperSQL.Select("鉴定流程视图", Helper.CutFilter(filter), "受理年份 DESC,案件序号 desc,受理序号 desc,鉴定专业,鉴定类别,受理时间 desc", "*");
             string fileName = Helper.GenerateID();//.doc
             //excel处理，将ds里面的数据填充到“鉴定台账.xls”中
             //生成的excel存放到web的 Tmp/fileName里面
@@ -952,7 +952,7 @@ namespace WS
             if (送检人.Length > 0) filter += "(一送姓名='" + 送检人 + "' or 二送姓名='" + 送检人 + "') and ";
             //if (被鉴定人姓名.Length > 0) filter += "被鉴定人姓名 like '%" + 被鉴定人姓名 + "%' and ";
 
-            DataSet ds = DBHelperSQL.Select("鉴定流程视图", Helper.CutFilter(filter), "受理年份 DESC,受理序号 desc,鉴定专业,鉴定类别,受理时间 desc", "*");
+            DataSet ds = DBHelperSQL.Select("鉴定流程视图", Helper.CutFilter(filter), "受理年份 DESC,案件序号 desc,受理序号 desc,鉴定专业,鉴定类别,受理时间 desc", "*");
             WordWS ws = new WordWS();
             return ws.FillFWJL(ds, filename);
         }

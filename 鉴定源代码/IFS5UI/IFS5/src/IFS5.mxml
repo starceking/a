@@ -216,7 +216,7 @@
 	<s:Group horizontalCenter="0" verticalCenter="0">
 		<s:Image id="login_img" x="0" y="0" smooth="true"
 				 creationComplete="login_img.source=Server.getUIImage('login_img_'+PsbLocator.getInstance().ID_PSB_ID+'.png');" includeIn="Login" horizontalCenter="0" verticalCenter="0"/>
-		<s:Label includeIn="Login" x="52" y="509" color="#005D98" fontFamily="宋体" text="V 1.2.3" />
+		<s:Label includeIn="Login" x="52" y="509" color="#005D98" fontFamily="宋体" text="V 1.2.4" />
 		<s:Group excludeFrom="Login">
 			<s:BitmapImage x="0" y="0" smooth="true" source="@Embed('/assets/images/index/bg.png')" />	
 			<s:Image id="img2" x="0" y="0" smooth="true"

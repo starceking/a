@@ -427,7 +427,10 @@
 					MenuLocator.getInstance().pop();
 					break;
 				case "存档":PsbLocator.getInstance().setMsg("存档成功，以后若需出鉴定书可重新激活该案件！");break;
-				case "激活":PsbLocator.getInstance().setMsg("激活成功，请通知“"+wsObj.TESTER_NAME+"”重新进行文书制作与发送！");break;
+				case "激活":
+					//PsbLocator.getInstance().setMsg("激活成功，请通知“"+wsObj.TESTER_NAME+"”重新进行文书制作与发送！");
+					Helper.showAlert("激活成功，请通知“"+wsObj.TESTER_NAME+"”重新进行文书制作与发送！");break;
+					break;
 				case "修改发文号":Helper.showAlert("保存成功");break;
 			}
 		}

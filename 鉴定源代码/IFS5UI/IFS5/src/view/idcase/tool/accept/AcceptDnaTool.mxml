@@ -81,6 +81,12 @@
 			
 			protected function saveClickHandler(event:MouseEvent):void
 			{
+				if(caseNo.text=="受理后自动生成"||caseNo.text.length==0)
+				{
+					Helper.showAlert("获取本案件及样本的编号");
+					return;
+				}
+				
 				if(locObj.curObj.ORA_FLAG=="0")
 				{
 					if(validateInput()) 
