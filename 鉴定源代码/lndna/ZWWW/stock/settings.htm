@@ -1,0 +1,231 @@
+﻿<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>综合管理系统</title>
+    <link href="../css/user_public.css" rel="stylesheet" type="text/css" />
+    <link href="../css/user_head.css" rel="stylesheet" type="text/css" />
+    <link href="../css/convert.css" rel="stylesheet" type="text/css" />
+    <link href="../css/tg_style.css" rel="stylesheet" type="text/css" />
+    <link href="../css/head.css" rel="stylesheet" type="text/css" />
+    <link href="../css/i_public.css" rel="stylesheet" type="text/css" />
+    <link href="../css/public.css" rel="stylesheet" type="text/css" />
+    <link href="../css/table.css" rel="stylesheet" type="text/css" />
+    <script src="../js/basic/base64code.js" type="text/javascript"></script>
+    <script src="../js/basic/index.js" type="text/javascript"></script>
+    <script src="../js/util/jscookie.js"></script>
+    <script src="../js/util/local_storage.js"></script>
+    <script src="../js/util/stores.js"></script>
+    <script src="../js/util/pager.js"></script>
+    <script src="../js/basic/jquery.js" type="text/javascript"></script>
+    <script src="../js/util/control.js" type="text/javascript"></script>
+    <script src="../js/util/util.js" type="text/javascript"></script>
+    <script src="../js/util/webservice.js" type="text/javascript"></script>
+    <script src="../js/sql/zstock_settings.js"></script>
+    <script type="text/javascript">
+        function page_load() {
+            zstock_settings_GetList();
+            zstock_settings_GetRongduan();
+            zstock_settings_GetIdxData();
+        }
+    </script>
+</head>
+<body onload="page_load()">
+    <div class="contbg m_t-10">
+        <div class="w1000 cen m" style="width: 100%">
+            <div class="contbox" style="width: 100%">
+                <div class="contright" style="width: 100%">
+                    <div class="mt c_b p_l30 f-w f-e43">
+                        风控设置
+                    </div>
+                    <div class="contmc">
+                        <div class="mc mclist">
+                            <table class="tab">
+                                <tr>
+                                    <td class="al_r">
+                                        点买金额：
+                                    </td>
+                                    <td>
+                                        <input id="风控1i" maxlength="150" style="width:30%" />
+                                        &nbsp;<input id="svBtn1" type="submit" value="保存" class="fore_end btn-red"
+                                                     onclick="zstock_settings_Update('svBtn1', 1, $('#风控1i').val())" />       &nbsp;
+                                        前台显示点买金额共分8档，单位为万元
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="al_r">
+                                        止盈线比率：
+                                    </td>
+                                    <td>
+                                        <input id="风控2i" maxlength="150" style="width:30%" />
+                                        &nbsp;<input id="svBtn2" type="submit" value="保存" class="fore_end btn-red"
+                                                     onclick="zstock_settings_Update('svBtn2', 2, $('#风控2i').val())" />         &nbsp;
+                                        止盈 = 点买金额 X 止盈比率
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="al_r">
+                                        最长持仓天数：
+                                    </td>
+                                    <td>
+                                        <input id="风控3i" maxlength="150" style="width:30%" />
+                                        &nbsp;<input id="svBtn3" type="submit" value="保存" class="fore_end btn-red"
+                                                     onclick="zstock_settings_Update('svBtn3', 3, $('#风控3i').val())" />     &nbsp;
+                                        最长可展期时间
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="al_r">
+                                        分配投资人响应时间：
+                                    </td>
+                                    <td>
+                                        <input id="风控4i" maxlength="150" style="width:30%" />
+                                        &nbsp;<input id="svBtn4" type="submit" value="保存" class="fore_end btn-red"
+                                                     onclick="zstock_settings_Update('svBtn4', 4, $('#风控4i').val())" />      &nbsp;
+                                        X秒内无人接单，系统自动流单
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="al_r">
+                                        点买人收益分配比例：
+                                    </td>
+                                    <td>
+                                        <input id="风控5i" maxlength="150" style="width:30%" />
+                                        &nbsp;<input id="svBtn5" type="submit" value="保存" class="fore_end btn-red"
+                                                     onclick="zstock_settings_Update('svBtn5', 5, $('#风控5i').val())" />      &nbsp;
+                                        盈利后，点买人获得盈利的百分比
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="al_r">
+                                        每日最多发起策略数：
+                                    </td>
+                                    <td>
+                                        <input id="风控6i" maxlength="150" style="width:30%" />
+                                        &nbsp;<input id="svBtn6" type="submit" value="保存" class="fore_end btn-red"
+                                                     onclick="zstock_settings_Update('svBtn6', 6, $('#风控6i').val())" />        &nbsp;
+                                        同一ID单日最多发起点买次数
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="al_r">
+                                        交易综合费：
+                                    </td>
+                                    <td>
+                                        <input id="风控12i" maxlength="150" style="width:30%" />
+                                        &nbsp;<input id="svBtn12" type="submit" value="保存" class="fore_end btn-red"
+                                                     onclick="zstock_settings_Update('svBtn12', 12, $('#风控12i').val())" />
+                                        &nbsp;每万元的发起策略费用
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="al_r">
+                                        递延费：
+                                    </td>
+                                    <td>
+                                        <input id="风控7i" maxlength="150" style="width:30%" />
+                                        &nbsp;<input id="svBtn7" type="submit" value="保存" class="fore_end btn-red"
+                                                     onclick="zstock_settings_Update('svBtn7', 7, $('#风控7i').val())" />   &nbsp;
+                                        每万元递延的费用
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="al_r">
+                                        邀请收益：
+                                    </td>
+                                    <td>
+                                        <input id="风控8i" maxlength="150" style="width:30%" />
+                                        &nbsp;<input id="svBtn8" type="submit" value="保存" class="fore_end btn-red"
+                                                     onclick="zstock_settings_Update('svBtn8', 8, $('#风控8i').val())" />  &nbsp;
+                                        每万元给邀请人的费用
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="al_r">
+                                        股票价格波动风险：
+                                    </td>
+                                    <td>
+                                        <input id="风控9i" maxlength="150" style="width:30%" />
+                                        &nbsp;<input id="svBtn9" type="submit" value="保存" class="fore_end btn-red"
+                                                     onclick="zstock_settings_Update('svBtn9', 9, $('#风控9i').val())" />     &nbsp;
+                                        当股票日内涨跌幅过X%时无法发起点买
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="al_r">
+                                        递延阈值：
+                                    </td>
+                                    <td>
+                                        <input id="风控10i" maxlength="150" style="width:30%" />
+                                        &nbsp;<input id="svBtn10" type="submit" value="保存" class="fore_end btn-red"
+                                                     onclick="zstock_settings_Update('svBtn10', 10, $('#风控10i').val())" />
+                                        &nbsp;（浮动盈亏+履约保证金）/点买金额>递延阈值
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="al_r">
+                                        杠杆比例：
+                                    </td>
+                                    <td>
+                                        <input id="风控11i" maxlength="150" style="width:30%" />
+                                        &nbsp;<input id="svBtn11" type="submit" value="保存" class="fore_end btn-red"
+                                                     onclick="zstock_settings_Update('svBtn11', 11, $('#风控11i').val())" />
+                                        &nbsp;（杠杆,止损;杠杆,止损;杠杆,止损）
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="al_r">
+                                        交易时段：
+                                    </td>
+                                    <td>
+                                        <input id="风控14i" maxlength="150" style="width:30%" />
+                                        &nbsp;<input id="svBtn14" type="submit" value="保存" class="fore_end btn-red"
+                                                     onclick="zstock_settings_Update('svBtn14', 14, $('#风控14i').val())" />
+                                        &nbsp;当输入值为&nbsp;&nbsp;00:00,24:00&nbsp;&nbsp;时全天不可交易
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="al_r">
+                                        是否开启自动交易：
+                                    </td>
+                                    <td>
+                                        <input id="风控13i" maxlength="150" style="width:30%" />
+                                        &nbsp;<input id="svBtn13" type="submit" value="保存" class="fore_end btn-red"
+                                                     onclick="zstock_settings_Update('svBtn13', 13, $('#风控13i').val())" />
+                                        &nbsp;0关闭，1开启
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="al_r">
+                                        是否处于熔断状态：
+                                    </td>
+                                    <td>
+                                        <input id="熔断i" maxlength="150" style="width:30%" />
+                                        &nbsp;<input id="rdBtn" type="submit" value="保存" class="fore_end btn-red"
+                                                     onclick="zstock_settings_SetRongduan('rdBtn', $('#熔断i').val())" />
+                                        &nbsp;0关闭，1熔断
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="al_r">
+                                        首页数据：
+                                    </td>
+                                    <td>
+                                        <input id="首页数据i" maxlength="150" style="width:30%" />
+                                        &nbsp;<input id="idxBtn" type="submit" value="保存" class="fore_end btn-red"
+                                                     onclick="zstock_settings_SetIdxData('idxBtn', $('#首页数据i').val())" />
+                                        &nbsp;2,787;6,812
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="c_b f-s1">
+                    &nbsp;
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

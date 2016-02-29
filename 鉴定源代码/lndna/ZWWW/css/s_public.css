@@ -1,0 +1,59 @@
+@charset "utf-8";
+/* CSS Document */
+
+/*-------------店铺首页str--------------*/
+.s_right{ width:790px; float:right;}
+.m_t8{ margin-top:8px;}
+.level-2 {height: 16px;width: 32px;}
+.level-3 {height: 16px;width: 48px;}
+.seller-heart {background: url("../image/heart-seller.gif") repeat-x scroll 0 0 transparent;}
+/*-------------店铺首页头部str--------------*/
+.banner{height: 240px; width: 1000px;}
+#p_nav.bg{background: url("../image/background.gif") repeat-x scroll 0 0 transparent;height: 38px;overflow: hidden;padding: 1px;width: 998px;}
+#p_nav ul{background: url("../image/background.gif") repeat-x scroll 0 -40px transparent;height: 38px;margin-left: -1px;overflow: hidden;white-space: nowrap;width: 999px;}
+#p_nav li {float: left;}
+#p_nav li.active a, #p_nav li.active a:hover {background-position: 0 -240px;}
+#p_nav li.active a span, #p_nav li.active a:hover span {background-position: right -280px;text-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);}
+#p_nav li.normal a {background-position: 0 -80px;}
+#p_nav li.normal a:hover {background-position: 0 -160px;}
+#p_nav li.normal a span {background-position: right -120px;}
+#p_nav li.normal a:hover span {background-position: right -200px;}
+#p_nav li a { background: url("../image/background.gif") no-repeat scroll 0 0 transparent; float: left; height: 38px; text-decoration: none; }
+#p_nav li a span {background: url("../image/background.gif") repeat-x scroll 0 0 transparent;color: #FFFFFF;cursor: pointer;float: left;font-size: 14px;font-weight: 600;height: 20px;line-height: 20px;margin-left: 4px;max-width: 160px;overflow: hidden;padding: 9px 15px;text-overflow: ellipsis;white-space: nowrap;}
+
+/*-------------店铺首页头部end--------------*/
+
+/*-----------------产品列表str----------------*/
+.p_list .content { padding:0 1px;}
+.p_list .content li{float:left; width:175px; padding: 0 11px;}
+.p_list .content li.hover{ background:#F7F7F7;}
+.p_list .content .p-img{ border: 1px solid #DDDDDD;margin: 10px 0;padding: 5px 0; text-align:center; }
+.p_list .content .p-img img{ width:165px; height:165px;}
+.p_list .content .p-name {height: 3em;}
+.p_list .content li.fore1{ padding-left:0;}
+/*-----------------产品列表end----------------*/
+
+/*-------------右侧筛选str--------------*/
+.kp{ width:100%;}
+.km-p a, a:link, a:visited{color:#666666;text-decoration: none; }
+.km-p a:hover{ color:#ff6600; text-decoration: underline; }
+.km-p .f_l li{ float:left; margin:10px 0 0 30px; display:inline;}
+.km-p .f_l li a{background: url("../image/ic_sortbar.gif") no-repeat scroll 32px -80px transparent; padding: 0 14px 0 4px;}
+.km-p .f_l li a.dom{background: url("../image/ic_sortbar.gif") no-repeat scroll 32px -120px transparent; padding: 0 14px 0 4px;}
+.km-p .f_l li a.top{background: url("../image/ic_sortbar.gif") no-repeat scroll 32px -100px transparent; padding: 0 14px 0 4px;}
+a.nobg{background: none repeat scroll 0 0 transparent;padding: 0 4px !important;}
+.km-p .l2{ float:left; height:30px; margin-top:8px; margin-left:20px; }
+.km-p .l2 em{ color: #777777; font-style: normal; }
+.km-p .l2 input[type="text"]{-moz-border-colors: none;background-color: #FEFEFE;border-color: #CCCCCC #DDDDDD #DDDDDD #CCCCCC;border-image: none;border-style: solid;border-width: 1px;box-shadow: 2px 2px 1px 0 #E7E7E7 inset;height: 16px;line-height: 14px;padding: 1px 2px 1px 4px; }
+.km-p .l2 input[type="submit"]{-moz-border-colors: none;background-color: #EEEEEE;border-color: #D0D0D0 #D0D0D0 #ABABAB;border-image: none;border-style: solid;border-width: 1px;box-shadow: 1px 1px 0 #FFFFFF inset;color: #999999;cursor: pointer;line-height: 16px;margin-left: 6px;text-align: center; overflow:hidden;}
+.km-p .l2 input[type="submit"]:hover{-moz-border-colors: none;background-color: #ff6600;border-color: #ff6600 #ff3300 #ff3300 #ff6600;border-image: none;border-style: solid;border-width: 1px;box-shadow: 1px 1px 0 rgba(255,255,153,0.5) inset;color: #fff;cursor: pointer;line-height: 16px;margin-left: 6px;text-align: center; overflow:hidden;}
+
+
+/*-------------右侧筛选查看end--------------*/
+
+/*----------------百度地图str-----------------*/
+ html,body{margin:0;padding:0;}
+    .iw_poi_title {color:#CC5522;font-size:14px;font-weight:bold;overflow:hidden;padding-right:13px;white-space:nowrap}
+    .iw_poi_content {font:12px arial,sans-serif;overflow:visible;padding-top:4px;white-space:-moz-pre-wrap;word-wrap:break-word}
+/*----------------百度地图end-----------------*/
+

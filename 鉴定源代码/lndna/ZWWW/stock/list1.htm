@@ -1,0 +1,122 @@
+﻿<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>综合管理系统</title>
+    <link href="../css/user_public.css" rel="stylesheet" type="text/css" />
+    <link href="../css/user_head.css" rel="stylesheet" type="text/css" />
+    <link href="../css/convert.css" rel="stylesheet" type="text/css" />
+    <link href="../css/tg_style.css" rel="stylesheet" type="text/css" />
+    <link href="../css/head.css" rel="stylesheet" type="text/css" />
+    <link href="../css/i_public.css" rel="stylesheet" type="text/css" />
+    <link href="../css/public.css" rel="stylesheet" type="text/css" />
+    <link href="../css/pagercss.css" rel="stylesheet" type="text/css" />
+    <link href="../css/table.css" rel="stylesheet" type="text/css" />
+    <script src="../js/basic/base64code.js" type="text/javascript"></script>
+    <script src="../js/basic/Calendar.js" type="text/javascript"></script>
+    <script src="../js/basic/index.js" type="text/javascript"></script>
+    <script src="../js/util/jscookie.js"></script>
+    <script src="../js/util/local_storage.js"></script>
+    <script src="../js/util/stores.js"></script>
+    <script src="../js/basic/jquery.js" type="text/javascript"></script>
+    <script src="../js/util/control.js" type="text/javascript"></script>
+    <script src="../js/util/util.js" type="text/javascript"></script>
+    <script src="../js/util/pager.js" type="text/javascript"></script>
+    <script src="../js/util/webservice.js" type="text/javascript"></script>
+    <script src="../js/sql/dict.js" type="text/javascript"></script>
+    <script src="../js/sql/stock_plan.js" type="text/javascript"></script>
+    <script type="text/javascript">
+        var readFinish = true;
+        function page_load() {
+            $("#客户IDi").val(get_url_para(window.location.href, "userId"));
+            if (getCookie("sys_is_investor", 1) > 0) {
+                stock_plan_GetTask();
+                setInterval("stock_plan_GetTask()", 2000);
+                //setInterval("pagerQry()", 5000);
+            }
+            else {
+                $("#待匹配A").hide();
+                $("#待平仓A").hide();
+            }
+            search();
+
+        }
+        function search() {
+            if (readFinish) {
+                if (row_count == -1)
+                    stock_plan_GetCount($("#方案IDi").val(), $("#客户IDi").val(), "1", "", "", "", "",
+                         "", $("#股票代码i").val(), $("#股票名称i").val(), $("#点买额度s").val(), $("#点买额度e").val());
+                stock_plan_GetList("qryBtn", "查询列表", "stock_plan_list1", $("#方案IDi").val(), $("#客户IDi").val(), "1", "", "", "", "",
+                         "", $("#股票代码i").val(), $("#股票名称i").val(), $("#点买额度s").val(), $("#点买额度e").val(), "id", page_size, page_index);
+            }
+        }
+    </script>
+</head>
+<body onload="page_load()">
+    <div class="contbg m_t-10">
+        <div class="w1000 cen m" style="width: 100%">
+            <div class="contbox" style="width: 100%">
+                <div class="contright" style="width: 100%">
+                    <div class="mt c_b p_l30 f-w f-e43">
+                        策略管理
+                    </div>
+                    <div class="contmc">
+                        <div class="mc mclist">
+                            <table class="query">
+                                <tr>
+                                    <td>
+                                        <span>方案ID:</span>
+                                        <input id="方案IDi" style="width: 10%" onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')" />
+                                        <span>客户ID:</span>
+                                        <input id="客户IDi" style="width: 10%" onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')" />
+                                        <span>状态:</span>
+                                        匹配中
+                                        <br />
+                                        <span>股票代码:</span>
+                                        <input id="股票代码i" style="width: 10%" />
+                                        <span>股票名称:</span>
+                                        <input id="股票名称i" style="width: 10%" />
+                                        <span>点买额度:</span>
+                                        <input id="点买额度s" style="width: 10%" onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')" />
+                                        <span>~</span>
+                                        <input id="点买额度e" style="width: 10%" onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <center>
+                                            <input id="qryBtn" type="submit" value="查询" class="fore_end btn-red" onclick="pagerQry()" />
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;
+                                            <a id="待匹配A" href="javascript:void" style='color: blue; font-weight: bolder'>待匹配(..)</a>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                            <a id="待平仓A" href="list2.htm?staId=4" style='color: blue; font-weight: bolder'>待平仓(..)</a>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                            <a id="平仓中A" href="list2.htm?staId=5" style='color: blue; font-weight: bolder'>平仓中(..)</a>
+                                        </center>
+                                    </td>
+                                </tr>
+                            </table>
+                            <table id="查询列表" width="100%" class="table1" cellspacing="0"></table>
+                            <table width="100%">
+                                <tr>
+                                    <td align="right" class="table_label_col">
+                                        <div class="m c_b km-t">
+                                            <div id="pagerDiv" class="f_r pagin">
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="c_b f-s1">
+                    &nbsp;
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

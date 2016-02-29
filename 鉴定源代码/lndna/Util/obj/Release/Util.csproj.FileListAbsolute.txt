@@ -1,0 +1,17 @@
+C:\dev src\jijinwan\git\wcp\wcp\Util\bin\Release\Util.dll
+C:\dev src\jijinwan\git\wcp\wcp\Util\bin\Release\Util.pdb
+C:\dev src\jijinwan\git\wcp\wcp\Util\bin\Release\Dapper.dll
+C:\dev src\jijinwan\git\wcp\wcp\Util\bin\Release\log4net.dll
+C:\dev src\jijinwan\git\wcp\wcp\Util\bin\Release\MySql.Data.dll
+C:\dev src\jijinwan\git\wcp\wcp\Util\bin\Release\Newtonsoft.Json.dll
+C:\dev src\jijinwan\git\wcp\wcp\Util\bin\Release\StackExchange.Redis.dll
+C:\dev src\jijinwan\git\wcp\wcp\Util\bin\Release\Thinktecture.IdentityModel.Client.Net45.dll
+C:\dev src\jijinwan\git\wcp\wcp\Util\bin\Release\Dapper.pdb
+C:\dev src\jijinwan\git\wcp\wcp\Util\bin\Release\log4net.xml
+C:\dev src\jijinwan\git\wcp\wcp\Util\bin\Release\Newtonsoft.Json.xml
+C:\dev src\jijinwan\git\wcp\wcp\Util\bin\Release\StackExchange.Redis.pdb
+C:\dev src\jijinwan\git\wcp\wcp\Util\bin\Release\StackExchange.Redis.xml
+C:\dev src\jijinwan\git\wcp\wcp\Util\bin\Release\Thinktecture.IdentityModel.Client.Net45.pdb
+C:\dev src\jijinwan\git\wcp\wcp\Util\obj\Release\Util.csprojResolveAssemblyReference.cache
+C:\dev src\jijinwan\git\wcp\wcp\Util\obj\Release\Util.dll
+C:\dev src\jijinwan\git\wcp\wcp\Util\obj\Release\Util.pdb

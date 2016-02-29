@@ -1,0 +1,264 @@
+﻿<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>综合管理系统</title>
+    <link href="../css/user_public.css" rel="stylesheet" type="text/css" />
+    <link href="../css/user_head.css" rel="stylesheet" type="text/css" />
+    <link href="../css/convert.css" rel="stylesheet" type="text/css" />
+    <link href="../css/tg_style.css" rel="stylesheet" type="text/css" />
+    <link href="../css/head.css" rel="stylesheet" type="text/css" />
+    <link href="../css/i_public.css" rel="stylesheet" type="text/css" />
+    <link href="../css/public.css" rel="stylesheet" type="text/css" />
+    <link href="../css/table.css" rel="stylesheet" type="text/css" />
+    <link href="../css/style.css" rel="stylesheet" type="text/css" />
+    <link href="../js/basic/jquery-ui.min.css" rel="stylesheet" />
+    <script src="../js/basic/base64code.js" type="text/javascript"></script>
+    <script src="../js/basic/index.js" type="text/javascript"></script>
+    <script src="../js/util/jscookie.js"></script>
+    <script src="../js/util/local_storage.js"></script>
+    <script src="../js/util/stores.js"></script>
+    <script src="../js/basic/jquery.js" type="text/javascript"></script>
+    <script src="../js/basic/jquery-ui.min.js"></script>
+    <script src="../js/util/control.js" type="text/javascript"></script>
+    <script src="../js/util/util.js" type="text/javascript"></script>
+    <script src="../js/util/pager.js" type="text/javascript"></script>
+    <script src="../js/util/webservice.js" type="text/javascript"></script>
+    <script src="../js/sql/dict.js" type="text/javascript"></script>
+    <script src="../js/sql/user.js"></script>
+    <script src="../js/sql/stock_plan.js"></script>
+    <script src="../js/sql/hsi_plan_sub.js"></script>
+    <script src="../js/sql/user_bank.js"></script>
+    <script src="../js/sql/user_money_change.js"></script>
+    <script type="text/javascript">
+        function page_load() {
+            var id = get_url_para(window.location.href, "id");
+            if (id.length > 0) {
+                user_GetOne(id);
+                fill_label_nde("客户ID", id);
+                hsi_plan_sub_GetList("", "恒指方案", "hsi_plan_sub_list", id, "", "", "", "", "", 3, 1);
+                fill_a_href_nde("恒指方案A", "../hsi/list_sub.htm?userId=" + id);
+                stock_plan_GetList("", "A股方案", "stock_plan_list", "", id, "", "", "", "", "", "", "", "", "", "", "id desc", 3, 1);
+                fill_a_href_nde("A股方案A", "../stock/list.htm?userId=" + id);
+                user_GetList("", "我的下线", "user_list", "", "", "", "", "", "", "", id, "", "", "", 3, 1);
+                fill_a_href_nde("我的下线A", "../user/list.htm?userId=" + id);
+                user_bank_GetList("", "我的银行", "user_bank_list", id);
+                user_money_change_GetList("", "资金明细", "user_money_change_list", id, "", "", "", "", "", 3, 1);
+                fill_a_href_nde("资金明细A", "../user/money_change_his.htm?userId=" + id);
+            }
+        }
+        function sv() {
+            user_UpdateRef("svBtn", get_url_para(window.location.href, "id"), $("#邀请收益i").val(),
+                $("#邀请人i").val(), $("#用户状态s").val());
+        }
+        var hpsId = 0;
+        var svType = 0;
+        function open_upDiv_dialog() {
+            var dialogOpts = {
+                buttons: {
+                    "确定": svProfit,
+                    "取消": function () { $(this).dialog("close"); }
+                },
+                modal: true,
+                width: "600px"
+            }
+            $("#方案ID").html(hpsId);
+            $("#upDiv").dialog(dialogOpts);
+        }
+        function svProfit() {
+            if (svType == 1) hsi_plan_sub_Sell("", hpsId, $("#盈亏i").val());
+            else if (svType == 2) hsi_plan_sub_UpdateProfit("", hpsId, $("#盈亏i").val());
+        }
+    </script>
+</head>
+<body onload="page_load()">
+    <div class="contbg m_t-10">
+        <div class="w1000 cen m" style="width: 100%">
+            <div class="contbox" style="width: 100%">
+                <div class="contright" style="width: 100%">
+                    <div class="contmc">
+                        <div class="mc mclist">
+                            <table id="基本信息t" border="1px">
+                                <tr>
+                                    <td class="al_r" style="width: 9%; background-color: #F4F4F4">
+                                        客户ID：
+                                    </td>
+                                    <td style="width: 18%;">
+                                        &nbsp;<label id="客户ID">
+                                        </label>
+                                    </td>
+                                    <td class="al_r" style="width: 9%; background-color: #F4F4F4">
+                                        电话：
+                                    </td>
+                                    <td style="width: 18%;">
+                                        &nbsp;<label id="电话">
+                                        </label>
+                                    </td>
+                                    <td class="al_r" style="width: 9%; background-color: #F4F4F4">
+                                        昵称：
+                                    </td>
+                                    <td>
+                                        &nbsp;<label id="昵称">
+                                        </label>
+                                    </td>
+                                    <td class="al_r" style="width: 9%; background-color: #F4F4F4">
+                                        注册时间：
+                                    </td>
+                                    <td>
+                                        &nbsp;<label id="注册时间">
+                                        </label>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="al_r" style="width: 9%; background-color: #F4F4F4">
+                                        用户余额：
+                                    </td>
+                                    <td>
+                                        &nbsp;<label id="用户余额">
+                                        </label>&nbsp;元
+                                    </td>
+                                    <td class="al_r" style="width: 9%; background-color: #F4F4F4">
+                                        欠费：
+                                    </td>
+                                    <td>
+                                        &nbsp;<label id="欠费">
+                                        </label>&nbsp;元
+                                    </td>
+                                    <td class="al_r" style="width: 9%; background-color: #F4F4F4">
+                                        姓名：
+                                    </td>
+                                    <td>
+                                        &nbsp;<label id="姓名">
+                                        </label>
+                                    </td>
+                                    <td class="al_r" style="width: 9%; background-color: #F4F4F4">
+                                        身份证：
+                                    </td>
+                                    <td>
+                                        &nbsp;<label id="身份证">
+                                        </label>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="al_r" style="width: 9%; background-color: #F4F4F4">
+                                        性别：
+                                    </td>
+                                    <td>
+                                        &nbsp;<label id="性别">
+                                        </label>
+                                    </td>
+                                    <td class="al_r" style="width: 9%; background-color: #F4F4F4">
+                                        邮箱：
+                                    </td>
+                                    <td>
+                                        &nbsp;<label id="邮箱">
+                                        </label>
+                                    </td>
+                                    <td class="al_r" style="width: 9%; background-color: #F4F4F4">
+                                        QQ：
+                                    </td>
+                                    <td colspan="3">
+                                        &nbsp;<label id="QQ">
+                                        </label>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="al_r" style="width: 9%; background-color: #F4F4F4">
+                                        点买额度：
+                                    </td>
+                                    <td>
+                                        &nbsp;<label id="点买额度">
+                                        </label>&nbsp;元
+                                    </td>
+                                    <td class="al_r" style="width: 9%; background-color: #F4F4F4">
+                                        方案总数：
+                                    </td>
+                                    <td colspan="5">
+                                        &nbsp;<label id="方案总数">
+                                        </label>&nbsp;条
+                                    </td>
+                                    <!--<td class="al_r" style="width: 9%; background-color: #F4F4F4">
+                                        正收益额：
+                                    </td>
+                                    <td>
+                                        &nbsp;<label id="正收益额">
+                                        </label>&nbsp;元
+                                    </td>
+                                    <td class="al_r" style="width: 9%; background-color: #F4F4F4">
+                                        负收益额：
+                                    </td>
+                                    <td>
+                                        &nbsp;<label id="负收益额">
+                                        </label>&nbsp;元
+                                    </td>-->
+                                </tr>
+                                <tr>
+                                    <td class="al_r" style="width: 9%; background-color: #F4F4F4">
+                                        邀请收益：
+                                    </td>
+                                    <td>
+                                        &nbsp;<input id="邀请收益i" style="width:40px" onkeyup="if(isNaN(value))execCommand('undo')" onafterpaste="if(isNaN(value))execCommand('undo')" />  &nbsp;元/(万/天)
+                                    </td>
+                                    <td class="al_r" style="width: 9%; background-color: #F4F4F4">
+                                        邀请人ID：
+                                    </td>
+                                    <td colspan="3">
+                                        &nbsp;<input id="邀请人i" style="width:50px" onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')" />
+                                        &nbsp;<label id="邀请人">
+                                        </label>
+                                        &nbsp;填写邀请人的ID或邀请码
+                                    </td>
+                                    <td class="al_r" style="width: 9%; background-color: #F4F4F4">
+                                        用户状态：
+                                    </td>
+                                    <td>
+                                        &nbsp;<select id="用户状态s">
+                                            <option value="0">启用</option>
+                                            <option value="1">关闭</option>
+                                        </select>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="8">
+                                        <center>
+                                            <input id="svBtn" type="submit" value="保存" class="fore_end btn-red" onclick="sv()" />
+                                        </center>
+                                    </td>
+                                </tr>
+                            </table>
+                            <div class="mt c_b p_l30 f-w f-e43">
+                                恒指方案&nbsp;<a id="恒指方案A" style='color: orange; font-weight: bolder'>查看更多</a>
+                            </div>
+                            <table id="恒指方案" class="table1" cellspacing="0" style="width: 100%"></table>
+                            <div class="mt c_b p_l30 f-w f-e43">
+                                A股方案&nbsp;<a id="A股方案A" style='color: orange; font-weight: bolder'>查看更多</a>
+                            </div>
+                            <table id="A股方案" class="table1" cellspacing="0" style="width: 100%"></table>
+                            <div class="mt c_b p_l30 f-w f-e43">
+                                我的下线&nbsp;<a id="我的下线A" style='color: orange; font-weight: bolder'>查看更多</a>
+                            </div>
+                            <table id="我的下线" class="table1" cellspacing="0" style="width: 100%"></table>
+                            <div class="mt c_b p_l30 f-w f-e43">
+                                我的银行
+                            </div>
+                            <table id="我的银行" class="table1" cellspacing="0" style="width: 100%"></table>
+                            <div class="mt c_b p_l30 f-w f-e43">
+                                资金明细&nbsp;<a id="资金明细A" style='color: orange; font-weight: bolder'>查看更多</a>
+                            </div>
+                            <table id="资金明细" class="table1" cellspacing="0" style="width: 100%"></table>
+                        </div>
+                    </div>
+                </div>
+                <div class="c_b f-s1">
+                    &nbsp;
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="upDiv" style="display:none">
+        子方案ID：<label id="方案ID"></label><br />
+        子方案盈亏：
+        <input id="盈亏i" />&nbsp;*
+    </div>
+</body>
+</html>

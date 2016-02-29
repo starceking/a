@@ -1,0 +1,81 @@
+﻿<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>综合管理系统</title>
+    <link href="css/convert.css" rel="stylesheet" type="text/css" />
+    <link href="css/tg_style.css" rel="stylesheet" type="text/css" />
+    <link href="css/head.css" rel="stylesheet" type="text/css" />
+    <link href="css/i_public.css" rel="stylesheet" type="text/css" />
+    <link href="css/public0.css" rel="stylesheet" type="text/css" />
+    <script src="js/basic/base64code.js" type="text/javascript"></script>
+    <script src="js/basic/index.js" type="text/javascript"></script>
+    <script src="js/util/jscookie.js"></script>
+    <script src="js/util/local_storage.js"></script>
+    <script src="js/util/stores.js"></script>
+    <script src="js/basic/jquery.js" type="text/javascript"></script>
+    <script src="js/util/control.js" type="text/javascript"></script>
+    <script src="js/util/util.js" type="text/javascript"></script>
+    <script src="js/util/webservice.js" type="text/javascript"></script>
+    <script src="js/sql/dict.js" type="text/javascript"></script>
+    <script src="js/sql/sys_user.js" type="text/javascript"></script>
+    <script type="text/javascript">
+        function page_load() {
+            clearCookie(1);
+            dict_page_frame_GetCont("mainhead", "head", "");
+            dict_page_frame_GetCont("mainfoot", "foot", "");
+        }
+        function login() {
+            if (ctrl_valid()) {
+                sys_user_Login("submit", $("#用户名i").val(), $("#登录密码i").val());
+            }
+        }
+        function ctrl_valid() {
+            return (ctrl_not_null("用户名i") && ctrl_not_null("登录密码i"));
+        }
+    </script>
+</head>
+<body onload="page_load()">
+    <div id="mainhead">
+    </div>
+    <div class="w750 cen" id="zc">
+        <div class="mb50 p1">
+        </div>
+        <div class="m zc_add">
+            <div class="mt">
+                <span class="f_l fore1">
+                    <h2 class="f-ca2">
+                        登陆
+                    </h2>
+                </span><span class="f_l">LOGIN</span>
+            </div>
+            <div class="mc">
+                <ul class="tit">
+                    <li>登录帐号：</li>
+                    <li>登录密码：</li>
+                    <li>&nbsp;</li>
+                </ul>
+                <ul>
+                    <li>
+                        <span>
+                            <input id="用户名i" class="in" />
+                        </span>
+                    </li>
+                    <li>
+                        <span>
+                            <input id="登录密码i" type="password" class="in" onkeydown='if(event.keyCode==13){login()}' />
+                        </span>
+                    </li>
+                    <li class="sub1">
+                        <input id="submit" type="submit" value="登  录" onclick="login()" />
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="mb50 p1">
+        </div>
+    </div>
+    <div id="mainfoot">
+    </div>
+</body>
+</html>

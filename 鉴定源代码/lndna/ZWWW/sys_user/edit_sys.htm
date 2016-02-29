@@ -1,0 +1,199 @@
+﻿<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>综合管理系统</title>
+    <link href="../css/user_public.css" rel="stylesheet" type="text/css" />
+    <link href="../css/user_head.css" rel="stylesheet" type="text/css" />
+    <link href="../css/convert.css" rel="stylesheet" type="text/css" />
+    <link href="../css/tg_style.css" rel="stylesheet" type="text/css" />
+    <link href="../css/head.css" rel="stylesheet" type="text/css" />
+    <link href="../css/i_public.css" rel="stylesheet" type="text/css" />
+    <link href="../css/public.css" rel="stylesheet" type="text/css" />
+    <link href="../css/table.css" rel="stylesheet" type="text/css" />
+    <script src="../js/basic/base64code.js" type="text/javascript"></script>
+    <script src="../js/basic/index.js" type="text/javascript"></script>
+    <script src="../js/util/jscookie.js"></script>
+    <script src="../js/util/local_storage.js"></script>
+    <script src="../js/util/stores.js"></script>
+    <script src="../js/util/pager.js"></script>
+    <script src="../js/basic/jquery.js" type="text/javascript"></script>
+    <script src="../js/util/control.js" type="text/javascript"></script>
+    <script src="../js/util/util.js" type="text/javascript"></script>
+    <script src="../js/util/webservice.js" type="text/javascript"></script>
+    <script src="../js/sql/dict.js" type="text/javascript"></script>
+    <script src="../js/sql/sys_user.js" type="text/javascript"></script>
+    <script src="../js/sql/sys_user_stock_money_change.js"></script>
+    <script type="text/javascript">
+        function page_load() {
+            var id = get_url_para(window.location.href, "id");
+            if (id.length > 0) {
+                sys_user_GetOne(id);
+                set_enabled("用户名i", false);
+            }
+            else {
+                dict_GetAll("所属s", "请选择", "", dict_cmp_json);
+                set_ctrl_show("pwdBtn", false);
+            }
+        }
+        function upd() {
+            if (ctrl_valid()) {
+                var id = get_url_para(window.location.href, "id");
+                if (id.length > 0) sys_user_UpdateSys("submit", id, $("#电话i").val(), $("#姓名i").val(), getPri(), $("#所属s").val(), $("#状态s").val());
+                else sys_user_InsertSys("submit", $("#用户名i").val(), "1", $("#电话i").val(), $("#姓名i").val(), getPri(), $("#所属s").val());
+            }
+        }
+        function pwd() {
+            sys_user_ResetPwd("pwdBtn", get_url_para(window.location.href, "id"), "1");
+        }
+        function ctrl_valid() {
+            var msg = "";
+            if (!ctrl_not_null("用户名i")) {
+                msg = "“用户名”未填";
+            }
+            else if (!ctrl_not_null("电话i")) {
+                msg = "“电话”未填";
+            }
+            else if (!ctrl_not_null("姓名i")) {
+                msg = "“姓名”未填";
+            }
+            else if (!ctrl_not_null("所属s")) {
+                msg = "“所属”未填";
+            }
+            if (msg.length > 0) alert(msg);
+            return (msg.length == 0);
+        }
+        function getPri() {
+            var pri = "";
+            if (document.getElementById("pcb1").checked) pri += ",1";
+            if (document.getElementById("pcb11").checked) pri += ",11";
+            if (document.getElementById("pcb12").checked) pri += ",12";
+            if (document.getElementById("pcb13").checked) pri += ",13";
+            if (document.getElementById("pcb14").checked) pri += ",14";
+            if (document.getElementById("pcb15").checked) pri += ",15";
+            if (document.getElementById("pcb16").checked) pri += ",16";
+            if (document.getElementById("pcb17").checked) pri += ",17";
+            if (document.getElementById("pcb18").checked) pri += ",18";
+            if (document.getElementById("pcb19").checked) pri += ",19";
+            if (document.getElementById("pcb2").checked) pri += ",2";
+            if (document.getElementById("pcb23").checked) pri += ",23";
+            if (document.getElementById("pcb24").checked) pri += ",24";
+            if (document.getElementById("pcb25").checked) pri += ",25";
+            if (document.getElementById("pcb27").checked) pri += ",27";
+            if (document.getElementById("pcb3").checked) pri += ",3";
+            if (document.getElementById("pcb31").checked) pri += ",31";
+            if (document.getElementById("pcb32").checked) pri += ",32";
+            if (document.getElementById("pcb33").checked) pri += ",33";
+            if (document.getElementById("pcb34").checked) pri += ",34";
+            if (document.getElementById("pcb35").checked) pri += ",35";
+            if (pri.length > 0) return pri.substring(1);
+        }
+    </script>
+</head>
+<body onload="page_load()">
+    <div class="contbg m_t-10">
+        <div class="w1000 cen m" style="width: 100%">
+            <div class="contbox" style="width: 100%">
+                <div class="contright" style="width: 100%">
+                    <div class="mt c_b p_l30 f-w f-e43">
+                        内部用户信息
+                    </div>
+                    <div class="contmc">
+                        <div class="mc mclist">
+                            <table class="tab">
+                                <tr>
+                                    <td class="al_r" style="width:10%">
+                                        用户名：
+                                    </td>
+                                    <td style="width:90%">
+                                        <input id="用户名i" maxlength="50" />
+                                        &nbsp;*&nbsp;新用户默认密码为:1
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="al_r">
+                                        电话：
+                                    </td>
+                                    <td>
+                                        <input id="电话i" maxlength="50" value="00000000000" />&nbsp;*
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="al_r">
+                                        姓名：
+                                    </td>
+                                    <td>
+                                        <input id="姓名i" maxlength="50" />&nbsp;*
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="al_r">
+                                        所属：
+                                    </td>
+                                    <td>
+                                        <select id="所属s">
+                                            <option value="">请选择</option>
+                                        </select>&nbsp;*
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="al_r">
+                                        状态：
+                                    </td>
+                                    <td>
+                                        <select id="状态s">
+                                            <option value="0">启用</option>
+                                            <option value="1">禁用</option>
+                                        </select>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="al_r">
+                                        权限列表：
+                                    </td>
+                                    <td>
+                                        <input id="pcb1" type="checkbox" /><label style="font-size:16px;">基础功能：</label>
+                                        <input id="pcb11" type="checkbox" />客户列表、
+                                        <input id="pcb12" type="checkbox" />资金明细、
+                                        <input id="pcb13" type="checkbox" />充值记录、
+                                        <input id="pcb14" type="checkbox" />提款申请、
+                                        <input id="pcb15" type="checkbox" />投资人列表、
+                                        <input id="pcb16" type="checkbox" />用户来源统计、
+                                        <input id="pcb17" type="checkbox" />网站公告、
+                                        <input id="pcb18" type="checkbox" />内部用户列表
+                                        <input id="pcb19" type="checkbox" />银行卡审核<br />
+                                        <input id="pcb2" type="checkbox" /><label style="font-size:16px;">A股点买：</label>
+                                        <input id="pcb23" type="checkbox" />方案列表、
+                                        <input id="pcb24" type="checkbox" />风控设置、
+                                        <input id="pcb25" type="checkbox" />黑名单设置、
+                                        <input id="pcb27" type="checkbox" />日报表<br />
+                                        <input id="pcb3" type="checkbox" /><label style="font-size:16px;"> 恒指点买：</label>
+                                        <input id="pcb31" type="checkbox" />子方案列表、
+                                        <input id="pcb32" type="checkbox" />母方案列表、
+                                        <input id="pcb33" type="checkbox" />操盘账号设置、
+                                        <input id="pcb34" type="checkbox" />手数设置、
+                                        <input id="pcb35" type="checkbox" />日报表
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="al_r">
+                                        &nbsp;
+                                    </td>
+                                    <td>
+                                        <input id="submit" type="submit" value="保存" class="fore_end btn-red" onclick="upd()" />&nbsp;
+                                        <input id="pwdBtn" type="submit" value="重置密码" class="fore_end btn-red" onclick="pwd()" />&nbsp;
+                                        <input type="submit" value="返回" class="fore_end btn-red" onclick="window.history.go(-1)" />
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="c_b f-s1">
+                    &nbsp;
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

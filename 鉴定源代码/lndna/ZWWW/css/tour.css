@@ -1,0 +1,50 @@
+@charset "utf-8";
+/* CSS Document */
+.w290{ width:290px;}
+.w900{ width:900px;}
+.m_t17{ margin:17px 0;}
+.f_390{ color:#390;}
+
+#focus_1 {width:900px; height:270px; overflow:hidden; position:relative;}
+#focus_1 ul {height:270px; position:absolute;}
+#focus_1 ul li {float:left; width:900px; height:270px; overflow:hidden; position:relative; background:#000;}
+#focus_1 ul li div {position:absolute; overflow:hidden;}
+#focus_1 .btnBg {position:absolute; width:900px; height:20px; left:0; bottom:0; background:#000;}
+#focus_1 .btn {position:absolute; width:880px; height:10px; padding:8px 10px; _padding:5px 10px; right:0; bottom:0; text-align:right;}
+#focus_1 .btn span {display:inline-block; _display:inline; _zoom:1; width:25px; height:10px; _font-size:0; margin-left:5px; cursor:pointer; background:#fff;}
+#focus_1 .btn span.on {background:#fff;}
+#focus_1 .preNext {width:45px; height:100px; position:absolute; top:90px; background:url(img/sprite.png) no-repeat 0 0; cursor:pointer;}
+#focus_1 .pre {left:0;}
+#focus_1 .next {right:0; background-position:right top;}
+
+/*-------------左侧分类str--------------*/
+#listt{ border-color: #999999 #DDDDDD #DDDDDD;border-style: solid;border-width: 2px 1px 1px;}
+#listt .mt h2{background: url(../image/listc_mt.png) no-repeat 10px 5px transparent; padding-left:30px; font:15px/30px "微软雅黑"; color:#333333;}
+#listt .mc{ width:268px; padding: 0 10px;}
+#listt .cem{ clear: both; }
+#listt ul{ overflow:hidden; padding:6px 0 6px 6px;}
+#listt li{ float:left; overflow:hidden; display:inline-block; width:260px; height:32px; line-height:32px;_height:28px;_line-height:28px;}
+#listt dd{ text-align:center; line-height:32px; height:32px;  clear:both;}
+#listt dd .c_list_bn{ color:#FFF; font:14px/30px "微软雅黑"; background:#B80000; padding:4px 10px; margin-bottom:10px; border-radius:3px 3px 3px 3px;}
+#listt h3{ background:none repeat scroll 0 0 #F7F7F7; border-top:1px solid #DDDDDD; color:#333333; font:14px/30px "微软雅黑"; height:30px; padding-left:10px;} 
+#listt h3 a:link,#listc h3 a:visited,#listc h3 a:hover{color:#333333;} 
+.mc_mt{ width:65px; font-weight:600; font-size:14px; margin-right:10px; float:left;}
+.mc_li{ width:180px; float:left;}
+.new_img{ width:268px; height:150px; margin:10px 0;}
+#listt .new_mc li{ height:24px; line-height:24px;}
+/*-------------左侧分类end--------------*/
+.w900 .search{ border:1px solid #ffd5a3; background:#fff9ec; overflow:hidden; padding:0 20px; overflow:hidden; height:70px;}
+.i-search{}
+.hot_search{ width:340px; margin-top:19px; line-height:32px; height:32px; overflow:hidden;}
+.i-search .text { background-color: #FFFFFF; background-position: 0 -360px; background-repeat: repeat-x; color: #999999; font-family: arial,"宋体"; font-size: 14px; height: 18px; line-height: 18px; padding:5px; width: 400px; vertical-align: top; }
+.i-search.c_ban .text { width: 456px; }
+.i-search input {border: 0 none;height: 30px;margin: 0;padding: 0;}
+.i-search .button {background: none repeat scroll 0 0 #b80000;color: #FFFFFF;font-size: 14px;font-weight: 700;width: 78px; }
+.tour_mt{ border-bottom:2px solid #B80000; height:32px;}
+.tourlist li{ padding:20px 0; position:relative; height:140px; border-bottom:1px dashed #CCC; font-family:"Arial";}
+.tourlist .t_img{ width:120px; height:120px; padding:3px;  border:1px solid #CCC; float:left; margin-right:10px;}
+.tourlist .t_mc{ width:550px; float:left;}
+.tourlist .t_name{ font-size:15px; margin-bottom:10px;  overflow:hidden; height:24px; line-height:24px; }
+.btn-red{background-image: url("../image/contleft_bg.jpg");border: 1px solid #A40000;border-radius: 5px 5px 5px 5px;color: #FFFFFF;font: 600 14px/32px "微软雅黑";height: 32px;text-align: center;width: 100px; position:absolute; right:50px; top:70px;}
+
+

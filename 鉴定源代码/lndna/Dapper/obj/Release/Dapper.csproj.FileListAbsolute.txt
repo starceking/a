@@ -1,0 +1,4 @@
+C:\dev src\jijinwan\git\wcp\wcp\Lib\Dapper.dll
+C:\dev src\jijinwan\git\wcp\wcp\Lib\Dapper.pdb
+C:\dev src\jijinwan\git\wcp\wcp\Dapper\obj\Release\Dapper.dll
+C:\dev src\jijinwan\git\wcp\wcp\Dapper\obj\Release\Dapper.pdb

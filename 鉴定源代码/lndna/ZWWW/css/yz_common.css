@@ -1,0 +1,290 @@
+﻿body {
+	padding: 0px 0px 0px 0px;
+	margin: 0px;
+	line-height: 175%;
+	font-size: 12px;
+	color: #666;
+	font-family: 微软雅黑,Arial,Verdana, Arial, Vrinda, Tahoma;
+}
+html {
+	padding: 0px 0px 0px 0px;
+	margin: 0px;
+}
+a {
+	font-family: "微软雅黑";
+	color:#235598;
+	text-decoration:none;
+}
+a:hover {
+	text-decoration:underline;
+}
+
+img {
+	border: none;
+}
+.clear {
+	clear: both;
+}
+
+.red{
+	color: #B81912;
+}
+.blue{
+	color: #0F3F94;
+}
+.gray{
+	color:#AAAAAA;
+}
+
+.bred{
+	color:#F00;
+}
+
+.input{
+	display:block;
+	height:23px;
+	width:153px;
+	line-height:21px;
+	padding:0;
+	font-family: "微软雅黑";
+	color:#333333;
+	border: 1px solid #D3D3D3;
+}
+.select{
+	display:block;
+	width:154px;
+	height:25px;
+	line-height:25px;
+	font-family: "微软雅黑";
+	color:#333333;
+	border: 1px solid #D3D3D3;
+}
+.grid-title{
+	font-family: "微软雅黑";
+	font-size:14px;
+	font-weight:normal;
+	font-style:normal;
+	text-decoration:none;
+	color:#333333;
+}
+
+.query{
+	display:block;
+	padding:20px 20px 0 20px;
+	overflow: hidden;
+}
+.data-area{
+	padding:20px 20px 20px 20px;
+}
+.query .inner-q{
+	display:block;
+	padding:15px 40px 15px 15px;
+	border: 1px solid #DDDDDD;
+	background-color: #FAFAFA;
+}
+.query .h-input{
+	height:23px;
+	width:73px;
+	line-height:21px;
+	padding:0;
+	font-family: "微软雅黑";
+	color:#333333;
+	border: 1px solid #D3D3D3;
+}
+.query table{
+	border:0;
+	width:100%;
+	font-size:12px;
+	border-collapse:collapse;
+	font-size:12px;
+	font-style:normal;
+	text-decoration:none;
+	color:#333333;
+}
+
+.query table tr{
+	border-collapse: collapse;
+	height:35px;
+}
+
+.query table th,.label{
+	text-align: right;
+	text-decoration:none;
+	font-weight:normal;
+	color:#333333;
+	padding-right:10px;
+}
+
+.query table td{
+	border-collapse: collapse;
+	text-align: left;
+	vertical-align: center;
+}
+.btn{
+	width: 75px;
+	height: 25px;
+	text-align: center;
+	font-family: "微软雅黑";
+	font-size: 12px;
+	color: #000000;
+}
+
+.win-toolbar{
+	position: fixed;
+	display:none;
+	top:0;
+	width:200px;
+	height:37px;
+	line-height:37px;
+	border: 1px solid #DDDDDD;
+	background-color:#FAFAFA;
+	text-align:right;
+	vertical-align:center;
+	z-index: 9;
+	padding:6px 0 6px 0;
+}
+.win-toolbar input{
+	height: 25px;
+	line-height:25px;
+	padding:0 6px 0 6px;
+	text-align: center;
+	font-family: "微软雅黑";
+	font-size: 12px;
+	color: #000000;
+	float:right;
+	margin-right:6px;
+}
+.win-toolbar .tip{
+	text-indent:2em;
+	font-size:14px;
+	color: red;
+	float:left;
+	line-height:160%;
+}
+
+.tb-table table{
+	border: 1px solid #DDDDDD;
+	text-align: left;
+	width:100%;
+	border-collapse: collapse;
+	font-size: 12px;
+	color:#333333;
+	font-family: "微软雅黑";
+}
+.tb-table a{
+}
+.info-title{
+	display:block;
+	margin: 0 0 0 0;
+	line-height:33px;
+	font-family: "微软雅黑";
+	font-size:14px;
+	font-weight:normal;
+	text-decoration:none;
+	color:#AAAAAA;
+}
+.tb-table tr{
+	height:30px;
+	line-height:20px;
+}
+
+.tb-table th{
+	text-align: right;
+	background-color: #F4F4F4;
+	border: 1px solid #DDDDDD;
+	border-collapse: collapse;
+	font-weight: normal;
+	padding-right:5px;
+	font-family: "微软雅黑";
+	font-style:normal;
+	text-decoration:none;
+}
+.tb-table td{
+	border: 1px solid #DDDDDD;
+	border-collapse: collapse;
+	padding-left: 6px;
+}
+
+.tb-table td .tip{
+	color:#AAAAAA;
+}
+
+.gray-tip{
+ color:#AAAAAA;
+}
+
+.detail-content{
+	padding:10px 20px 57px 20px ;
+	border:0;
+}
+
+.dg-content{
+	padding:15px 50px 15px 50px;
+	display:block;
+}
+.dg-content .dg-table{
+	border:0;
+	vertical-align: bottom;
+}
+.dg-content .dg-table tr{
+	height:35px;
+}
+
+.dg-content .dg-table th{
+	text-align:right;
+	font-family: "微软雅黑";
+	font-style:normal;
+	font-weight: normal;
+	padding-right:10px;
+}
+.dg-content .dg-table td{
+	text-align: left;
+}
+
+.dg-content .input{
+	display:block;
+	height:21px;
+	width:297px;
+	line-height:21px;
+	padding:0;
+}
+
+.dg-content .select{
+	display:block;
+	width:300px;
+	height:25px;
+	line-height:25px;
+}
+
+.dg-content .textarea{
+	display:block;
+	height:60px;
+	width:297px;
+	font-family: "微软雅黑";
+	color:#333333;
+	border: 1px solid #D3D3D3;
+	padding:0;
+}
+.dg-content .pic{
+	display:block;
+	width:300px;
+	height:100px;
+	border: 0;
+}
+
+.dg-content .dg-table .w2-th{
+	width:2em;
+}
+.dg-content .dg-table .w3-th{
+	width:3em;
+}
+.dg-content .dg-table .w4-th{
+	width:4em;
+}
+.dg-content .dg-table .w5-th{
+	width:5em;
+}
+.dg-content .dg-table .w6-th{
+	width:6em;
+}
+

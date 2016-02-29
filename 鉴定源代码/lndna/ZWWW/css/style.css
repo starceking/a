@@ -1,0 +1,25 @@
+/* 弹出窗口 CSS 定义 */
+.dialognobg{ position:fixed; top:0; left:0; bottom:0; right:0; z-index:500;}
+.indexdialogbox{ background-color:#ffffff; width:75%; height:80px; position:fixed; border:1px solid #cbcbcb; box-shadow:1px 1px 20px 1px #333; top:40%; left:12.5%; right:12.5%; z-index:1000;}
+.dialogbg{ background-color:#000000; position:fixed; top:0; left:0; bottom:0; right:0; z-index:500; opacity:0.6 ; filter:alpha(opacity=60); -moz-opacity:0.6; -khtml-opacity:0.6;}
+.dialogbox{ background-color:#ffffff; width:90%; height:170px; position:fixed; top:35%; left:5%; right:5%; border-radius:4px; -moz-border-radius:4px; -webkit-border-radius:4px; z-index:1000; }
+
+.contentdialogtitle{ text-align:right; margin-right:-8px; margin-top:-8px;}
+.contentamount{ padding:15px; text-align:center; color:#6e6e6e; font-size:0.8em;}
+.contentamountbox{ border:1px solid #aaaaaa; width:60px; height:22px; line-height:16px; color:#ff6600; text-align:center;}
+.chipinbtn{ display:block; width:70%; background-color:#a91f18; color:#ffffff; padding:10px 0; margin:0 15%; text-align:center; border-radius:4px; -moz-border-radius:4px; -webkit-border-radius:4px;}
+
+.giftdialogtitle{ background-color:#ff6600; text-align:center; color:#ffffff; line-height:2.4em; border-radius:4px 4px 0 0; -moz-border-radius:4px 4px 0 0; -webkit-border-radius:4px 4px 0 0;}
+.giftdialogcontent p{ padding:29px 0 23px 0; text-align:center; color:#666666; font-weight:bold;}
+.yesbtn{ display:block; width:80%; padding:10px 0; margin:0 5% 0 15%; background-color:#ff6600; text-align:center; color:#ffffff;}
+.nobtn{ display:block; width:80%; padding:10px 0; margin:0 15% 0 5%; background-color:#bbbbbb; text-align:center; color:#ffffff;}
+.surebtn{ display:block; width:40%; padding:10px 0; margin:0 30%; background-color:#ff6600; text-align:center; color:#ffffff;}
+
+.dialogbox_interest{ background-color:#ffffff; width:90%; position:fixed; top:25%; left:5%; right:5%; border-radius:4px; -moz-border-radius:4px; -webkit-border-radius:4px; z-index:1000; }
+.dialogcontent_interest h4{ text-align:center; color:#666666;}
+.dialogcontent_interest ul{ padding:15px 10%;}
+.dialogcontent_interest li a{ border:1px solid #aaaaaa; display:block; width:49%; padding:10px 0; text-align:center; float:left;}
+.interestbtn{ display:block; width:70%; background-color:#ff6600; color:#ffffff; padding:10px 0; margin:15px 15%; text-align:center; border-radius:4px; -moz-border-radius:4px; -webkit-border-radius:4px; float:left;}
+.dialogcontent_interestgift{ border-top:1px solid #c0c0c0; width:100%; padding:12px 0; float:left;}
+.dialogcontent_interestgift h5{ padding:3px 0; color:#666666;}
+.dialogcontent_interestgift h5 img{ padding:0 3px;}

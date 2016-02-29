@@ -1,0 +1,8 @@
+C:\dev src\wcp\wcp\Lib\Dapper.dll
+C:\dev src\wcp\wcp\Lib\Dapper.pdb
+C:\dev src\wcp\wcp\Dapper\obj\Debug\Dapper.dll
+C:\dev src\wcp\wcp\Dapper\obj\Debug\Dapper.pdb
+C:\dev src\jijinwan\git\wcp\wcp\Lib\Dapper.dll
+C:\dev src\jijinwan\git\wcp\wcp\Lib\Dapper.pdb
+C:\dev src\jijinwan\git\wcp\wcp\Dapper\obj\Debug\Dapper.dll
+C:\dev src\jijinwan\git\wcp\wcp\Dapper\obj\Debug\Dapper.pdb

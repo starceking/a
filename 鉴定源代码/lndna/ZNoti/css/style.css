@@ -1,0 +1,9 @@
+﻿* { margin:0 auto; padding:0; border:0;}
+body { background:url(bg.jpg) repeat-x; font:14px "宋体"; color:#004C7E;}
+.textb { border:1px solid #004C7E; width:150px; height:18px;}
+.textb1 { border:2px solid red; width:150px; height:18px;}
+.login { background:#DDF1FE; width:400px; height:240px; border:1px solid #000;  margin-top:150px;}
+.top { background:url(login_bg.jpg) repeat-x; width:400px; height:80px; border:1px solid #2376B1;font-size:30px; text-align:center; font-weight:bold; color:White; line-height:40px; text-indent:0.5em;}
+.submit { background:url(login_bg.jpg) repeat-x; width:71px; height:20px; border:0; color:#004C7E; font-weight:bold;} 
+.reset { background:url(login_bg.jpg) repeat-x; width:71px; height:20px; border:0;color:#004C7E; font-weight:bold;} 
+.table{ margin:20px 50px; width:300px;}
