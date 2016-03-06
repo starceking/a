@@ -41,8 +41,7 @@ namespace Util
         #endregion
         static string GetUrl(string mobile, string content)
         {
-            return string.Format("http://www.ztsms.cn/sendXSms.do?username=91wcp&password=5VZXXmNR&mobile={0}&content={1}&dstime=&productid=712712&xh=",
-                mobile, System.Web.HttpUtility.UrlEncode(content));
+            return string.Empty;
         }
         public static async Task<string> SendSms(string phone, string message)
         {

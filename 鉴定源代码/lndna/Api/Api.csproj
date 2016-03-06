@@ -200,38 +200,10 @@
     <Compile Include="Areas\HelpPage\SampleGeneration\SampleDirection.cs" />
     <Compile Include="Areas\HelpPage\SampleGeneration\TextSample.cs" />
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
-    <Compile Include="Controllers\NoticeController.cs" />
-    <Compile Include="Controllers\HsiAccountController.cs" />
-    <Compile Include="Controllers\HsiAccountSubController.cs" />
-    <Compile Include="Controllers\HsiDayStaController.cs" />
-    <Compile Include="Controllers\HsiDebtController.cs" />
-    <Compile Include="Controllers\HsiImgController.cs" />
-    <Compile Include="Controllers\HsiPlanController.cs" />
-    <Compile Include="Controllers\HsiPlanSubController.cs" />
-    <Compile Include="Controllers\NewsController.cs" />
-    <Compile Include="Controllers\SmsController.cs" />
-    <Compile Include="Controllers\StockForbiddenController.cs" />
-    <Compile Include="Controllers\StockInfoController.cs" />
-    <Compile Include="Controllers\StockPlanController.cs" />
-    <Compile Include="Controllers\StockPlanDayController.cs" />
-    <Compile Include="Controllers\StockPlanLogController.cs" />
-    <Compile Include="Controllers\StockPlanTradeController.cs" />
-    <Compile Include="Controllers\StockPlanXrdController.cs" />
-    <Compile Include="Controllers\SysUserController.cs" />
-    <Compile Include="Controllers\SysUserStockMoneyChangeController.cs" />
-    <Compile Include="Controllers\UserBankController.cs" />
-    <Compile Include="Controllers\UserController.cs" />
-    <Compile Include="Controllers\UserDepositHisController.cs" />
-    <Compile Include="Controllers\UserMoneyChangeController.cs" />
-    <Compile Include="Controllers\UserWithdrawController.cs" />
-    <Compile Include="Controllers\ValidationCodeController.cs" />
-    <Compile Include="Controllers\ZStockSettingsController.cs" />
-    <Compile Include="Controllers\ZZStaUserDayController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
@@ -266,6 +238,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Controllers\" />
     <Folder Include="Models\" />
   </ItemGroup>
   <ItemGroup>

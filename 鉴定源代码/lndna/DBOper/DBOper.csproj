@@ -68,39 +68,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DictBank.cs" />
-    <Compile Include="DictDepositSrc.cs" />
-    <Compile Include="DictDistrict.cs" />
-    <Compile Include="DictMoneyFlow.cs" />
-    <Compile Include="DictHsiPlanStatus.cs" />
-    <Compile Include="DictPlanStatus.cs" />
-    <Compile Include="DictProcessStatus.cs" />
-    <Compile Include="HsiAccount.cs" />
-    <Compile Include="HsiAccountSub.cs" />
-    <Compile Include="HsiDaySta.cs" />
-    <Compile Include="HsiDebt.cs" />
-    <Compile Include="HsiPlan.cs" />
-    <Compile Include="HsiPlanSub.cs" />
-    <Compile Include="News.cs" />
     <Compile Include="Notice.cs" />
-    <Compile Include="StockInfo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="StockForbidden.cs" />
-    <Compile Include="StockPlan.cs" />
-    <Compile Include="StockPlanDay.cs" />
-    <Compile Include="StockPlanLog.cs" />
-    <Compile Include="StockPlanTrade.cs" />
-    <Compile Include="StockPlanXrd.cs" />
-    <Compile Include="SysUser.cs" />
-    <Compile Include="SysUserStockMoneyChange.cs" />
-    <Compile Include="User.cs" />
-    <Compile Include="UserBank.cs" />
-    <Compile Include="UserDepositHis.cs" />
-    <Compile Include="UserMoneyChange.cs" />
-    <Compile Include="UserWithdraw.cs" />
-    <Compile Include="ZSqlUnique.cs" />
-    <Compile Include="ZStockSettings.cs" />
-    <Compile Include="ZZStaUserDay.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Model\Model.csproj">

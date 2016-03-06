@@ -20,9 +20,6 @@ namespace Api
             GlobalConfiguration.Configure(WebApiConfig.Register);
 
             Util.Redis.Init();
-            DBOper.ZStockSettings.Init();
-            DBOper.HsiAccountSub.Init();
-            DBOper.HsiDebt.Init();
         }
     }
 }

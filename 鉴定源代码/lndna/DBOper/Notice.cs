@@ -28,7 +28,7 @@ namespace DBOper
             dict.Add("head", head);
             dict.Add("content", content);
             dict.Add("create_time", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
-            if (!string.IsNullOrWhiteSpace(User.CMP_ID)) dict.Add("cmp_id", User.CMP_ID);
+            //if (!string.IsNullOrWhiteSpace(User.CMP_ID)) dict.Add("cmp_id", User.CMP_ID);
             DBHelper.InsertSync(TABLE, dict);
 
             return string.Empty;
@@ -62,8 +62,8 @@ namespace DBOper
         public static async Task<IEnumerable<NoticeModel>> GetList(string page_size, string page_index)
         {
             IDictionary<string, string> fdict = new Dictionary<string, string>();
-            if (string.IsNullOrWhiteSpace(User.CMP_ID)) fdict.Add("cmp_id", "0");
-            else fdict.Add("cmp_id", User.CMP_ID);
+            //if (string.IsNullOrWhiteSpace(User.CMP_ID)) fdict.Add("cmp_id", "0");
+            //else fdict.Add("cmp_id", User.CMP_ID);
 
             return await DBHelper.GetList<NoticeModel, int>(TABLE, "*", "id desc", fdict, "and",
                         Convert.ToInt32(page_size), Convert.ToInt32(page_index));
@@ -71,8 +71,8 @@ namespace DBOper
         public static async Task<long> GetCount()
         {
             IDictionary<string, string> fdict = new Dictionary<string, string>();
-            if (string.IsNullOrWhiteSpace(User.CMP_ID)) fdict.Add("cmp_id", "0");
-            else fdict.Add("cmp_id", User.CMP_ID);
+            //if (string.IsNullOrWhiteSpace(User.CMP_ID)) fdict.Add("cmp_id", "0");
+            //else fdict.Add("cmp_id", User.CMP_ID);
 
             return await DBHelper.GetCount(TABLE, fdict, "and");
         }

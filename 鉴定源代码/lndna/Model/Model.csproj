@@ -46,33 +46,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="HsiAccountSubModel.cs" />
-    <Compile Include="HsiAccountModel.cs" />
-    <Compile Include="HsiDayStaModel.cs" />
-    <Compile Include="HsiDebtModel.cs" />
-    <Compile Include="HsiImgModel.cs" />
-    <Compile Include="HsiPlanModel.cs" />
-    <Compile Include="HsiPlanSubModel.cs" />
-    <Compile Include="JsonResultModel.cs" />
-    <Compile Include="NewsModel.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="StockForbiddenModel.cs" />
-    <Compile Include="StockInfoModel.cs" />
-    <Compile Include="StockPlanDayModel.cs" />
-    <Compile Include="StockPlanLogModel.cs" />
-    <Compile Include="StockPlanModel.cs" />
-    <Compile Include="StockPlanTradeModel.cs" />
-    <Compile Include="StockPlanXrdModel.cs" />
-    <Compile Include="SysUserModel.cs" />
-    <Compile Include="SysUserStockMoneyChangeModel.cs" />
-    <Compile Include="UserBankModel.cs" />
-    <Compile Include="UserDepositHisModel.cs" />
     <Compile Include="NoticeModel.cs" />
-    <Compile Include="UserModel.cs" />
-    <Compile Include="UserMoneyChangeModel.cs" />
-    <Compile Include="UserWithdrawModel.cs" />
-    <Compile Include="ZStockSettingsModel.cs" />
-    <Compile Include="ZZStaUserDayModel.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Util\Util.csproj">
