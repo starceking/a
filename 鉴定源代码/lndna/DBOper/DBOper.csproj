@@ -68,8 +68,23 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CaseEvidence.cs" />
+    <Compile Include="CaseInfo.cs" />
+    <Compile Include="CasePerson.cs" />
+    <Compile Include="CaseSample.cs" />
+    <Compile Include="DictAllele.cs" />
+    <Compile Include="DictIdCmp.cs" />
+    <Compile Include="DictSettings.cs" />
+    <Compile Include="DictKit.cs" />
+    <Compile Include="DictKitAllele.cs" />
+    <Compile Include="IdComparison.cs" />
+    <Compile Include="IdExtract.cs" />
+    <Compile Include="IdExtractSample.cs" />
+    <Compile Include="IdPre.cs" />
+    <Compile Include="IdPreSample.cs" />
     <Compile Include="Notice.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="User.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Model\Model.csproj">

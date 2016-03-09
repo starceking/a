@@ -46,8 +46,25 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CaseEvidenceModel.cs" />
+    <Compile Include="CasePersonModel.cs" />
+    <Compile Include="CaseSampleModel.cs" />
+    <Compile Include="DictAlleleModel.cs" />
+    <Compile Include="DictIdCmpModel.cs" />
+    <Compile Include="DictKitModel.cs" />
+    <Compile Include="IdAmpModel.cs" />
+    <Compile Include="IdAmpSampleModel.cs" />
+    <Compile Include="IdComparisonModel.cs" />
+    <Compile Include="IdEpModel.cs" />
+    <Compile Include="IdEpSampleModel.cs" />
+    <Compile Include="IdExtractModel.cs" />
+    <Compile Include="IdPreModel.cs" />
+    <Compile Include="IdExtractSampleModel.cs" />
+    <Compile Include="IdPreSampleModel.cs" />
     <Compile Include="NoticeModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="CaseInfoModel.cs" />
+    <Compile Include="UserModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Util\Util.csproj">

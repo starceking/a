@@ -160,7 +160,7 @@ namespace Util
             var template = MakeSBTemp(builder.ToString(), parameters);
             return (await dbConnection.QueryAsync<long>(template.RawSql, template.Parameters)).SingleOrDefault();
         }
-        public static async Task<IEnumerable<T>> GetList<T, A>(string table, string getter, string order, IDictionary<string, string> fdict, string andor) where T : class
+        public static async Task<IEnumerable<T>> GetList<T, A>(string table, string getter, string order, IDictionary<string, string> fdict, string andor, bool redis = true) where T : class
         {
             SqlPara sp = GetWhere(table, fdict, andor);
             StringBuilder builder = new StringBuilder();
@@ -186,7 +186,7 @@ namespace Util
                         ulong uid = 0;
                         if (ulong.TryParse(id.ToString(), out uid))
                         {
-                            T obj = await Redis.Get<T>(id.ToString());
+                            T obj = (redis ? await Redis.Get<T>(id.ToString()) : null);
                             dictT.Add(uid, obj);
                             if (obj == null) nList.Add(uid);
                         }
@@ -228,7 +228,8 @@ namespace Util
                                     if (ulong.TryParse(val.ToString(), out id))
                                     {
                                         dictT[id] = obj;
-                                        await Redis.Insert<T>(id.ToString(), obj);
+                                        if (redis)
+                                            await Redis.Insert<T>(id.ToString(), obj);
                                     }
                                 }
                             }
@@ -247,7 +248,7 @@ namespace Util
             }
             return new List<T>();
         }
-        public static async Task<IEnumerable<T>> GetList<T, A>(string table, string getter, string order, IDictionary<string, string> fdict, string andor, int pageSize, int pageIndex) where T : class
+        public static async Task<IEnumerable<T>> GetList<T, A>(string table, string getter, string order, IDictionary<string, string> fdict, string andor, int pageSize, int pageIndex, bool redis = true) where T : class
         {
             if (pageSize == 0) return await GetList<T, A>(table, getter, order, fdict, andor);
             pageIndex--;
@@ -279,7 +280,7 @@ namespace Util
                         ulong uid = 0;
                         if (ulong.TryParse(id.ToString(), out uid))
                         {
-                            T obj = await Redis.Get<T>(id.ToString());
+                            T obj = (redis ? await Redis.Get<T>(id.ToString()) : null);
                             dictT.Add(uid, obj);
                             if (obj == null) nList.Add(uid);
                         }
@@ -321,7 +322,8 @@ namespace Util
                                     if (ulong.TryParse(val.ToString(), out id))
                                     {
                                         dictT[id] = obj;
-                                        await Redis.Insert<T>(id.ToString(), obj);
+                                        if (redis)
+                                            await Redis.Insert<T>(id.ToString(), obj);
                                     }
                                 }
                             }
@@ -347,7 +349,7 @@ namespace Util
                 return await dbConnection.QueryAsync<T>(sql, null);
             }
         }
-        public static async Task<IEnumerable<T>> GetFreeList<T, A>(string sql, string table, string getter, string order, int pageSize, int pageIndex) where T : class
+        public static async Task<IEnumerable<T>> GetFreeList<T, A>(string sql, string table, string getter, string order, int pageSize, int pageIndex, bool redis = true) where T : class
         {
             if (pageSize == 0) return await GetFree<T>(sql.Replace("select id from", "select * from"));
             pageIndex--;
@@ -369,7 +371,7 @@ namespace Util
                         ulong uid = 0;
                         if (ulong.TryParse(id.ToString(), out uid))
                         {
-                            T obj = await Redis.Get<T>(id.ToString());
+                            T obj = (redis ? await Redis.Get<T>(id.ToString()) : null);
                             dictT.Add(uid, obj);
                             if (obj == null) nList.Add(uid);
                         }
@@ -411,7 +413,8 @@ namespace Util
                                     if (ulong.TryParse(val.ToString(), out id))
                                     {
                                         dictT[id] = obj;
-                                        await Redis.Insert<T>(id.ToString(), obj);
+                                        if (redis)
+                                            await Redis.Insert<T>(id.ToString(), obj);
                                     }
                                 }
                             }
@@ -576,7 +579,7 @@ namespace Util
             var template = MakeSBTemp(builder.ToString(), parameters);
             return (dbConnection.Query<long>(template.RawSql, template.Parameters)).SingleOrDefault();
         }
-        public static IEnumerable<T> GetListSync<T, A>(string table, string getter, string order, IDictionary<string, string> fdict, string andor) where T : class
+        public static IEnumerable<T> GetListSync<T, A>(string table, string getter, string order, IDictionary<string, string> fdict, string andor, bool redis = true) where T : class
         {
             SqlPara sp = GetWhere(table, fdict, andor);
             StringBuilder builder = new StringBuilder();
@@ -602,7 +605,7 @@ namespace Util
                         ulong uid = 0;
                         if (ulong.TryParse(id.ToString(), out uid))
                         {
-                            T obj = Redis.GetSync<T>(id.ToString());
+                            T obj = (redis ? Redis.GetSync<T>(id.ToString()) : null);
                             dictT.Add(uid, obj);
                             if (obj == null) nList.Add(uid);
                         }
@@ -644,7 +647,8 @@ namespace Util
                                     if (ulong.TryParse(val.ToString(), out id))
                                     {
                                         dictT[id] = obj;
-                                        Redis.InsertSync<T>(id.ToString(), obj);
+                                        if (redis)
+                                            Redis.InsertSync<T>(id.ToString(), obj);
                                     }
                                 }
                             }
@@ -663,7 +667,7 @@ namespace Util
             }
             return new List<T>();
         }
-        public static IEnumerable<T> GetListSync<T, A>(string table, string getter, string order, IDictionary<string, string> fdict, string andor, int pageSize, int pageIndex) where T : class
+        public static IEnumerable<T> GetListSync<T, A>(string table, string getter, string order, IDictionary<string, string> fdict, string andor, int pageSize, int pageIndex, bool redis = true) where T : class
         {
             if (pageSize == 0) return GetListSync<T, A>(table, getter, order, fdict, andor);
             pageIndex--;
@@ -695,7 +699,7 @@ namespace Util
                         ulong uid = 0;
                         if (ulong.TryParse(id.ToString(), out uid))
                         {
-                            T obj = Redis.GetSync<T>(id.ToString());
+                            T obj = (redis ? Redis.GetSync<T>(id.ToString()) : null);
                             dictT.Add(uid, obj);
                             if (obj == null) nList.Add(uid);
                         }
@@ -737,7 +741,8 @@ namespace Util
                                     if (ulong.TryParse(val.ToString(), out id))
                                     {
                                         dictT[id] = obj;
-                                        Redis.InsertSync<T>(id.ToString(), obj);
+                                        if (redis)
+                                            Redis.InsertSync<T>(id.ToString(), obj);
                                     }
                                 }
                             }
@@ -763,7 +768,7 @@ namespace Util
                 return dbConnection.Query<T>(sql, null);
             }
         }
-        public static IEnumerable<T> GetFreeListSync<T, A>(string sql, string table, string getter, string order, int pageSize, int pageIndex) where T : class
+        public static IEnumerable<T> GetFreeListSync<T, A>(string sql, string table, string getter, string order, int pageSize, int pageIndex, bool redis = true) where T : class
         {
             if (pageSize == 0) return GetFreeSync<T>(sql.Replace("select id from", "select * from"));
             pageIndex--;
@@ -785,7 +790,7 @@ namespace Util
                         ulong uid = 0;
                         if (ulong.TryParse(id.ToString(), out uid))
                         {
-                            T obj = Redis.GetSync<T>(id.ToString());
+                            T obj = (redis ? Redis.GetSync<T>(id.ToString()) : null);
                             dictT.Add(uid, obj);
                             if (obj == null) nList.Add(uid);
                         }
@@ -827,7 +832,8 @@ namespace Util
                                     if (ulong.TryParse(val.ToString(), out id))
                                     {
                                         dictT[id] = obj;
-                                        Redis.InsertSync<T>(id.ToString(), obj);
+                                        if (redis)
+                                            Redis.InsertSync<T>(id.ToString(), obj);
                                     }
                                 }
                             }
