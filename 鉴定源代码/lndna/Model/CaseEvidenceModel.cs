@@ -16,15 +16,15 @@ namespace Model
         [DataMember]
         public ulong id { get; set; }
         [DataMember]
-        public ulong case_info_id { get; set; }
+        public ulong case_info_id { get; set; }//案件id
         [DataMember]
-        public string name { get; set; }
+        public string name { get; set; }//名称
         [DataMember]
-        public string evi_type { get; set; }
+        public string evi_type { get; set; }//物证类型
         [DataMember]
-        public string description { get; set; }
+        public string description { get; set; }//描述
         [DataMember]
-        public string remark { get; set; }
+        public string remark { get; set; }//备注
         //access_token
         [DataMember]
         public int access_id { get; set; }

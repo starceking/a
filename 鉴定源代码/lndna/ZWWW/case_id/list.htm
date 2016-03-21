@@ -1,0 +1,101 @@
+﻿<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>综合管理系统</title>
+    <link href="../css/user_public.css" rel="stylesheet" type="text/css" />
+    <link href="../css/user_head.css" rel="stylesheet" type="text/css" />
+    <link href="../css/convert.css" rel="stylesheet" type="text/css" />
+    <link href="../css/tg_style.css" rel="stylesheet" type="text/css" />
+    <link href="../css/head.css" rel="stylesheet" type="text/css" />
+    <link href="../css/i_public.css" rel="stylesheet" type="text/css" />
+    <link href="../css/public.css" rel="stylesheet" type="text/css" />
+    <link href="../css/pagercss.css" rel="stylesheet" type="text/css" />
+    <link href="../css/table.css" rel="stylesheet" type="text/css" />
+    <script src="../js/basic/base64code.js" type="text/javascript"></script>
+    <script src="../js/basic/Calendar.js" type="text/javascript"></script>
+    <script src="../js/basic/index.js" type="text/javascript"></script>
+    <script src="../js/util/jscookie.js"></script>
+    <script src="../js/util/local_storage.js"></script>
+    <script src="../js/util/stores.js"></script>
+    <script src="../js/basic/jquery.js" type="text/javascript"></script>
+    <script src="../js/util/control.js" type="text/javascript"></script>
+    <script src="../js/util/util.js" type="text/javascript"></script>
+    <script src="../js/util/pager.js" type="text/javascript"></script>
+    <script src="../js/util/webservice.js" type="text/javascript"></script>
+    <script src="../js/sql/dict.js" type="text/javascript"></script>
+    <script src="../js/sql/dict_lab_no.js"></script>
+    <script src="../js/sql/dict_cg.js"></script>
+    <script src="../js/sql/case_info.js"></script>
+    <script src="http://localhost/gl/js/dict/dict_cg_json.js"></script>
+    <script src="http://localhost/gl/js/dict/dict_lab_no_json.js"></script>
+    <script src="../js/sql/case_sample.js"></script>
+    <script type="text/javascript">
+        function page_load() {
+
+            search();
+        }
+        function search() {
+
+
+            if (row_count == -1)
+                case_sample_GetCount("", "", "", "3", "", "", getCookie("user_id", 1));
+            case_sample_GetList("", "查询列表", "case_sample_list", "", "", "",
+                   "3", "", "", getCookie("user_id", 1), page_size, page_index);
+        }
+        function add() {
+            window.location.href = "edit.htm?type=" + get_url_para(window.location.href, "type");
+        }
+    </script>
+</head>
+<body onload="page_load()">
+    <div class="contbg m_t-10">
+        <div class="w1000 cen m" style="width: 100%">
+            <div class="contbox" style="width: 100%">
+                <div class="contright" style="width: 100%">
+                    <div class="mt c_b p_l30 f-w f-e43">
+                        待检验样本
+                    </div>
+                    <div class="contmc">
+                        <div class="mc mclist">
+                            <table class="query">
+                                <tr>
+                                    <td>
+                                        <select id="委托单位s" onchange="dict_cg_GetList('委托单位s', $('#委托单位s').val(), '');"></select>->
+                                        <label id="委托单位sid"></label><label id="委托单位sname"></label>
+                                        <span>鉴定单位:</span>
+                                        <select id="鉴定单位s"></select>
+                                        <span>案件状态:</span>
+                                        <select id="案件状态s"></select>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <center>
+                                            <input id="qryBtn" type="submit" value="查询" class="fore_end btn-red" onclick="pagerQry()" />
+                                        </center>
+                                    </td>
+                                </tr>
+                            </table>
+                            <table id="查询列表" width="100%" class="table1" cellspacing="0"></table>
+                            <table width="100%">
+                                <tr>
+                                    <td align="right" class="table_label_col">
+                                        <div class="m c_b km-t">
+                                            <div id="pagerDiv" class="f_r pagin">
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="c_b f-s1">
+                    &nbsp;
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

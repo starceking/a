@@ -8,6 +8,5 @@ C:\dev src\jijinwan\git\wcp\wcp\Dapper\obj\Debug\Dapper.dll
 C:\dev src\jijinwan\git\wcp\wcp\Dapper\obj\Debug\Dapper.pdb
 C:\dev src\gitsrc\a\鉴定源代码\lndna\Lib\Dapper.dll
 C:\dev src\gitsrc\a\鉴定源代码\lndna\Lib\Dapper.pdb
-C:\dev src\gitsrc\a\鉴定源代码\lndna\Dapper\obj\Debug\Dapper.csprojResolveAssemblyReference.cache
 C:\dev src\gitsrc\a\鉴定源代码\lndna\Dapper\obj\Debug\Dapper.dll
 C:\dev src\gitsrc\a\鉴定源代码\lndna\Dapper\obj\Debug\Dapper.pdb

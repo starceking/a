@@ -18,6 +18,7 @@ namespace ZZZZ
     {
         static void Main(string[] args)
         {
+            User.DeleteRedis(1);
             Console.Read();
         }
     }

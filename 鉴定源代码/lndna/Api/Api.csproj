@@ -200,6 +200,21 @@
     <Compile Include="Areas\HelpPage\SampleGeneration\SampleDirection.cs" />
     <Compile Include="Areas\HelpPage\SampleGeneration\TextSample.cs" />
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
+    <Compile Include="Controllers\CaseEvidenceController.cs" />
+    <Compile Include="Controllers\CaseInfoController.cs" />
+    <Compile Include="Controllers\CasePersonController.cs" />
+    <Compile Include="Controllers\CaseSampleController.cs" />
+    <Compile Include="Controllers\DictSettingsController.cs" />
+    <Compile Include="Controllers\IdAmpController.cs" />
+    <Compile Include="Controllers\IdAmpSampleController.cs" />
+    <Compile Include="Controllers\IdComparisonController.cs" />
+    <Compile Include="Controllers\IdEpController.cs" />
+    <Compile Include="Controllers\IdEpSampleController.cs" />
+    <Compile Include="Controllers\IdExtractController.cs" />
+    <Compile Include="Controllers\IdExtractSampleController.cs" />
+    <Compile Include="Controllers\IdPreController.cs" />
+    <Compile Include="Controllers\IdPreSampleController.cs" />
+    <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -238,7 +253,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Controllers\" />
     <Folder Include="Models\" />
   </ItemGroup>
   <ItemGroup>

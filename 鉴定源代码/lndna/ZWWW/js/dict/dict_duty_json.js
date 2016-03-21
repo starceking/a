@@ -1,0 +1,1 @@
+﻿var dict_duty_json = "[{ 'id':'1','name':'身份证'},{ 'id':'2','name':'xx证'}]";

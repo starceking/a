@@ -18,7 +18,7 @@
     <script src="js/util/util.js" type="text/javascript"></script>
     <script src="js/util/webservice.js" type="text/javascript"></script>
     <script src="js/sql/dict.js" type="text/javascript"></script>
-    <script src="js/sql/sys_user.js" type="text/javascript"></script>
+    <script src="js/sql/user.js" type="text/javascript"></script>
     <script type="text/javascript">
         function page_load() {
             clearCookie(1);
@@ -27,7 +27,7 @@
         }
         function login() {
             if (ctrl_valid()) {
-                sys_user_Login("submit", $("#用户名i").val(), $("#登录密码i").val());
+                user_Login("submit", $("#用户名i").val(), $("#登录密码i").val());
             }
         }
         function ctrl_valid() {
@@ -58,12 +58,12 @@
                 <ul>
                     <li>
                         <span>
-                            <input id="用户名i" class="in" />
+                            <input id="用户名i" class="in" value="admin" />
                         </span>
                     </li>
                     <li>
                         <span>
-                            <input id="登录密码i" type="password" class="in" onkeydown='if(event.keyCode==13){login()}' />
+                            <input id="登录密码i" type="password" class="in" onkeydown='if(event.keyCode==13){login()}' value="1" />
                         </span>
                     </li>
                     <li class="sub1">

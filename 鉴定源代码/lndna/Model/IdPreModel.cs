@@ -25,6 +25,8 @@ namespace Model
         public string shelf_type { get; set; }
         [DataMember]
         public DateTime id_day { get; set; }
+        [DataMember]
+        public string sample_ids { get; set; }
         //access_token
         [DataMember]
         public int access_id { get; set; }

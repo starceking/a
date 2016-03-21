@@ -1,0 +1,1 @@
+﻿var dict_amp_method_json="[{ 'id':'1','name':'DictAmpMethod1'},{ 'id':'2','name':'DictAmpMethod2'}]";

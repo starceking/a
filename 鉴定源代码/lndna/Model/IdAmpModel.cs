@@ -16,29 +16,31 @@ namespace Model
         [DataMember]
         public ulong id { get; set; }
         [DataMember]
-        public string number { get; set; }
+        public string number { get; set; }//扩增编号
         [DataMember]
-        public string name { get; set; }
+        public string name { get; set; }//名称
         [DataMember]
-        public int user_id { get; set; }
+        public int user_id { get; set; }//实验人
         [DataMember]
-        public string shelf_type { get; set; }
+        public string shelf_type { get; set; }//试剂架
         [DataMember]
-        public DateTime id_day { get; set; }
+        public DateTime id_day { get; set; }//实验日期
         [DataMember]
-        public string method { get; set; }
+        public string method { get; set; }//扩增方法
         [DataMember]
-        public string machine { get; set; }
+        public string machine { get; set; }//扩增仪器
         [DataMember]
-        public string kit { get; set; }
+        public string kit { get; set; }//试剂盒
         [DataMember]
-        public int amount { get; set; }
+        public int amount { get; set; }//扩增体系
         [DataMember]
-        public string batch { get; set; }
+        public string batch { get; set; }//批号
         [DataMember]
-        public int circle { get; set; }
+        public int circle { get; set; }//循环数
         [DataMember]
-        public string board { get; set; }
+        public string board { get; set; }//板号
+        [DataMember]
+        public string sample_ids { get; set; }
         //access_token
         [DataMember]
         public int access_id { get; set; }

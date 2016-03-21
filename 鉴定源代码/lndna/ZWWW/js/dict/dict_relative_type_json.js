@@ -1,0 +1,1 @@
+﻿var dict_relative_type_json = "[{ 'id':'1','name':'身份证'},{ 'id':'2','name':'xx证'}]";

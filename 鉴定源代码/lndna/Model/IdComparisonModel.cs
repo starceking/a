@@ -22,7 +22,7 @@ namespace Model
         [DataMember]
         public int amount { get; set; }
         [DataMember]
-        public string ref_table { get; set; }
+        public string ref_table { get; set; }//id_pre、id_extract
         [DataMember]
         public ulong ref_id { get; set; }
         [DataMember]

@@ -1,0 +1,1 @@
+﻿var dict_case_property_json="[{ 'id':'1','name':'DictCaseProperty1'},{ 'id':'2','name':'DictCaseProperty2'}]"

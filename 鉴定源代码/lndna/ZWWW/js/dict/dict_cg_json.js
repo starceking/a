@@ -1,0 +1,1 @@
+﻿var dict_cg_json = "[{ 'id':'01','name':'浙江',parent_id:'000000000000'},{ 'id':'02','name':'辽宁',parent_id:'000000000000'},{ 'id':'0201','name':'沈阳',parent_id:'02'},{ 'id':'0202','name':'大连',parent_id:'02'}]";

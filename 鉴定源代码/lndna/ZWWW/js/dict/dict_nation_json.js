@@ -1,0 +1,1 @@
+﻿var dict_nation_json = "[{ 'id':'1','name':'身份证'},{ 'id':'2','name':'xx证'}]";

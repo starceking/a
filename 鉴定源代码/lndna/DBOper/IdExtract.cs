@@ -9,6 +9,9 @@ using Util;
 
 namespace DBOper
 {
+    /// <summary>
+    /// 提取
+    /// </summary>
     public static class IdExtract
     {
         public const string TABLE = "id_extract";
@@ -21,7 +24,7 @@ namespace DBOper
                 return "参数不全";
             UserModel user = await User.GetOne(user_id, string.Empty);
             if (user == null) return "读取不到USER";
-            if (user.dept_no.Equals(DictSettings.DEPT_NO)) return "权限异常";
+            if (!user.dept_no.Equals(DictSettings.LAB_NO)) return "权限异常";
 
             using (MySqlConnection dbConnection = await DBHelper.GetOpenCon())
             {
@@ -54,23 +57,19 @@ namespace DBOper
 
             return string.Empty;
         }
-        public static async Task<string> Update(ulong id, string number, string name, int user_id, string shelf_type,
+        public static async Task<string> Update(ulong id, string number, string name, string shelf_type,
             DateTime id_day, string machine, string remark, int oper_id)
         {
-            if (user_id <= 0 || string.IsNullOrWhiteSpace(number) || string.IsNullOrWhiteSpace(name) ||
+            if (id <= 0 || string.IsNullOrWhiteSpace(number) || string.IsNullOrWhiteSpace(name) ||
                 string.IsNullOrWhiteSpace(shelf_type) || id_day == null)
                 return "参数不全";
             IdExtractModel ipm = await GetOne(id);
             if (ipm == null) return "读取不到MODEL";
             if (ipm.user_id != oper_id) return "权限异常";
-            UserModel user = await User.GetOne(user_id, string.Empty);
-            if (user == null) return "读取不到USER";
-            if (user.dept_no.Equals(DictSettings.DEPT_NO)) return "权限异常";
 
             IDictionary<string, string> dict = new Dictionary<string, string>();
             dict.Add("number", number);
             dict.Add("name", name);
-            dict.Add("user_id", user_id.ToString());
             dict.Add("shelf_type", shelf_type);
             dict.Add("id_day", id_day.ToShortDateString());
             if (!string.IsNullOrWhiteSpace(machine)) dict.Add("machine", machine);

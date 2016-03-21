@@ -25,31 +25,17 @@
     <script src="../js/util/webservice.js" type="text/javascript"></script>
     <script src="../js/sql/dict.js" type="text/javascript"></script>
     <script src="../js/sql/user.js" type="text/javascript"></script>
+    <script src="../js/sql/dict_lab_no.js"></script>
+    <script src="http://localhost/gl/js/dict/dict_lab_no_json.js"></script>
     <script type="text/javascript">
         function page_load() {
-            $("#邀请人IDi").val(get_url_para(window.location.href, "userId"));
-            if (getCookie("sys_cmp_id", 1).length == 0 || getCookie("sys_cmp_id", 1) == "0")
-                dict_GetAll("来源s", "全部", "", dict_cmp_json);
+            dict_lab_no_GetList("所属单位s", getCookie("user_dept_no", 1), "");
             search();
         }
         function search() {
             if (row_count == -1)
-                user_GetCount($("#客户IDi").val(), $("#电话i").val(), $("#昵称i").val(), $("#姓名i").val(), $("#身份证i").val(),
-                    $("#注册日期s").val(), $("#注册日期e").val(), $("#邀请人IDi").val(), $("#余额s").val(), $("#余额e").val(), $("#来源s").val());
-            user_GetList("qryBtn", "查询列表", "user_list", $("#客户IDi").val(), $("#电话i").val(), $("#昵称i").val(), $("#姓名i").val(),
-                $("#身份证i").val(), $("#注册日期s").val(), $("#注册日期e").val(), $("#邀请人IDi").val(), $("#余额s").val(), $("#余额e").val(), $("#来源s").val(), page_size, page_index);
-        }
-        function exp() {
-            user_Exp("expBtn", $("#客户IDi").val(), $("#电话i").val(), $("#昵称i").val(), $("#姓名i").val(), $("#身份证i").val(),
-                    $("#注册日期s").val(), $("#注册日期e").val(), $("#邀请人IDi").val(), $("#余额s").val(), $("#余额e").val(), $("#来源s").val());
-        }
-        function updateRef() {
-            var refIds = "";
-            $("input[type='checkbox']:checkbox:checked").each(function () {
-                refIds += ($(this).attr("uid") + ",");
-            });
-            if ($("#邀请人i").val().length > 0)
-                user_UpdateBatchRef("updrBtn", $("#邀请人i").val(), refIds);
+                user_GetCount($("#所属单位s").val(), $("#警号i").val(), $("#姓名i").val(), "0");
+            user_GetList("qryBtn", "查询列表", "user_list", $("#所属单位s").val(), $("#警号i").val(), $("#姓名i").val(), "0", page_size, page_index);
         }
     </script>
 </head>
@@ -59,60 +45,25 @@
             <div class="contbox" style="width: 100%">
                 <div class="contright" style="width: 100%">
                     <div class="mt c_b p_l30 f-w f-e43">
-                        客户列表
+                        实验室帐号管理&nbsp;<a href="edit.htm" style='color: orange; font-weight: bolder'>添加帐号</a>
                     </div>
                     <div class="contmc">
                         <div class="mc mclist">
                             <table class="query">
                                 <tr>
                                     <td>
-                                        <span>客户ID:</span>
-                                        <input id="客户IDi" style="width: 10%" />
-                                        <span>电话:</span>
-                                        <input id="电话i" style="width: 10%" />
-                                        <span>昵称:</span>
-                                        <input id="昵称i" style="width: 10%" />
-                                        <span>邀请人ID:</span>
-                                        <input id="邀请人IDi" style="width: 10%" />
-                                        <span>余额:</span>
-                                        <input id="余额s" style="width: 10%" />
-                                        <span>~</span>
-                                        <input id="余额e" style="width: 10%" />
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
+                                        <span>所属单位:</span>
+                                        <select id="所属单位s"></select>
+                                        <span>警号:</span>
+                                        <input id="警号i" style="width: 10%" />
                                         <span>姓名:</span>
                                         <input id="姓名i" style="width: 10%" />
-                                        <span>身份证:</span>
-                                        <input id="身份证i" style="width: 20%" />
-                                        <span>注册日期:</span>
-                                        <input id="注册日期s" style="width: 10%" onclick="SelectDate(this)" />
-                                        <span>~</span>
-                                        <input id="注册日期e" style="width: 10%" onclick="SelectDate(this)" />
-                                        <span>来源:</span>
-                                        <select id="来源s" style="width: 10%">
-                                            <option value="">全部</option>
-                                        </select>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>
                                         <center>
                                             <input id="qryBtn" type="submit" value="查询" class="fore_end btn-red" onclick="pagerQry()" />
-                                            &nbsp;&nbsp;
-                                            <button id="expBtn" onclick="exp()" class="fore_end btn-red">
-                                                导出结果
-                                            </button>&nbsp; <a id="导出结果" href="javascript:void(0)"></a>
-                                        </center>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <center>
-                                            邀请人ID：
-                                            &nbsp;<input id="邀请人i" style="width:50px" onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')" />
-                                            &nbsp;<input id="updrBtn" type="submit" value="修改" class="fore_end btn-red" onclick="updateRef()" />
                                         </center>
                                     </td>
                                 </tr>

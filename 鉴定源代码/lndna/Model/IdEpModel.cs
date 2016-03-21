@@ -31,6 +31,8 @@ namespace Model
         public string board { get; set; }
         [DataMember]
         public string sheet { get; set; }
+        [DataMember]
+        public string sample_ids { get; set; }
         //access_token
         [DataMember]
         public int access_id { get; set; }

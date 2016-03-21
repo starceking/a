@@ -1,0 +1,1 @@
+﻿var dict_case_level_json="[{ 'id':'1','name':'DictCaseLevel1'},{ 'id':'2','name':'DictCaseLevel2'}]";

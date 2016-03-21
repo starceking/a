@@ -9,6 +9,9 @@ using Util;
 
 namespace DBOper
 {
+    /// <summary>
+    /// 人员
+    /// </summary>
     public static class CasePerson
     {
         public const string TABLE = "case_person";
@@ -57,7 +60,7 @@ namespace DBOper
         public static async Task<string> Update(ulong id, string name, string gender, string nation,
             string id_card_no, string id_type, string id_number, string person_type, string spec, DateTime? birthday,
             string country, string alias, string hjd_number, string hjd_addr, string xzz_number, string xzz_addr,
-            string remark, int age, DateTime? missing_day, string missing_addr, int user_id)
+            string remark, int age, DateTime? missing_day, string missing_addr, string relative_type, int user_id)
         {
             if (id <= 0 || string.IsNullOrWhiteSpace(name)) return "参数不全";
             CasePersonModel cpm = await GetOne(id);
@@ -85,6 +88,7 @@ namespace DBOper
             dict.Add("age", age.ToString());
             if (missing_day != null) dict.Add("missing_day", missing_day.Value.ToShortDateString());
             if (!string.IsNullOrWhiteSpace(missing_addr)) dict.Add("missing_addr", missing_addr);
+            if (!string.IsNullOrWhiteSpace(relative_type)) dict.Add("relative_type", relative_type);
             IDictionary<string, string> fdict = new Dictionary<string, string>();
             fdict.Add("id", id.ToString());
             if ((await DBHelper.Update(TABLE, dict, fdict, "and")) <= 0)
@@ -123,18 +127,11 @@ namespace DBOper
             await DeleteRedis(id);
             return string.Empty;
         }
-        public static async Task<IEnumerable<CasePersonModel>> GetList(string case_info_id, string page_size, string page_index)
+        public static async Task<IEnumerable<CasePersonModel>> GetList(string case_info_id)
         {
             IDictionary<string, string> fdict = new Dictionary<string, string>();
-            if (!string.IsNullOrWhiteSpace(case_info_id)) fdict.Add("case_info_id", case_info_id);
-            return await DBHelper.GetList<CasePersonModel, long>(TABLE, "*", "id", fdict, "and",
-                Convert.ToInt32(page_size), Convert.ToInt32(page_index));
-        }
-        public static async Task<long> GetCount(string case_info_id)
-        {
-            IDictionary<string, string> fdict = new Dictionary<string, string>();
-            if (!string.IsNullOrWhiteSpace(case_info_id)) fdict.Add("case_info_id", case_info_id);
-            return await DBHelper.GetCount(TABLE, fdict, "and");
+            fdict.Add("case_info_id", case_info_id);
+            return await DBHelper.GetList<CasePersonModel, long>(TABLE, "*", "id", fdict, "and");
         }
         public static async Task<CasePersonModel> GetOne(ulong id)
         {

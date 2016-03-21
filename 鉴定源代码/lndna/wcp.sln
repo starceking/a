@@ -23,28 +23,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ZZTask", "ZZTask\ZZTask.csp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dapper", "Dapper\Dapper.csproj", "{EF8AE21D-767C-49CE-B510-5B9D1EB597E3}"
 EndProject
-Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "ZNoti", "ZNoti\", "{1BBB6C33-081F-445D-928D-66AAA626A7EC}"
-	ProjectSection(WebsiteProperties) = preProject
-		TargetFrameworkMoniker = ".NETFramework,Version%3Dv4.0"
-		ProjectReferences = "{f0c86679-7719-42c0-92b7-34bf69163fc1}|DBOper.dll;{5E4FBDC6-62FC-4579-8157-4732DE538783}|Model.dll;{A6E24211-AC56-4FE2-8E5B-85AD5594F3ED}|Util.dll;"
-		Debug.AspNetCompiler.VirtualPath = "/localhost_54072"
-		Debug.AspNetCompiler.PhysicalPath = "ZNoti\"
-		Debug.AspNetCompiler.TargetPath = "PrecompiledWeb\localhost_54072\"
-		Debug.AspNetCompiler.Updateable = "true"
-		Debug.AspNetCompiler.ForceOverwrite = "true"
-		Debug.AspNetCompiler.FixedNames = "false"
-		Debug.AspNetCompiler.Debug = "True"
-		Release.AspNetCompiler.VirtualPath = "/localhost_54072"
-		Release.AspNetCompiler.PhysicalPath = "ZNoti\"
-		Release.AspNetCompiler.TargetPath = "PrecompiledWeb\localhost_54072\"
-		Release.AspNetCompiler.Updateable = "true"
-		Release.AspNetCompiler.ForceOverwrite = "true"
-		Release.AspNetCompiler.FixedNames = "false"
-		Release.AspNetCompiler.Debug = "False"
-		VWDPort = "54072"
-		SlnRelativePath = "ZNoti\"
-	EndProjectSection
-EndProject
 Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "ZWWW", "ZWWW\", "{756E7BF7-4AC4-418C-BDBF-1F101443C773}"
 	ProjectSection(WebsiteProperties) = preProject
 		TargetFrameworkMoniker = ".NETFramework,Version%3Dv4.0"
@@ -131,14 +109,6 @@ Global
 		{EF8AE21D-767C-49CE-B510-5B9D1EB597E3}.Release|Any CPU.Build.0 = Release|Any CPU
 		{EF8AE21D-767C-49CE-B510-5B9D1EB597E3}.Release|x86.ActiveCfg = Release|Any CPU
 		{EF8AE21D-767C-49CE-B510-5B9D1EB597E3}.Release|x86.Build.0 = Release|Any CPU
-		{1BBB6C33-081F-445D-928D-66AAA626A7EC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{1BBB6C33-081F-445D-928D-66AAA626A7EC}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{1BBB6C33-081F-445D-928D-66AAA626A7EC}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{1BBB6C33-081F-445D-928D-66AAA626A7EC}.Debug|x86.Build.0 = Debug|Any CPU
-		{1BBB6C33-081F-445D-928D-66AAA626A7EC}.Release|Any CPU.ActiveCfg = Debug|Any CPU
-		{1BBB6C33-081F-445D-928D-66AAA626A7EC}.Release|Any CPU.Build.0 = Debug|Any CPU
-		{1BBB6C33-081F-445D-928D-66AAA626A7EC}.Release|x86.ActiveCfg = Debug|Any CPU
-		{1BBB6C33-081F-445D-928D-66AAA626A7EC}.Release|x86.Build.0 = Debug|Any CPU
 		{756E7BF7-4AC4-418C-BDBF-1F101443C773}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{756E7BF7-4AC4-418C-BDBF-1F101443C773}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{756E7BF7-4AC4-418C-BDBF-1F101443C773}.Debug|x86.ActiveCfg = Debug|Any CPU

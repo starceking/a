@@ -29,6 +29,8 @@ namespace Model
         public string machine { get; set; }
         [DataMember]
         public string remark { get; set; }
+        [DataMember]
+        public string sample_ids { get; set; }
         //access_token
         [DataMember]
         public int access_id { get; set; }

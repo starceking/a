@@ -27,6 +27,8 @@ namespace Model
         public string id_card_no { get; set; }
         [DataMember]
         public string auth_ids { get; set; }
+        [DataMember]
+        public int cg_flag { get; set; }
         //access_token
         [DataMember]
         public int access_id { get; set; }

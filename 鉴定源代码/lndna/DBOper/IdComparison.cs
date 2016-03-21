@@ -8,6 +8,9 @@ using Util;
 
 namespace DBOper
 {
+    /// <summary>
+    /// 对照样本
+    /// </summary>
     public static class IdComparison
     {
         public const string TABLE = "id_comparison";

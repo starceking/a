@@ -9,6 +9,9 @@ using Util;
 
 namespace DBOper
 {
+    /// <summary>
+    /// 样本
+    /// </summary>
     public static class CaseSample
     {
         public const string TABLE = "case_sample";
@@ -21,9 +24,14 @@ namespace DBOper
                 return "参数不全";
             string ck = await CaseInfo.CheckAuth(case_info_id, user_id);
             if (!string.IsNullOrWhiteSpace(ck)) return ck;
+            CaseInfoModel cim = await CaseInfo.GetOne(case_info_id);
+            if (cim == null) return "读取不到CIM";
 
             IDictionary<string, string> dict = new Dictionary<string, string>();
             dict.Add("case_info_id", case_info_id.ToString());
+            dict.Add("id_status_id", cim.case_status_id.ToString());
+            if (cim.case_status_id > 2)
+                dict.Add("accept_user_id", cim.accept_user_id.ToString());
             if (!string.IsNullOrWhiteSpace(number)) dict.Add("number", number);
             dict.Add("name", name);
             dict.Add("sample_type", sample_type);
@@ -111,10 +119,11 @@ namespace DBOper
         /// </summary>
         static async Task<string> GetNumber(ulong case_info_id, string ref_table)
         {
-            return string.Empty;
+            return DateTime.Now.ToString("yyyyMMddHHmmss");
         }
         public static async Task<IEnumerable<CaseSampleModel>> GetList(string case_info_id, string number, string sample_type,
-            string id_status_id, string ref_table, string ref_id, string page_size, string page_index)
+            string id_status_id, string ref_table, string ref_id, string accept_user_id,
+            string page_size, string page_index)
         {
             IDictionary<string, string> fdict = new Dictionary<string, string>();
             if (!string.IsNullOrWhiteSpace(case_info_id)) fdict.Add("case_info_id", case_info_id);
@@ -123,11 +132,12 @@ namespace DBOper
             if (!string.IsNullOrWhiteSpace(id_status_id)) fdict.Add("id_status_id", id_status_id);
             if (!string.IsNullOrWhiteSpace(ref_table)) fdict.Add("ref_table", ref_table);
             if (!string.IsNullOrWhiteSpace(ref_id)) fdict.Add("ref_id", ref_id);
+            if (!string.IsNullOrWhiteSpace(accept_user_id)) fdict.Add("accept_user_id", accept_user_id);
             return await DBHelper.GetList<CaseSampleModel, long>(TABLE, "*", "id", fdict, "and",
                 Convert.ToInt32(page_size), Convert.ToInt32(page_index));
         }
         public static async Task<long> GetCount(string case_info_id, string number, string sample_type,
-            string id_status_id, string ref_table, string ref_id)
+            string id_status_id, string ref_table, string ref_id, string accept_user_id)
         {
             IDictionary<string, string> fdict = new Dictionary<string, string>();
             if (!string.IsNullOrWhiteSpace(case_info_id)) fdict.Add("case_info_id", case_info_id);
@@ -136,6 +146,7 @@ namespace DBOper
             if (!string.IsNullOrWhiteSpace(id_status_id)) fdict.Add("id_status_id", id_status_id);
             if (!string.IsNullOrWhiteSpace(ref_table)) fdict.Add("ref_table", ref_table);
             if (!string.IsNullOrWhiteSpace(ref_id)) fdict.Add("ref_id", ref_id);
+            if (!string.IsNullOrWhiteSpace(accept_user_id)) fdict.Add("accept_user_id", accept_user_id);
             return await DBHelper.GetCount(TABLE, fdict, "and");
         }
         public static async Task<CaseSampleModel> GetOne(ulong id)
